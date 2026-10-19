@@ -1,0 +1,2462 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5edf2">
+<title>Unsent</title>
+
+<style>
+:root {
+  --ink:#594958;
+  --muted:#a18d9c;
+  --glass:rgba(255,255,255,.68);
+  --line:rgba(255,255,255,.9);
+  --surface:rgba(255,255,255,.75);
+  --accent:#e5c9dc;
+  --modal:rgba(255,250,253,.97);
+  --field:rgba(255,255,255,.8);
+  --soft:#f4e4ee;
+  --danger:#b7617c;
+}
+* { box-sizing:border-box; }
+html { min-height:100%; }
+body {
+  margin:0;
+  min-height:100vh;
+  min-height:100dvh;
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  background:
+    radial-gradient(ellipse at 12% 0%,#f9e7f0,transparent 43%),
+    radial-gradient(ellipse at 100% 42%,#ece5f2,transparent 40%),
+    linear-gradient(145deg,#f8f4f6,#f0eaf1);
+  background-attachment:fixed;
+}
+button,input,textarea,select { font:inherit; }
+button {
+  color:inherit;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+button:disabled { opacity:.45; cursor:default; }
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible {
+  outline:2px solid #bd91aa;
+  outline-offset:3px;
+}
+.hidden { display:none!important; }
+.app {
+  width:min(100%,540px);
+  min-height:100vh;
+  min-height:100dvh;
+  margin:auto;
+  padding:0 15px 190px;
+}
+.glass {
+  border:1px solid var(--line);
+  background:var(--glass);
+  backdrop-filter:blur(24px) saturate(150%);
+  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  box-shadow:inset 0 1px 0 white,0 6px 20px rgba(112,83,104,.05);
+}
+.topbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:22px 3px 12px;
+}
+.brand-row { display:flex; align-items:center; gap:9px; min-width:0; }
+.brand { font-size:23px; font-weight:700; letter-spacing:-.8px; }
+.theme-btn,.streak-badge {
+  display:grid;
+  place-items:center;
+  min-width:39px;
+  height:39px;
+  border:1px solid white;
+  border-radius:50%;
+  background:var(--surface);
+  font-size:17px;
+}
+.streak-badge {
+  display:flex;
+  gap:3px;
+  width:auto;
+  min-width:43px;
+  padding:0 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+.search-wrap {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:8px 0 13px;
+  padding:0 13px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--surface);
+  box-shadow:inset 0 1px 0 white;
+}
+.search-icon { color:var(--muted); font-size:17px; }
+#searchInput {
+  flex:1;
+  min-width:0;
+  padding:13px 0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--ink);
+  font-size:13px;
+}
+#searchInput::placeholder { color:var(--muted); }
+.clear-search { border:0; background:transparent; color:var(--muted); font-size:19px; }
+.toolbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:12px 2px 14px;
+}
+.toolbar-left,.toolbar-right { display:flex; align-items:center; gap:7px; }
+.count { color:var(--muted); font-size:12px; }
+select,.small-btn {
+  max-width:100%;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--surface);
+  color:var(--ink);
+  font-size:12px;
+}
+.small-btn:active,.theme-btn:active,.streak-badge:active { transform:scale(.97); }
+.calendar-panel {
+  padding:17px;
+  margin:8px 0 18px;
+  border-radius:25px;
+  background:rgba(255,255,255,.4);
+}
+.cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.cal-title { font-size:14px; font-weight:650; }
+.month-btn {
+  width:35px;
+  height:35px;
+  border:1px solid white;
+  border-radius:50%;
+  background:var(--surface);
+  font-size:20px;
+}
+.weekdays,.days {
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:5px;
+  text-align:center;
+}
+.weekdays { margin-bottom:8px; color:var(--muted); font-size:10px; }
+.day {
+  position:relative;
+  min-width:0;
+  aspect-ratio:1;
+  border:1px solid transparent;
+  border-radius:12px;
+  background:transparent;
+  font-size:12px;
+}
+.day.has-notes::after {
+  content:"";
+  position:absolute;
+  bottom:4px;
+  left:50%;
+  width:4px;
+  height:4px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:#bd91aa;
+}
+.day.selected { border-color:white; background:#ecd2e2; }
+.day.today { box-shadow:inset 0 0 0 1px #d7b4c8; }
+.cal-foot {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid rgba(210,188,204,.35);
+  color:var(--muted);
+  font-size:11px;
+}
+.day-divider {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:24px 2px 14px;
+  color:#9b8795;
+  font-size:11px;
+}
+.day-divider::before,.day-divider::after {
+  content:"";
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,#c4a8bb);
+}
+.day-divider::after { background:linear-gradient(90deg,#c4a8bb,transparent); }
+.entry { display:flex; align-items:flex-start; gap:3px; margin-bottom:12px; }
+.entry.pop-in { animation:messagePop .38s cubic-bezier(.2,.85,.25,1.15) both; }
+@keyframes messagePop {
+  0% { opacity:0; transform:translateY(12px) scale(.94); }
+  70% { opacity:1; transform:translateY(-2px) scale(1.01); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+.message-stack {
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+}
+.message {
+  width:100%;
+  min-width:0;
+  padding:15px 15px 11px;
+  border:1px solid var(--line);
+  border-radius:23px 23px 23px 8px;
+  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(246,231,239,.48));
+  backdrop-filter:blur(14px) saturate(135%);
+  -webkit-backdrop-filter:blur(14px) saturate(135%);
+  box-shadow:inset 0 1px 0 white,0 5px 22px rgba(124,88,112,.045);
+  overflow-wrap:anywhere;
+  cursor:default;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.entry.pinned .message {
+  border-color:rgba(220,184,207,.9);
+  background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(239,216,230,.65));
+}
+.pin-label { margin-bottom:8px; color:#a2718d; font-size:10px; }
+.message p { margin:0; white-space:pre-wrap; font-size:14px; line-height:1.8; }
+.message-photo {
+  display:block;
+  width:auto;
+  max-width:100%;
+  max-height:190px;
+  margin:0 0 10px;
+  object-fit:contain;
+  object-position:left center;
+  border-radius:13px;
+  background:rgba(230,215,227,.3);
+  cursor:zoom-in;
+}
+.message-photo:only-child { margin-bottom:0; }
+.time { margin-top:9px; color:var(--muted); font-size:10px; }
+.message-reaction {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:39px;
+  min-height:34px;
+  margin-top:-10px;
+  margin-left:9px;
+  padding:5px 11px;
+  border:1px solid rgba(255,255,255,.96);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(248,226,239,.84));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 3px 10px rgba(145,94,125,.11);
+  color:#d95b91;
+  transform-origin:left top;
+}
+.message-reaction.animate { animation:reactionPop .3s cubic-bezier(.2,.9,.3,1.35) both; }
+.message-reaction svg { width:19px; height:19px; fill:#e66b9e; stroke:#e66b9e; }
+@keyframes reactionPop {
+  0% { opacity:0; transform:scale(.35) translateY(-5px); }
+  72% { opacity:1; transform:scale(1.12); }
+  100% { opacity:1; transform:scale(1); }
+}
+.menu-wrap { position:relative; flex-shrink:0; z-index:30; }
+.menu-trigger {
+  position:relative;
+  z-index:31;
+  display:grid;
+  place-items:center;
+  width:36px;
+  height:38px;
+  border:0;
+  border-radius:14px;
+  background:transparent;
+  color:#a38b9a;
+  font-size:22px;
+}
+.menu {
+  position:absolute;
+  z-index:50;
+  top:36px;
+  right:0;
+  width:145px;
+  padding:5px;
+  border:1px solid white;
+  border-radius:17px;
+  background:var(--modal);
+  box-shadow:0 8px 26px rgba(104,76,96,.14);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+}
+.menu button {
+  display:block;
+  width:100%;
+  padding:12px 10px;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  text-align:left;
+  font-size:12px;
+}
+.menu button:active { background:var(--soft); }
+.menu .danger { color:var(--danger); }
+.empty,.gallery-empty {
+  padding:38px 15px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.9;
+}
+.photo-gallery {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:8px 0 20px;
+}
+.gallery-photo {
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  border-radius:15px;
+  cursor:pointer;
+  background:rgba(130,150,180,.15);
+  border:1px solid var(--line);
+}
+.gallery-empty { grid-column:1/-1; }
+
+/* Composer */
+.composer-dock {
+  position:fixed;
+  z-index:24;
+  bottom:calc(81px + env(safe-area-inset-bottom));
+  left:50%;
+  transform:translate3d(-50%,0,0);
+  width:min(540px,100%);
+  padding:8px 15px 0;
+  opacity:1;
+  visibility:visible;
+  transition:opacity .2s ease,transform .32s cubic-bezier(.22,1,.36,1),visibility .2s;
+  will-change:transform,opacity;
+}
+.composer {
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:8px 9px;
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:27px;
+  background:rgba(255,255,255,.77);
+  backdrop-filter:blur(38px) saturate(185%);
+  -webkit-backdrop-filter:blur(38px) saturate(185%);
+  box-shadow:inset 0 1px 0 white,0 8px 28px rgba(112,83,104,.1);
+}
+.composer:focus-within { border-color:#dfbfd3; }
+#input {
+  flex:1;
+  min-width:0;
+  min-height:42px;
+  max-height:120px;
+  padding:10px 5px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.5;
+}
+#input::placeholder { color:#ad9ba8; }
+.icon-btn,.send {
+  display:grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+  border:1px solid white;
+  border-radius:50%;
+  background:rgba(245,228,237,.8);
+  color:#795c70;
+  font-size:19px;
+}
+.send { background:linear-gradient(145deg,#f5e4ed,#e5c9dc); font-size:21px; }
+.icon-btn.active { background:#e8ccdd; }
+#editStatus { padding:5px 10px 0; color:#a27b91; font-size:11px; }
+.photo-preview {
+  margin:0 0 7px;
+  padding:8px;
+  border:1px solid white;
+  border-radius:20px;
+  background:rgba(255,255,255,.75);
+  box-shadow:0 4px 15px rgba(112,83,104,.06);
+}
+.preview-row { display:flex; align-items:center; gap:10px; }
+#previewImage { width:58px; height:58px; flex-shrink:0; object-fit:cover; border-radius:13px; }
+.preview-info { flex:1; min-width:0; color:var(--muted); font-size:11px; }
+.remove-photo {
+  width:31px;
+  height:31px;
+  border:0;
+  border-radius:50%;
+  background:var(--soft);
+  font-size:18px;
+}
+
+/* Popup dan modal */
+.media-backdrop,.modal-backdrop {
+  position:fixed;
+  z-index:90;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(77,57,73,.27);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .2s,visibility .2s;
+}
+.media-backdrop { align-items:flex-end; padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
+.media-backdrop.open,.modal-backdrop.open {
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.media-sheet,.edit-modal {
+  width:min(100%,430px);
+  padding:20px;
+  border:1px solid white;
+  border-radius:26px;
+  background:var(--modal);
+  color:var(--ink);
+  box-shadow:0 20px 70px rgba(83,57,77,.2);
+  transform:translateY(12px) scale(.98);
+  transition:transform .2s;
+}
+.media-backdrop.open .media-sheet,.modal-backdrop.open .edit-modal {
+  transform:translateY(0) scale(1);
+}
+.media-options { display:grid; grid-template-columns:1fr; gap:12px; }
+.media-option {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:105px;
+  border:1px solid white;
+  border-radius:21px;
+  background:linear-gradient(145deg,#fff,#f4e4ee);
+  color:#76576d;
+  font-size:12px;
+  font-weight:600;
+}
+.media-option svg { width:30px; height:30px; fill:none; stroke:currentColor; stroke-width:1.7; }
+.media-cancel {
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border:1px solid white;
+  border-radius:16px;
+  background:var(--soft);
+  font-size:12px;
+}
+.modal-backdrop { z-index:100; }
+.edit-modal {
+  max-height:85vh;
+  max-height:85dvh;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+.modal-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
+.modal-title { font-size:18px; font-weight:700; }
+.modal-subtitle { margin:0 0 18px; color:var(--muted); font-size:12px; line-height:1.7; }
+.modal-close {
+  width:34px;
+  height:34px;
+  flex-shrink:0;
+  border:1px solid white;
+  border-radius:50%;
+  background:var(--field);
+  color:var(--ink);
+  font-size:21px;
+}
+.field-label { display:block; margin:14px 0 7px; color:#806a7c; font-size:12px; font-weight:600; }
+.edit-text {
+  width:100%;
+  min-height:125px;
+  padding:12px;
+  resize:vertical;
+  border:1px solid #dec8d8;
+  border-radius:15px;
+  outline:0;
+  background:var(--field);
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.7;
+}
+.date-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.date-field {
+  width:100%;
+  min-width:0;
+  padding:11px 8px;
+  border:1px solid #dec8d8;
+  border-radius:13px;
+  outline:0;
+  background:var(--field);
+  color:var(--ink);
+  font-size:12px;
+}
+.edit-photo-preview {
+  display:block;
+  max-width:100%;
+  max-height:190px;
+  margin:8px 0;
+  border:1px solid var(--line);
+  border-radius:15px;
+  object-fit:contain;
+}
+.photo-edit-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.photo-edit-actions .small-btn { flex:1; }
+.modal-actions { display:flex; gap:9px; margin-top:20px; }
+.modal-actions button {
+  flex:1;
+  min-width:0;
+  padding:12px 8px;
+  border:1px solid white;
+  border-radius:15px;
+  font-size:12px;
+  font-weight:600;
+}
+.cancel-btn { background:var(--field); }
+.save-btn { background:linear-gradient(145deg,#f1dce8,#dfbfd3); color:#594958; }
+.zoom-backdrop { background:rgba(38,27,37,.88); }
+.zoom-content { width:100%; max-width:650px; text-align:center; }
+#zoomImage {
+  display:block;
+  max-width:100%;
+  max-height:76vh;
+  max-height:76dvh;
+  margin:auto;
+  object-fit:contain;
+  border-radius:15px;
+}
+#zoomCaption {
+  margin-top:12px;
+  color:white;
+  font-size:13px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.zoom-close-row { display:flex; justify-content:flex-end; margin-bottom:12px; }
+
+/* Dialog kustom */
+.dialog-backdrop { z-index:120; }
+.dialog-modal { width:min(100%,360px); }
+.dialog-message { margin:10px 0 20px; font-size:14px; line-height:1.7; overflow-wrap:anywhere; }
+.dialog-actions { display:flex; justify-content:flex-end; gap:9px; }
+.dialog-actions button {
+  padding:11px 16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--field);
+  font-size:12px;
+  font-weight:650;
+}
+.dialog-actions .primary { background:linear-gradient(145deg,#f1dce8,#dfbfd3); }
+.dialog-actions .danger { background:#f5dce5; color:#9d3e5d; }
+
+/* Statistik */
+.stats-modal { max-height:85vh; max-height:85dvh; overflow-y:auto; overscroll-behavior:contain; }
+.stats-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin:15px 0; }
+.stat-card {
+  min-width:0;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:var(--field);
+}
+.stat-value { font-size:23px; font-weight:750; letter-spacing:-.7px; overflow-wrap:anywhere; }
+.stat-label { margin-top:5px; color:var(--muted); font-size:11px; line-height:1.5; }
+.stats-section { margin-top:20px; }
+.stats-section-title { margin-bottom:10px; font-size:13px; font-weight:700; }
+.stats-hint { margin-top:7px; color:var(--muted); font-size:11px; line-height:1.6; }
+.streak-strip { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px; }
+.streak-day { text-align:center; font-size:10px; color:var(--muted); }
+.streak-dot {
+  display:grid;
+  place-items:center;
+  width:27px;
+  height:27px;
+  margin:7px auto 5px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:var(--field);
+  font-size:11px;
+}
+.streak-day.written .streak-dot { background:#ead0e0; border-color:#d7b0c8; color:#79516b; }
+.streak-day.today .streak-dot { box-shadow:0 0 0 2px #bc8eaa; }
+.chart {
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  height:125px;
+  padding:12px 4px 0;
+  border-bottom:1px solid var(--line);
+}
+.chart-column { display:flex; flex:1; flex-direction:column; justify-content:flex-end; align-items:center; min-width:0; height:100%; gap:5px; }
+.chart-value { color:var(--muted); font-size:10px; }
+.chart-track { display:flex; align-items:flex-end; justify-content:center; width:100%; flex:1; min-height:0; }
+.chart-bar {
+  width:min(27px,75%);
+  min-height:3px;
+  border-radius:7px 7px 2px 2px;
+  background:linear-gradient(180deg,#e9c8dc,#bd91aa);
+}
+.chart-label { padding:7px 0; color:var(--muted); font-size:9px; text-align:center; white-space:nowrap; }
+.stats-empty { padding:18px 8px; color:var(--muted); font-size:12px; line-height:1.8; text-align:center; }
+
+/* Toast */
+.toast {
+  position:fixed;
+  z-index:70;
+  left:50%;
+  bottom:calc(155px + env(safe-area-inset-bottom));
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:max-content;
+  max-width:calc(100% - 30px);
+  padding:11px 14px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:var(--modal);
+  color:var(--ink);
+  box-shadow:0 8px 28px rgba(60,42,57,.16);
+  font-size:12px;
+  opacity:0;
+  visibility:hidden;
+  transform:translate(-50%,10px);
+  transition:opacity .2s,transform .2s,visibility .2s;
+}
+.toast.open { opacity:1; visibility:visible; transform:translate(-50%,0); }
+.toast-message { min-width:0; overflow-wrap:anywhere; }
+.toast-action { border:0; padding:4px 0; background:transparent; color:#b16b91; font-weight:700; white-space:nowrap; }
+
+/* Navigasi */
+.bottom-nav {
+  position:fixed;
+  z-index:25;
+  bottom:max(12px,env(safe-area-inset-bottom));
+  left:50%;
+  transform:translate3d(-50%,0,0);
+  display:flex;
+  gap:5px;
+  width:min(390px,calc(100% - 32px));
+  padding:6px;
+  border:1px solid rgba(255,255,255,.92);
+  border-radius:27px;
+  background:rgba(255,249,253,.78);
+  backdrop-filter:blur(42px) saturate(190%);
+  -webkit-backdrop-filter:blur(42px) saturate(190%);
+  box-shadow:inset 0 1px 0 white,0 9px 35px rgba(101,73,94,.12);
+  isolation:isolate;
+  transition:width .32s cubic-bezier(.22,1,.36,1),height .32s cubic-bezier(.22,1,.36,1),padding .28s,border-radius .28s,background .25s,box-shadow .28s,bottom .28s,border-color .25s;
+  will-change:width,height,border-radius;
+  overflow:hidden;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.nav-indicator {
+  position:absolute;
+  z-index:-1;
+  top:6px;
+  bottom:6px;
+  left:6px;
+  width:calc((100% - 17px)/2);
+  border:1px solid white;
+  border-radius:21px;
+  background:linear-gradient(145deg,white,#efd8e7);
+  transition:transform .28s cubic-bezier(.22,1,.36,1),opacity .16s;
+}
+.bottom-nav.calendar-active .nav-indicator { transform:translateX(calc(100% + 5px)); }
+.nav-btn {
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:43px;
+  padding:9px 7px;
+  border:0;
+  border-radius:21px;
+  background:transparent;
+  color:#a18b9b;
+  font-size:12px;
+  opacity:1;
+  transform:scale(1);
+  transition:opacity .14s,transform .22s,color .2s;
+}
+.nav-btn.active { color:#76576d; font-weight:650; }
+.nav-icon { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.bottom-nav.scroll-orb {
+  width:56px;
+  height:56px;
+  min-height:56px;
+  padding:0;
+  gap:0;
+  bottom:calc(17px + env(safe-area-inset-bottom));
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:50%;
+  background:
+    radial-gradient(ellipse at 28% 17%,rgba(255,255,255,.98),transparent 39%),
+    radial-gradient(ellipse at 75% 27%,rgba(207,218,238,.92),transparent 49%),
+    radial-gradient(ellipse at 70% 78%,rgba(190,177,216,.92),transparent 52%),
+    radial-gradient(ellipse at 22% 78%,rgba(227,218,202,.94),transparent 50%),
+    linear-gradient(145deg,#f8f5ef 3%,#d9dce7 48%,#c5bdd6 100%);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.98),inset 0 -2px 4px rgba(93,87,116,.12),0 3px 8px rgba(83,76,102,.12),0 8px 19px rgba(83,76,102,.15),0 0 13px rgba(206,201,224,.16);
+  backdrop-filter:blur(12px) saturate(125%);
+  -webkit-backdrop-filter:blur(12px) saturate(125%);
+  animation:orbFloat 4s ease-in-out infinite;
+  cursor:pointer;
+}
+.bottom-nav.scroll-orb::before {
+  content:"";
+  position:absolute;
+  inset:2px;
+  z-index:0;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:50%;
+  background:radial-gradient(ellipse at 31% 19%,rgba(255,255,255,.7),transparent 36%),radial-gradient(ellipse at 65% 82%,rgba(255,255,255,.15),transparent 46%);
+  pointer-events:none;
+}
+.bottom-nav.scroll-orb .nav-indicator,.bottom-nav.scroll-orb .nav-btn { opacity:0; pointer-events:none; transform:scale(.82); }
+.bottom-nav.scroll-orb .nav-btn { position:absolute; visibility:hidden; }
+@keyframes orbFloat {
+  0%,100% { transform:translate3d(-50%,0,0) scale(1); }
+  50% { transform:translate3d(-50%,-2px,0) scale(1.012); }
+}
+body.scroll-active .composer-dock {
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translate3d(-50%,15px,0) scale(.97);
+}
+
+/* Tema gelap */
+body.dark-theme {
+  --ink:#e1eaf7;
+  --muted:#91a4bd;
+  --glass:rgba(20,31,49,.76);
+  --line:rgba(133,166,205,.2);
+  --surface:rgba(20,31,49,.82);
+  --accent:#263c59;
+  --modal:rgba(22,35,54,.98);
+  --field:rgba(25,41,64,.95);
+  --soft:#263c59;
+  --danger:#f0a1b8;
+  background:radial-gradient(ellipse at 12% 0%,#1c2b43,transparent 43%),radial-gradient(ellipse at 100% 42%,#172c47,transparent 40%),linear-gradient(145deg,#0b1220,#111d30);
+}
+.dark-theme .calendar-panel,.dark-theme .search-wrap,.dark-theme .composer,.dark-theme .photo-preview,.dark-theme .bottom-nav {
+  background:rgba(20,31,49,.82);
+  border-color:var(--line);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 28px rgba(0,0,0,.16);
+}
+.dark-theme .message { background:linear-gradient(145deg,rgba(35,51,74,.94),rgba(22,35,55,.9)); border-color:var(--line); }
+.dark-theme .entry.pinned .message { background:linear-gradient(145deg,#2b405c,#1b2b43); border-color:#52739b; }
+.dark-theme .search-wrap,.dark-theme select,.dark-theme .small-btn,.dark-theme .theme-btn,.dark-theme .streak-badge,.dark-theme .icon-btn,.dark-theme .send,.dark-theme .month-btn,.dark-theme .media-sheet,.dark-theme .edit-modal,.dark-theme .menu,.dark-theme .modal-close,.dark-theme .date-field,.dark-theme .edit-text {
+  color:var(--ink);
+  background-color:#192940;
+  border-color:#344a66;
+}
+.dark-theme #input,.dark-theme #searchInput,.dark-theme .edit-text,.dark-theme .date-field { color:var(--ink); }
+.dark-theme #input::placeholder,.dark-theme #searchInput::placeholder { color:#8297b1; }
+.dark-theme .nav-indicator { background:linear-gradient(145deg,#304b70,#1c304d); border-color:#496486; }
+.dark-theme .nav-btn.active,.dark-theme .menu-trigger,.dark-theme .field-label { color:#b7d2f4; }
+.dark-theme .day.selected { background:#304b70; border-color:#668bb9; }
+.dark-theme .day.has-notes::after { background:#8bb9f0; }
+.dark-theme .day-divider { color:#91a4bd; }
+.dark-theme .day-divider::before,.dark-theme .day-divider::after { background:linear-gradient(90deg,transparent,#4a6381); }
+.dark-theme .message-reaction { background:linear-gradient(145deg,#253b59,#1b2d47); border-color:#405878; }
+.dark-theme .media-option { background:linear-gradient(145deg,#263c59,#192940); border-color:#344a66; color:#d4e4f9; }
+.dark-theme .media-cancel,.dark-theme .cancel-btn { background:#192940; color:var(--ink); border-color:#344a66; }
+.dark-theme .gallery-photo { border-color:#344a66; }
+.dark-theme .save-btn { color:#493549; }
+.dark-theme .dialog-actions .danger { background:#573047; color:#ffc0d0; }
+.dark-theme .stat-card { background:rgba(25,41,64,.95); }
+.dark-theme .streak-day.written .streak-dot { background:#304b70; border-color:#668bb9; color:#e1eaf7; }
+.dark-theme .bottom-nav.scroll-orb {
+  background:radial-gradient(ellipse at 28% 17%,rgba(255,255,255,.98),transparent 39%),radial-gradient(ellipse at 75% 27%,rgba(175,190,218,.9),transparent 49%),radial-gradient(ellipse at 70% 78%,rgba(148,133,182,.92),transparent 52%),radial-gradient(ellipse at 22% 78%,rgba(187,190,201,.92),transparent 50%),linear-gradient(145deg,#e2e4eb 3%,#aeb8cc 48%,#a99dbf 100%);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.98),inset 0 -2px 4px rgba(30,40,60,.14),0 3px 8px rgba(0,0,0,.18),0 8px 19px rgba(0,0,0,.25);
+}
+@media(max-width:380px) {
+  .app { padding-right:11px; padding-left:11px; }
+  .composer-dock { padding-right:11px; padding-left:11px; }
+  .bottom-nav { width:calc(100% - 26px); }
+  .toolbar { gap:5px; }
+  .toolbar-left,.toolbar-right { gap:4px; }
+  .small-btn { padding:8px; }
+  .edit-modal { padding:17px; }
+  .brand { font-size:21px; }
+  .stats-grid { gap:7px; }
+  .stat-card { padding:10px; }
+  .stat-value { font-size:20px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand-row">
+      <div class="brand">Unsent</div>
+      <button class="streak-badge" id="streakBadge" type="button" aria-label="Buka statistik streak">🔥 <span id="streakCount">0</span></button>
+    </div>
+    <button class="theme-btn" id="themeToggle" type="button" aria-label="Ganti tema">🌙</button>
+  </header>
+
+  <div class="search-wrap" id="searchWrap">
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input id="searchInput" type="search" placeholder="Cari isi pesan..." autocomplete="off" aria-label="Cari pesan">
+    <button class="clear-search hidden" id="clearSearch" type="button" aria-label="Hapus pencarian">×</button>
+  </div>
+
+  <section id="calendarPanel" class="calendar-panel glass hidden">
+    <div class="cal-head">
+      <button class="month-btn" id="prevMonth" type="button" aria-label="Bulan sebelumnya">‹</button>
+      <div class="cal-title" id="monthTitle"></div>
+      <button class="month-btn" id="nextMonth" type="button" aria-label="Bulan berikutnya">›</button>
+    </div>
+    <div class="weekdays">
+      <span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span>
+      <span>Kam</span><span>Jum</span><span>Sab</span>
+    </div>
+    <div class="days" id="days"></div>
+    <div class="cal-foot">
+      <span id="calendarInfo">Pilih tanggal</span>
+      <button class="small-btn" id="clearDate" type="button">Semua tanggal</button>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <span class="count" id="count">0 pesan</span>
+    <div class="toolbar-right">
+      <select id="sort" aria-label="Urutan riwayat">
+        <option value="newest">Terbaru</option>
+        <option value="oldest">Terlama</option>
+      </select>
+      <button class="small-btn" id="galleryViewBtn" type="button">🖼️ Galeri</button>
+      <button class="small-btn" id="statsBtn" type="button">📊 Statistik</button>
+    </div>
+  </div>
+
+  <main id="history"></main>
+</div>
+
+<div class="composer-dock" id="composerDock">
+  <div id="photoPreview" class="photo-preview hidden">
+    <div class="preview-row">
+      <img id="previewImage" alt="Pratinjau foto">
+      <div class="preview-info">Foto siap disimpan</div>
+      <button id="removePhoto" class="remove-photo" type="button" aria-label="Hapus foto pilihan">×</button>
+    </div>
+  </div>
+  <form class="composer" id="form">
+    <button class="icon-btn" id="photoButton" type="button" aria-label="Tambah media" aria-haspopup="dialog">＋</button>
+    <textarea id="input" placeholder="Tulis di sini..." rows="1"></textarea>
+    <button class="send" type="submit" aria-label="Simpan pesan">↑</button>
+  </form>
+  <div id="editStatus"></div>
+</div>
+
+<input id="galleryInput" type="file" accept="image/*" hidden>
+<input id="editGalleryInput" type="file" accept="image/*" hidden>
+
+<div class="media-backdrop" id="mediaBackdrop" aria-hidden="true">
+  <section class="media-sheet" role="dialog" aria-modal="true" aria-label="Tambah media" tabindex="-1">
+    <div class="media-options">
+      <button class="media-option" id="galleryOption" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3.5" width="18" height="17" rx="3"/>
+          <circle cx="8.5" cy="9" r="1.5"/>
+          <path d="m4 17 5-5 3.5 3 2.5-2 5 5"/>
+        </svg>
+        <span>Galeri</span>
+      </button>
+    </div>
+    <button class="media-cancel" id="cancelMedia" type="button">Batal</button>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="editBackdrop" aria-hidden="true">
+  <section class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="editTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="editTitle">Edit riwayat</div>
+      <button class="modal-close" id="closeEdit" type="button" aria-label="Tutup">×</button>
+    </div>
+    <p class="modal-subtitle">Ubah caption, foto, tanggal, atau jam.</p>
+    <form id="editForm">
+      <label class="field-label" for="editText">Isi pesan / caption</label>
+      <textarea class="edit-text" id="editText"></textarea>
+
+      <div id="editPhotoArea"></div>
+
+      <div class="date-row">
+        <div>
+          <label class="field-label" for="editDate">Tanggal</label>
+          <input class="date-field" id="editDate" type="date" required>
+        </div>
+        <div>
+          <label class="field-label" for="editTime">Jam</label>
+          <input class="date-field" id="editTime" type="time" required>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="cancel-btn" id="cancelEdit" type="button">Batal</button>
+        <button class="save-btn" type="submit">Simpan perubahan</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="dialogBackdrop" aria-hidden="true">
+  <section class="edit-modal dialog-modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="dialogTitle">Pemberitahuan</div>
+    </div>
+    <p class="dialog-message" id="dialogMessage"></p>
+    <div class="dialog-actions" id="dialogActions"></div>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="statsBackdrop" aria-hidden="true">
+  <section class="edit-modal stats-modal" role="dialog" aria-modal="true" aria-labelledby="statsTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="statsTitle">📊 Statistik Unsent</div>
+      <button class="modal-close" id="closeStats" type="button" aria-label="Tutup statistik">×</button>
+    </div>
+    <p class="modal-subtitle">Sedikit gambaran tentang perjalanan tulisanmu.</p>
+    <div id="statsContent"></div>
+  </section>
+</div>
+
+<div class="modal-backdrop zoom-backdrop" id="zoomBackdrop" aria-hidden="true">
+  <div class="zoom-content" role="dialog" aria-modal="true" aria-label="Foto ukuran penuh" tabindex="-1">
+    <div class="zoom-close-row">
+      <button class="modal-close" id="closeZoom" type="button" aria-label="Tutup foto">×</button>
+    </div>
+    <img id="zoomImage" alt="Foto riwayat">
+    <div id="zoomCaption"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="toast-message" id="toastMessage"></span>
+  <button class="toast-action hidden" id="toastAction" type="button">Urungkan</button>
+</div>
+
+<nav class="bottom-nav glass" id="bottomNav" aria-label="Navigasi utama">
+  <span class="nav-indicator" aria-hidden="true"></span>
+  <button class="nav-btn active" id="allNav" type="button">
+    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2"/>
+    </svg>
+    <span>Semua</span>
+  </button>
+  <button class="nav-btn" id="calendarNav" type="button">
+    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3.5" y="5" width="17" height="15" rx="3"/>
+      <path d="M7.5 3.5v3M16.5 3.5v3M3.5 9.5h17"/>
+      <path d="M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01"/>
+    </svg>
+    <span>Kalender</span>
+  </button>
+</nav>
+
+<script>
+const $ = id => document.getElementById(id);
+const form = $('form');
+const input = $('input');
+const historyBox = $('history');
+const sort = $('sort');
+const galleryInput = $('galleryInput');
+const STORAGE_KEY = 'bubu-notes';
+const THEME_KEY = 'unsent-theme';
+const pad = n => String(n).padStart(2,'0');
+
+let notes = [];
+let editingId = null;
+let editPhotoDraft = '';
+let openMenuId = null;
+let selectedDate = null;
+let calendarMonth = new Date();
+let view = 'all';
+let pendingPhoto = '';
+let newNoteId = null;
+let reactionAnimationId = null;
+let searchQuery = '';
+let showingGallery = false;
+let photoGeneration = 0;
+let editPhotoGeneration = 0;
+let toastTimer = null;
+let toastCallback = null;
+let undoRecord = null;
+let undoTimer = null;
+let lastStreakToastDay = '';
+let dialogResolver = null;
+let dialogPreviousFocus = null;
+let dialogEscapeHandler = null;
+let activeModal = null;
+let lastModalFocus = null;
+let modalEscapeHandler = null;
+let focusReturnElement = null;
+
+function dateKey(date) {
+  return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+}
+
+function formatTime(date) {
+  return `${date.getDate()} ${date.toLocaleDateString('id-ID',{
+    month:'short',year:'numeric'
+  })}, ${pad(date.getHours())}.${pad(date.getMinutes())}`;
+}
+
+function formatDate(key) {
+  const [y,m,d] = key.split('-').map(Number);
+  return new Date(y,m-1,d).toLocaleDateString('id-ID',{
+    weekday:'long',day:'numeric',month:'long',year:'numeric'
+  });
+}
+
+function groupLabel(key) {
+  const today = dateKey(new Date());
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate()-1);
+  if (key === today) return 'Hari ini';
+  if (key === dateKey(yesterday)) return 'Kemarin';
+  return formatDate(key);
+}
+
+function parseOldDate(value) {
+  const match = String(value || '').match(/^(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/);
+  if (!match) return null;
+  const months = {
+    jan:0,januari:0,feb:1,februari:1,mar:2,maret:2,apr:3,april:3,
+    mei:4,may:4,jun:5,juni:5,jul:6,juli:6,agu:7,agustus:7,
+    sep:8,september:8,okt:9,oktober:9,nov:10,november:10,des:11,desember:11
+  };
+  const month = months[match[2].toLowerCase()];
+  return month === undefined ? null : dateKey(new Date(+match[3],month,+match[1]));
+}
+
+function normalizeNote(n,i) {
+  const createdAt = Number(n.createdAt) || Number(n.id) || Date.now()+i;
+  return {
+    id:n.id ?? createdAt+i,
+    text:String(n.text ?? ''),
+    photo:typeof n.photo === 'string' ? n.photo :
+      (typeof n.image === 'string' ? n.image : ''),
+    time:n.time || '',
+    createdAt,
+    pinned:Boolean(n.pinned),
+    reacted:Boolean(n.reacted),
+    dayKey:n.dayKey || parseOldDate(n.time) || dateKey(new Date(createdAt))
+  };
+}
+
+try {
+  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  if (Array.isArray(stored)) notes = stored.map(normalizeNote);
+} catch {
+  notes = [];
+}
+
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(notes));
+    return true;
+  } catch {
+    showAlert('Penyimpanan penuh atau gagal. Coba gunakan foto yang lebih kecil.');
+    return false;
+  }
+}
+
+function getTodayKey() {
+  return dateKey(new Date());
+}
+
+function getWrittenDays() {
+  return new Set(notes.filter(note => note.dayKey).map(note => note.dayKey));
+}
+
+function getStreakStats() {
+  const written = getWrittenDays();
+  const today = getTodayKey();
+  const yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate()-1);
+  const yesterday = dateKey(yesterdayDate);
+
+  let current = 0;
+  let cursor = new Date();
+
+  if (!written.has(today)) {
+    if (written.has(yesterday)) cursor = yesterdayDate;
+    else cursor = null;
+  }
+
+  if (cursor) {
+    while (written.has(dateKey(cursor))) {
+      current++;
+      cursor.setDate(cursor.getDate()-1);
+    }
+  }
+
+  const sorted = [...written].sort();
+  let longest = 0;
+  let run = 0;
+  let previous = null;
+
+  for (const key of sorted) {
+    const [y,m,d] = key.split('-').map(Number);
+    const currentDate = new Date(y,m-1,d);
+    if (previous) {
+      const difference = Math.round((currentDate-previous)/86400000);
+      run = difference === 1 ? run+1 : 1;
+    } else {
+      run = 1;
+    }
+    longest = Math.max(longest,run);
+    previous = currentDate;
+  }
+
+  return {current,longest,written,today};
+}
+
+function updateStreakBadge() {
+  const streak = getStreakStats();
+  $('streakCount').textContent = streak.current;
+  $('streakBadge').setAttribute(
+    'aria-label',
+    `Streak saat ini ${streak.current} hari. Buka statistik`
+  );
+}
+
+function checkStreakGrowth(previousStreak) {
+  const today = getTodayKey();
+  const current = getStreakStats();
+  updateStreakBadge();
+
+  if (
+    current.written.has(today) &&
+    current.current > previousStreak &&
+    lastStreakToastDay !== today
+  ) {
+    lastStreakToastDay = today;
+    showToast(`Streak ${current.current} hari 🔥`);
+  }
+}
+
+function resizeInput() {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight,120)+'px';
+}
+input.addEventListener('input',resizeInput);
+
+function resetComposer() {
+  input.value = '';
+  pendingPhoto = '';
+  galleryInput.value = '';
+  $('photoPreview').classList.add('hidden');
+  $('editStatus').textContent = '';
+  $('photoButton').classList.remove('active');
+  resizeInput();
+}
+
+function setPhotoPreview(data) {
+  pendingPhoto = data;
+  $('previewImage').src = data;
+  $('photoPreview').classList.toggle('hidden',!data);
+  $('photoButton').classList.toggle('active',!!data);
+}
+
+function compressImage(file) {
+  return new Promise((resolve,reject) => {
+    if (!file || !file.type.startsWith('image/')) {
+      reject(new Error('File bukan gambar.'));
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Foto tidak bisa dibaca.'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error('Foto tidak bisa dibuka.'));
+      image.onload = () => {
+        const maxSide = 1200;
+        const ratio = Math.min(1,maxSide/Math.max(image.width,image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1,Math.round(image.width*ratio));
+        canvas.height = Math.max(1,Math.round(image.height*ratio));
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+          reject(new Error('Foto tidak bisa diproses.'));
+          return;
+        }
+
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(image,0,0,canvas.width,canvas.height);
+
+        try {
+          resolve(canvas.toDataURL('image/jpeg',.76));
+        } catch {
+          reject(new Error('Foto gagal dikompres. Coba pilih foto lain.'));
+        }
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* Dialog kustom dengan Promise */
+function openDialogBase(backdrop,dialog) {
+  if (activeModal && activeModal !== backdrop) closeActiveModal();
+  focusReturnElement = document.activeElement;
+  activeModal = backdrop;
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden','false');
+  requestAnimationFrame(() => dialog.focus());
+}
+
+function closeDialogBase(backdrop) {
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden','true');
+  if (activeModal === backdrop) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) {
+    focusReturnElement.focus({preventScroll:true});
+  }
+  focusReturnElement = null;
+}
+
+function closeActiveModal() {
+  if (!activeModal) return;
+  const current = activeModal;
+  if (current === $('dialogBackdrop')) {
+    finishDialog(false);
+  } else if (current === $('statsBackdrop')) {
+    closeStats();
+  } else if (current === $('editBackdrop')) {
+    closeEdit();
+  } else if (current === $('zoomBackdrop')) {
+    closeZoom();
+  } else if (current === $('mediaBackdrop')) {
+    closeMediaPopup();
+  }
+}
+
+function finishDialog(result) {
+  if (!dialogResolver) return;
+  const resolve = dialogResolver;
+  dialogResolver = null;
+  closeDialogBase($('dialogBackdrop'));
+  $('dialogActions').replaceChildren();
+  resolve(Boolean(result));
+}
+
+function showDialog(message,{confirm=false,okLabel='OK',danger=false,title='Pemberitahuan'}={}) {
+  if (dialogResolver) finishDialog(false);
+
+  return new Promise(resolve => {
+    dialogResolver = resolve;
+    $('dialogTitle').textContent = title;
+    $('dialogMessage').textContent = String(message);
+    const actions = $('dialogActions');
+    actions.replaceChildren();
+
+    if (confirm) {
+      const cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.textContent = 'Batal';
+      cancel.addEventListener('click',() => finishDialog(false));
+      actions.appendChild(cancel);
+    }
+
+    const ok = document.createElement('button');
+    ok.type = 'button';
+    ok.textContent = okLabel;
+    ok.className = danger ? 'danger' : 'primary';
+    ok.addEventListener('click',() => finishDialog(true));
+    actions.appendChild(ok);
+
+    openDialogBase($('dialogBackdrop'),$('dialogBackdrop').querySelector('[role="dialog"]'));
+  });
+}
+
+function showAlert(message) {
+  return showDialog(message,{title:'Pemberitahuan'});
+}
+
+function showConfirm(message,{okLabel='Ya, hapus',danger=true}={}) {
+  return showDialog(message,{confirm:true,okLabel,danger,title:'Konfirmasi'});
+}
+
+$('dialogBackdrop').addEventListener('click',event => {
+  if (event.target === $('dialogBackdrop')) finishDialog(false);
+});
+
+/* Toast dan urungkan */
+function showToast(message,{actionLabel='',onAction=null,duration=2600}={}) {
+  clearTimeout(toastTimer);
+  toastCallback = onAction;
+  $('toastMessage').textContent = message;
+  $('toastAction').textContent = actionLabel;
+  $('toastAction').classList.toggle('hidden',!actionLabel);
+  $('toast').classList.add('open');
+
+  toastTimer = setTimeout(() => {
+    $('toast').classList.remove('open');
+    toastCallback = null;
+  },duration);
+}
+
+$('toastAction').addEventListener('click',() => {
+  if (toastCallback) toastCallback();
+});
+
+function showUndoToast(record) {
+  clearTimeout(undoTimer);
+  undoRecord = record;
+
+  showToast('Riwayat dihapus · Urungkan',{
+    actionLabel:'Urungkan',
+    duration:5200,
+    onAction:() => {
+      if (!undoRecord) return;
+
+      clearTimeout(undoTimer);
+      const currentRecord = undoRecord;
+      undoRecord = null;
+
+      const index = Math.min(currentRecord.index,notes.length);
+      notes.splice(index,0,currentRecord.note);
+
+      if (!persist()) {
+        notes.splice(index,1);
+        undoRecord = currentRecord;
+        return;
+      }
+
+      updateStreakBadge();
+      if (view === 'calendar') renderCalendar();
+      render();
+      showToast('Riwayat berhasil dikembalikan');
+    }
+  });
+
+  undoTimer = setTimeout(() => {
+    undoRecord = null;
+  },5200);
+}
+
+async function handleSelectedPhoto(file) {
+  if (!file) return;
+  const generation = ++photoGeneration;
+
+  try {
+    const compressed = await compressImage(file);
+    if (generation === photoGeneration) setPhotoPreview(compressed);
+  } catch (error) {
+    await showAlert(error.message || 'Foto gagal dipilih.');
+  }
+}
+
+function openMediaPopup() {
+  $('mediaBackdrop').classList.add('open');
+  $('mediaBackdrop').setAttribute('aria-hidden','false');
+  $('mediaBackdrop').querySelector('[role="dialog"]').focus();
+}
+function closeMediaPopup() {
+  $('mediaBackdrop').classList.remove('open');
+  $('mediaBackdrop').setAttribute('aria-hidden','true');
+  if (activeModal === $('mediaBackdrop')) activeModal = null;
+}
+
+$('photoButton').addEventListener('click',openMediaPopup);
+$('cancelMedia').addEventListener('click',closeMediaPopup);
+$('mediaBackdrop').addEventListener('click',event => {
+  if (event.target === $('mediaBackdrop')) closeMediaPopup();
+});
+$('galleryOption').addEventListener('click',() => {
+  closeMediaPopup();
+  galleryInput.click();
+});
+galleryInput.addEventListener('change',() => {
+  const file = galleryInput.files && galleryInput.files[0];
+  if (file) handleSelectedPhoto(file);
+});
+$('removePhoto').addEventListener('click',() => {
+  photoGeneration++;
+  setPhotoPreview('');
+  galleryInput.value = '';
+});
+
+/* Filter dan navigasi */
+function getFilteredNotes() {
+  const query = searchQuery.toLocaleLowerCase('id-ID');
+
+  return notes.filter(note => {
+    const matchesDate = view !== 'calendar' || !selectedDate || note.dayKey === selectedDate;
+    const searchable = `${note.text} ${note.time} ${note.dayKey}`.toLocaleLowerCase('id-ID');
+    return matchesDate && searchable.includes(query);
+  }).sort((a,b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    return sort.value === 'newest' ? b.createdAt-a.createdAt : a.createdAt-b.createdAt;
+  });
+}
+
+function updateNavigation() {
+  $('allNav').classList.toggle('active',view === 'all');
+  $('calendarNav').classList.toggle('active',view === 'calendar');
+  $('bottomNav').classList.toggle('calendar-active',view === 'calendar');
+  $('calendarPanel').classList.toggle('hidden',view !== 'calendar' || showingGallery);
+}
+
+function renderCalendar() {
+  const year = calendarMonth.getFullYear();
+  const month = calendarMonth.getMonth();
+
+  $('monthTitle').textContent = calendarMonth.toLocaleDateString('id-ID',{
+    month:'long',year:'numeric'
+  });
+
+  const daysBox = $('days');
+  daysBox.replaceChildren();
+
+  const firstDay = new Date(year,month,1).getDay();
+  const totalDays = new Date(year,month+1,0).getDate();
+  const todayKey = getTodayKey();
+  const notesByDate = new Set(notes.map(note => note.dayKey));
+
+  for (let i=0;i<firstDay;i++) {
+    const blank = document.createElement('div');
+    blank.setAttribute('aria-hidden','true');
+    daysBox.appendChild(blank);
+  }
+
+  for (let day=1;day<=totalDays;day++) {
+    const key = dateKey(new Date(year,month,day));
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'day';
+    button.textContent = day;
+    button.setAttribute('aria-label',formatDate(key));
+
+    if (key === todayKey) button.classList.add('today');
+    if (key === selectedDate) button.classList.add('selected');
+    if (notesByDate.has(key)) button.classList.add('has-notes');
+
+    button.addEventListener('click',() => {
+      selectedDate = selectedDate === key ? null : key;
+      renderCalendar();
+      render();
+    });
+
+    daysBox.appendChild(button);
+  }
+
+  $('calendarInfo').textContent = selectedDate ? formatDate(selectedDate) : 'Pilih tanggal';
+}
+
+function toggleReaction(id) {
+  const note = notes.find(item => String(item.id) === String(id));
+  if (!note) return;
+
+  const previous = note.reacted;
+  note.reacted = !note.reacted;
+
+  if (!persist()) {
+    note.reacted = previous;
+    return;
+  }
+
+  reactionAnimationId = note.reacted ? String(note.id) : null;
+  render();
+}
+
+function makeHeartSvg() {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 24 24');
+  svg.setAttribute('aria-hidden','true');
+
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d','M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z');
+  svg.appendChild(path);
+  return svg;
+}
+
+function makeEntry(note) {
+  const entry = document.createElement('article');
+  entry.className = 'entry'+(note.pinned ? ' pinned' : '');
+  entry.dataset.id = String(note.id);
+
+  const stack = document.createElement('div');
+  stack.className = 'message-stack';
+
+  const message = document.createElement('div');
+  message.className = 'message';
+
+  if (note.pinned) {
+    const pin = document.createElement('div');
+    pin.className = 'pin-label';
+    pin.textContent = '♡ Disematkan';
+    message.appendChild(pin);
+  }
+
+  if (note.photo) {
+    const photo = document.createElement('img');
+    photo.className = 'message-photo';
+    photo.src = note.photo;
+    photo.alt = 'Foto riwayat';
+    photo.loading = 'lazy';
+    photo.addEventListener('click',event => {
+      event.stopPropagation();
+      openZoom(note.photo,note.text);
+    });
+    message.appendChild(photo);
+  }
+
+  if (note.text) {
+    const paragraph = document.createElement('p');
+    paragraph.textContent = note.text;
+    message.appendChild(paragraph);
+  }
+
+  const time = document.createElement('div');
+  time.className = 'time';
+  time.textContent = note.time;
+  message.appendChild(time);
+
+  let lastTap = 0;
+  message.addEventListener('click',() => {
+    const now = Date.now();
+    if (now-lastTap < 320) {
+      lastTap = 0;
+      toggleReaction(note.id);
+    } else {
+      lastTap = now;
+    }
+  });
+
+  stack.appendChild(message);
+
+  if (note.reacted) {
+    const reaction = document.createElement('div');
+    reaction.className = 'message-reaction'+
+      (String(note.id) === reactionAnimationId ? ' animate' : '');
+    reaction.setAttribute('aria-label','Reaksi love');
+    reaction.setAttribute('role','img');
+    reaction.appendChild(makeHeartSvg());
+    stack.appendChild(reaction);
+  }
+
+  const menuWrap = document.createElement('div');
+  menuWrap.className = 'menu-wrap';
+
+  const menuTrigger = document.createElement('button');
+  menuTrigger.type = 'button';
+  menuTrigger.className = 'menu-trigger';
+  menuTrigger.textContent = '···';
+  menuTrigger.setAttribute('aria-label','Menu pesan');
+
+  menuTrigger.addEventListener('click',event => {
+    event.stopPropagation();
+    openMenuId = String(openMenuId) === String(note.id) ? null : note.id;
+    render();
+  });
+
+  menuWrap.appendChild(menuTrigger);
+
+  if (String(openMenuId) === String(note.id)) {
+    const menu = document.createElement('div');
+    menu.className = 'menu';
+
+    const actions = [
+      {label:note.pinned ? 'Lepas sematan' : 'Sematkan',action:() => togglePin(note.id)},
+      {label:'Edit',action:() => openEdit(note.id)},
+      {label:'Hapus',danger:true,action:() => deleteNote(note.id)}
+    ];
+
+    actions.forEach(item => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = item.label;
+      if (item.danger) button.classList.add('danger');
+
+      button.addEventListener('click',event => {
+        event.stopPropagation();
+        item.action();
+      });
+
+      menu.appendChild(button);
+    });
+
+    menuWrap.appendChild(menu);
+  }
+
+  entry.append(stack,menuWrap);
+  if (String(note.id) === String(newNoteId)) entry.classList.add('pop-in');
+  return entry;
+}
+
+function render() {
+  if (showingGallery) {
+    renderGallery();
+    return;
+  }
+
+  const previousScroll = window.scrollY;
+  const filtered = getFilteredNotes();
+
+  $('count').textContent = searchQuery
+    ? `${filtered.length} hasil`
+    : `${filtered.length} pesan`;
+
+  historyBox.replaceChildren();
+
+  if (!filtered.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty';
+
+    if (searchQuery) empty.textContent = 'Pesan yang cocok belum ditemukan.';
+    else if (view === 'calendar' && selectedDate) empty.textContent = 'Belum ada riwayat di tanggal ini.';
+    else empty.textContent = 'Belum ada riwayat.';
+
+    historyBox.appendChild(empty);
+  } else {
+    let lastDate = '';
+
+    filtered.forEach(note => {
+      if (note.dayKey !== lastDate) {
+        const divider = document.createElement('div');
+        divider.className = 'day-divider';
+        divider.textContent = groupLabel(note.dayKey);
+        historyBox.appendChild(divider);
+        lastDate = note.dayKey;
+      }
+
+      historyBox.appendChild(makeEntry(note));
+    });
+  }
+
+  newNoteId = null;
+  reactionAnimationId = null;
+  window.scrollTo(0,previousScroll);
+}
+
+function refreshAfterMutation() {
+  updateStreakBadge();
+  if (view === 'calendar') renderCalendar();
+  render();
+}
+
+/* Tambah catatan */
+form.addEventListener('submit',event => {
+  event.preventDefault();
+
+  const text = input.value.trim();
+  if (!text && !pendingPhoto) return;
+
+  const previousStreak = getStreakStats().current;
+  const now = new Date();
+
+  const note = {
+    id:Date.now()+Math.random(),
+    text,
+    photo:pendingPhoto,
+    time:formatTime(now),
+    createdAt:now.getTime(),
+    dayKey:dateKey(now),
+    pinned:false,
+    reacted:false
+  };
+
+  notes.push(note);
+
+  if (!persist()) {
+    notes.pop();
+    return;
+  }
+
+  newNoteId = note.id;
+  selectedDate = null;
+  searchQuery = '';
+  $('searchInput').value = '';
+  $('clearSearch').classList.add('hidden');
+
+  resetComposer();
+  checkStreakGrowth(previousStreak);
+
+  if (view === 'calendar') renderCalendar();
+  render();
+});
+
+function togglePin(id) {
+  const note = notes.find(item => String(item.id) === String(id));
+  if (!note) return;
+
+  const previous = note.pinned;
+  note.pinned = !previous;
+  openMenuId = null;
+
+  if (!persist()) {
+    note.pinned = previous;
+    render();
+    return;
+  }
+
+  render();
+}
+
+/* Hapus dengan urungkan */
+async function deleteNote(id) {
+  const index = notes.findIndex(item => String(item.id) === String(id));
+  if (index < 0) return;
+
+  openMenuId = null;
+  render();
+
+  const accepted = await showConfirm('Hapus riwayat ini?',{
+    okLabel:'Hapus',
+    danger:true
+  });
+
+  if (!accepted) return;
+
+  const previousStreak = getStreakStats().current;
+  const removed = notes.splice(index,1)[0];
+
+  if (!persist()) {
+    notes.splice(index,0,removed);
+    refreshAfterMutation();
+    return;
+  }
+
+  checkStreakGrowth(previousStreak);
+  refreshAfterMutation();
+
+  showUndoToast({note:removed,index});
+}
+
+/* Edit catatan */
+function renderEditPhotoArea() {
+  const area = $('editPhotoArea');
+  area.replaceChildren();
+
+  if (editPhotoDraft) {
+    const label = document.createElement('div');
+    label.className = 'field-label';
+    label.textContent = 'Pratinjau foto';
+
+    const image = document.createElement('img');
+    image.className = 'edit-photo-preview';
+    image.src = editPhotoDraft;
+    image.alt = 'Pratinjau foto catatan';
+
+    const actions = document.createElement('div');
+    actions.className = 'photo-edit-actions';
+
+    const replace = document.createElement('button');
+    replace.type = 'button';
+    replace.className = 'small-btn';
+    replace.textContent = 'Ganti foto';
+    replace.addEventListener('click',() => $('editGalleryInput').click());
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'small-btn';
+    remove.textContent = 'Hapus foto';
+    remove.addEventListener('click',() => {
+      editPhotoGeneration++;
+      editPhotoDraft = '';
+      $('editGalleryInput').value = '';
+      renderEditPhotoArea();
+    });
+
+    actions.append(replace,remove);
+    area.append(label,image,actions);
+  } else {
+    const actions = document.createElement('div');
+    actions.className = 'photo-edit-actions';
+
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'small-btn';
+    add.textContent = '＋ Tambah foto';
+    add.addEventListener('click',() => $('editGalleryInput').click());
+
+    actions.appendChild(add);
+    area.appendChild(actions);
+  }
+}
+
+async function openEdit(id) {
+  const note = notes.find(item => String(item.id) === String(id));
+  if (!note) return;
+
+  editingId = note.id;
+  editPhotoDraft = note.photo || '';
+  openMenuId = null;
+
+  $('editText').value = note.text;
+
+  const [year,month,day] = note.dayKey.split('-').map(Number);
+  $('editDate').value = `${year}-${pad(month)}-${pad(day)}`;
+
+  const match = note.time.match(/,\s*(\d{2})\.(\d{2})$/);
+  $('editTime').value = match ? `${match[1]}:${match[2]}` : '00:00';
+
+  renderEditPhotoArea();
+
+  $('editBackdrop').classList.add('open');
+  $('editBackdrop').setAttribute('aria-hidden','false');
+  activeModal = $('editBackdrop');
+
+  requestAnimationFrame(() => $('editText').focus());
+}
+
+function closeEdit() {
+  editPhotoGeneration++;
+  $('editGalleryInput').value = '';
+  $('editBackdrop').classList.remove('open');
+  $('editBackdrop').setAttribute('aria-hidden','true');
+
+  if (activeModal === $('editBackdrop')) activeModal = null;
+
+  editingId = null;
+  editPhotoDraft = '';
+}
+
+$('closeEdit').addEventListener('click',closeEdit);
+$('cancelEdit').addEventListener('click',closeEdit);
+
+$('editBackdrop').addEventListener('click',event => {
+  if (event.target === $('editBackdrop')) closeEdit();
+});
+
+$('editGalleryInput').addEventListener('change',async () => {
+  const file = $('editGalleryInput').files && $('editGalleryInput').files[0];
+  if (!file) return;
+
+  const generation = ++editPhotoGeneration;
+
+  try {
+    const compressed = await compressImage(file);
+    if (generation !== editPhotoGeneration || editingId === null) return;
+
+    editPhotoDraft = compressed;
+    renderEditPhotoArea();
+  } catch (error) {
+    await showAlert(error.message || 'Foto gagal dipilih.');
+  } finally {
+    $('editGalleryInput').value = '';
+  }
+});
+
+$('editForm').addEventListener('submit',async event => {
+  event.preventDefault();
+
+  const note = notes.find(item => String(item.id) === String(editingId));
+  if (!note) return;
+
+  const text = $('editText').value.trim();
+
+  if (!text && !editPhotoDraft) {
+    await showAlert('Catatan tidak boleh kosong. Isi teks atau tambahkan foto.');
+    return;
+  }
+
+  const dateValue = $('editDate').value;
+  const timeValue = $('editTime').value;
+  if (!dateValue || !timeValue) {
+    await showAlert('Tanggal dan jam harus diisi.');
+    return;
+  }
+
+  const [year,month,day] = dateValue.split('-').map(Number);
+  const [hour,minute] = timeValue.split(':').map(Number);
+  const editedDate = new Date(year,month-1,day,hour,minute);
+
+  if (
+    editedDate.getFullYear() !== year ||
+    editedDate.getMonth() !== month-1 ||
+    editedDate.getDate() !== day
+  ) {
+    await showAlert('Tanggal yang dipilih tidak valid.');
+    return;
+  }
+
+  const previousStreak = getStreakStats().current;
+  const previous = {...note};
+
+  note.text = text;
+  note.photo = editPhotoDraft;
+  note.dayKey = dateValue;
+  note.createdAt = editedDate.getTime();
+  note.time = formatTime(editedDate);
+
+  if (!persist()) {
+    Object.assign(note,previous);
+    return;
+  }
+
+  closeEdit();
+  checkStreakGrowth(previousStreak);
+  refreshAfterMutation();
+});
+
+/* Foto ukuran penuh */
+function openZoom(photo,caption) {
+  lastModalFocus = document.activeElement;
+
+  $('zoomImage').src = photo;
+  $('zoomCaption').textContent = caption || '';
+  $('zoomCaption').classList.toggle('hidden',!caption);
+  $('zoomBackdrop').classList.add('open');
+  $('zoomBackdrop').setAttribute('aria-hidden','false');
+  activeModal = $('zoomBackdrop');
+
+  requestAnimationFrame(() => $('zoomBackdrop').querySelector('[role="dialog"]').focus());
+}
+
+function closeZoom() {
+  $('zoomBackdrop').classList.remove('open');
+  $('zoomBackdrop').setAttribute('aria-hidden','true');
+  $('zoomImage').src = '';
+
+  if (activeModal === $('zoomBackdrop')) activeModal = null;
+
+  if (lastModalFocus && document.contains(lastModalFocus)) {
+    lastModalFocus.focus({preventScroll:true});
+  }
+  lastModalFocus = null;
+}
+
+$('closeZoom').addEventListener('click',closeZoom);
+$('zoomBackdrop').addEventListener('click',event => {
+  if (event.target === $('zoomBackdrop')) closeZoom();
+});
+
+/* Kalender */
+$('prevMonth').addEventListener('click',() => {
+  calendarMonth = new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);
+  renderCalendar();
+});
+$('nextMonth').addEventListener('click',() => {
+  calendarMonth = new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);
+  renderCalendar();
+});
+$('clearDate').addEventListener('click',() => {
+  selectedDate = null;
+  renderCalendar();
+  render();
+});
+
+sort.addEventListener('change',render);
+$('searchInput').addEventListener('input',event => {
+  searchQuery = event.target.value.trim();
+  $('clearSearch').classList.toggle('hidden',!searchQuery);
+  render();
+});
+$('clearSearch').addEventListener('click',() => {
+  searchQuery = '';
+  $('searchInput').value = '';
+  $('clearSearch').classList.add('hidden');
+  render();
+});
+
+/* Galeri */
+function renderGallery() {
+  historyBox.replaceChildren();
+
+  const photos = notes.filter(note => note.photo).sort((a,b) => b.createdAt-a.createdAt);
+  $('count').textContent = `${photos.length} foto`;
+
+  const grid = document.createElement('div');
+  grid.className = 'photo-gallery';
+
+  if (!photos.length) {
+    const empty = document.createElement('div');
+    empty.className = 'gallery-empty';
+    empty.textContent = 'Belum ada foto tersimpan.';
+    grid.appendChild(empty);
+  } else {
+    photos.forEach(note => {
+      const frame = document.createElement('div');
+      frame.style.cssText = 'overflow:hidden;border:1px solid var(--line);border-radius:15px;background:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)';
+
+      const photo = document.createElement('img');
+      photo.className = 'gallery-photo';
+      photo.style.cssText = 'display:block;width:100%;aspect-ratio:1;object-fit:cover;border:0;border-radius:0';
+      photo.src = note.photo;
+      photo.alt = note.text || 'Foto kenangan';
+      photo.loading = 'lazy';
+      photo.addEventListener('click',() => openZoom(note.photo,note.text));
+
+      const timestamp = document.createElement('div');
+      timestamp.style.cssText = 'padding:8px 5px;text-align:center;font-size:10px;line-height:1.4;color:var(--muted);overflow-wrap:anywhere';
+      timestamp.textContent = note.time || formatDate(note.dayKey);
+
+      frame.append(photo,timestamp);
+      grid.appendChild(frame);
+    });
+  }
+
+  historyBox.appendChild(grid);
+}
+
+function setGalleryMode(enabled) {
+  showingGallery = enabled;
+  $('galleryViewBtn').textContent = enabled ? '← Kembali' : '🖼️ Galeri';
+  $('searchWrap').classList.toggle('hidden',enabled);
+  $('sort').classList.toggle('hidden',enabled);
+  $('statsBtn').classList.toggle('hidden',enabled);
+  $('calendarPanel').classList.toggle('hidden',enabled || view !== 'calendar');
+  $('composerDock').classList.toggle('hidden',enabled);
+
+  updateNavigation();
+
+  if (enabled) renderGallery();
+  else render();
+}
+
+$('galleryViewBtn').addEventListener('click',() => {
+  if (showingGallery) {
+    setGalleryMode(false);
+    return;
+  }
+
+  view = 'all';
+  setGalleryMode(true);
+});
+
+$('allNav').addEventListener('click',() => {
+  if (showingGallery) setGalleryMode(false);
+
+  view = 'all';
+  updateNavigation();
+  render();
+});
+
+$('calendarNav').addEventListener('click',() => {
+  if (showingGallery) setGalleryMode(false);
+
+  view = 'calendar';
+  updateNavigation();
+  renderCalendar();
+  render();
+});
+
+document.addEventListener('click',event => {
+  if (!event.target.closest('.menu-wrap') && openMenuId !== null) {
+    openMenuId = null;
+    render();
+  }
+});
+
+/* Statistik */
+function monthKey(date) {
+  return `${date.getFullYear()}-${pad(date.getMonth()+1)}`;
+}
+
+function getMonthlyCounts() {
+  const now = new Date();
+  const thisMonth = monthKey(now);
+  const lastMonthDate = new Date(now.getFullYear(),now.getMonth()-1,1);
+  const lastMonth = monthKey(lastMonthDate);
+
+  return {
+    thisMonth:notes.filter(note => note.dayKey.startsWith(thisMonth)).length,
+    lastMonth:notes.filter(note => note.dayKey.startsWith(lastMonth)).length
+  };
+}
+
+function getBusyDay() {
+  const names = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const counts = Array(7).fill(0);
+
+  notes.forEach(note => {
+    if (!note.dayKey) return;
+    const [y,m,d] = note.dayKey.split('-').map(Number);
+    const date = new Date(y,m-1,d);
+    if (!Number.isNaN(date.getTime())) counts[date.getDay()]++;
+  });
+
+  const max = Math.max(...counts);
+  if (!max) return {name:'Belum ada',count:0};
+
+  const index = counts.indexOf(max);
+  return {name:names[index],count:max};
+}
+
+function getActiveDayAverage() {
+  const written = getWrittenDays();
+  if (!written.size) return '0';
+
+  return (notes.length/written.size).toLocaleString('id-ID',{
+    maximumFractionDigits:1
+  });
+}
+
+function getLastSixMonths() {
+  const now = new Date();
+  const result = [];
+
+  for (let offset=5;offset>=0;offset--) {
+    const date = new Date(now.getFullYear(),now.getMonth()-offset,1);
+    const key = monthKey(date);
+
+    result.push({
+      key,
+      label:date.toLocaleDateString('id-ID',{month:'short'}),
+      count:notes.filter(note => note.dayKey.startsWith(key)).length
+    });
+  }
+
+  return result;
+}
+
+function makeStatCard(value,label) {
+  const card = document.createElement('div');
+  card.className = 'stat-card';
+
+  const number = document.createElement('div');
+  number.className = 'stat-value';
+  number.textContent = value;
+
+  const description = document.createElement('div');
+  description.className = 'stat-label';
+  description.textContent = label;
+
+  card.append(number,description);
+  return card;
+}
+
+function renderStats() {
+  const container = $('statsContent');
+  container.replaceChildren();
+
+  const streak = getStreakStats();
+  const monthCounts = getMonthlyCounts();
+  const busyDay = getBusyDay();
+  const activeDays = streak.written.size;
+  const photos = notes.filter(note => note.photo).length;
+  const pinned = notes.filter(note => note.pinned).length;
+  const reactions = notes.filter(note => note.reacted).length;
+
+  const grid = document.createElement('div');
+  grid.className = 'stats-grid';
+  grid.append(
+    makeStatCard(String(notes.length),'Total catatan'),
+    makeStatCard(String(photos),'Total foto'),
+    makeStatCard(String(pinned),'Catatan disematkan'),
+    makeStatCard(String(reactions),'Reaksi ❤️'),
+    makeStatCard(String(monthCounts.thisMonth),'Catatan bulan ini'),
+    makeStatCard(String(monthCounts.lastMonth),'Catatan bulan lalu'),
+    makeStatCard(busyDay.name,busyDay.count ? `${busyDay.count} catatan · hari tersibuk` : 'Hari tersibuk'),
+    makeStatCard(getActiveDayAverage(),'Rata-rata catatan per hari aktif')
+  );
+  container.appendChild(grid);
+
+  const streakSection = document.createElement('section');
+  streakSection.className = 'stats-section';
+
+  const heading = document.createElement('div');
+  heading.className = 'stats-section-title';
+  heading.textContent = '🔥 Streak menulis';
+
+  const streakGrid = document.createElement('div');
+  streakGrid.className = 'stats-grid';
+  streakGrid.append(
+    makeStatCard(`${streak.current} hari`,'Streak saat ini'),
+    makeStatCard(`${streak.longest} hari`,'Streak terpanjang')
+  );
+
+  streakSection.append(heading,streakGrid);
+
+  if (streak.current > 0 && !streak.written.has(streak.today)) {
+    const hint = document.createElement('div');
+    hint.className = 'stats-hint';
+    hint.textContent = 'Tulis hari ini untuk menjaga streak.';
+    streakSection.appendChild(hint);
+  }
+
+  const stripTitle = document.createElement('div');
+  stripTitle.className = 'stats-section-title';
+  stripTitle.style.marginTop = '16px';
+  stripTitle.textContent = '7 hari terakhir';
+
+  const strip = document.createElement('div');
+  strip.className = 'streak-strip';
+
+  const dayNames = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+  const today = new Date();
+
+  for (let i=6;i>=0;i--) {
+    const date = new Date(today);
+    date.setDate(today.getDate()-i);
+    const key = dateKey(date);
+    const written = streak.written.has(key);
+    const isToday = key === streak.today;
+
+    const day = document.createElement('div');
+    day.className = 'streak-day'+(written ? ' written' : '')+(isToday ? ' today' : '');
+
+    const label = document.createElement('div');
+    label.textContent = dayNames[date.getDay()];
+
+    const dot = document.createElement('div');
+    dot.className = 'streak-dot';
+    dot.textContent = written ? '✓' : (isToday ? '•' : '·');
+    dot.setAttribute('aria-label',`${formatDate(key)}${written ? ', ada catatan' : ', belum ada catatan'}`);
+
+    const number = document.createElement('div');
+    number.textContent = date.getDate();
+
+    day.append(label,dot,number);
+    strip.appendChild(day);
+  }
+
+  streakSection.append(stripTitle,strip);
+  container.appendChild(streakSection);
+
+  const chartSection = document.createElement('section');
+  chartSection.className = 'stats-section';
+
+  const chartTitle = document.createElement('div');
+  chartTitle.className = 'stats-section-title';
+  chartTitle.textContent = 'Catatan · 6 bulan terakhir';
+
+  chartSection.appendChild(chartTitle);
+
+  const months = getLastSixMonths();
+  const maxCount = Math.max(1,...months.map(item => item.count));
+  const chart = document.createElement('div');
+  chart.className = 'chart';
+  chart.setAttribute('role','img');
+  chart.setAttribute('aria-label','Diagram batang jumlah catatan selama enam bulan terakhir');
+
+  months.forEach(item => {
+    const column = document.createElement('div');
+    column.className = 'chart-column';
+
+    const value = document.createElement('div');
+    value.className = 'chart-value';
+    value.textContent = item.count;
+
+    const track = document.createElement('div');
+    track.className = 'chart-track';
+
+    const bar = document.createElement('div');
+    bar.className = 'chart-bar';
+    bar.style.height = `${item.count ? Math.max(5,item.count/maxCount*100) : 3}%`;
+    bar.title = `${item.label}: ${item.count} catatan`;
+
+    const label = document.createElement('div');
+    label.className = 'chart-label';
+    label.textContent = item.label;
+
+    track.appendChild(bar);
+    column.append(value,track,label);
+    chart.appendChild(column);
+  });
+
+  chartSection.appendChild(chart);
+  container.appendChild(chartSection);
+
+  if (!notes.length) {
+    const empty = document.createElement('div');
+    empty.className = 'stats-empty';
+    empty.textContent = 'Belum ada catatan. Mulai tulis sesuatu hari ini, dan statistikmu akan tumbuh pelan-pelan. 🤍';
+    container.prepend(empty);
+  } else if (!activeDays) {
+    const empty = document.createElement('div');
+    empty.className = 'stats-empty';
+    empty.textContent = 'Belum ada hari aktif yang bisa dihitung.';
+    container.appendChild(empty);
+  }
+}
+
+function openStats() {
+  renderStats();
+  $('statsBackdrop').classList.add('open');
+  $('statsBackdrop').setAttribute('aria-hidden','false');
+  activeModal = $('statsBackdrop');
+
+  requestAnimationFrame(() => $('statsBackdrop').querySelector('[role="dialog"]').focus());
+}
+
+function closeStats() {
+  $('statsBackdrop').classList.remove('open');
+  $('statsBackdrop').setAttribute('aria-hidden','true');
+
+  if (activeModal === $('statsBackdrop')) activeModal = null;
+}
+
+$('statsBtn').addEventListener('click',openStats);
+$('streakBadge').addEventListener('click',openStats);
+$('closeStats').addEventListener('click',closeStats);
+$('statsBackdrop').addEventListener('click',event => {
+  if (event.target === $('statsBackdrop')) closeStats();
+});
+
+/* Tema */
+function applyTheme(theme) {
+  document.body.classList.toggle('dark-theme',theme === 'dark');
+  $('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+
+  $('themeToggle').setAttribute(
+    'aria-label',
+    theme === 'dark' ? 'Ganti ke tema terang' : 'Ganti ke tema gelap'
+  );
+
+  document.querySelector('meta[name="theme-color"]').content =
+    theme === 'dark' ? '#0b1220' : '#f5edf2';
+
+  try {
+    localStorage.setItem(THEME_KEY,theme);
+  } catch {}
+}
+
+let savedTheme = 'light';
+try {
+  savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+} catch {}
+
+$('themeToggle').addEventListener('click',() => {
+  const nextTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+  applyTheme(nextTheme);
+});
+
+/* Modal: Esc menutup lapisan teratas; dialog konfirmasi selalu diselesaikan */
+document.addEventListener('keydown',event => {
+  if (event.key === 'Escape') {
+    if (dialogResolver) {
+      finishDialog(false);
+      return;
+    }
+
+    if (activeModal === $('statsBackdrop')) closeStats();
+    else if (activeModal === $('editBackdrop')) closeEdit();
+    else if (activeModal === $('zoomBackdrop')) closeZoom();
+    else if (activeModal === $('mediaBackdrop')) closeMediaPopup();
+    return;
+  }
+
+  if (event.key !== 'Tab' || !activeModal) return;
+
+  const dialog = activeModal.querySelector('[role="dialog"]');
+  if (!dialog) return;
+
+  const focusable = [...dialog.querySelectorAll(
+    'button:not(:disabled),input:not(:disabled),textarea:not(:disabled),select:not(:disabled),[tabindex="0"]'
+  )].filter(element => !element.classList.contains('hidden'));
+
+  if (!focusable.length) {
+    event.preventDefault();
+    dialog.focus();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length-1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});
+
+/* Scroll responsif: navigasi menjadi orb kecil */
+const bottomNav = $('bottomNav');
+let lastScrollY = Math.max(0,window.scrollY);
+let scrollFrame = 0;
+let scrollActive = false;
+
+function setScrollMode(active) {
+  if (scrollActive === active) return;
+
+  scrollActive = active;
+  document.body.classList.toggle('scroll-active',active);
+  bottomNav.classList.toggle('scroll-orb',active);
+
+  bottomNav.setAttribute(
+    'aria-label',
+    active ? 'Ketuk untuk kembali ke atas' : 'Navigasi utama'
+  );
+}
+
+function handleScroll() {
+  scrollFrame = 0;
+
+  const currentY = Math.max(0,window.scrollY);
+  const delta = currentY-lastScrollY;
+  lastScrollY = currentY;
+
+  if (currentY <= 2) {
+    setScrollMode(false);
+    return;
+  }
+
+  if (delta > 0 && !scrollActive) setScrollMode(true);
+  else if (delta < 0 && scrollActive) setScrollMode(false);
+}
+
+window.addEventListener('scroll',() => {
+  if (scrollFrame) return;
+  scrollFrame = requestAnimationFrame(handleScroll);
+},{passive:true});
+
+bottomNav.addEventListener('click',event => {
+  if (!scrollActive || event.target.closest('.nav-btn')) return;
+  window.scrollTo({top:0,behavior:'smooth'});
+  setScrollMode(false);
+});
+
+/* Inisialisasi */
+applyTheme(savedTheme);
+updateNavigation();
+updateStreakBadge();
+renderCalendar();
+render();
+resizeInput();
+</script>
+</body>
+</html>
