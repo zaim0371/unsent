@@ -32,7 +32,7 @@
   color: #b7799c;
   font-size: 31px;
 }
-.profile-card h2 { margin: 0; font-size: 23px; letter-spacing: -.5px; }
+.profile-card h2 { margin: 0 0 22px; font-size: 23px; letter-spacing: -.5px; }
 .profile-subtitle { margin: 7px 0 23px; color: var(--muted); font-size: 12px; }
 .profile-info {
   padding: 15px;
@@ -63,8 +63,8 @@
   to { opacity: 1; transform: translateY(0); }
 }
 .dark-theme .profile-card { background: var(--glass); }
-.dark-theme .profile-avatar { background: linear-gradient(145deg,#304b70,#1c304d); color: #d4e4f9; }
-.dark-theme #signOutButton { background: linear-gradient(145deg,#30415d,#26364f); color: #e1eaf7; border-color: var(--line); }
+.dark-theme .profile-avatar { background: linear-gradient(145deg,#7a2a60,#521d41); color: #ffd9ec; }
+.dark-theme #signOutButton { background: linear-gradient(145deg,#62224d,#4a193c); color: #ffe8f3; border-color: var(--line); }
 
 :root {
   --ink:#594958;
@@ -106,80 +106,99 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 }
 .hidden { display:none!important; }
 
-/* Halaman login */
+/* Halaman login & daftar */
 .login-screen {
   position: fixed;
   inset: 0;
   z-index: 9999;
   display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 24px;
-  background: linear-gradient(145deg,#fce7f1 0%,#f8dce9 50%,#f5e8f0 100%);
+  overflow-y: auto;
+  background: linear-gradient(145deg,#fce7f1 0%,#f8dce9 48%,#efe6f5 100%);
 }
 .login-screen.hidden { display:none!important; }
-.login-card {
-  width: 100%;
-  max-width: 360px;
-  padding: 30px 24px;
-  border: 1px solid rgba(255,255,255,.75);
-  border-radius: 28px;
-  background: rgba(255,255,255,.38);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 12px 40px rgba(170,105,140,.12);
+.auth-blob { position:fixed; border-radius:50%; filter:blur(55px); opacity:.7; pointer-events:none; animation:blobFloat 10s ease-in-out infinite; }
+.auth-blob.b1 { width:280px; height:280px; top:-80px; left:-90px; background:#f3b3d1; }
+.auth-blob.b2 { width:320px; height:320px; bottom:-110px; right:-100px; background:#cbbcf0; animation-delay:-5s; }
+@keyframes blobFloat {
+  0%,100% { transform:translate(0,0) scale(1); }
+  50% { transform:translate(24px,-20px) scale(1.08); }
 }
-.login-card h1 { margin:0 0 20px; text-align:center; font-size:30px; letter-spacing:-1px; color:#594958; }
-.login-card input {
-  display: block;
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 14px 15px;
-  border: 1px solid rgba(255,255,255,.8);
-  border-radius: 16px;
-  outline: none;
-  background: rgba(255,255,255,.48);
-  color: #594958;
-  font-size: 14px;
+.auth-wrap { position:relative; width:100%; max-width:380px; margin:auto; text-align:center; animation:authIn .65s cubic-bezier(.22,1,.36,1) both; }
+@keyframes authIn { from { opacity:0; transform:translateY(22px) scale(.97); } }
+.auth-logo {
+  display:grid; place-items:center; width:66px; height:66px; margin:0 auto 14px;
+  border:1px solid rgba(255,255,255,.95); border-radius:22px;
+  background:linear-gradient(145deg,#fff,#f1d3e4); color:#c47ba4; font-size:30px;
+  box-shadow:0 10px 28px rgba(170,105,140,.22),inset 0 1px 0 #fff;
+  animation:logoPulse 3.6s ease-in-out infinite;
 }
-.login-card input:focus { border-color:#dba8c2; background:rgba(255,255,255,.7); }
-.login-card button {
-  width: 100%;
-  margin-top: 6px;
-  padding: 14px;
-  border: 0;
-  border-radius: 16px;
-  background: #dca8c2;
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
+@keyframes logoPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.06) rotate(-3deg); } }
+.auth-brand { margin:0 0 24px; font-size:34px; font-weight:750; letter-spacing:-1.2px; color:#594958; }
+.auth-tag { margin:6px 0 22px; color:#9a8496; font-size:13px; line-height:1.6; }
+.auth-card {
+  padding:24px 20px 20px; text-align:left;
+  border:1px solid rgba(255,255,255,.85); border-radius:30px;
+  background:rgba(255,255,255,.5);
+  backdrop-filter:blur(28px) saturate(160%); -webkit-backdrop-filter:blur(28px) saturate(160%);
+  box-shadow:0 16px 48px rgba(170,105,140,.16),inset 0 1px 0 rgba(255,255,255,.95);
 }
-.login-status { min-height:20px; margin-top:13px; color:var(--danger); text-align:center; font-size:12px; line-height:1.6; }
-#signupMessage { margin:10px 0 0; color:#594958; font-size:12px; text-align:center; }
+.auth-pane { display:none; margin:0; }
+.auth-pane.active { display:block; animation:paneIn .42s cubic-bezier(.22,1,.36,1) both; }
+@keyframes paneIn { from { opacity:0; transform:translateX(16px); } }
+.auth-pane.from-left.active { animation-name:paneInLeft; }
+@keyframes paneInLeft { from { opacity:0; transform:translateX(-16px); } }
+.auth-title { margin:0 0 4px; font-size:21px; font-weight:700; letter-spacing:-.5px; color:#594958; }
+.auth-sub { margin:0 0 18px; color:#9a8496; font-size:12.5px; line-height:1.6; }
+.auth-field { display:block; margin-bottom:13px; }
+.auth-label { display:block; margin:0 0 6px 4px; color:#806a7c; font-size:11.5px; font-weight:600; }
+.auth-input-wrap { position:relative; }
+.auth-input {
+  display:block; width:100%; padding:14px 15px; border:1px solid rgba(255,255,255,.9); border-radius:17px;
+  outline:none; background:rgba(255,255,255,.62); color:#594958; font-size:16px;
+  box-shadow:inset 0 1px 2px rgba(150,110,140,.06);
+  transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.auth-input::placeholder { color:#b9a6b4; }
+.auth-input:focus { border-color:#dba8c2; background:rgba(255,255,255,.9); box-shadow:0 0 0 4px rgba(219,168,194,.25); }
+.auth-input.has-toggle { padding-right:74px; }
+.pw-toggle {
+  position:absolute; top:50%; right:8px; transform:translateY(-50%);
+  padding:7px 10px; border:0; border-radius:12px; background:transparent;
+  color:#a2718d; font-size:11.5px; font-weight:650;
+}
+.pw-toggle:active { transform:translateY(-50%) scale(.94)!important; }
+.auth-hint { margin:-4px 0 12px 4px; color:#a99aa6; font-size:11px; }
+.auth-btn {
+  display:block; width:100%; margin-top:6px; padding:15px; border:1px solid rgba(255,255,255,.7); border-radius:18px;
+  background:linear-gradient(145deg,#e8b0cc,#cf90b7); color:#fff; font-size:15px; font-weight:650; letter-spacing:.2px;
+  box-shadow:0 8px 22px rgba(201,139,179,.4),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.auth-btn:disabled { opacity:.6; }
+.auth-msg { min-height:20px; margin:12px 2px 0; text-align:center; font-size:12.5px; line-height:1.6; color:#b7617c; overflow-wrap:anywhere; }
+.auth-msg.ok { color:#4f8a6a; }
+.auth-switch { margin:14px 0 0; text-align:center; color:#9a8496; font-size:12.5px; }
+.auth-link { padding:4px 3px; border:0; background:transparent; color:#b0659a; font-size:12.5px; font-weight:700; }
+.auth-back { display:inline-flex; align-items:center; gap:4px; margin:0 0 14px -4px; padding:6px 10px 6px 6px; border:0; border-radius:12px; background:transparent; color:#a2718d; font-size:12.5px; font-weight:650; }
 body.login-active { overflow:hidden; }
 body.dark-theme .login-screen {
   background:
-    radial-gradient(ellipse at 15% 10%,#1c2b43,transparent 45%),
-    radial-gradient(ellipse at 90% 85%,#172c47,transparent 45%),
-    linear-gradient(145deg,#0b1220,#111d30);
+    radial-gradient(ellipse at 15% 10%,#3f1633,transparent 45%),
+    radial-gradient(ellipse at 90% 85%,#34112a,transparent 45%),
+    linear-gradient(145deg,#1b0713,#2a0e20);
 }
-body.dark-theme .login-card { background:rgba(20,31,49,.82); border-color:var(--line); }
-body.dark-theme .login-card h1,body.dark-theme #signupForm h3,body.dark-theme #signupMessage { color:var(--ink)!important; }
-body.dark-theme .login-card input { background:rgba(25,41,64,.95); color:var(--ink); border-color:#344a66; }
-
-button.login-signup {
-  display: block !important;
-  width: auto !important;
-  margin: 10px auto 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  color: #168bff !important;
-  font-size: 12px !important;
-  font-weight: 400 !important;
-  box-shadow: none !important;
-}
+body.dark-theme .auth-blob { opacity:.25; }
+body.dark-theme .auth-logo { background:linear-gradient(145deg,#7a2a60,#521d41); color:#ffd9ec; border-color:var(--line); box-shadow:0 10px 28px rgba(0,0,0,.35); }
+body.dark-theme .auth-card { background:rgba(58,18,46,.82); border-color:var(--line); box-shadow:0 16px 48px rgba(0,0,0,.35); }
+body.dark-theme .auth-brand,body.dark-theme .auth-title { color:var(--ink); }
+body.dark-theme .auth-tag,body.dark-theme .auth-sub,body.dark-theme .auth-switch,body.dark-theme .auth-hint { color:var(--muted); }
+body.dark-theme .auth-label { color:#ffc4e1; }
+body.dark-theme .auth-input { background:rgba(66,22,54,.95); color:var(--ink); border-color:#74305f; }
+body.dark-theme .auth-input:focus { border-color:#f06aae; box-shadow:0 0 0 4px rgba(240,106,174,.25); }
+body.dark-theme .auth-btn { background:linear-gradient(145deg,#e04a9b,#b02d78); box-shadow:0 8px 22px rgba(0,0,0,.35); }
+body.dark-theme .auth-link,body.dark-theme .auth-back,body.dark-theme .pw-toggle { color:#ff9fce; }
+body.dark-theme .auth-msg { color:var(--danger); }
+body.dark-theme .auth-msg.ok { color:#8fd0aa; }
 
 .app {
   width:min(100%,540px);
@@ -529,99 +548,50 @@ select,.small-btn {
 }
 .nav-btn.active { color:#76576d; font-weight:650; }
 .nav-icon { width:17px; height:17px; flex-shrink:0; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
-.bottom-nav.scroll-orb {
-  width:56px;
-  height:56px;
-  padding:0;
-  bottom:calc(17px + env(safe-area-inset-bottom));
-  border:1px solid rgba(255,255,255,.72);
-  border-radius:50%;
-  background:
-    radial-gradient(ellipse at 28% 17%,rgba(255,255,255,.98),transparent 39%),
-    radial-gradient(ellipse at 75% 27%,rgba(207,218,238,.92),transparent 49%),
-    radial-gradient(ellipse at 70% 78%,rgba(190,177,216,.92),transparent 52%),
-    radial-gradient(ellipse at 22% 78%,rgba(227,218,202,.94),transparent 50%),
-    linear-gradient(145deg,#f8f5ef 3%,#d9dce7 48%,#c5bdd6 100%);
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.98),inset 0 -2px 4px rgba(93,87,116,.12),0 3px 8px rgba(83,76,102,.12),0 8px 19px rgba(83,76,102,.15),0 0 13px rgba(206,201,224,.16);
-  backdrop-filter:blur(12px) saturate(125%);
-  -webkit-backdrop-filter:blur(12px) saturate(125%);
-  animation:orbFloat 4s ease-in-out .45s infinite;
-  cursor:pointer;
-}
-.bottom-nav.scroll-orb::before {
-  content:"";
-  position:absolute;
-  inset:2px;
-  z-index:0;
-  border:1px solid rgba(255,255,255,.42);
-  border-radius:50%;
-  background:radial-gradient(ellipse at 31% 19%,rgba(255,255,255,.7),transparent 36%),radial-gradient(ellipse at 65% 82%,rgba(255,255,255,.15),transparent 46%);
-  pointer-events:none;
-}
 .bottom-nav.scroll-orb .nav-indicator { opacity:0; }
-.bottom-nav.scroll-orb .nav-btn {
-  opacity:0;
-  transform:scale(.8);
-  pointer-events:none;
-  transition:opacity .12s ease,transform .2s ease;
-}
-@keyframes orbFloat {
-  0%,100% { transform:translate3d(-50%,0,0) scale(1); }
-  50% { transform:translate3d(-50%,-2px,0) scale(1.012); }
-}
-body.scroll-active .composer-dock {
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transform:translate3d(-50%,15px,0) scale(.97);
-}
 
 /* Tema gelap */
 body.dark-theme {
-  --ink:#e1eaf7;
-  --muted:#91a4bd;
-  --glass:rgba(20,31,49,.76);
-  --line:rgba(133,166,205,.2);
-  --surface:rgba(20,31,49,.82);
-  --accent:#263c59;
-  --modal:rgba(22,35,54,.98);
-  --field:rgba(25,41,64,.95);
-  --soft:#263c59;
+  --ink:#ffe8f3;
+  --muted:#d9a0c2;
+  --glass:rgba(58,18,46,.76);
+  --line:rgba(255,150,210,.2);
+  --surface:rgba(58,18,46,.82);
+  --accent:#531d44;
+  --modal:rgba(46,14,37,.98);
+  --field:rgba(66,22,54,.95);
+  --soft:#531d44;
   --danger:#f0a1b8;
-  background:radial-gradient(ellipse at 12% 0%,#1c2b43,transparent 43%),radial-gradient(ellipse at 100% 42%,#172c47,transparent 40%),linear-gradient(145deg,#0b1220,#111d30);
+  background:radial-gradient(ellipse at 12% 0%,#3f1633,transparent 43%),radial-gradient(ellipse at 100% 42%,#34112a,transparent 40%),linear-gradient(145deg,#1b0713,#2a0e20);
 }
 .dark-theme .calendar-panel,.dark-theme .search-wrap,.dark-theme .composer,.dark-theme .photo-preview,.dark-theme .bottom-nav {
-  background:rgba(20,31,49,.82);
+  background:rgba(58,18,46,.82);
   border-color:var(--line);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 28px rgba(0,0,0,.16);
 }
-.dark-theme .message { background:linear-gradient(145deg,rgba(35,51,74,.94),rgba(22,35,55,.9)); border-color:var(--line); }
-.dark-theme .entry.pinned .message { background:linear-gradient(145deg,#2b405c,#1b2b43); border-color:#52739b; }
+.dark-theme .message { background:linear-gradient(145deg,rgba(92,32,72,.92),rgba(60,19,48,.9)); border-color:var(--line); }
+.dark-theme .entry.pinned .message { background:linear-gradient(145deg,#632550,#431833); border-color:#b04c8a; }
 .dark-theme .search-wrap,.dark-theme select,.dark-theme .small-btn,.dark-theme .theme-btn,.dark-theme .streak-badge,.dark-theme .icon-btn,.dark-theme .send,.dark-theme .month-btn,.dark-theme .media-sheet,.dark-theme .edit-modal,.dark-theme .menu,.dark-theme .modal-close,.dark-theme .date-field,.dark-theme .edit-text {
   color:var(--ink);
-  background-color:#192940;
-  border-color:#344a66;
+  background-color:#3b1330;
+  border-color:#74305f;
 }
 .dark-theme #input,.dark-theme #searchInput,.dark-theme .edit-text,.dark-theme .date-field { color:var(--ink); }
-.dark-theme #input::placeholder,.dark-theme #searchInput::placeholder { color:#8297b1; }
-.dark-theme .nav-indicator { background:linear-gradient(145deg,#304b70,#1c304d); border-color:#496486; }
-.dark-theme .nav-btn.active,.dark-theme .menu-trigger,.dark-theme .field-label { color:#b7d2f4; }
-.dark-theme .day.selected { background:#304b70; border-color:#668bb9; }
-.dark-theme .day.has-notes::after { background:#8bb9f0; }
-.dark-theme .day-divider { color:#91a4bd; }
-.dark-theme .day-divider::before,.dark-theme .day-divider::after { background:linear-gradient(90deg,transparent,#4a6381); }
-.dark-theme .message-reaction { background:linear-gradient(145deg,#253b59,#1b2d47); border-color:#405878; }
-.dark-theme .media-option { background:linear-gradient(145deg,#263c59,#192940); border-color:#344a66; color:#d4e4f9; }
-.dark-theme .media-cancel,.dark-theme .cancel-btn { background:#192940; color:var(--ink); border-color:#344a66; }
-.dark-theme .gallery-photo { border-color:#344a66; }
+.dark-theme #input::placeholder,.dark-theme #searchInput::placeholder { color:#c088a8; }
+.dark-theme .nav-indicator { background:linear-gradient(145deg,#7a2a60,#521d41); border-color:#a14584; }
+.dark-theme .nav-btn.active,.dark-theme .menu-trigger,.dark-theme .field-label { color:#ffc4e1; }
+.dark-theme .day.selected { background:#7a2a60; border-color:#f06aae; }
+.dark-theme .day.has-notes::after { background:#ff9fce; }
+.dark-theme .day-divider { color:#d9a0c2; }
+.dark-theme .day-divider::before,.dark-theme .day-divider::after { background:linear-gradient(90deg,transparent,#92407a); }
+.dark-theme .message-reaction { background:linear-gradient(145deg,#5a2149,#3d1432); border-color:#843a6e; }
+.dark-theme .media-option { background:linear-gradient(145deg,#531d44,#3b1330); border-color:#74305f; color:#ffd9ec; }
+.dark-theme .media-cancel,.dark-theme .cancel-btn { background:#3b1330; color:var(--ink); border-color:#74305f; }
+.dark-theme .gallery-photo { border-color:#74305f; }
 .dark-theme .save-btn { color:#493549; }
 .dark-theme .dialog-actions .danger { background:#573047; color:#ffc0d0; }
-.dark-theme .stat-card { background:rgba(25,41,64,.95); }
-.dark-theme .streak-day.written .streak-dot { background:#304b70; border-color:#668bb9; color:#e1eaf7; }
-.dark-theme .bottom-nav.scroll-orb {
-  background:radial-gradient(ellipse at 28% 17%,rgba(255,255,255,.98),transparent 39%),radial-gradient(ellipse at 75% 27%,rgba(175,190,218,.9),transparent 49%),radial-gradient(ellipse at 70% 78%,rgba(148,133,182,.92),transparent 52%),radial-gradient(ellipse at 22% 78%,rgba(187,190,201,.92),transparent 50%),linear-gradient(145deg,#e2e4eb 3%,#aeb8cc 48%,#a99dbf 100%);
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.98),inset 0 -2px 4px rgba(30,40,60,.14),0 3px 8px rgba(0,0,0,.18),0 8px 19px rgba(0,0,0,.25);
-}
+.dark-theme .stat-card { background:rgba(66,22,54,.95); }
+.dark-theme .streak-day.written .streak-dot { background:#7a2a60; border-color:#f06aae; color:#ffe8f3; }
 @media(max-width:380px) {
   .app { padding-right:11px; padding-left:11px; }
   .composer-dock { padding-right:11px; padding-left:11px; }
@@ -639,6 +609,326 @@ body.dark-theme {
 @media(prefers-reduced-motion:reduce) {
   *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
 }
+
+/* ===== Polish v2 ===== */
+:root{--spring:cubic-bezier(.34,1.4,.5,1);--smooth:cubic-bezier(.22,1,.36,1)}
+button:not(.nav-btn),.day{transition:transform .25s var(--smooth),background-color .25s,border-color .25s,box-shadow .25s,color .25s,opacity .25s}
+button:active:not(:disabled){transform:scale(.95)}
+.nav-btn:active{transform:scale(.92)}
+.brand{background:linear-gradient(120deg,#594958,#b0759a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dark-theme .brand{background:linear-gradient(120deg,#ffe8f3,#ff9fce);-webkit-background-clip:text;background-clip:text}
+.small-btn,.theme-btn,.streak-badge{box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 3px 10px rgba(112,83,104,.06)}
+.dark-theme .small-btn,.dark-theme .theme-btn,.dark-theme .streak-badge{box-shadow:0 3px 10px rgba(0,0,0,.18)}
+
+/* Dropdown custom */
+.dd{position:relative}
+.dd-btn{display:flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--ink);font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 3px 10px rgba(112,83,104,.06)}
+.dd.open .dd-btn{border-color:#d7b4c8}
+.dd-chev,.dd-check{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.dd-chev{width:14px;height:14px;transition:transform .35s var(--spring)}
+.dd.open .dd-chev{transform:rotate(180deg)}
+.dd-panel{position:absolute;z-index:60;top:calc(100% + 8px);right:0;min-width:150px;padding:5px;border:1px solid var(--line);border-radius:18px;background:var(--modal);box-shadow:0 12px 34px rgba(104,76,96,.18);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);transform-origin:top right;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.9);transition:opacity .2s,transform .35s var(--spring),visibility .2s}
+.dd.open .dd-panel{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+.dd-opt{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:11px 12px;border:0;border-radius:13px;background:transparent;text-align:left;font-size:12.5px}
+.dd-opt:active{background:var(--soft)}
+.dd-opt.sel{background:var(--soft);font-weight:650}
+.dd-check{width:15px;height:15px;opacity:0;transform:scale(.3);transition:opacity .2s,transform .35s var(--spring)}
+.dd-opt.sel .dd-check{opacity:1;transform:scale(1)}
+.dark-theme .dd-btn{background-color:#3b1330;border-color:#74305f;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.dark-theme .dd.open .dd-btn{border-color:#f06aae}
+.dark-theme .dd-panel{border-color:#74305f;box-shadow:0 12px 34px rgba(0,0,0,.4)}
+
+/* Input, modal, toast, menu */
+.search-wrap,.composer{transition:border-color .3s,box-shadow .3s}
+.search-wrap:focus-within,.composer:focus-within{border-color:#d7a9c4;box-shadow:0 0 0 4px rgba(215,169,196,.22),0 8px 28px rgba(112,83,104,.1)}
+.dark-theme .search-wrap:focus-within,.dark-theme .composer:focus-within{border-color:#f06aae;box-shadow:0 0 0 4px rgba(240,106,174,.25)}
+.media-backdrop,.modal-backdrop{backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%);transition:opacity .28s,visibility .28s}
+.media-sheet,.edit-modal{opacity:0;transform:translateY(30px) scale(.96);transition:transform .5s var(--spring),opacity .25s}
+.media-backdrop.open .media-sheet,.modal-backdrop.open .edit-modal{opacity:1;transform:none}
+.toast{transform:translate(-50%,16px) scale(.94);transition:opacity .25s,transform .45s var(--spring),visibility .25s}
+.toast.open{transform:translate(-50%,0) scale(1)}
+.menu{transform-origin:top right;animation:menuIn .25s var(--spring) both}
+@keyframes menuIn{from{opacity:0;transform:scale(.88) translateY(-4px)}}
+
+/* Pesan, navigasi, statistik */
+.message{transition:transform .25s var(--smooth),box-shadow .25s}
+.message:active{transform:scale(.985)}
+.message-reaction svg{filter:drop-shadow(0 2px 4px rgba(230,107,158,.35))}
+.nav-indicator{transition:transform .5s var(--spring),opacity .2s}
+.day:active{transform:scale(.86)}
+.stat-card{transition:transform .3s var(--smooth)}
+.stat-card:active{transform:scale(.97)}
+.chart-bar{transform-origin:bottom;animation:barGrow .8s var(--smooth) both}
+@keyframes barGrow{from{transform:scaleY(0)}}
+.streak-day.written .streak-dot{animation:dotPop .45s var(--spring) both}
+@keyframes dotPop{from{transform:scale(.4);opacity:0}}
+
+/* ===== Polish v3 ===== */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}}
+.topbar{animation:fadeUp .55s var(--smooth) both}
+.search-wrap{animation:fadeUp .55s var(--smooth) .08s both}
+.toolbar{animation:fadeUp .55s var(--smooth) .14s both}
+.calendar-panel:not(.hidden){animation:panelIn .45s var(--spring) both}
+@keyframes panelIn{from{opacity:0;transform:translateY(-10px) scale(.97)}}
+.day.selected{animation:dayPop .35s var(--spring)}
+@keyframes dayPop{from{transform:scale(.7)}}
+.nav-btn.active .nav-icon{animation:iconBounce .55s var(--spring)}
+@keyframes iconBounce{0%{transform:scale(.6) rotate(-12deg)}100%{transform:none}}
+.composer:has(#input:not(:placeholder-shown)) .send{background:linear-gradient(145deg,#eab5d0,#d38fb8);color:#fff;transform:scale(1.08);box-shadow:0 6px 16px rgba(211,143,184,.45)}
+.dark-theme .composer:has(#input:not(:placeholder-shown)) .send{background:linear-gradient(145deg,#e04a9b,#b02d78);box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.theme-btn.spin{animation:themeSpin .65s var(--spring)}
+@keyframes themeSpin{from{transform:rotate(-200deg) scale(.5)}to{transform:none}}
+.heart-burst{position:fixed;z-index:200;pointer-events:none;color:#e66b9e;font-size:18px;line-height:1;transform:translate(-50%,-50%);animation:heartFly .95s ease-out forwards}
+@keyframes heartFly{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}15%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.25) rotate(var(--r))}}
+.entry.pinned .message{box-shadow:inset 0 1px 0 white,0 8px 26px rgba(190,130,170,.16)}
+
+/* Login: tambahan */
+.auth-row{display:flex;justify-content:flex-end;margin:-4px 2px 4px}
+.auth-row .auth-link{font-size:12px;font-weight:650}
+.auth-card.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.auth-btn{transition:transform .25s var(--smooth),box-shadow .25s,opacity .25s,filter .25s}
+.auth-btn:hover{filter:brightness(1.04)}
+.auth-btn:disabled::after{content:"";display:inline-block;width:13px;height:13px;margin-left:9px;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;vertical-align:-2px;animation:spin .7s linear infinite}
+.auth-logo{animation:logoPulse 3.6s ease-in-out infinite,logoIn .7s var(--spring) both}
+@keyframes logoIn{from{opacity:0;transform:scale(.5) rotate(-20deg)}}
+
+/* Pemilih tanggal & jam */
+.dt-trigger{display:flex;align-items:center;gap:8px;width:100%;padding:12px;border:1px solid #dec8d8;border-radius:14px;background:var(--field);color:var(--ink);font-size:12.5px;text-align:left}
+.dt-trigger svg{width:17px;height:17px;flex-shrink:0;fill:none;stroke:#a2718d;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.dt-trigger span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dark-theme .dt-trigger{background-color:#3b1330;border-color:#74305f}
+.dark-theme .dt-trigger svg{stroke:#ff9fce}
+.picker-backdrop{position:fixed;z-index:130;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:18px 18px calc(18px + env(safe-area-inset-bottom));background:rgba(77,57,73,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s,visibility .28s}
+.picker-backdrop.open{opacity:1;visibility:visible;pointer-events:auto}
+.picker-card{width:min(100%,400px);padding:18px;border:1px solid white;border-radius:28px;background:var(--modal);color:var(--ink);box-shadow:0 24px 70px rgba(83,57,77,.28);outline:none;opacity:0;transform:translateY(40px) scale(.96);transition:transform .5s var(--spring),opacity .25s}
+.picker-backdrop.open .picker-card{opacity:1;transform:none}
+.picker-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.picker-title{margin-bottom:12px;text-align:center;font-size:15px;font-weight:700}
+.picker-days.swap{animation:paneIn .3s var(--smooth) both}
+.picker-actions{display:flex;gap:8px;margin-top:16px}
+.picker-actions button{flex:1;min-width:0;padding:12px 8px;border:1px solid var(--line);border-radius:15px;background:var(--field);font-size:12.5px;font-weight:650}
+.picker-actions .ok{background:linear-gradient(145deg,#f1dce8,#dfbfd3);color:#594958}
+.wheels{position:relative;display:flex;align-items:center;justify-content:center;gap:6px}
+.wheel-band{position:absolute;left:12%;right:12%;top:50%;height:44px;transform:translateY(-50%);border-radius:14px;background:var(--soft);pointer-events:none}
+.wheel{position:relative;z-index:1;width:84px;height:176px;padding:66px 0;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain;-webkit-mask-image:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(transparent,#000 30%,#000 70%,transparent)}
+.wheel::-webkit-scrollbar{display:none}
+.wheel-item{display:flex;align-items:center;justify-content:center;width:100%;height:44px;border:0;background:transparent;scroll-snap-align:center;color:var(--muted);font-size:22px}
+.wheel-item.sel{color:var(--ink);font-weight:700;transform:scale(1.15)}
+.wheel-sep{position:relative;z-index:1;font-size:22px;font-weight:700}
+.dark-theme .picker-card{background:rgba(46,14,37,.98);border-color:#74305f;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.dark-theme .picker-actions button{border-color:#74305f;background:#3b1330}
+.dark-theme .picker-actions .ok{background:linear-gradient(145deg,#e04a9b,#b02d78);color:#fff}
+.dark-theme .wheel-band{background:#531d44}
+
+/* ===== Polish v4: dropdown keyboard, picker disabled, lazy load ===== */
+.dd-opt:focus-visible{outline:2px solid #bd91aa;outline-offset:-2px}
+.dark-theme .dd-opt:focus-visible{outline-color:#ff9fce}
+.picker-days .day:disabled,.picker-days .day[aria-disabled="true"]{opacity:.28;pointer-events:none;cursor:default}
+.wheel-item.dis{opacity:.22;cursor:default}
+.load-more{display:flex;align-items:center;justify-content:center;gap:9px;padding:18px 0 6px;color:var(--muted);font-size:12px}
+.load-more::before{content:"";width:14px;height:14px;border:2px solid rgba(189,145,170,.3);border-top-color:#bd91aa;border-radius:50%;animation:spin .7s linear infinite}
+.dark-theme .load-more::before{border-color:rgba(255,159,206,.25);border-top-color:#ff9fce}
+
+/* ===== Polish v5: dropdown di atas daftar, foto profil ===== */
+.toolbar{position:relative;z-index:40}
+.avatar-ring{width:104px;height:104px;margin:0 auto 12px;padding:3px;border-radius:50%;background:linear-gradient(145deg,#f3b3d1,#cbbcf0)}
+.avatar-ring .profile-avatar{width:100%;height:100%;margin:0;padding:0;overflow:hidden;border:3px solid #fff;cursor:pointer;font-size:38px}
+.profile-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+.avatar-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 22px}
+.dark-theme .avatar-ring{background:linear-gradient(145deg,#e04a9b,#ff9fce)}
+.dark-theme .avatar-ring .profile-avatar{border-color:#2a0e20}
+.entry-avatar{flex-shrink:0;align-self:flex-end;width:32px;height:32px;margin:0 7px 0 0;overflow:hidden;border:1px solid var(--line);border-radius:50%;background:linear-gradient(145deg,#fff,#efd8e7)}
+.entry-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+.entry.has-reaction .entry-avatar{margin-bottom:24px}
+.dark-theme .entry-avatar{background:linear-gradient(145deg,#7a2a60,#521d41)}
+
+/* ===== Polish v6: pensil foto profil + popup ===== */
+.avatar-wrap{position:relative;width:104px;margin:0 auto 18px}
+.avatar-wrap .avatar-ring{margin:0}
+.avatar-edit{position:absolute;right:-1px;bottom:-1px;display:grid;place-items:center;width:32px;height:32px;padding:0;border:2px solid #fff;border-radius:50%;background:linear-gradient(145deg,#e8b0cc,#cf90b7);color:#fff;box-shadow:0 4px 12px rgba(201,139,179,.45)}
+.avatar-edit::after{content:"";position:absolute;inset:-7px}
+.avatar-edit svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dark-theme .avatar-edit{border-color:#2a0e20;background:linear-gradient(145deg,#e04a9b,#b02d78);box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.avatar-sheet-btn{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 9px;padding:15px 16px;border:1px solid white;border-radius:18px;background:linear-gradient(145deg,#fff,#f4e4ee);color:#76576d;font-size:13px;font-weight:600;text-align:left}
+.avatar-sheet-btn svg{width:21px;height:21px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.avatar-sheet-btn.danger{color:var(--danger)}
+.dark-theme .avatar-sheet-btn{background:linear-gradient(145deg,#531d44,#3b1330);border-color:#74305f;color:#ffd9ec}
+.dark-theme .avatar-sheet-btn.danger{color:var(--danger)}
+
+/* ===== Chat ala WhatsApp: pesan baru di bawah, animasi lebih mulus, dark mode pink ===== */
+:root{--ease-nav:cubic-bezier(.32,.72,0,1)}
+.app{display:flex;flex-direction:column;padding-bottom:calc(var(--dock-h,76px) + 97px + env(safe-area-inset-bottom))}
+#history{margin-top:auto}
+#history:has(> .empty){margin-block:auto}
+#history:has(> .photo-gallery){margin-top:0}
+.load-more.top{padding:4px 0 14px}
+
+/* Pesan: muncul halus dari bawah */
+.entry.enter{animation:entryIn .6s var(--spring) calc(var(--i,0)*40ms) backwards}
+@keyframes entryIn{from{opacity:0;transform:translateY(26px) scale(.9)}}
+.entry.pop-in{animation:messageSend .6s cubic-bezier(.22,1.1,.36,1) both;transform-origin:left bottom}
+@keyframes messageSend{0%{opacity:0;transform:translateY(28px) scale(.9)}55%{opacity:1}100%{opacity:1;transform:none}}
+
+/* Navigasi: pil -> orb, semua dimensi pakai satu kurva supaya sinkron */
+.bottom-nav{
+  transition:
+    width .55s var(--ease-nav),
+    height .55s var(--ease-nav),
+    padding .55s var(--ease-nav),
+    border-radius .55s var(--ease-nav),
+    bottom .55s var(--ease-nav),
+    background-color .45s ease,
+    border-color .45s ease,
+    box-shadow .55s ease;
+}
+.bottom-nav::before{ /* permukaan orb: fade, bukan pindah gradient (gradient tidak bisa di-transisi) */
+  content:"";position:absolute;inset:0;z-index:-2;border-radius:inherit;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 31% 19%,rgba(255,255,255,.7),transparent 36%),
+    radial-gradient(ellipse at 28% 17%,rgba(255,255,255,.98),transparent 39%),
+    radial-gradient(ellipse at 75% 27%,rgba(236,196,222,.92),transparent 49%),
+    radial-gradient(ellipse at 70% 78%,rgba(214,160,196,.92),transparent 52%),
+    radial-gradient(ellipse at 22% 78%,rgba(247,226,232,.94),transparent 50%),
+    linear-gradient(145deg,#fbf3f6 3%,#f0d4e4 48%,#d9aecb 100%);
+  opacity:0;transition:opacity .5s ease;
+}
+.bottom-nav::after{ /* panah turun: ketuk untuk ke pesan terbaru */
+  content:"";position:absolute;z-index:1;left:50%;top:50%;width:11px;height:11px;
+  border-right:2.4px solid #8a5a78;border-bottom:2.4px solid #8a5a78;border-radius:2px;
+  transform:translate(-50%,-34%) rotate(-135deg) scale(.4);opacity:0;pointer-events:none;
+  transition:opacity .2s ease,transform .3s var(--ease-nav);
+}
+.bottom-nav.scroll-orb{
+  width:56px;height:56px;padding:0;
+  bottom:calc(17px + env(safe-area-inset-bottom));
+  border-color:rgba(255,255,255,.72);border-radius:50%;
+  background:rgba(255,249,253,0);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.98),0 8px 19px rgba(120,70,105,.2),0 3px 8px rgba(120,70,105,.13),0 0 13px rgba(230,170,205,.22);
+  cursor:pointer;
+}
+.bottom-nav.scroll-orb::before{opacity:1}
+.bottom-nav.scroll-orb::after{opacity:.9;transform:translate(-50%,-34%) rotate(-135deg) scale(1);transition:opacity .3s ease .2s,transform .55s var(--spring) .2s;animation:chevBob 2.4s ease-in-out .9s infinite}
+@keyframes chevBob{0%,100%{translate:0 0}50%{translate:0 -2.5px}}
+.nav-btn{transition:opacity .3s ease .16s,transform .55s var(--ease-nav) .1s,color .25s}
+.bottom-nav.scroll-orb .nav-btn{opacity:0;transform:scale(.7);pointer-events:none;transition:opacity .14s ease,transform .3s var(--ease-nav)}
+
+.composer-dock{transition:opacity .35s ease,transform .55s var(--ease-nav),visibility 0s linear 0s}
+body.scroll-active .composer-dock{
+  opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(-50%,26px,0) scale(.96);
+  transition:opacity .25s ease,transform .5s var(--ease-nav),visibility 0s linear .5s;
+}
+
+/* Ganti tema: crossfade halus */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+
+/* ----- Dark mode: pink tua (permukaan) + pink lebih tua (latar) ----- */
+body.dark-theme{
+  --danger:#ff9a9a;
+  background:
+    radial-gradient(ellipse at 10% 0%,#6a1f52,transparent 46%),
+    radial-gradient(ellipse at 100% 45%,#4a1540,transparent 42%),
+    linear-gradient(145deg,#1d0816,#2c0f23);
+  background-attachment:fixed;
+}
+body.dark-theme .login-screen{
+  background:
+    radial-gradient(ellipse at 15% 10%,#5c1b47,transparent 45%),
+    radial-gradient(ellipse at 90% 85%,#451339,transparent 45%),
+    linear-gradient(145deg,#1b0713,#2a0e20);
+}
+.dark-theme .auth-blob.b1{background:#e04a9b}
+.dark-theme .auth-blob.b2{background:#a02a70}
+.dark-theme .bottom-nav::before{
+  background:
+    radial-gradient(ellipse at 31% 19%,rgba(255,255,255,.55),transparent 36%),
+    radial-gradient(ellipse at 28% 17%,rgba(255,190,225,.9),transparent 39%),
+    radial-gradient(ellipse at 75% 27%,rgba(240,106,174,.9),transparent 49%),
+    radial-gradient(ellipse at 70% 78%,rgba(150,36,104,.95),transparent 52%),
+    linear-gradient(145deg,#e86aaa 3%,#b8307c 48%,#7a1f56 100%);
+}
+.dark-theme .bottom-nav::after{border-color:#ffe8f3}
+.dark-theme .bottom-nav.scroll-orb{
+  background:rgba(58,18,46,0);border-color:rgba(255,170,215,.4);
+  box-shadow:inset 0 1px 2px rgba(255,200,230,.4),0 8px 19px rgba(0,0,0,.4),0 3px 8px rgba(0,0,0,.25),0 0 16px rgba(224,74,155,.3);
+}
+.dark-theme .nav-btn{color:#d08fb6}
+.dark-theme .save-btn,.dark-theme .dialog-actions .primary{background:linear-gradient(145deg,#e04a9b,#b02d78);color:#fff;border-color:rgba(255,170,215,.35)}
+.dark-theme .dialog-actions .danger{background:#6e2338;color:#ffb4b4}
+.dark-theme #editStatus{color:#ffa9d3}
+.dark-theme .toast-action{color:#ff9fce}
+.dark-theme .pin-label{color:#ff9fce}
+.dark-theme .chart-bar{background:linear-gradient(180deg,#ff9fce,#c23a86)}
+.dark-theme .streak-day.today .streak-dot{box-shadow:0 0 0 2px #f06aae}
+.dark-theme .day.today{box-shadow:inset 0 0 0 1px #c0508f}
+.dark-theme .cal-foot{border-top-color:rgba(255,150,210,.18)}
+.dark-theme .message-photo{background:rgba(255,150,210,.08)}
+.dark-theme .media-backdrop,.dark-theme .modal-backdrop:not(.zoom-backdrop),.dark-theme .picker-backdrop{background:rgba(24,4,17,.55)}
+
+/* ===== Header menempel, lebih ringkas, tarik-untuk-refresh, efek pop ===== */
+html,body{overscroll-behavior-y:contain}
+html{scroll-padding-top:calc(var(--head-h,120px) + 8px)}
+.sticky-head{
+  position:sticky;top:0;z-index:35;
+  margin:0 -15px;padding:env(safe-area-inset-top,0px) 15px 0;
+  background:linear-gradient(180deg,rgba(249,240,246,.94),rgba(249,240,246,.82));
+  backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
+  box-shadow:0 1px 0 rgba(255,255,255,.7),0 10px 24px -14px rgba(112,83,104,.35);
+}
+@media(max-width:380px){.sticky-head{margin:0 -11px;padding-left:11px;padding-right:11px}}
+.dark-theme .sticky-head{
+  background:linear-gradient(180deg,rgba(33,9,26,.95),rgba(33,9,26,.84));
+  box-shadow:0 1px 0 rgba(255,150,210,.12),0 10px 24px -14px rgba(0,0,0,.6);
+}
+.topbar{padding:8px 3px 4px;gap:8px}
+.brand-row{gap:7px}
+.brand{font-size:19px;letter-spacing:-.6px}
+.theme-btn,.streak-badge{min-width:32px;height:32px;font-size:14px}
+.streak-badge{min-width:38px;padding:0 9px;gap:2px;font-size:11px}
+.search-wrap{margin:2px 0 6px;padding:0 11px;gap:6px;border-radius:16px}
+.search-icon{font-size:15px}
+#searchInput{padding:8px 0;font-size:13px}
+.toolbar{margin:0 2px 8px;gap:6px}
+.toolbar-left,.toolbar-right{gap:5px}
+.count{font-size:11px}
+select,.small-btn{padding:6px 10px;font-size:11.5px}
+.dd-btn{padding:6px 10px;gap:5px;font-size:11.5px}
+.dd-chev{width:12px;height:12px}
+.calendar-panel{margin:4px 0 12px}
+body.view-calendar #history{margin-top:0}
+
+/* Tarik ke bawah untuk memuat ulang */
+.ptr{
+  position:fixed;z-index:34;left:50%;top:calc(var(--head-h,120px) + 6px);
+  width:38px;height:38px;margin-left:-19px;display:grid;place-items:center;
+  border:1px solid var(--line);border-radius:50%;background:var(--modal);color:#b0659a;
+  box-shadow:0 6px 18px rgba(112,83,104,.22);opacity:0;pointer-events:none;
+  transform:translate3d(0,calc(var(--ptr,0px) - 56px),0);
+}
+.ptr svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transform:rotate(calc(var(--ptr-p,0)*270deg))}
+.ptr.ready{color:#d6479a}
+.ptr.refreshing svg{transform:none;animation:spin .8s linear infinite}
+.dark-theme .ptr{color:#ff9fce}
+.dark-theme .ptr.ready{color:#ffc4e1}
+body.ptr-pulling .app > :not(.sticky-head){transform:translate3d(0,var(--ptr,0px),0)}
+body.ptr-settle .app > :not(.sticky-head){transition:transform .45s var(--ease-nav)}
+body.ptr-settle .ptr{transition:transform .45s var(--ease-nav),opacity .3s ease}
+
+/* Efek pop isi halaman saat tombol navigasi ditekan (dua nama animasi agar bisa diulang) */
+@keyframes popA{from{opacity:0;transform:translateY(22px) scale(.94)}}
+@keyframes popB{from{opacity:0;transform:translateY(22px) scale(.94)}}
+.pop-a #calendarPanel:not(.hidden){animation:popA .6s var(--spring) backwards}
+.pop-b #calendarPanel:not(.hidden){animation:popB .6s var(--spring) backwards}
+.pop-a #history:has(> .photo-gallery){animation:popA .6s var(--spring) backwards;transform-origin:50% 0}
+.pop-b #history:has(> .photo-gallery){animation:popB .6s var(--spring) backwards;transform-origin:50% 0}
+.pop-a .profile-card>*{animation:popA .55s var(--spring) backwards}
+.pop-b .profile-card>*{animation:popB .55s var(--spring) backwards}
+.profile-card>:nth-child(2){animation-delay:.05s}
+.profile-card>:nth-child(3){animation-delay:.1s}
+.profile-card>:nth-child(4){animation-delay:.15s}
+.profile-card>:nth-child(5){animation-delay:.2s}
+.profile-card>:nth-child(6){animation-delay:.25s}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -647,29 +937,118 @@ body.dark-theme {
 <body class="login-active">
 
 <div class="login-screen" id="loginScreen">
-  <form class="login-card" id="loginForm">
-    <h1>Unsent ♡</h1>
+  <div class="auth-blob b1" aria-hidden="true"></div>
+  <div class="auth-blob b2" aria-hidden="true"></div>
 
-    <input class="login-field" id="loginEmail" type="email" placeholder="Email" autocomplete="username" required>
-    <input class="login-field" id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" required>
+  <div class="auth-wrap">
+    <div class="auth-logo" aria-hidden="true">♡</div>
+    <h1 class="auth-brand">Unsent</h1>
 
-    <button class="login-submit" type="submit">Masuk</button>
+    <div class="auth-card">
+      <!-- Halaman masuk -->
+      <form class="auth-pane active" id="loginForm" novalidate>
+        <h2 class="auth-title">Selamat datang kembali</h2>
+        <p class="auth-sub">Masuk untuk membuka catatanmu.</p>
 
-    <button class="login-signup" type="button" id="showSignup">Belum punya akun? Daftar</button>
+        <label class="auth-field">
+          <span class="auth-label">Email</span>
+          <input class="auth-input" id="loginEmail" type="email" inputmode="email" placeholder="nama@email.com" autocomplete="username" autocapitalize="off" required>
+        </label>
 
-    <div id="signupForm" style="display:none; margin-top:20px;">
-      <h3 style="color:#594958;">Buat akun Unsent</h3>
-      <input type="email" id="signupEmail" placeholder="Email kamu" autocomplete="email">
-      <input type="password" id="signupPassword" placeholder="Buat password" autocomplete="new-password">
-      <button type="button" id="signupSubmit">Daftar</button>
-      <p id="signupMessage"></p>
+        <label class="auth-field">
+          <span class="auth-label">Password</span>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" id="loginPassword" type="password" placeholder="Password kamu" autocomplete="current-password" required>
+            <button class="pw-toggle" type="button" data-target="loginPassword">Lihat</button>
+          </div>
+        </label>
+
+        <div class="auth-row"><button class="auth-link" type="button" id="showForgot">Lupa password?</button></div>
+
+        <button class="auth-btn" id="loginSubmit" type="submit">Masuk</button>
+        <div class="auth-msg" id="loginStatus" role="status"></div>
+
+        <p class="auth-switch">Belum punya akun? <button class="auth-link" type="button" id="showSignup">Daftar</button></p>
+      </form>
+
+      <!-- Halaman daftar -->
+      <form class="auth-pane" id="signupForm" novalidate>
+        <button class="auth-back" type="button" id="backToLogin">‹ Kembali</button>
+        <h2 class="auth-title">Buat akun baru</h2>
+        <p class="auth-sub">Cukup email dan password untuk mulai menulis.</p>
+
+        <label class="auth-field">
+          <span class="auth-label">Email</span>
+          <input class="auth-input" id="signupEmail" type="email" inputmode="email" placeholder="nama@email.com" autocomplete="email" autocapitalize="off" required>
+        </label>
+
+        <label class="auth-field">
+          <span class="auth-label">Password</span>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" id="signupPassword" type="password" placeholder="Minimal 6 karakter" autocomplete="new-password" required>
+            <button class="pw-toggle" type="button" data-target="signupPassword">Lihat</button>
+          </div>
+        </label>
+
+        <label class="auth-field">
+          <span class="auth-label">Ulangi password</span>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" id="signupConfirm" type="password" placeholder="Ketik ulang password" autocomplete="new-password" required>
+            <button class="pw-toggle" type="button" data-target="signupConfirm">Lihat</button>
+          </div>
+        </label>
+
+        <button class="auth-btn" id="signupSubmit" type="submit">Daftar</button>
+        <div class="auth-msg" id="signupMessage" role="status"></div>
+
+        <p class="auth-switch">Sudah punya akun? <button class="auth-link" type="button" id="toLogin2">Masuk</button></p>
+      </form>
+
+      <!-- Lupa password -->
+      <form class="auth-pane" id="forgotForm" novalidate>
+        <button class="auth-back" type="button" id="backFromForgot">‹ Kembali</button>
+        <h2 class="auth-title">Lupa password</h2>
+        <p class="auth-sub">Masukkan email akunmu untuk menerima tautan membuat password baru.</p>
+
+        <label class="auth-field">
+          <span class="auth-label">Email</span>
+          <input class="auth-input" id="forgotEmail" type="email" inputmode="email" placeholder="nama@email.com" autocomplete="email" autocapitalize="off" required>
+        </label>
+
+        <button class="auth-btn" id="forgotSubmit" type="submit">Kirim tautan</button>
+        <div class="auth-msg" id="forgotMessage" role="status"></div>
+      </form>
+
+      <!-- Password baru (dari tautan email) -->
+      <form class="auth-pane" id="resetForm" novalidate>
+        <h2 class="auth-title">Password baru</h2>
+        <p class="auth-sub">Buat password baru untuk akunmu.</p>
+
+        <label class="auth-field">
+          <span class="auth-label">Password baru</span>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" id="resetPassword" type="password" placeholder="Minimal 6 karakter" autocomplete="new-password" required>
+            <button class="pw-toggle" type="button" data-target="resetPassword">Lihat</button>
+          </div>
+        </label>
+
+        <label class="auth-field">
+          <span class="auth-label">Ulangi password</span>
+          <div class="auth-input-wrap">
+            <input class="auth-input has-toggle" id="resetConfirm" type="password" placeholder="Ketik ulang password" autocomplete="new-password" required>
+            <button class="pw-toggle" type="button" data-target="resetConfirm">Lihat</button>
+          </div>
+        </label>
+
+        <button class="auth-btn" id="resetSubmit" type="submit">Simpan password</button>
+        <div class="auth-msg" id="resetMessage" role="status"></div>
+      </form>
     </div>
-
-    <div class="login-status" id="loginStatus" role="status"></div>
-  </form>
+  </div>
 </div>
 
 <div class="app">
+  <div class="sticky-head" id="stickyHead">
   <header class="topbar">
     <div class="brand-row">
       <div class="brand">Unsent</div>
@@ -677,12 +1056,44 @@ body.dark-theme {
     </div>
     <button class="theme-btn" id="themeToggle" type="button" aria-label="Ganti tema">🌙</button>
   </header>
+  <div class="search-wrap" id="searchWrap">
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input id="searchInput" type="search" placeholder="Cari isi pesan..." autocomplete="off" aria-label="Cari pesan">
+    <button class="clear-search hidden" id="clearSearch" type="button" aria-label="Hapus pencarian">×</button>
+  </div>
+  <div class="toolbar">
+    <span class="count" id="count">0 pesan</span>
+    <div class="toolbar-right">
+      <div class="dd" id="sort">
+        <button class="dd-btn" id="sortBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="sortList" aria-label="Urutkan pesan">
+          <span class="dd-label">Terbaru</span>
+          <svg class="dd-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dd-panel" id="sortList" role="listbox" aria-label="Urutkan pesan">
+          <button class="dd-opt sel" id="sortOptNewest" type="button" role="option" aria-selected="true" tabindex="-1" data-value="newest" data-label="Terbaru">Terbaru di bawah<svg class="dd-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+          <button class="dd-opt" id="sortOptOldest" type="button" role="option" aria-selected="false" tabindex="-1" data-value="oldest" data-label="Terlama">Terlama di bawah<svg class="dd-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        </div>
+      </div>
+      <button class="small-btn" id="galleryViewBtn" type="button">🖼️ Galeri</button>
+      <button class="small-btn" id="statsBtn" type="button">📊 Statistik</button>
+    </div>
+  </div>
+  </div>
 
   <section id="profilePage" hidden>
     <div class="profile-card">
-      <div class="profile-avatar">♡</div>
+      <div class="avatar-wrap">
+        <div class="avatar-ring">
+          <button class="profile-avatar" id="profileAvatar" type="button" aria-label="Ubah foto profil" aria-haspopup="dialog">
+            <span id="profileAvatarPlaceholder" aria-hidden="true">♡</span>
+            <img id="profileAvatarImg" class="hidden" alt="Foto profil">
+          </button>
+        </div>
+        <button class="avatar-edit" id="avatarEditBtn" type="button" aria-label="Edit foto profil" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </button>
+      </div>
       <h2>Profil</h2>
-      <p class="profile-subtitle">Ruang pribadimu di Unsent</p>
 
       <div class="profile-info">
         <span class="profile-info-label">Email akun</span>
@@ -695,12 +1106,6 @@ body.dark-theme {
       <button type="button" id="signOutButton">Keluar dari akun</button>
     </div>
   </section>
-
-  <div class="search-wrap" id="searchWrap">
-    <span class="search-icon" aria-hidden="true">⌕</span>
-    <input id="searchInput" type="search" placeholder="Cari isi pesan..." autocomplete="off" aria-label="Cari pesan">
-    <button class="clear-search hidden" id="clearSearch" type="button" aria-label="Hapus pencarian">×</button>
-  </div>
 
   <section id="calendarPanel" class="calendar-panel glass hidden">
     <div class="cal-head">
@@ -719,19 +1124,13 @@ body.dark-theme {
     </div>
   </section>
 
-  <div class="toolbar">
-    <span class="count" id="count">0 pesan</span>
-    <div class="toolbar-right">
-      <select id="sort" aria-label="Urutan riwayat">
-        <option value="newest">Terbaru</option>
-        <option value="oldest">Terlama</option>
-      </select>
-      <button class="small-btn" id="galleryViewBtn" type="button">🖼️ Galeri</button>
-      <button class="small-btn" id="statsBtn" type="button">📊 Statistik</button>
-    </div>
-  </div>
+
+
+
+
 
   <main id="history"></main>
+  <div class="load-more hidden" id="loadMore" aria-hidden="true">Memuat...</div>
 </div>
 
 <div class="composer-dock" id="composerDock">
@@ -751,6 +1150,7 @@ body.dark-theme {
 </div>
 
 <input id="galleryInput" type="file" accept="image/*" hidden>
+<input id="avatarInput" type="file" accept="image/*" hidden>
 <input id="editGalleryInput" type="file" accept="image/*" hidden>
 
 <div class="media-backdrop" id="mediaBackdrop" aria-hidden="true">
@@ -775,23 +1175,13 @@ body.dark-theme {
       <div class="modal-title" id="editTitle">Edit riwayat</div>
       <button class="modal-close" id="closeEdit" type="button" aria-label="Tutup">×</button>
     </div>
-    <p class="modal-subtitle">Ubah caption, foto, tanggal, atau jam.</p>
+    <p class="modal-subtitle">Ubah caption atau foto.</p>
     <form id="editForm">
       <label class="field-label" for="editText">Isi pesan / caption</label>
       <textarea class="edit-text" id="editText"></textarea>
 
       <div id="editPhotoArea"></div>
 
-      <div class="date-row">
-        <div>
-          <label class="field-label" for="editDate">Tanggal</label>
-          <input class="date-field" id="editDate" type="date" required>
-        </div>
-        <div>
-          <label class="field-label" for="editTime">Jam</label>
-          <input class="date-field" id="editTime" type="time" required>
-        </div>
-      </div>
       <div class="modal-actions">
         <button class="cancel-btn" id="cancelEdit" type="button">Batal</button>
         <button class="save-btn" type="submit">Simpan perubahan</button>
@@ -807,6 +1197,24 @@ body.dark-theme {
     </div>
     <p class="dialog-message" id="dialogMessage"></p>
     <div class="dialog-actions" id="dialogActions"></div>
+  </section>
+</div>
+
+<div class="media-backdrop" id="avatarBackdrop" aria-hidden="true">
+  <section class="media-sheet" role="dialog" aria-modal="true" aria-label="Foto profil" tabindex="-1">
+    <button class="avatar-sheet-btn" id="avatarAdd" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="18" height="17" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="m4 17 5-5 3.5 3 2.5-2 5 5"/></svg>
+      <span>Tambahkan foto profil</span>
+    </button>
+    <button class="avatar-sheet-btn" id="avatarChange" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.5 4.5L20 16"/><path d="M20 20v-4h-4"/></svg>
+      <span>Ganti foto profil</span>
+    </button>
+    <button class="avatar-sheet-btn danger" id="avatarRemove" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6.5 7l1 13h9l1-13"/><path d="M10 11v6M14 11v6"/></svg>
+      <span>Hapus foto profil</span>
+    </button>
+    <button class="media-cancel" id="avatarCancel" type="button">Batal</button>
   </section>
 </div>
 
@@ -836,6 +1244,8 @@ body.dark-theme {
   <button class="toast-action hidden" id="toastAction" type="button">Urungkan</button>
 </div>
 
+<div class="ptr" id="ptr" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.4 5.7"/><path d="M20 4v7h-7"/></svg></div>
+
 <nav class="bottom-nav glass nav-pos-0" id="bottomNav" aria-label="Navigasi utama">
   <span class="nav-indicator" aria-hidden="true"></span>
   <button class="nav-btn active" id="allNav" type="button">
@@ -862,11 +1272,108 @@ body.dark-theme {
 </nav>
 
 <script>
+let recoveryMode = /type=recovery/.test(location.hash + location.search);
 const $ = id => document.getElementById(id);
 const form = $('form');
 const input = $('input');
 const historyBox = $('history');
 const sort = $('sort');
+
+/* Dropdown custom (pengganti select bawaan sistem) — dengan dukungan keyboard penuh */
+(function(){
+  const dd=$('sort'),btn=dd.querySelector('.dd-btn'),panel=dd.querySelector('.dd-panel'),
+        opts=[...dd.querySelectorAll('.dd-opt')];
+  let value='newest';
+  const isOpen=()=>dd.classList.contains('open');
+  const selectedIndex=()=>Math.max(0,opts.findIndex(o=>o.dataset.value===value));
+
+  function focusOption(i){
+    i=Math.max(0,Math.min(opts.length-1,i));
+    opts.forEach((o,k)=>{o.tabIndex=k===i?0:-1});
+    opts[i].focus({preventScroll:true});
+  }
+  function openPanel(focusSelected){
+    dd.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+    if(focusSelected) focusOption(selectedIndex());
+  }
+  function closePanel(returnFocus){
+    const wasOpen=isOpen();
+    dd.classList.remove('open');
+    btn.setAttribute('aria-expanded','false');
+    opts.forEach(o=>{o.tabIndex=-1});
+    if(wasOpen&&returnFocus) btn.focus({preventScroll:true});
+  }
+  function choose(i){
+    const opt=opts[i];
+    if(!opt) return;
+    const changed=opt.dataset.value!==value;
+    dd.value=opt.dataset.value;
+    closePanel(true);
+    if(changed) dd.dispatchEvent(new Event('change'));
+  }
+
+  Object.defineProperty(dd,'value',{
+    get:()=>value,
+    set:v=>{
+      value=v;
+      opts.forEach(o=>{
+        const on=o.dataset.value===v;
+        o.classList.toggle('sel',on);
+        o.setAttribute('aria-selected',String(on));
+      });
+      const cur=opts.find(o=>o.dataset.value===v);
+      dd.querySelector('.dd-label').textContent=(cur.dataset.label||cur.textContent).trim();
+    }
+  });
+
+  /* Mouse / sentuh */
+  btn.addEventListener('click',()=>{ isOpen()?closePanel(false):openPanel(false); });
+  opts.forEach((o,i)=>o.addEventListener('click',()=>choose(i)));
+
+  /* Keyboard: tombol */
+  btn.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();
+      if(isOpen()) focusOption(selectedIndex());
+      else openPanel(true);
+    }else if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      if(isOpen()) closePanel(true);
+      else openPanel(true);
+    }else if(e.key==='Escape'&&isOpen()){
+      e.preventDefault();
+      e.stopPropagation();
+      closePanel(true);
+    }else if(e.key==='Tab'&&isOpen()){
+      closePanel(false);
+    }
+  });
+  /* Mencegah klik sintetis dari Space saat tombol dilepas (agar panel tidak terbuka ulang) */
+  const blockSpaceKeyup=e=>{ if(e.key===' ') e.preventDefault(); };
+  btn.addEventListener('keyup',blockSpaceKeyup);
+  panel.addEventListener('keyup',blockSpaceKeyup);
+
+  /* Keyboard: opsi */
+  panel.addEventListener('keydown',e=>{
+    const current=opts.indexOf(document.activeElement);
+    const at=current<0?selectedIndex():current;
+    switch(e.key){
+      case 'ArrowDown': e.preventDefault(); focusOption(at+1); break;
+      case 'ArrowUp':   e.preventDefault(); focusOption(at-1); break;
+      case 'Home':      e.preventDefault(); focusOption(0); break;
+      case 'End':       e.preventDefault(); focusOption(opts.length-1); break;
+      case 'Enter':
+      case ' ':         e.preventDefault(); choose(at); break;
+      case 'Escape':    e.preventDefault(); e.stopPropagation(); closePanel(true); break;
+      case 'Tab':       closePanel(true); break; /* fokus pindah ke tombol, lalu Tab melanjutkan secara normal */
+    }
+  });
+
+  document.addEventListener('click',e=>{ if(!dd.contains(e.target)) closePanel(false); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&isOpen()) closePanel(true); });
+})();
+
 const galleryInput = $('galleryInput');
 const STORAGE_KEY = 'bubu-notes';
 const THEME_KEY = 'unsent-theme';
@@ -897,6 +1404,27 @@ let activeModal = null;
 let lastModalFocus = null;
 let focusReturnElement = null;
 let currentUserId = null;
+
+/* Muat bertahap */
+const PAGE_SIZE = 30;
+let visibleCount = PAGE_SIZE;
+let galleryVisibleCount = PAGE_SIZE;
+let renderedNotes = [];      /* yang tampil, urutan atas → bawah */
+let renderedRest = [];       /* semua catatan non-sematan yang cocok (urutan tampil) */
+let renderedRestShown = 0;   /* berapa yang sudah dimuat, dihitung dari ujung bawah */
+let lastDividerDate = '';
+let pendingBottom = true;    /* muat pertama kali → langsung ke pesan terbaru */
+let stuckToBottom = true;    /* user sedang di dasar chat */
+const TO_DEFAULT = {toDefault:true,animate:true}; /* chat → bawah, kalender → atas */
+let galleryPhotos = [];
+let galleryRendered = 0;
+let galleryGrid = null;
+let loadMoreBusy = false;
+let resolveTimer = 0;
+let searchTimer = null;
+let underModal = null;
+let avatarPath = '';
+let avatarUrl = '';
 
 function dateKey(date) {
   return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
@@ -981,7 +1509,9 @@ function getTodayKey() {
 }
 
 function getWrittenDays() {
-  return new Set(notes.filter(note => note.dayKey).map(note => note.dayKey));
+  const today = getTodayKey();
+  /* Hari di masa depan tidak pernah dihitung (anti-curang) */
+  return new Set(notes.filter(note => note.dayKey && note.dayKey <= today).map(note => note.dayKey));
 }
 
 function getStreakStats() {
@@ -1117,7 +1647,11 @@ function compressImage(file) {
 
 /* Dialog kustom dengan Promise */
 function openDialogBase(backdrop,dialog) {
-  if (activeModal && activeModal !== backdrop) closeActiveModal();
+  if (activeModal && activeModal !== backdrop) {
+    /* Peringatan dari form Edit tidak boleh menutup form-nya (perubahan pengguna tetap aman) */
+    if (backdrop === $('dialogBackdrop') && activeModal === $('editBackdrop')) underModal = activeModal;
+    else closeActiveModal();
+  }
   focusReturnElement = document.activeElement;
   activeModal = backdrop;
   backdrop.classList.add('open');
@@ -1128,7 +1662,10 @@ function openDialogBase(backdrop,dialog) {
 function closeDialogBase(backdrop) {
   backdrop.classList.remove('open');
   backdrop.setAttribute('aria-hidden','true');
-  if (activeModal === backdrop) activeModal = null;
+  if (activeModal === backdrop) {
+    activeModal = underModal && underModal.classList.contains('open') ? underModal : null;
+  }
+  underModal = null;
   if (focusReturnElement && document.contains(focusReturnElement)) {
     focusReturnElement.focus({preventScroll:true});
   }
@@ -1143,6 +1680,7 @@ function closeActiveModal() {
   else if (current === $('editBackdrop')) closeEdit();
   else if (current === $('zoomBackdrop')) closeZoom();
   else if (current === $('mediaBackdrop')) closeMediaPopup();
+  else if (current === $('avatarBackdrop')) closeAvatarSheet();
 }
 
 function finishDialog(result) {
@@ -1297,12 +1835,28 @@ function getFilteredNotes() {
 
   return notes.filter(note => {
     const matchesDate = view !== 'calendar' || !selectedDate || note.dayKey === selectedDate;
-    const searchable = `${note.text} ${note.time} ${note.dayKey}`.toLocaleLowerCase('id-ID');
-    return matchesDate && searchable.includes(query);
+    if (!matchesDate) return false;
+    if (!query) return true;
+    return `${note.text} ${note.time} ${note.dayKey}`.toLocaleLowerCase('id-ID').includes(query);
   }).sort((a,b) => {
     if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-    return sort.value === 'newest' ? b.createdAt-a.createdAt : a.createdAt-b.createdAt;
+    return sort.value === 'newest' ? a.createdAt-b.createdAt : b.createdAt-a.createdAt;
   });
+}
+
+/* Filter/urutan berubah → mulai lagi dari 30 pertama */
+function resetVisible() {
+  visibleCount = PAGE_SIZE;
+  galleryVisibleCount = PAGE_SIZE;
+}
+
+/* Pastikan catatan tertentu ikut tampil (dihitung dari ujung bawah, karena batch dimuat dari bawah) */
+function ensureVisible(id) {
+  const rest = getFilteredNotes().filter(n => !n.pinned);
+  const index = rest.findIndex(n => String(n.id) === String(id));
+  if (index < 0) return;
+  const need = topMode() ? index+1 : rest.length-index;
+  if (need > visibleCount) visibleCount = Math.ceil(need/PAGE_SIZE)*PAGE_SIZE;
 }
 
 /* Satu fungsi untuk semua status navigasi (tab aktif + posisi indikator) */
@@ -1316,6 +1870,7 @@ function updateNavigation() {
   const nav = $('bottomNav');
   nav.classList.remove('nav-pos-0','nav-pos-1','nav-pos-2');
   nav.classList.add('nav-pos-'+tab);
+  document.body.classList.toggle('view-calendar',view === 'calendar' && !showingGallery && !showingProfile);
 
   $('calendarPanel').classList.toggle(
     'hidden',
@@ -1359,8 +1914,9 @@ function renderCalendar() {
 
     button.addEventListener('click',() => {
       selectedDate = selectedDate === key ? null : key;
+      resetVisible();
       renderCalendar();
-      render();
+      render(TO_DEFAULT);
     });
 
     daysBox.appendChild(button);
@@ -1369,7 +1925,23 @@ function renderCalendar() {
   $('calendarInfo').textContent = selectedDate ? formatDate(selectedDate) : 'Pilih tanggal';
 }
 
-function toggleReaction(id) {
+function spawnHearts(x,y) {
+  for (let i=0;i<6;i++) {
+    const heart = document.createElement('span');
+    heart.className = 'heart-burst';
+    heart.textContent = '♥';
+    heart.style.left = x+'px';
+    heart.style.top = y+'px';
+    heart.style.fontSize = (13+Math.random()*10)+'px';
+    heart.style.setProperty('--dx',((Math.random()-.5)*90)+'px');
+    heart.style.setProperty('--dy',(-45-Math.random()*70)+'px');
+    heart.style.setProperty('--r',((Math.random()-.5)*50)+'deg');
+    heart.addEventListener('animationend',() => heart.remove());
+    document.body.appendChild(heart);
+  }
+}
+
+function toggleReaction(id,ev) {
   const note = notes.find(item => String(item.id) === String(id));
   if (!note) return;
 
@@ -1382,6 +1954,7 @@ function toggleReaction(id) {
   }
 
   reactionAnimationId = note.reacted ? String(note.id) : null;
+  if (note.reacted && ev) spawnHearts(ev.clientX,ev.clientY);
   render();
 }
 
@@ -1439,11 +2012,11 @@ function makeEntry(note) {
   message.appendChild(time);
 
   let lastTap = 0;
-  message.addEventListener('click',() => {
+  message.addEventListener('click',event => {
     const now = Date.now();
     if (now-lastTap < 320) {
       lastTap = 0;
-      toggleReaction(note.id);
+      toggleReaction(note.id,event);
     } else {
       lastTap = now;
     }
@@ -1505,27 +2078,209 @@ function makeEntry(note) {
     menuWrap.appendChild(menu);
   }
 
+  if (note.reacted) entry.classList.add('has-reaction');
+
+  if (avatarPath) {
+    const avatar = document.createElement('div');
+    avatar.className = 'entry-avatar';
+    const avatarImg = document.createElement('img');
+    avatarImg.alt = 'Foto profil';
+    if (avatarUrl) avatarImg.src = avatarUrl;
+    avatarImg.addEventListener('error',() => avatarImg.classList.add('hidden'));
+    avatar.appendChild(avatarImg);
+    entry.appendChild(avatar);
+  }
+
   entry.append(stack,menuWrap);
   if (String(note.id) === String(newNoteId)) entry.classList.add('pop-in');
   return entry;
 }
 
-function render() {
+/* ===== Muat bertahap (lazy loading) ===== */
+function getDisplayedNotes() {
+  return showingGallery
+    ? galleryPhotos.slice(0,galleryRendered)
+    : renderedNotes;
+}
+
+function needsSign(note) {
+  if (!note.photoPath || isDataUrl(note.photo)) return false;
+  const cached = photoUrlCache.get(note.photoPath);
+  return !note.photo || !cached || cached.exp <= Date.now()+3600000 || note.photo !== cached.url;
+}
+
+function queueResolve() {
+  clearTimeout(resolveTimer);
+  resolveTimer = setTimeout(() => resolvePhotoUrls(),0);
+}
+
+/* Sematan selalu tampil di atas; sisanya dimuat per batch dari ujung bawah (terbaru) */
+function buildDisplayList(filtered) {
+  const pinned = filtered.filter(n => n.pinned);
+  renderedRest = filtered.filter(n => !n.pinned);
+  const shown = topMode()
+    ? renderedRest.slice(0,visibleCount)
+    : renderedRest.slice(Math.max(0,renderedRest.length-visibleCount));
+  renderedRestShown = shown.length;
+  return [...pinned,...shown];
+}
+
+function paintNotes(animate) {
+  historyBox.replaceChildren();
+  lastDividerDate = '';
+
+  const fragment = document.createDocumentFragment();
+  const total = renderedNotes.length;
+
+  renderedNotes.forEach((note,i) => {
+    if (note.dayKey !== lastDividerDate) {
+      const divider = document.createElement('div');
+      divider.className = 'day-divider';
+      divider.textContent = groupLabel(note.dayKey);
+      fragment.appendChild(divider);
+      lastDividerDate = note.dayKey;
+    }
+
+    fragment.appendChild(makeEntry(note));
+  });
+
+  historyBox.appendChild(fragment);
+}
+
+/* Efek pop hanya untuk pesan yang benar-benar terlihat di layar, berurutan dari atas */
+function popVisibleEntries() {
+  const headBottom = $('stickyHead').getBoundingClientRect().bottom;
+  let n = 0;
+
+  for (const el of historyBox.querySelectorAll('.entry')) {
+    const r = el.getBoundingClientRect();
+    if (r.top > window.innerHeight) break;
+    if (r.bottom < headBottom) continue;
+    el.classList.add('enter');
+    el.style.setProperty('--i',Math.min(n++,9));
+  }
+}
+
+/* Jaga posisi baca saat daftar bertambah */
+function captureAnchor() {
+  const headBottom = $('stickyHead').getBoundingClientRect().bottom;
+
+  for (const el of historyBox.querySelectorAll('.entry')) {
+    const r = el.getBoundingClientRect();
+    if (r.bottom > headBottom+10) return {id:el.dataset.id,top:r.top};
+  }
+  return null;
+}
+
+function restoreAnchor(anchor) {
+  if (!anchor) return false;
+  const el = [...historyBox.querySelectorAll('.entry')].find(e => e.dataset.id === anchor.id);
+  if (!el) return false;
+  const diff = el.getBoundingClientRect().top-anchor.top;
+  if (Math.abs(diff) > .5) window.scrollTo(0,window.scrollY+diff);
+  return true;
+}
+
+function updateLoadMore() {
+  const box = $('loadMore');
+  const more = !showingProfile && (showingGallery
+    ? galleryRendered < galleryPhotos.length
+    : renderedRestShown < renderedRest.length);
+
+  /* Catatan: sentinel di ATAS daftar (muat yang lama). Galeri: di bawah. */
+  const below = showingGallery || topMode();
+  if (below) {
+    if (box.previousElementSibling !== historyBox) historyBox.after(box);
+  } else if (box.nextElementSibling !== historyBox) {
+    historyBox.before(box);
+  }
+  box.classList.toggle('top',!below);
+  box.classList.toggle('hidden',!more);
+
+  if (more && moreObserver) {
+    /* observe ulang supaya callback awal terpanggil lagi bila sentinel masih dekat layar */
+    moreObserver.unobserve(box);
+    moreObserver.observe(box);
+  }
+}
+
+async function loadMore() {
+  if (loadMoreBusy) return;
+
+  const gallery = showingGallery;
+  if (gallery ? galleryRendered >= galleryPhotos.length : renderedRestShown >= renderedRest.length) return;
+
+  loadMoreBusy = true;
+
+  try {
+    /* Tanda tangani URL foto hanya untuk batch berikutnya, sebelum ditampilkan */
+    const next = gallery
+      ? galleryPhotos.slice(galleryRendered,galleryRendered+PAGE_SIZE)
+      : (topMode()
+          ? renderedRest.slice(renderedRestShown,renderedRestShown+PAGE_SIZE)
+          : renderedRest.slice(Math.max(0,renderedRest.length-renderedRestShown-PAGE_SIZE),renderedRest.length-renderedRestShown));
+    try { await resolvePhotoUrls(next,true); } catch {}
+    if (gallery !== showingGallery) return;
+
+    if (gallery) {
+      galleryVisibleCount = galleryRendered+PAGE_SIZE;
+      appendGalleryBatch();
+    } else {
+      /* Pesan lama disisipkan di atas tanpa menggeser bacaan user */
+      const anchor = captureAnchor();
+      const doc = document.documentElement;
+      const prevHeight = doc.scrollHeight;
+      const prevY = window.scrollY;
+
+      visibleCount = renderedRestShown+PAGE_SIZE;
+      renderedNotes = buildDisplayList(getFilteredNotes());
+      paintNotes(false);
+
+      if (!restoreAnchor(anchor)) window.scrollTo(0,topMode() ? prevY : prevY+(doc.scrollHeight-prevHeight));
+      syncScrollBaseline();
+      if (renderedNotes.some(needsSign)) queueResolve();
+    }
+  } finally {
+    loadMoreBusy = false;
+    updateLoadMore();
+  }
+}
+
+const moreObserver = 'IntersectionObserver' in window
+  ? new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) loadMore();
+    },{rootMargin:'400px 0px 400px 0px'})
+  : null;
+
+if (!moreObserver) {
+  window.addEventListener('scroll',() => {
+    const box = $('loadMore');
+    const r = box.getBoundingClientRect();
+    if (!box.classList.contains('hidden') && r.bottom > -400 && r.top < window.innerHeight+400) loadMore();
+  },{passive:true});
+}
+
+function render(opts = {}) {
   if (showingGallery) {
     renderGallery();
     return;
   }
 
+  const doc = document.documentElement;
   const previousScroll = window.scrollY;
+  const wasNearBottom = doc.scrollHeight-doc.clientHeight-previousScroll < 140;
   const filtered = getFilteredNotes();
 
+  /* Teks jumlah = TOTAL yang cocok, bukan yang sudah dimuat */
   $('count').textContent = searchQuery
     ? `${filtered.length} hasil`
     : `${filtered.length} pesan`;
 
-  historyBox.replaceChildren();
+  renderedNotes = buildDisplayList(filtered);
+  const firstData = pendingBottom && filtered.length > 0;
 
   if (!filtered.length) {
+    historyBox.replaceChildren();
     const empty = document.createElement('div');
     empty.className = 'empty';
 
@@ -1535,24 +2290,42 @@ function render() {
 
     historyBox.appendChild(empty);
   } else {
-    let lastDate = '';
-
-    filtered.forEach(note => {
-      if (note.dayKey !== lastDate) {
-        const divider = document.createElement('div');
-        divider.className = 'day-divider';
-        divider.textContent = groupLabel(note.dayKey);
-        historyBox.appendChild(divider);
-        lastDate = note.dayKey;
-      }
-
-      historyBox.appendChild(makeEntry(note));
-    });
+    paintNotes(!!opts.animate || firstData);
   }
 
   newNoteId = null;
   reactionAnimationId = null;
-  window.scrollTo(0,previousScroll);
+  updateLoadMore();
+  if (getDisplayedNotes().some(needsSign)) queueResolve();
+
+  if (showingProfile) return;
+
+  const top = topMode();
+
+  if (opts.focusId) {
+    const target = [...historyBox.querySelectorAll('.entry')].find(e => e.dataset.id === String(opts.focusId));
+    if (target) target.scrollIntoView({behavior:reduceMotion() ? 'auto' : 'smooth',block:'center'});
+    stuckToBottom = false;
+  } else if (opts.toBottom) {
+    scrollToBottom(!!opts.smooth);
+  } else if (opts.toDefault || firstData) {
+    /* posisi awal: chat → pesan terbaru (bawah), kalender → paling atas */
+    if (top) {
+      window.scrollTo(0,0);
+      stuckToBottom = false;
+      syncScrollBaseline();
+    } else {
+      scrollToBottom(false);
+    }
+  } else if (!top && wasNearBottom) {
+    scrollToBottom(false);
+  } else {
+    window.scrollTo(0,previousScroll);
+    syncScrollBaseline();
+  }
+
+  if (opts.animate || firstData) popVisibleEntries();
+  if (firstData) pendingBottom = false;
 }
 
 function refreshAfterMutation() {
@@ -1590,16 +2363,26 @@ form.addEventListener('submit',event => {
   }
 
   newNoteId = note.id;
+  clearTimeout(searchTimer);
+  const resetNeeded = !!(searchQuery || selectedDate);
+  if (resetNeeded) resetVisible();
   selectedDate = null;
   searchQuery = '';
   $('searchInput').value = '';
   $('clearSearch').classList.add('hidden');
+  ensureVisible(note.id);
 
   resetComposer();
   checkStreakGrowth(previousStreak);
 
   if (view === 'calendar') renderCalendar();
-  render();
+  const newestAtBottom = sort.value === 'newest';
+  render({
+    toBottom:newestAtBottom,
+    smooth:true,
+    focusId:newestAtBottom ? null : note.id,
+    animate:resetNeeded
+  });
 });
 
 function togglePin(id) {
@@ -1705,17 +2488,14 @@ async function openEdit(id) {
   const note = notes.find(item => String(item.id) === String(id));
   if (!note) return;
 
+  /* Pastikan URL foto sudah ditandatangani sebelum form dibuka (agar foto tidak ikut terhapus saat disimpan) */
+  if (note.photoPath && !note.photo) { try { await resolvePhotoUrls([note],true); } catch {} }
+
   editingId = note.id;
   editPhotoDraft = note.photo || '';
   openMenuId = null;
 
   $('editText').value = note.text;
-
-  const [year,month,day] = note.dayKey.split('-').map(Number);
-  $('editDate').value = `${year}-${pad(month)}-${pad(day)}`;
-
-  const match = note.time.match(/,\s*(\d{2})\.(\d{2})$/);
-  $('editTime').value = match ? `${match[1]}:${match[2]}` : '00:00';
 
   renderEditPhotoArea();
 
@@ -1777,35 +2557,12 @@ $('editForm').addEventListener('submit',async event => {
     return;
   }
 
-  const dateValue = $('editDate').value;
-  const timeValue = $('editTime').value;
-  if (!dateValue || !timeValue) {
-    await showAlert('Tanggal dan jam harus diisi.');
-    return;
-  }
-
-  const [year,month,day] = dateValue.split('-').map(Number);
-  const [hour,minute] = timeValue.split(':').map(Number);
-  const editedDate = new Date(year,month-1,day,hour,minute);
-
-  if (
-    editedDate.getFullYear() !== year ||
-    editedDate.getMonth() !== month-1 ||
-    editedDate.getDate() !== day
-  ) {
-    await showAlert('Tanggal yang dipilih tidak valid.');
-    return;
-  }
-
   const previousStreak = getStreakStats().current;
   const previous = {...note};
 
   note.text = text;
   note.photo = editPhotoDraft;
   if (!editPhotoDraft) note.photoPath = '';
-  note.dayKey = dateValue;
-  note.createdAt = editedDate.getTime();
-  note.time = formatTime(editedDate);
 
   if (!persist()) {
     Object.assign(note,previous);
@@ -1860,61 +2617,97 @@ $('nextMonth').addEventListener('click',() => {
 });
 $('clearDate').addEventListener('click',() => {
   selectedDate = null;
+  resetVisible();
   renderCalendar();
-  render();
+  render(TO_DEFAULT);
 });
 
-sort.addEventListener('change',render);
-$('searchInput').addEventListener('input',event => {
-  searchQuery = event.target.value.trim();
-  $('clearSearch').classList.toggle('hidden',!searchQuery);
-  render();
+sort.addEventListener('change',() => {
+  resetVisible();
+  render(TO_DEFAULT);
 });
+
+$('searchInput').addEventListener('input',event => {
+  const value = event.target.value.trim();
+  $('clearSearch').classList.toggle('hidden',!value);
+
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    if (value === searchQuery) return;
+    searchQuery = value;
+    resetVisible();
+    render(TO_DEFAULT);
+  },200);
+});
+
 $('clearSearch').addEventListener('click',() => {
+  clearTimeout(searchTimer);
   searchQuery = '';
   $('searchInput').value = '';
   $('clearSearch').classList.add('hidden');
-  render();
+  resetVisible();
+  render(TO_DEFAULT);
 });
 
 /* Galeri */
+function appendGalleryBatch() {
+  const end = Math.min(galleryPhotos.length,galleryVisibleCount);
+  if (!galleryGrid || end <= galleryRendered) return;
+
+  const fragment = document.createDocumentFragment();
+
+  for (let i=galleryRendered;i<end;i++) {
+    const note = galleryPhotos[i];
+
+    const frame = document.createElement('div');
+    frame.style.cssText = 'overflow:hidden;border:1px solid var(--line);border-radius:15px;background:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)';
+
+    const photo = document.createElement('img');
+    photo.className = 'gallery-photo';
+    photo.style.cssText = 'display:block;width:100%;aspect-ratio:1;object-fit:cover;border:0;border-radius:0';
+    if (note.photo) photo.src = note.photo;
+    photo.alt = note.text || 'Foto kenangan';
+    photo.loading = 'lazy';
+    photo.addEventListener('click',() => { if (note.photo) openZoom(note.photo,note.text); });
+
+    const timestamp = document.createElement('div');
+    timestamp.style.cssText = 'padding:8px 5px;text-align:center;font-size:10px;line-height:1.4;color:var(--muted);overflow-wrap:anywhere';
+    timestamp.textContent = note.time || formatDate(note.dayKey);
+
+    frame.append(photo,timestamp);
+    fragment.appendChild(frame);
+  }
+
+  galleryRendered = end;
+  galleryGrid.appendChild(fragment);
+}
+
 function renderGallery() {
+  const previousScroll = window.scrollY;
   historyBox.replaceChildren();
 
-  const photos = notes.filter(note => note.photo).sort((a,b) => b.createdAt-a.createdAt);
-  $('count').textContent = `${photos.length} foto`;
+  /* Termasuk foto yang URL-nya belum ditandatangani (photoPath ada) */
+  galleryPhotos = notes.filter(note => note.photo || note.photoPath).sort((a,b) => b.createdAt-a.createdAt);
+  $('count').textContent = `${galleryPhotos.length} foto`;
 
   const grid = document.createElement('div');
   grid.className = 'photo-gallery';
+  galleryGrid = grid;
+  galleryRendered = 0;
 
-  if (!photos.length) {
+  if (!galleryPhotos.length) {
     const empty = document.createElement('div');
     empty.className = 'gallery-empty';
     empty.textContent = 'Belum ada foto tersimpan.';
     grid.appendChild(empty);
   } else {
-    photos.forEach(note => {
-      const frame = document.createElement('div');
-      frame.style.cssText = 'overflow:hidden;border:1px solid var(--line);border-radius:15px;background:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)';
-
-      const photo = document.createElement('img');
-      photo.className = 'gallery-photo';
-      photo.style.cssText = 'display:block;width:100%;aspect-ratio:1;object-fit:cover;border:0;border-radius:0';
-      photo.src = note.photo;
-      photo.alt = note.text || 'Foto kenangan';
-      photo.loading = 'lazy';
-      photo.addEventListener('click',() => openZoom(note.photo,note.text));
-
-      const timestamp = document.createElement('div');
-      timestamp.style.cssText = 'padding:8px 5px;text-align:center;font-size:10px;line-height:1.4;color:var(--muted);overflow-wrap:anywhere';
-      timestamp.textContent = note.time || formatDate(note.dayKey);
-
-      frame.append(photo,timestamp);
-      grid.appendChild(frame);
-    });
+    appendGalleryBatch();
   }
 
   historyBox.appendChild(grid);
+  updateLoadMore();
+  if (galleryPhotos.slice(0,galleryRendered).some(needsSign)) queueResolve();
+  window.scrollTo(0,previousScroll);
 }
 
 function setGalleryMode(enabled) {
@@ -1927,8 +2720,13 @@ function setGalleryMode(enabled) {
 
   updateNavigation();
 
-  if (enabled) renderGallery();
-  else render();
+  if (enabled) {
+    galleryVisibleCount = PAGE_SIZE;
+    window.scrollTo(0,0);
+    renderGallery();
+  } else {
+    render(TO_DEFAULT);
+  }
 }
 
 $('galleryViewBtn').addEventListener('click',() => {
@@ -1939,6 +2737,7 @@ $('galleryViewBtn').addEventListener('click',() => {
 
   view = 'all';
   setGalleryMode(true);
+  playPagePop();
 });
 
 /* Profil */
@@ -1949,6 +2748,7 @@ function setProfileMode(enabled) {
   $('searchWrap').classList.toggle('hidden',enabled);
   document.querySelector('.toolbar').classList.toggle('hidden',enabled);
   $('history').classList.toggle('hidden',enabled);
+  updateLoadMore();
   $('composerDock').classList.toggle('hidden',enabled);
 
   if (enabled) {
@@ -1964,8 +2764,10 @@ $('allNav').addEventListener('click',() => {
   if (showingGallery) setGalleryMode(false);
 
   view = 'all';
+  resetVisible();
   updateNavigation();
-  render();
+  render(TO_DEFAULT);
+  playPagePop();
 });
 
 $('calendarNav').addEventListener('click',() => {
@@ -1973,14 +2775,17 @@ $('calendarNav').addEventListener('click',() => {
   if (showingGallery) setGalleryMode(false);
 
   view = 'calendar';
+  resetVisible();
   updateNavigation();
   renderCalendar();
-  render();
+  render(TO_DEFAULT);
+  playPagePop();
 });
 
 $('profileNav').addEventListener('click',() => {
   if (showingGallery) setGalleryMode(false);
   setProfileMode(true);
+  playPagePop();
   if (typeof refreshProfileEmail === 'function') refreshProfileEmail();
 });
 
@@ -2077,7 +2882,7 @@ function renderStats() {
   const monthCounts = getMonthlyCounts();
   const busyDay = getBusyDay();
   const activeDays = streak.written.size;
-  const photos = notes.filter(note => note.photo).length;
+  const photos = notes.filter(note => note.photo || note.photoPath).length;
   const pinned = notes.filter(note => note.pinned).length;
   const reactions = notes.filter(note => note.reacted).length;
 
@@ -2214,8 +3019,30 @@ function renderStats() {
   }
 }
 
+function animateStatNumbers() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  $('statsContent').querySelectorAll('.stat-value').forEach(node => {
+    const match = node.textContent.match(/^(\d+)(\s.*)?$/);
+    if (!match) return;
+
+    const target = Number(match[1]);
+    const suffix = match[2] || '';
+    if (target < 1) return;
+
+    const start = performance.now();
+    const tick = now => {
+      const t = Math.min(1,(now-start)/700);
+      node.textContent = Math.round(target*(1-Math.pow(1-t,3)))+suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
 function openStats() {
   renderStats();
+  animateStatNumbers();
   $('statsBackdrop').classList.add('open');
   $('statsBackdrop').setAttribute('aria-hidden','false');
   activeModal = $('statsBackdrop');
@@ -2248,7 +3075,7 @@ function applyTheme(theme,save = true) {
   );
 
   document.querySelector('meta[name="theme-color"]').content =
-    theme === 'dark' ? '#0b1220' : '#f5edf2';
+    theme === 'dark' ? '#1b0713' : '#f5edf2';
 
   if (save && typeof saveThemeRemote === 'function') saveThemeRemote(theme);
 }
@@ -2257,7 +3084,11 @@ const savedTheme = 'light';
 
 $('themeToggle').addEventListener('click',() => {
   const nextTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
-  applyTheme(nextTheme);
+  if (document.startViewTransition && !reduceMotion()) document.startViewTransition(() => applyTheme(nextTheme));
+  else applyTheme(nextTheme);
+  $('themeToggle').classList.remove('spin');
+  void $('themeToggle').offsetWidth;
+  $('themeToggle').classList.add('spin');
 });
 
 /* Modal: Esc menutup lapisan teratas; dialog konfirmasi selalu diselesaikan */
@@ -2272,6 +3103,7 @@ document.addEventListener('keydown',event => {
     else if (activeModal === $('editBackdrop')) closeEdit();
     else if (activeModal === $('zoomBackdrop')) closeZoom();
     else if (activeModal === $('mediaBackdrop')) closeMediaPopup();
+    else if (activeModal === $('avatarBackdrop')) closeAvatarSheet();
     return;
   }
 
@@ -2302,12 +3134,41 @@ document.addEventListener('keydown',event => {
   }
 });
 
-/* Scroll responsif: navigasi berubah menjadi orb kecil (dengan ambang agar tidak berkedip) */
+/* Scroll responsif.
+   Chat (ala WhatsApp): pesan baru di bawah. Scroll KE ATAS (baca yang lama) → navigasi jadi orb,
+   scroll KE BAWAH / sampai dasar → navigasi kembali. Galeri & profil tetap memakai arah lama. */
 const bottomNav = $('bottomNav');
 const SCROLL_THRESHOLD = 8;
 let lastScrollY = Math.max(0,window.scrollY);
 let scrollFrame = 0;
 let scrollActive = false;
+
+const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+function reduceMotion() { return reduceMotionQuery.matches; }
+/* chatMode = daftar menempel di bawah (Semua). Kalender, galeri, profil mengalir dari atas. */
+function chatMode() { return !showingGallery && !showingProfile && view !== 'calendar'; }
+function topMode() { return view === 'calendar' && !showingGallery; }
+
+function maxScrollY() {
+  const doc = document.documentElement;
+  return Math.max(0,doc.scrollHeight-doc.clientHeight);
+}
+
+function syncScrollBaseline() {
+  lastScrollY = Math.max(0,window.scrollY);
+}
+
+function scrollToBottom(smooth) {
+  stuckToBottom = true;
+  const top = maxScrollY();
+
+  if (smooth && !reduceMotion()) {
+    window.scrollTo({top,behavior:'smooth'});
+  } else {
+    window.scrollTo(0,top);
+    syncScrollBaseline();
+  }
+}
 
 function setScrollMode(active) {
   if (scrollActive === active) return;
@@ -2318,7 +3179,7 @@ function setScrollMode(active) {
 
   bottomNav.setAttribute(
     'aria-label',
-    active ? 'Ketuk untuk kembali ke atas' : 'Navigasi utama'
+    active ? 'Ketuk untuk membuka navigasi' : 'Navigasi utama'
   );
 }
 
@@ -2326,20 +3187,41 @@ function handleScroll() {
   scrollFrame = 0;
 
   const currentY = Math.max(0,window.scrollY);
+  const fromBottom = maxScrollY()-currentY;
+  const delta = currentY-lastScrollY;
 
+  if (chatMode()) {
+    stuckToBottom = fromBottom <= 80;
+
+    /* Di dasar chat: navigasi & kolom tulis selalu tampil */
+    if (fromBottom <= 24) {
+      lastScrollY = currentY;
+      setScrollMode(false);
+      return;
+    }
+
+    if (Math.abs(delta) < SCROLL_THRESHOLD) return;
+    lastScrollY = currentY;
+
+    if (delta < 0) {
+      /* jangan sembunyikan kolom tulis saat user sedang mengetik */
+      if (document.activeElement !== input) setScrollMode(true);
+    } else {
+      setScrollMode(false);
+    }
+    return;
+  }
+
+  /* Galeri / profil: perilaku lama (turun = ciut) */
   if (currentY <= 2) {
     lastScrollY = currentY;
     setScrollMode(false);
     return;
   }
 
-  const delta = currentY-lastScrollY;
   if (Math.abs(delta) < SCROLL_THRESHOLD) return;
-
   lastScrollY = currentY;
-
-  if (delta > 0) setScrollMode(true);
-  else setScrollMode(false);
+  setScrollMode(delta > 0);
 }
 
 window.addEventListener('scroll',() => {
@@ -2349,9 +3231,136 @@ window.addEventListener('scroll',() => {
 
 bottomNav.addEventListener('click',event => {
   if (!scrollActive || event.target.closest('.nav-btn')) return;
-  window.scrollTo({top:0,behavior:'smooth'});
+
+  /* Hanya membuka kembali navigasi; posisi scroll tidak berpindah */
   setScrollMode(false);
 });
+
+/* Foto yang selesai dimuat tidak boleh mendorong user keluar dari dasar chat */
+historyBox.addEventListener('load',event => {
+  if (event.target.tagName === 'IMG' && stuckToBottom && chatMode()) scrollToBottom(false);
+},true);
+
+/* Tinggi kolom tulis → ruang bawah daftar mengikuti (multi-baris, pratinjau foto) */
+if ('ResizeObserver' in window) {
+  new ResizeObserver(() => {
+    document.documentElement.style.setProperty('--dock-h',$('composerDock').offsetHeight+'px');
+    if (stuckToBottom && chatMode()) scrollToBottom(false);
+  }).observe($('composerDock'));
+}
+
+/* Efek pop isi halaman setiap tombol navigasi ditekan */
+let popFlip = false;
+function playPagePop() {
+  popFlip = !popFlip;
+  document.body.classList.toggle('pop-a',popFlip);
+  document.body.classList.toggle('pop-b',!popFlip);
+}
+
+/* Tinggi header → posisi indikator & padding scroll */
+(function trackHeader() {
+  const head = $('stickyHead');
+  const set = () => document.documentElement.style.setProperty('--head-h',head.offsetHeight+'px');
+  set();
+  if ('ResizeObserver' in window) new ResizeObserver(set).observe(head);
+})();
+
+/* Tarik ke bawah untuk memuat ulang (seperti Chrome) */
+(function pullToRefresh() {
+  const ptr = $('ptr');
+  const root = document.documentElement;
+  const THRESHOLD = 60;
+  const MAX = 96;
+  let startY = 0, startX = 0, armed = false, pulling = false, busy = false, dist = 0, settleTimer = 0;
+
+  function setDist(px,animated) {
+    dist = px;
+    root.style.setProperty('--ptr',px+'px');
+    const progress = Math.min(1,px/THRESHOLD);
+    ptr.style.setProperty('--ptr-p',progress);
+    ptr.style.opacity = Math.min(1,progress*1.5);
+    ptr.classList.toggle('ready',px >= THRESHOLD);
+    document.body.classList.toggle('ptr-settle',!!animated);
+  }
+
+  function release() {
+    setDist(0,true);
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => {
+      document.body.classList.remove('ptr-pulling','ptr-settle');
+      root.style.removeProperty('--ptr');
+    },480);
+  }
+
+  async function refresh() {
+    busy = true;
+    ptr.classList.add('refreshing');
+    setDist(52,true);
+
+    const started = Date.now();
+    try {
+      if (typeof refreshFromCloud === 'function') await refreshFromCloud(true);
+    } catch {}
+
+    updateStreakBadge();
+    if (view === 'calendar') renderCalendar();
+    render();
+
+    const wait = Math.max(0,800-(Date.now()-started));
+    await new Promise(resolve => setTimeout(resolve,wait));
+
+    ptr.classList.remove('refreshing');
+    busy = false;
+    release();
+    showToast('Diperbarui');
+  }
+
+  function blocked(target) {
+    return busy || activeModal || dialogResolver ||
+      document.body.classList.contains('login-active') ||
+      !!(target.closest && target.closest('.modal-backdrop,.media-backdrop,.picker-backdrop,.login-screen,.dd-panel,.wheel,textarea,input'));
+  }
+
+  document.addEventListener('touchstart',event => {
+    armed = false;
+    pulling = false;
+    if (event.touches.length !== 1 || window.scrollY > 0 || blocked(event.target)) return;
+    startY = event.touches[0].clientY;
+    startX = event.touches[0].clientX;
+    armed = true;
+  },{passive:true});
+
+  document.addEventListener('touchmove',event => {
+    if (!armed) return;
+
+    const dy = event.touches[0].clientY-startY;
+    const dx = event.touches[0].clientX-startX;
+
+    if (!pulling) {
+      if (dy < -6 || Math.abs(dx) > 12 && Math.abs(dx) > dy) { armed = false; return; }
+      if (dy <= 6) return;
+      if (window.scrollY > 0) { armed = false; return; }
+      pulling = true;
+      clearTimeout(settleTimer);
+      document.body.classList.add('ptr-pulling');
+    }
+
+    if (event.cancelable) event.preventDefault();
+    setDist(Math.min(MAX,(dy-6)*.55),false);
+  },{passive:false});
+
+  function end() {
+    const wasPulling = pulling;
+    armed = false;
+    pulling = false;
+    if (!wasPulling) return;
+    if (dist >= THRESHOLD) refresh();
+    else release();
+  }
+
+  document.addEventListener('touchend',end);
+  document.addEventListener('touchcancel',end);
+})();
 
 /* Inisialisasi */
 applyTheme(savedTheme,false);
@@ -2388,6 +3397,7 @@ let syncTimer = null;
 let lastPull = 0;
 let lastSyncError = '';
 let realtimeChannel = null;
+let suppressSession = false;
 const photoUrlCache = new Map();
 const syncStatus = $('syncStatus');
 
@@ -2454,11 +3464,13 @@ async function getSignedUrl(path) {
   return data.signedUrl;
 }
 
-async function resolvePhotoUrls() {
-  if (!currentUserId) return;
+/* Menandatangani URL foto hanya untuk catatan yang sedang tampil (atau daftar `targets`).
+   silent=true: jangan render ulang (dipakai saat memuat batch berikutnya, sebelum ditampilkan). */
+async function resolvePhotoUrls(targets,silent) {
+  if (!currentUserId) return false;
 
   const now = Date.now();
-  const need = notes.filter(n => n.photoPath && !isDataUrl(n.photo));
+  const need = (targets || getDisplayedNotes()).filter(n => n.photoPath && !isDataUrl(n.photo));
   const toSign = [];
   let changed = false;
 
@@ -2488,7 +3500,8 @@ async function resolvePhotoUrls() {
     });
   }
 
-  if (changed) refreshAfterMutation();
+  if (changed && !silent) refreshAfterMutation();
+  return changed;
 }
 
 /* Hapus file foto yang sudah tidak dipakai (ditunda agar "Urungkan" tetap aman) */
@@ -2775,6 +3788,7 @@ async function startSync(session) {
   syncReady = false;
   remoteSnap = new Map();
   notes = [];
+  pendingBottom = true;
   refreshAfterMutation();
   setSyncStatus('Memuat data dari cloud...');
 
@@ -2835,12 +3849,226 @@ async function refreshFromCloud(force) {
 document.addEventListener('visibilitychange',() => { if (!document.hidden) refreshFromCloud(); });
 window.addEventListener('focus',() => refreshFromCloud());
 window.addEventListener('online',() => { if (currentUserId && syncReady) scheduleSync(); });
-setInterval(() => { if (currentUserId && syncReady) resolvePhotoUrls(); },20*60*1000);
+setInterval(() => { if (currentUserId && syncReady) { resolvePhotoUrls(); refreshAvatarUrl(); } },20*60*1000);
+
+
+/* ===== Foto profil (Supabase Storage + user_metadata.avatar_path) ===== */
+function compressAvatar(file) {
+  return new Promise((resolve,reject) => {
+    if (!file || !file.type.startsWith('image/')) { reject(new Error('File bukan gambar.')); return; }
+
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Foto tidak bisa dibaca.'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error('Foto tidak bisa dibuka.'));
+      image.onload = () => {
+        const size = 400;
+        const side = Math.min(image.width,image.height);
+        const sx = (image.width-side)/2;
+        const sy = (image.height-side)/2;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { reject(new Error('Foto tidak bisa diproses.')); return; }
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0,0,size,size);
+        ctx.drawImage(image,sx,sy,side,side,0,0,size,size);
+        try { resolve(canvas.toDataURL('image/jpeg',.82)); }
+        catch { reject(new Error('Foto gagal dikompres. Coba foto lain.')); }
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function updateAvatarUI(hadBefore) {
+  const has = !!avatarPath;
+
+  $('profileAvatarImg').classList.toggle('hidden',!avatarUrl);
+  $('profileAvatarPlaceholder').classList.toggle('hidden',!!avatarUrl);
+  if (avatarUrl) $('profileAvatarImg').src = avatarUrl;
+  else $('profileAvatarImg').removeAttribute('src');
+
+  $('avatarAdd').disabled = has;
+  $('avatarChange').disabled = !has;
+  $('avatarRemove').disabled = !has;
+
+  if (hadBefore !== has) {
+    refreshAfterMutation();
+  } else {
+    document.querySelectorAll('.entry-avatar img').forEach(img => {
+      if (avatarUrl && img.getAttribute('src') !== avatarUrl) img.src = avatarUrl;
+    });
+  }
+}
+
+function syncAvatar(path) {
+  if (path === avatarPath && (avatarUrl || !path)) return;
+
+  const had = !!avatarPath;
+  if (path !== avatarPath) { avatarPath = path; avatarUrl = ''; }
+  updateAvatarUI(had);
+
+  if (path) {
+    getSignedUrl(path).then(url => {
+      if (avatarPath === path && url) { avatarUrl = url; updateAvatarUI(true); }
+    }).catch(() => {});
+  }
+}
+
+function refreshAvatarUrl() {
+  if (!avatarPath) return;
+  const cached = photoUrlCache.get(avatarPath);
+  if (cached && cached.exp > Date.now()+3600000) return;
+  const path = avatarPath;
+  getSignedUrl(path).then(url => {
+    if (avatarPath === path && url) { avatarUrl = url; updateAvatarUI(true); }
+  }).catch(() => {});
+}
+
+function removeAvatarFile(path) {
+  if (!path) return;
+  try { supabaseClient.storage.from(PHOTO_BUCKET).remove([path]); } catch {}
+}
+
+async function handleAvatarFile(file) {
+  if (!file) return;
+
+  if (!currentUserId) {
+    await showAlert('Belum tersambung ke akun. Coba lagi sebentar.');
+    return;
+  }
+
+  const buttons = [$('profileAvatar'),$('avatarEditBtn')];
+  buttons.forEach(b => { b.disabled = true; });
+  profileMessage.textContent = 'Mengunggah foto profil...';
+
+  let uploadedPath = '';
+
+  try {
+    const dataUrl = await compressAvatar(file);
+    const blob = await (await fetch(dataUrl)).blob();
+    const path = `${currentUserId}/avatar-${Date.now()}.jpg`;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from(PHOTO_BUCKET)
+      .upload(path,blob,{contentType:'image/jpeg',upsert:false});
+    if (uploadError) throw uploadError;
+    uploadedPath = path;
+
+    /* Catat path lama SEBELUM updateUser: event USER_UPDATED bisa menimpa avatarPath lebih dulu */
+    const old = avatarPath;
+    const { error: metaError } = await supabaseClient.auth.updateUser({data:{avatar_path:path}});
+    if (metaError) throw metaError;
+
+    avatarPath = path;
+    avatarUrl = dataUrl;   /* tampil instan; URL bertanda tangan menyusul */
+    updateAvatarUI(!!old);
+    if (old && old !== path) removeAvatarFile(old);
+    profileMessage.textContent = '';
+
+    getSignedUrl(path).then(url => {
+      if (avatarPath === path && url) { avatarUrl = url; updateAvatarUI(true); }
+    }).catch(() => {});
+  } catch (error) {
+    if (uploadedPath) removeAvatarFile(uploadedPath);
+    profileMessage.textContent = 'Gagal menyimpan foto profil: ' + (error.message || 'coba lagi.');
+  } finally {
+    buttons.forEach(b => { b.disabled = false; });
+    $('avatarInput').value = '';
+  }
+}
+
+async function removeAvatar() {
+  if (!avatarPath) return;
+
+  const accepted = await showConfirm('Hapus foto profil?',{okLabel:'Hapus',danger:true});
+  if (!accepted) return;
+
+  const old = avatarPath;
+  profileMessage.textContent = 'Menghapus foto profil...';
+
+  try {
+    const { error } = await supabaseClient.auth.updateUser({data:{avatar_path:null}});
+    if (error) throw error;
+
+    avatarPath = '';
+    avatarUrl = '';
+    updateAvatarUI(true);
+    removeAvatarFile(old);
+    profileMessage.textContent = '';
+  } catch (error) {
+    profileMessage.textContent = 'Gagal menghapus foto profil: ' + (error.message || 'coba lagi.');
+  }
+}
+
+function openAvatarSheet() {
+  const sheet = $('avatarBackdrop');
+  focusReturnElement = document.activeElement;
+  activeModal = sheet;
+  sheet.classList.add('open');
+  sheet.setAttribute('aria-hidden','false');
+  requestAnimationFrame(() => sheet.querySelector('[role="dialog"]').focus());
+}
+
+function closeAvatarSheet() {
+  const sheet = $('avatarBackdrop');
+  sheet.classList.remove('open');
+  sheet.setAttribute('aria-hidden','true');
+  if (activeModal === sheet) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) {
+    focusReturnElement.focus({preventScroll:true});
+  }
+  focusReturnElement = null;
+}
+
+$('profileAvatar').addEventListener('click',openAvatarSheet);
+$('avatarEditBtn').addEventListener('click',openAvatarSheet);
+$('avatarCancel').addEventListener('click',closeAvatarSheet);
+$('avatarBackdrop').addEventListener('click',event => {
+  if (event.target === $('avatarBackdrop')) closeAvatarSheet();
+});
+['avatarAdd','avatarChange'].forEach(id => $(id).addEventListener('click',() => {
+  closeAvatarSheet();
+  $('avatarInput').click();
+}));
+$('avatarRemove').addEventListener('click',() => {
+  closeAvatarSheet();
+  removeAvatar();
+});
+
+/* Jika gambar profil gagal dimuat, tampilkan placeholder (bukan teks alt) */
+$('profileAvatarImg').addEventListener('error',() => {
+  if (!$('profileAvatarImg').getAttribute('src')) return;
+  $('profileAvatarImg').classList.add('hidden');
+  $('profileAvatarPlaceholder').classList.remove('hidden');
+});
+$('avatarInput').addEventListener('change',() => {
+  const file = $('avatarInput').files && $('avatarInput').files[0];
+  if (file) handleAvatarFile(file);
+});
 
 /* Tampilkan / sembunyikan aplikasi sesuai sesi, sekaligus isi email profil */
 function applySession(session) {
+  if (suppressSession && session) return;
+
+  if (recoveryMode && session) {
+    loginScreen.classList.remove('hidden');
+    document.body.classList.add('login-active');
+    if (!$('resetForm').classList.contains('active')) {
+      showAuthPane('reset');
+      try { history.replaceState(null,'',location.pathname); } catch {}
+    }
+    return;
+  }
   const email = session && session.user ? session.user.email : '';
   profileEmail.textContent = email || 'Belum masuk';
+
+  const meta = session && session.user ? session.user.user_metadata : null;
+  syncAvatar((meta && typeof meta.avatar_path === 'string') ? meta.avatar_path : '');
 
   const remoteTheme = session && session.user && session.user.user_metadata
     ? session.user.user_metadata.theme : null;
@@ -2870,6 +4098,7 @@ async function refreshProfileEmail() {
 
 /* Pantau perubahan sesi (masuk, keluar, token diperbarui, sesi awal) */
 supabaseClient.auth.onAuthStateChange((event,session) => {
+  if (event === 'PASSWORD_RECOVERY') recoveryMode = true;
   applySession(session);
 });
 
@@ -2877,40 +4106,189 @@ supabaseClient.auth.getSession().then(({ data, error }) => {
   if (!error) applySession(data.session);
 });
 
-/* Daftar */
-$('showSignup').addEventListener('click',() => {
-  $('signupForm').style.display = 'block';
+/* ===== Halaman masuk & daftar ===== */
+
+function setMsg(el,text,type) {
+  el.textContent = text || '';
+  el.className = 'auth-msg' + (type === 'ok' ? ' ok' : '');
+
+  if (text && type !== 'ok') {
+    const card = el.closest('.auth-card');
+    if (card) {
+      card.classList.remove('shake');
+      void card.offsetWidth;
+      card.classList.add('shake');
+    }
+  }
+}
+
+const AUTH_PANES = {login:'loginForm',signup:'signupForm',forgot:'forgotForm',reset:'resetForm'};
+
+function showAuthPane(name) {
+  Object.entries(AUTH_PANES).forEach(([key,id]) => {
+    const pane = $(id);
+    pane.classList.toggle('from-left',name === 'login');
+    pane.classList.toggle('active',key === name);
+  });
+
+  ['loginStatus','signupMessage','forgotMessage','resetMessage'].forEach(id => setMsg($(id),''));
+
+  const first = {login:'loginEmail',signup:'signupEmail',forgot:'forgotEmail',reset:'resetPassword'}[name];
+  setTimeout(() => $(first).focus({preventScroll:true}),60);
+}
+
+function friendlyAuthError(error) {
+  const m = String((error && error.message) || error || '').toLowerCase();
+  if (m.includes('invalid login')) return 'Email atau password salah.';
+  if (m.includes('email not confirmed')) return 'Email belum dikonfirmasi. Cek kotak masukmu.';
+  if (m.includes('already registered') || m.includes('already been registered')) return 'Email ini sudah terdaftar. Silakan masuk.';
+  if (m.includes('rate limit') || m.includes('too many')) return 'Terlalu banyak percobaan. Coba lagi beberapa saat lagi.';
+  if (m.includes('different from the old') || m.includes('same password')) return 'Password baru harus berbeda dari yang lama.';
+  if (m.includes('password')) return 'Password belum memenuhi syarat (minimal 6 karakter).';
+  if (m.includes('failed to fetch') || m.includes('network')) return 'Koneksi bermasalah. Cek internetmu.';
+  return (error && error.message) || 'Terjadi kesalahan. Coba lagi.';
+}
+
+document.querySelectorAll('.pw-toggle').forEach(btn => {
+  btn.addEventListener('click',() => {
+    const field = $(btn.dataset.target);
+    const show = field.type === 'password';
+    field.type = show ? 'text' : 'password';
+    btn.textContent = show ? 'Sembunyi' : 'Lihat';
+  });
 });
 
-$('signupSubmit').addEventListener('click',async () => {
-  const signupMessage = $('signupMessage');
+$('showSignup').addEventListener('click',() => showAuthPane('signup'));
+$('backToLogin').addEventListener('click',() => showAuthPane('login'));
+$('toLogin2').addEventListener('click',() => showAuthPane('login'));
+$('showForgot').addEventListener('click',() => {
+  const typed = $('loginEmail').value.trim();
+  showAuthPane('forgot');
+  if (typed) $('forgotEmail').value = typed;
+});
+$('backFromForgot').addEventListener('click',() => showAuthPane('login'));
+
+/* Lupa password: kirim tautan reset ke email */
+$('forgotForm').addEventListener('submit',async event => {
+  event.preventDefault();
+
+  const msg = $('forgotMessage');
+  const button = $('forgotSubmit');
+  const email = $('forgotEmail').value.trim();
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setMsg(msg,'Format email belum benar.'); return; }
+
+  button.disabled = true;
+  button.textContent = 'Mengirim...';
+  setMsg(msg,'');
+
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email,{
+      redirectTo: location.origin + location.pathname
+    });
+    if (error) throw error;
+    setMsg(msg,'Tautan sudah dikirim. Cek emailmu (termasuk folder spam).','ok');
+  } catch (error) {
+    setMsg(msg,friendlyAuthError(error));
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Kirim tautan';
+  }
+});
+
+/* Password baru (setelah membuka tautan dari email) */
+$('resetForm').addEventListener('submit',async event => {
+  event.preventDefault();
+
+  const msg = $('resetMessage');
+  const button = $('resetSubmit');
+  const password = $('resetPassword').value;
+  const confirm = $('resetConfirm').value;
+
+  if (password.length < 6) { setMsg(msg,'Password minimal 6 karakter.'); return; }
+  if (password !== confirm) { setMsg(msg,'Password dan ulangi password belum sama.'); return; }
+
+  button.disabled = true;
+  button.textContent = 'Menyimpan...';
+  setMsg(msg,'');
+  suppressSession = true;
+
+  try {
+    const { error } = await supabaseClient.auth.updateUser({ password });
+    if (error) throw error;
+
+    recoveryMode = false;
+    try { await supabaseClient.auth.signOut(); } catch {}
+
+    $('resetPassword').value = '';
+    $('resetConfirm').value = '';
+    showAuthPane('login');
+    setMsg(loginStatus,'Password berhasil diubah. Silakan masuk.','ok');
+  } catch (error) {
+    setMsg(msg,friendlyAuthError(error));
+  } finally {
+    setTimeout(() => { suppressSession = false; },1500);
+    button.disabled = false;
+    button.textContent = 'Simpan password';
+  }
+});
+
+/* Daftar: buat akun, lalu kembali ke halaman masuk */
+$('signupForm').addEventListener('submit',async event => {
+  event.preventDefault();
+
+  const msg = $('signupMessage');
+  const button = $('signupSubmit');
   const email = $('signupEmail').value.trim();
   const password = $('signupPassword').value;
+  const confirm = $('signupConfirm').value;
 
-  if (!email || !password) {
-    signupMessage.textContent = 'Isi email dan password dulu.';
-    return;
-  }
+  if (!email || !password || !confirm) { setMsg(msg,'Lengkapi email dan password dulu.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setMsg(msg,'Format email belum benar.'); return; }
+  if (password.length < 6) { setMsg(msg,'Password minimal 6 karakter.'); return; }
+  if (password !== confirm) { setMsg(msg,'Password dan ulangi password belum sama.'); return; }
 
-  if (password.length < 6) {
-    signupMessage.textContent = 'Password minimal 6 karakter.';
-    return;
-  }
-
-  $('signupSubmit').disabled = true;
-  signupMessage.textContent = 'Membuat akun...';
+  button.disabled = true;
+  button.textContent = 'Membuat akun...';
+  setMsg(msg,'');
+  suppressSession = true;
 
   try {
     const { data, error } = await supabaseClient.auth.signUp({ email, password });
     if (error) throw error;
 
-    signupMessage.textContent = data.session
-      ? 'Akun berhasil dibuat!'
-      : 'Cek email untuk konfirmasi akun.';
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      throw new Error('already registered');
+    }
+
+    /* Supaya tidak langsung masuk aplikasi: akhiri sesi otomatis dari pendaftaran */
+    if (data.session) {
+      try { await supabaseClient.auth.signOut(); } catch {}
+    }
+
+    const needsConfirm = !data.session;
+
+    $('signupEmail').value = '';
+    $('signupPassword').value = '';
+    $('signupConfirm').value = '';
+
+    showAuthPane('login');
+    $('loginEmail').value = email;
+    $('loginPassword').value = '';
+    setMsg(
+      loginStatus,
+      needsConfirm
+        ? 'Akun dibuat! Cek emailmu untuk konfirmasi, lalu masuk.'
+        : 'Akun berhasil dibuat! Silakan masuk.',
+      'ok'
+    );
+    setTimeout(() => $('loginPassword').focus({preventScroll:true}),120);
   } catch (error) {
-    signupMessage.textContent = error.message;
+    setMsg(msg,friendlyAuthError(error));
   } finally {
-    $('signupSubmit').disabled = false;
+    setTimeout(() => { suppressSession = false; },1500);
+    button.disabled = false;
+    button.textContent = 'Daftar';
   }
 });
 
@@ -2918,20 +4296,28 @@ $('signupSubmit').addEventListener('click',async () => {
 $('loginForm').addEventListener('submit',async event => {
   event.preventDefault();
 
+  const button = $('loginSubmit');
   const email = $('loginEmail').value.trim();
   const password = $('loginPassword').value;
 
-  loginStatus.textContent = 'Memproses login...';
+  if (!email || !password) { setMsg(loginStatus,'Isi email dan password dulu.'); return; }
+
+  button.disabled = true;
+  button.textContent = 'Memproses...';
+  setMsg(loginStatus,'');
 
   try {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
     if (error) throw error;
 
-    loginStatus.textContent = '';
     $('loginPassword').value = '';
+    suppressSession = false;
     applySession(data.session);
   } catch (error) {
-    loginStatus.textContent = 'Login gagal: ' + error.message;
+    setMsg(loginStatus,friendlyAuthError(error));
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Masuk';
   }
 });
 
@@ -2946,9 +4332,10 @@ signOutButton.addEventListener('click',async () => {
     if (error) throw error;
 
     profileMessage.textContent = '';
-    loginStatus.textContent = '';
+    setMsg(loginStatus,'');
     $('loginEmail').value = '';
     $('loginPassword').value = '';
+    showAuthPane('login');
 
     setProfileMode(false);
     view = 'all';
