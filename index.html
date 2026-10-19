@@ -687,6 +687,7 @@ body.dark-theme {
       <div class="profile-info">
         <span class="profile-info-label">Email akun</span>
         <div id="profileEmail">Memuat email...</div>
+        <div id="syncStatus" style="margin-top:8px;font-size:11px;color:var(--muted)"></div>
       </div>
 
       <p id="profileMessage" role="status"></p>
@@ -895,6 +896,7 @@ let dialogResolver = null;
 let activeModal = null;
 let lastModalFocus = null;
 let focusReturnElement = null;
+let currentUserId = null;
 
 function dateKey(date) {
   return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
@@ -945,25 +947,33 @@ function normalizeNote(n,i) {
     createdAt,
     pinned:Boolean(n.pinned),
     reacted:Boolean(n.reacted),
+    photoPath:typeof n.photoPath === 'string' ? n.photoPath : '',
     dayKey:n.dayKey || parseOldDate(n.time) || dateKey(new Date(createdAt))
   };
 }
 
-try {
-  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  if (Array.isArray(stored)) notes = stored.map(normalizeNote);
-} catch {
-  notes = [];
+function storageKey() {
+  return currentUserId ? `${STORAGE_KEY}:${currentUserId}` : STORAGE_KEY;
 }
 
-function persist() {
+function readNotes(key) {
   try {
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(notes));
-    return true;
+    const stored = JSON.parse(localStorage.getItem(key) || '[]');
+    return Array.isArray(stored) ? stored.map(normalizeNote) : [];
   } catch {
-    showAlert('Penyimpanan penuh atau gagal. Coba gunakan foto yang lebih kecil.');
+    return [];
+  }
+}
+
+/* Semua data disimpan online (Supabase). Tidak ada penyimpanan catatan di perangkat. */
+function persist() {
+  if (!currentUserId || !syncReady) {
+    showAlert('Belum tersambung ke cloud, jadi perubahan belum bisa disimpan. Tunggu sebentar atau cek koneksi internet.');
     return false;
   }
+
+  scheduleSync();
+  return true;
 }
 
 function getTodayKey() {
@@ -1792,6 +1802,7 @@ $('editForm').addEventListener('submit',async event => {
 
   note.text = text;
   note.photo = editPhotoDraft;
+  if (!editPhotoDraft) note.photoPath = '';
   note.dayKey = dateValue;
   note.createdAt = editedDate.getTime();
   note.time = formatTime(editedDate);
@@ -2227,7 +2238,7 @@ $('statsBackdrop').addEventListener('click',event => {
 });
 
 /* Tema */
-function applyTheme(theme) {
+function applyTheme(theme,save = true) {
   document.body.classList.toggle('dark-theme',theme === 'dark');
   $('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
 
@@ -2239,15 +2250,10 @@ function applyTheme(theme) {
   document.querySelector('meta[name="theme-color"]').content =
     theme === 'dark' ? '#0b1220' : '#f5edf2';
 
-  try {
-    localStorage.setItem(THEME_KEY,theme);
-  } catch {}
+  if (save && typeof saveThemeRemote === 'function') saveThemeRemote(theme);
 }
 
-let savedTheme = 'light';
-try {
-  savedTheme = localStorage.getItem(THEME_KEY) || 'light';
-} catch {}
+const savedTheme = 'light';
 
 $('themeToggle').addEventListener('click',() => {
   const nextTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
@@ -2348,7 +2354,7 @@ bottomNav.addEventListener('click',event => {
 });
 
 /* Inisialisasi */
-applyTheme(savedTheme);
+applyTheme(savedTheme,false);
 updateNavigation();
 updateStreakBadge();
 renderCalendar();
@@ -2369,17 +2375,485 @@ const signOutButton = $('signOutButton');
 const profileEmail = $('profileEmail');
 const profileMessage = $('profileMessage');
 
+/* ===== Sinkronisasi catatan + foto ke Supabase ===== */
+const NOTES_TABLE = 'unsent_notes';
+const PHOTO_BUCKET = 'note-photos';
+const PHOTO_URL_TTL = 6*60*60;
+const SYNC_DELAY = 500;
+let remoteSnap = new Map();
+let syncReady = false;
+let syncStarting = false;
+let syncing = false;
+let syncTimer = null;
+let lastPull = 0;
+let lastSyncError = '';
+let realtimeChannel = null;
+const photoUrlCache = new Map();
+const syncStatus = $('syncStatus');
+
+function setSyncStatus(text) { syncStatus.textContent = text; }
+
+function saveThemeRemote(theme) {
+  if (!currentUserId) return;
+  supabaseClient.auth.updateUser({data:{theme}}).catch(() => {});
+}
+
+function noteToRow(n) {
+  return {
+    user_id:currentUserId,
+    id:String(n.id),
+    content:String(n.text || ''),
+    photo:'',
+    photo_path:n.photoPath || '',
+    time_label:String(n.time || ''),
+    created_at:Math.round(Number(n.createdAt)) || 0,
+    pinned:Boolean(n.pinned),
+    reacted:Boolean(n.reacted),
+    day_key:n.dayKey || ''
+  };
+}
+
+function rowToNote(r) {
+  return normalizeNote({
+    id:r.id,
+    text:r.content,
+    photo:r.photo_path ? '' : (r.photo || ''),   /* foto lama (base64) dimigrasi otomatis ke Storage */
+    photoPath:r.photo_path || '',
+    time:r.time_label,
+    createdAt:Number(r.created_at),
+    pinned:r.pinned,
+    reacted:r.reacted,
+    dayKey:r.day_key
+  },0);
+}
+
+function isDataUrl(v) { return typeof v === 'string' && v.startsWith('data:'); }
+
+function isDirty(n) {
+  return isDataUrl(n.photo) || remoteSnap.get(String(n.id)) !== JSON.stringify(noteToRow(n));
+}
+
+/* ---------- Foto (Supabase Storage, bucket privat) ---------- */
+async function uploadPhoto(dataUrl,noteId) {
+  const blob = await (await fetch(dataUrl)).blob();
+  const safeId = String(noteId).replace(/[^0-9a-z]/gi,'');
+  const path = `${currentUserId}/${safeId}-${Date.now()}.jpg`;
+  const { error } = await supabaseClient.storage
+    .from(PHOTO_BUCKET)
+    .upload(path,blob,{contentType:'image/jpeg',upsert:false});
+  if (error) throw error;
+  return path;
+}
+
+async function getSignedUrl(path) {
+  const { data, error } = await supabaseClient.storage
+    .from(PHOTO_BUCKET)
+    .createSignedUrl(path,PHOTO_URL_TTL);
+  if (error || !data) return '';
+  photoUrlCache.set(path,{url:data.signedUrl,exp:Date.now()+PHOTO_URL_TTL*1000});
+  return data.signedUrl;
+}
+
+async function resolvePhotoUrls() {
+  if (!currentUserId) return;
+
+  const now = Date.now();
+  const need = notes.filter(n => n.photoPath && !isDataUrl(n.photo));
+  const toSign = [];
+  let changed = false;
+
+  need.forEach(n => {
+    const c = photoUrlCache.get(n.photoPath);
+    if (c && c.exp > now+3600000) {
+      if (n.photo !== c.url) { n.photo = c.url; changed = true; }
+    } else {
+      toSign.push(n.photoPath);
+    }
+  });
+
+  if (toSign.length) {
+    const { data, error } = await supabaseClient.storage
+      .from(PHOTO_BUCKET)
+      .createSignedUrls([...new Set(toSign)],PHOTO_URL_TTL);
+
+    if (!error && data) {
+      data.forEach(d => {
+        if (d.signedUrl) photoUrlCache.set(d.path,{url:d.signedUrl,exp:now+PHOTO_URL_TTL*1000});
+      });
+    }
+
+    need.forEach(n => {
+      const c = photoUrlCache.get(n.photoPath);
+      if (c && n.photo !== c.url) { n.photo = c.url; changed = true; }
+    });
+  }
+
+  if (changed) refreshAfterMutation();
+}
+
+/* Hapus file foto yang sudah tidak dipakai (ditunda agar "Urungkan" tetap aman) */
+function queueOrphans(paths) {
+  const unique = [...new Set(paths.filter(Boolean))];
+  if (!unique.length) return;
+
+  setTimeout(async () => {
+    const used = new Set(notes.map(n => n.photoPath).filter(Boolean));
+    const removable = unique.filter(path => !used.has(path));
+    if (!removable.length) return;
+    try { await supabaseClient.storage.from(PHOTO_BUCKET).remove(removable); } catch {}
+  },12000);
+}
+
+/* ---------- Ambil data ---------- */
+async function pullRemote(guard) {
+  const rows = [];
+  const PAGE = 50;
+  let from = 0;
+
+  while (true) {
+    const { data, error } = await supabaseClient
+      .from(NOTES_TABLE)
+      .select('*')
+      .order('created_at',{ascending:true})
+      .range(from,from+PAGE-1);
+    if (error) throw error;
+    rows.push(...data);
+    if (data.length < PAGE) break;
+    from += PAGE;
+  }
+
+  if (guard && (syncTimer || syncing)) return false;
+
+  const oldPhotos = new Map(notes.filter(n => n.photoPath && n.photo && !isDataUrl(n.photo)).map(n => [n.photoPath,n.photo]));
+
+  remoteSnap = new Map();
+  notes = rows.map(rowToNote);
+  notes.forEach(n => {
+    remoteSnap.set(String(n.id),JSON.stringify(noteToRow(n)));
+    if (n.photoPath && oldPhotos.has(n.photoPath)) n.photo = oldPhotos.get(n.photoPath);
+  });
+
+  lastPull = Date.now();
+  if (notes.some(n => isDataUrl(n.photo))) scheduleSync(150);
+  return true;
+}
+
+/* ---------- Kirim data ---------- */
+function scheduleSync(delay = SYNC_DELAY) {
+  if (!currentUserId || !syncReady) return;
+  clearTimeout(syncTimer);
+  setSyncStatus('Menyimpan ke cloud...');
+  syncTimer = setTimeout(() => {
+    syncTimer = null;
+    syncNow();
+  },delay);
+}
+
+async function syncNow() {
+  if (!currentUserId || !syncReady) return;
+  if (syncing) { scheduleSync(300); return; }
+
+  syncing = true;
+  const uid = currentUserId;
+  const orphans = [];
+  let failed = 0;
+  let firstError = '';
+
+  const fail = message => { failed++; if (!firstError) firstError = message || 'tidak diketahui'; };
+  const upsertRows = rows => supabaseClient.from(NOTES_TABLE).upsert(rows,{onConflict:'user_id,id'});
+  const markSynced = row => {
+    const old = remoteSnap.get(row.id);
+    if (old) {
+      try {
+        const o = JSON.parse(old);
+        if (o.photo_path && o.photo_path !== row.photo_path) orphans.push(o.photo_path);
+      } catch {}
+    }
+    remoteSnap.set(row.id,JSON.stringify(row));
+  };
+
+  try {
+    /* 1. Unggah foto baru ke Storage */
+    for (const n of [...notes]) {
+      const dataUrl = n.photo;
+      if (!isDataUrl(dataUrl)) continue;
+
+      try {
+        const oldPath = n.photoPath;
+        const path = await uploadPhoto(dataUrl,n.id);
+
+        if (currentUserId === uid && n.photo === dataUrl) {
+          n.photoPath = path;
+          n.photo = (await getSignedUrl(path)) || '';
+          if (oldPath) orphans.push(oldPath);
+        } else {
+          orphans.push(path);
+        }
+      } catch (error) {
+        fail('Foto: ' + (error.message || error));
+      }
+    }
+
+    /* 2. Kirim teks/metadata: tiap catatan diisolasi supaya satu data buruk tidak memblokir yang lain */
+    const current = new Map(notes.map(n => [String(n.id),noteToRow(n)]));
+    const upserts = [];
+
+    current.forEach((row,id) => {
+      if (remoteSnap.get(id) !== JSON.stringify(row)) upserts.push(row);
+    });
+
+    const deletes = [...remoteSnap.keys()].filter(id => !current.has(id));
+
+    for (let i=0;i<upserts.length;i+=10) {
+      const chunk = upserts.slice(i,i+10);
+      const { error } = await upsertRows(chunk);
+
+      if (!error) {
+        chunk.forEach(markSynced);
+      } else {
+        for (const row of chunk) {
+          const single = await upsertRows([row]);
+          if (single.error) fail(single.error.message);
+          else markSynced(row);
+        }
+      }
+    }
+
+    for (let i=0;i<deletes.length;i+=50) {
+      const chunk = deletes.slice(i,i+50);
+      const { error } = await supabaseClient
+        .from(NOTES_TABLE)
+        .delete()
+        .eq('user_id',uid)
+        .in('id',chunk);
+
+      if (error) {
+        fail(error.message);
+      } else {
+        chunk.forEach(id => {
+          try {
+            const o = JSON.parse(remoteSnap.get(id));
+            if (o.photo_path) orphans.push(o.photo_path);
+          } catch {}
+          remoteSnap.delete(id);
+        });
+      }
+    }
+
+    queueOrphans(orphans);
+    if (failed) throw new Error(firstError);
+
+    lastSyncError = '';
+    setSyncStatus('Tersinkron ✓');
+    refreshAfterMutation();
+  } catch (error) {
+    const message = error.message || String(error);
+    setSyncStatus('Gagal sinkron: ' + message);
+
+    if (message !== lastSyncError) {
+      lastSyncError = message;
+      showToast('Gagal menyimpan ke cloud: ' + message,{duration:5000});
+    }
+
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => { syncTimer = null; syncNow(); },8000);
+  } finally {
+    syncing = false;
+  }
+}
+
+async function flushSync() {
+  clearTimeout(syncTimer);
+  syncTimer = null;
+  let guard = 0;
+  while (syncing && guard++ < 300) await new Promise(r => setTimeout(r,100));
+  await syncNow();
+}
+
+/* Data lama di perangkat ini: diunggah sekali ke cloud, lalu dihapus dari perangkat */
+async function mergeLegacy() {
+  const keys = [STORAGE_KEY,`${STORAGE_KEY}:${currentUserId}`];
+  const found = new Map();
+
+  keys.forEach(key => {
+    readNotes(key).forEach(n => {
+      const id = String(n.id);
+      const previous = found.get(id);
+      if (!previous || (n.photo && !previous.photo)) found.set(id,n);
+    });
+  });
+
+  const ids = new Set(notes.map(n => String(n.id)));
+  const extra = [...found.values()].filter(n => !ids.has(String(n.id)));
+
+  if (extra.length) {
+    notes.push(...extra);
+    scheduleSync(100);
+    await flushSync();
+    if (!extra.every(n => remoteSnap.has(String(n.id)))) return;
+    refreshAfterMutation();
+  }
+
+  keys.forEach(key => { try { localStorage.removeItem(key); } catch {} });
+}
+
+/* ---------- Realtime ---------- */
+function handleRealtime(payload) {
+  if (!currentUserId || !syncReady) return;
+
+  if (payload.eventType === 'DELETE') {
+    const old = payload.old || {};
+    if (old.user_id && old.user_id !== currentUserId) return;
+
+    const id = String(old.id);
+    const index = notes.findIndex(n => String(n.id) === id);
+    remoteSnap.delete(id);
+    if (index < 0 || isDirty(notes[index])) return;
+    notes.splice(index,1);
+  } else {
+    const row = payload.new;
+    if (!row) return;
+
+    const incoming = rowToNote(row);
+    const id = String(incoming.id);
+    const rowString = JSON.stringify(noteToRow(incoming));
+    if (remoteSnap.get(id) === rowString) return;
+
+    const index = notes.findIndex(n => String(n.id) === id);
+    if (index >= 0 && isDirty(notes[index])) return;
+
+    remoteSnap.set(id,rowString);
+
+    if (index >= 0) {
+      const existing = notes[index];
+      if (existing.photoPath === incoming.photoPath && existing.photo) incoming.photo = existing.photo;
+      notes[index] = incoming;
+    } else {
+      notes.push(incoming);
+    }
+  }
+
+  refreshAfterMutation();
+  resolvePhotoUrls();
+  setSyncStatus('Tersinkron ✓');
+}
+
+function unsubscribeRealtime() {
+  if (realtimeChannel) {
+    supabaseClient.removeChannel(realtimeChannel);
+    realtimeChannel = null;
+  }
+}
+
+function subscribeRealtime() {
+  unsubscribeRealtime();
+
+  realtimeChannel = supabaseClient
+    .channel('notes-' + currentUserId)
+    .on('postgres_changes',{
+      event:'*',
+      schema:'public',
+      table:NOTES_TABLE,
+      filter:`user_id=eq.${currentUserId}`
+    },handleRealtime)
+    .subscribe(status => {
+      if (status === 'SUBSCRIBED') {
+        if (Date.now()-lastPull > 5000) refreshFromCloud(true);
+      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        setSyncStatus('Realtime terputus, mencoba menyambung lagi...');
+      }
+    });
+}
+
+/* ---------- Mulai / berhenti ---------- */
+async function startSync(session) {
+  const uid = session.user.id;
+  if (currentUserId === uid || syncStarting) return;
+
+  syncStarting = true;
+  currentUserId = uid;
+  syncReady = false;
+  remoteSnap = new Map();
+  notes = [];
+  refreshAfterMutation();
+  setSyncStatus('Memuat data dari cloud...');
+
+  try {
+    await pullRemote(false);
+    syncReady = true;
+    await mergeLegacy();
+    subscribeRealtime();
+    refreshAfterMutation();
+    resolvePhotoUrls();
+    setSyncStatus('Tersinkron ✓');
+    scheduleSync(150);
+  } catch (error) {
+    currentUserId = null;
+    const message = error.message || 'cek koneksi';
+    setSyncStatus('Gagal memuat data cloud: ' + message);
+    showToast('Gagal memuat data dari cloud: ' + message,{duration:5000});
+    setTimeout(() => {
+      supabaseClient.auth.getSession().then(({ data }) => {
+        if (data && data.session) startSync(data.session);
+      });
+    },10000);
+  } finally {
+    syncStarting = false;
+  }
+}
+
+function stopSync() {
+  clearTimeout(syncTimer);
+  syncTimer = null;
+  unsubscribeRealtime();
+  if (!currentUserId && !notes.length) return;
+
+  currentUserId = null;
+  syncReady = false;
+  remoteSnap = new Map();
+  photoUrlCache.clear();
+  notes = [];
+  setSyncStatus('');
+  refreshAfterMutation();
+}
+
+/* Ambil data terbaru (cadangan bila realtime terlewat) */
+async function refreshFromCloud(force) {
+  if (!currentUserId || !syncReady || syncing || syncTimer || document.hidden) return;
+  if (!force && Date.now()-lastPull < 15000) return;
+  if (editingId !== null || dialogResolver) return;
+
+  try {
+    if (await pullRemote(true)) {
+      refreshAfterMutation();
+      resolvePhotoUrls();
+      setSyncStatus('Tersinkron ✓');
+    }
+  } catch {}
+}
+
+document.addEventListener('visibilitychange',() => { if (!document.hidden) refreshFromCloud(); });
+window.addEventListener('focus',() => refreshFromCloud());
+window.addEventListener('online',() => { if (currentUserId && syncReady) scheduleSync(); });
+setInterval(() => { if (currentUserId && syncReady) resolvePhotoUrls(); },20*60*1000);
+
 /* Tampilkan / sembunyikan aplikasi sesuai sesi, sekaligus isi email profil */
 function applySession(session) {
   const email = session && session.user ? session.user.email : '';
   profileEmail.textContent = email || 'Belum masuk';
 
+  const remoteTheme = session && session.user && session.user.user_metadata
+    ? session.user.user_metadata.theme : null;
+  if (remoteTheme === 'dark' || remoteTheme === 'light') applyTheme(remoteTheme,false);
+
   if (session) {
     loginScreen.classList.add('hidden');
     document.body.classList.remove('login-active');
+    setTimeout(() => startSync(session),0);
   } else {
     loginScreen.classList.remove('hidden');
     document.body.classList.add('login-active');
+    stopSync();
   }
 }
 
@@ -2467,6 +2941,7 @@ signOutButton.addEventListener('click',async () => {
   profileMessage.textContent = 'Keluar dari akun...';
 
   try {
+    try { await flushSync(); } catch {}
     const { error } = await supabaseClient.auth.signOut();
     if (error) throw error;
 
