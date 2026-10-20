@@ -328,7 +328,7 @@ select,.small-btn {
 .menu-wrap { position:absolute; right:12px; top:calc(100% + 2px); width:0; height:0; z-index:60; }
 .menu-wrap.up { top:-2px; }
 .menu {
-  position:absolute; z-index:50; top:0; right:0; width:145px; padding:5px;
+  position:absolute; z-index:50; top:0; right:0; min-width:145px; width:max-content; max-width:240px; padding:5px;
   border:1px solid var(--edge); border-radius:17px; background:var(--modal);
   box-shadow:0 8px 26px rgba(104,76,96,.14);
   backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
@@ -531,6 +531,218 @@ select,.small-btn {
 }
 .bottom-nav.nav-pos-1 .nav-indicator { transform:translateX(calc(100% + 5px)); }
 .bottom-nav.nav-pos-2 .nav-indicator { transform:translateX(calc(200% + 10px)); }
+#bubuPage { min-height:60vh; padding-top:14px; }
+#bubuPage,#bubuVideo { --bubu-ink:#000; --bubu-sub:rgba(0,0,0,.55); }
+body.dark-theme #bubuPage,body.has-wallpaper #bubuPage,body.dark-theme #bubuVideo,body.has-wallpaper #bubuVideo { --bubu-ink:#fff; --bubu-sub:rgba(255,255,255,.7); }
+.bubu-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 16px; }
+.bubu-head-left { display:flex; align-items:center; gap:4px; min-width:0; }
+.bubu-back { display:grid; place-items:center; flex:none; width:40px; height:40px; margin-left:-8px; padding:0; border:0; border-radius:12px; background:transparent; color:var(--bubu-ink); -webkit-tap-highlight-color:transparent; }
+.bubu-back svg { width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.bubu-back:active { transform:scale(.92); }
+.bubu-title { margin:0; font-size:23px; font-weight:750; letter-spacing:-.5px; color:var(--bubu-ink); }
+.bubu-add-wrap { position:relative; }
+.bubu-add { display:grid; place-items:center; width:38px; height:38px; padding:0; border:1px solid var(--edge); border-radius:50%; background:var(--surface); color:var(--ink); }
+.bubu-add svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; transition:transform .25s ease; }
+.bubu-add[aria-expanded="true"] svg { transform:rotate(45deg); }
+.bubu-add:active { transform:scale(.92); }
+.bubu-add-menu { top:calc(100% + 8px); right:0; }
+.bubu-list { display:flex; flex-direction:column; gap:2px; }
+.bubu-block { position:relative; padding:10px 8px; border-radius:14px; color:var(--bubu-ink); overflow-wrap:anywhere; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.bubu-block.active { background:rgba(128,128,128,.14); }
+.bubu-text { margin:0; white-space:pre-wrap; font-size:16px; line-height:1.65; color:var(--bubu-ink); }
+.bubu-text.placeholder { color:var(--bubu-sub); }
+.bubu-input {
+  display:block; width:100%; min-height:27px; padding:0; border:0; outline:0; resize:none; overflow:hidden;
+  background:transparent; color:var(--bubu-ink); caret-color:var(--bubu-ink); font:inherit; font-size:16px; line-height:1.65;
+}
+.bubu-input::placeholder { color:var(--bubu-sub); }
+.bubu-text,.bubu-input { font-family:"Times New Roman",Times,"Liberation Serif",serif; }
+.bubu-block.chat { padding:6px 4px; }
+.bubu-block.chat.active { background:transparent; }
+.bubu-block.chat .bubu-bar { justify-content:flex-start; padding-left:39px; }
+.bubu-row { display:flex; align-items:flex-end; }
+.bubu-block.chat .entry-avatar { margin:0 7px 0 0; }
+.bubu-row .bubu-bubble { max-width:calc(100% - 39px); }
+.bubu-bubble {
+  position:relative; width:fit-content; max-width:88%; min-width:0; margin-right:auto; padding:9px 14px 7px;
+  border:1px solid #d79bbd; border-radius:20px 20px 20px 6px; color:var(--ink);
+  background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(246,231,239,.88));
+  backdrop-filter:blur(14px) saturate(135%); -webkit-backdrop-filter:blur(14px) saturate(135%);
+  box-shadow:0 5px 22px rgba(124,88,112,.045); overflow-wrap:anywhere;
+  transition:border-color .2s,box-shadow .2s;
+}
+.bubu-block.chat.active .bubu-bubble { border-color:#c4709f; box-shadow:0 8px 26px rgba(190,130,170,.22); }
+.bubu-bubble p { margin:0; white-space:pre-wrap; font-size:13px; line-height:1.5; }
+.bubu-photo { display:block; width:auto; max-width:100%; max-height:190px; margin:0 0 7px; object-fit:contain; object-position:left center; border-radius:13px; background:rgba(230,215,227,.3); }
+.bubu-time { margin-top:4px; color:#6f5469; font-size:10px; text-align:right; }
+.dark-theme .bubu-time { color:var(--muted); }
+.dark-theme .bubu-bubble { background:linear-gradient(145deg,rgba(92,32,72,.92),rgba(60,19,48,.9)); border-color:#9c3f7a; box-shadow:0 5px 22px rgba(0,0,0,.18); }
+.dark-theme .bubu-block.chat.active .bubu-bubble { border-color:#f06aae; }
+.dark-theme .bubu-photo { background:rgba(255,150,210,.08); }
+.bubu-gone { margin:0; color:var(--bubu-sub); font-size:14px; font-style:italic; }
+.bubu-bar { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+.bubu-act {
+  display:inline-flex; align-items:center; justify-content:center; gap:5px; min-width:44px; height:34px; padding:0 14px;
+  border:1px solid var(--edge); border-radius:17px; background:var(--surface); color:var(--ink); font-size:12.5px; font-weight:650;
+}
+.bubu-act svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.bubu-act.danger { color:var(--danger); }
+.bubu-act:disabled { opacity:.35; }
+.bubu-act:active { transform:scale(.94); }
+.bubu-empty { padding:38px 15px; color:var(--bubu-sub); font-size:13px; line-height:1.9; text-align:center; }
+/* ===== For Bubu: tema scrapbook iOS glass ===== */
+#bubuPage,#bubuVideo {
+  --g-bg:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.4));
+  --g-edge:rgba(255,255,255,.85);
+  --g-shadow:0 10px 28px rgba(124,88,112,.14),inset 0 1px 0 rgba(255,255,255,.7);
+  --doodle:rgba(181,106,147,.9);
+  --m-sparks:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 22'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 19 8.5 5'/%3E%3Cpath d='M16 20 21 3'/%3E%3Cpath d='M28 17 36 8'/%3E%3C/g%3E%3C/svg%3E");
+  --m-heart:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z'/%3E%3C/g%3E%3C/svg%3E");
+  --m-flower:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 78'%3E%3Cg fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 5A6 6 0 0 1 31.5 11.9A6 6 0 0 1 27.9 23.1A6 6 0 0 1 16.1 23.1A6 6 0 0 1 12.5 11.9A6 6 0 0 1 22 5Z'/%3E%3Ccircle cx='22' cy='15' r='3'/%3E%3Cpath d='M22 25C21 40 25 52 20 76'/%3E%3Cpath d='M21.5 52C10 50 4 56 4 66C14 66 20 60 21.5 52Z'/%3E%3Cpath d='M22.5 62C32 58 40 60 41 68C33 70 25 68 22.5 62Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+body.dark-theme #bubuPage,body.has-wallpaper #bubuPage,body.dark-theme #bubuVideo,body.has-wallpaper #bubuVideo {
+  --g-bg:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.09));
+  --g-edge:rgba(255,255,255,.32);
+  --g-shadow:0 12px 30px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.28);
+  --doodle:rgba(255,255,255,.92);
+}
+#bubuPage .bubu-add,#bubuPage .bubu-back,#bubuPage .bubu-act,#bubuVideo .bubu-vid-btn {
+  border:1px solid var(--g-edge); background:var(--g-bg); color:var(--bubu-ink); box-shadow:var(--g-shadow);
+  backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+}
+#bubuPage .bubu-back { width:38px; height:38px; margin-left:0; border-radius:50%; }
+#bubuPage .bubu-act.danger { color:var(--danger); }
+#bubuPage .bubu-empty {
+  margin-top:6px; border:1.5px dashed var(--g-edge); border-radius:26px; background:var(--g-bg);
+  backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+}
+.bubu-block.text { padding:26px 14px 10px; }
+.bubu-block.text.active { background:transparent; }
+.bubu-note {
+  position:relative; min-height:116px; padding:22px 54px 22px 20px;
+  border:1px solid var(--g-edge); border-radius:26px; background:var(--g-bg); box-shadow:var(--g-shadow);
+  backdrop-filter:blur(22px) saturate(160%); -webkit-backdrop-filter:blur(22px) saturate(160%);
+  transition:border-color .2s,box-shadow .2s;
+}
+.bubu-block.text.active .bubu-note { border-color:#c4709f; }
+.dark-theme .bubu-block.text.active .bubu-note,body.has-wallpaper .bubu-block.text.active .bubu-note { border-color:#f06aae; }
+/* selotip washi di pojok kiri atas */
+.bubu-note::before {
+  content:""; position:absolute; z-index:2; top:-10px; left:-12px; width:58px; height:19px; pointer-events:none; transform:rotate(-35deg);
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.2) 0 3px,transparent 3px 7px),linear-gradient(135deg,rgba(255,198,223,.85),rgba(240,160,198,.74));
+  clip-path:polygon(0 0,4% 12%,0 25%,4% 38%,0 50%,4% 62%,0 75%,4% 88%,0 100%,100% 100%,96% 88%,100% 75%,96% 62%,100% 50%,96% 38%,100% 25%,96% 12%,100% 0);
+}
+/* doodle: percikan, hati, bunga */
+.bubu-note::after {
+  content:""; position:absolute; inset:-24px 0 -6px 0; pointer-events:none; background-color:var(--doodle);
+  -webkit-mask-image:var(--m-sparks),var(--m-heart),var(--m-flower); mask-image:var(--m-sparks),var(--m-heart),var(--m-flower);
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-size:40px 22px,22px 22px,36px 64px; mask-size:40px 22px,22px 22px,36px 64px;
+  -webkit-mask-position:right 52px top 2px,right 14px top 36px,right 12px bottom 0; mask-position:right 52px top 2px,right 14px top 36px,right 12px bottom 0;
+}
+.bubu-text:not(.placeholder)::before { content:"\201C"; }
+.bubu-text:not(.placeholder)::after { content:"\201D"; }
+
+/* ===== For Bubu: bar navigasi disembunyikan di halaman ini ===== */
+body.view-bubu .bottom-nav {
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translate3d(-50%,40px,0);
+  transition:opacity .25s ease,transform .35s ease,visibility 0s linear .35s;
+}
+
+/* ===== For Bubu: header kanan (video + tambah) ===== */
+.bubu-head-right { display:flex; align-items:center; gap:8px; }
+
+/* ===== For Bubu: garis warna kelompok (hanya muncul saat mode Kelompokkan) ===== */
+.bubu-gline {
+  position:absolute; z-index:1; left:0; top:2px; bottom:2px; width:4px; border-radius:4px;
+  background:var(--gc,#e0558f); pointer-events:none;
+  box-shadow:0 0 8px color-mix(in srgb,var(--gc,#e0558f) 55%,transparent);
+  animation:bubuLineIn .3s ease both;
+}
+@keyframes bubuLineIn { from { opacity:0; transform:scaleY(.4); } to { opacity:1; transform:scaleY(1); } }
+
+/* ===== For Bubu: pemutar video ===== */
+#bubuVideo {
+  position:fixed; inset:0; z-index:120; display:flex; flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 22px);
+  color:var(--bubu-ink);
+  background:
+    radial-gradient(ellipse at 12% 0%,#f9e7f0,transparent 48%),
+    radial-gradient(ellipse at 100% 60%,#ece5f2,transparent 45%),
+    linear-gradient(145deg,#f8f4f6,#f0eaf1);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:opacity .4s ease,visibility 0s linear .4s;
+}
+body.dark-theme #bubuVideo,body.has-wallpaper #bubuVideo {
+  background:
+    radial-gradient(ellipse at 15% 0%,#4a1a3b,transparent 50%),
+    radial-gradient(ellipse at 95% 70%,#34112a,transparent 48%),
+    linear-gradient(145deg,#1b0713,#2a0e20);
+}
+#bubuVideo.open { opacity:1; visibility:visible; pointer-events:auto; transition:opacity .4s ease,visibility 0s; }
+body.bubu-video-open { overflow:hidden; }
+.bubu-vid-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.bubu-vid-count { font-size:13px; font-weight:650; color:var(--bubu-sub); letter-spacing:.3px; }
+.bubu-vid-btn {
+  display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border-radius:50%;
+  border:1px solid var(--g-edge); background:var(--g-bg); color:var(--bubu-ink); box-shadow:var(--g-shadow);
+  backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+  transition:transform .15s ease,opacity .2s ease;
+}
+.bubu-vid-btn svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.bubu-vid-btn svg .solid { fill:currentColor; }
+.bubu-vid-btn:active { transform:scale(.92); }
+.bubu-vid-btn:disabled { opacity:.3; }
+.bubu-vid-btn.main { width:62px; height:62px; }
+.bubu-vid-btn.main svg { width:26px; height:26px; }
+.bubu-vid-progress { display:flex; gap:5px; margin-bottom:6px; }
+.bubu-vid-seg { flex:1; height:4px; border-radius:4px; overflow:hidden; background:rgba(128,128,128,.28); }
+.bubu-vid-seg i { display:block; width:0; height:100%; border-radius:4px; background:var(--bubu-ink); }
+.bubu-vid-view { flex:1; min-height:0; display:flex; overflow:hidden; }
+.bubu-vid-stage {
+  width:100%; max-width:520px; margin:auto; padding:0;
+  opacity:1; transition:opacity .38s ease;
+}
+.bubu-vid-stage.out { opacity:0; }
+.bubu-vid-label { display:flex; align-items:center; justify-content:center; gap:7px; margin:0 0 14px; color:var(--bubu-sub); font-size:12px; font-weight:650; letter-spacing:.4px; }
+.bubu-vid-label::before { content:""; width:9px; height:9px; border-radius:50%; background:var(--gc,#e0558f); }
+.bubu-vid-fit { transform-origin:top left; }
+.bubu-vid-items { display:flex; flex-direction:column; gap:6px; }
+.bubu-vid-stage .bubu-block { cursor:default; }
+.bubu-gline.sel { --gc:#d6479a; }
+#bubuPage .bubu-bubble { padding:8px 13px 6px; border-radius:18px 18px 18px 6px; }
+#bubuPage .bubu-bubble p { font-size:12.5px; line-height:1.5; }
+#bubuPage .bubu-time { margin-top:4px; font-size:9.5px; }
+#bubuPage .bubu-photo { max-height:165px; margin-bottom:6px; border-radius:12px; }
+#bubuPage .bubu-block.chat { padding:5px 4px; }
+#bubuPage .bubu-block.chat .entry-avatar { width:30px; height:30px; margin:0 7px 0 0; font-size:13px; }
+#bubuPage .bubu-row .bubu-bubble { max-width:calc(100% - 37px); }
+#bubuPage .bubu-block.chat .bubu-bar { padding-left:37px; }
+.bubu-block.gsel,.bubu-block.chat.gsel,.bubu-block.text.gsel { background:rgba(214,71,154,.12); }
+.bubu-vid-item { opacity:0; animation:bubuVidIn .8s ease forwards; }
+.bubu-vid-stage.still .bubu-vid-item { animation:none; opacity:1; }
+@keyframes bubuVidIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+.bubu-vid-controls { display:flex; align-items:center; justify-content:center; gap:22px; padding-top:12px; }
+@media (prefers-reduced-motion:reduce) {
+  .bubu-vid-stage { transition-duration:.01s; }
+  .bubu-vid-item { animation-duration:.01s; }
+}
+.bubu-pick-modal { display:flex; flex-direction:column; overflow-y:hidden; }
+.bubu-pick-modal > * { flex-shrink:0; }
+.bubu-pick-modal > .bubu-pick-list { flex:1 1 auto; flex-shrink:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+.bubu-pick-list { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+.bubu-pick-item { display:flex; align-items:flex-start; gap:11px; width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:16px; background:var(--field); color:var(--ink); text-align:left; }
+.bubu-pick-item.on { border-color:#d6479a; background:var(--soft); }
+.bubu-pick-check { flex-shrink:0; display:grid; place-items:center; width:22px; height:22px; margin-top:1px; border:1.5px solid var(--edge); border-radius:50%; color:transparent; font-size:13px; }
+.bubu-pick-item.on .bubu-pick-check { background:#d6479a; border-color:#d6479a; color:#fff; }
+.bubu-pick-body { flex:1; min-width:0; }
+.bubu-pick-meta { margin-bottom:3px; color:var(--muted); font-size:11px; }
+.bubu-pick-thumb { display:block; width:100%; max-height:110px; object-fit:cover; margin-bottom:5px; border-radius:10px; }
+.bubu-pick-text { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; font-size:13px; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
+.bubu-pick-empty { padding:26px 8px; color:var(--muted); font-size:12.5px; line-height:1.8; text-align:center; }
+.bubu-pick-confirm { display:block; width:100%; padding:14px; border:1px solid var(--edge); border-radius:17px; background:linear-gradient(145deg,#f1dce8,#dfbfd3); color:#594958; font-size:13px; font-weight:650; }
+.dark-theme .bubu-pick-confirm { background:linear-gradient(145deg,#e04a9b,#b02d78); color:#fff; border-color:rgba(255,170,215,.35); }
 .nav-btn {
   flex:1;
   min-width:0;
@@ -601,7 +813,7 @@ body.dark-theme {
   .app { padding-right:11px; padding-left:11px; }
   .composer-dock { padding-right:11px; padding-left:11px; }
   .bottom-nav { width:calc(100% - 26px); }
-  .nav-btn { gap:4px; font-size:11px; }
+  .nav-btn { gap:4px; font-size:11px; padding:9px 3px; }
   .toolbar { gap:5px; }
   .toolbar-left,.toolbar-right { gap:4px; }
   .small-btn { padding:8px; }
@@ -1006,6 +1218,9 @@ body.dark-theme{
 .bg-dim{display:none;background:rgba(var(--wp-dim-color),var(--wp-dim))}
 body.has-wallpaper .bg-mesh,body.has-wallpaper .bg-hearts{display:none}
 body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
+.bg-dim{transition:background .4s ease}
+/* Halaman For Bubu: wallpaper otomatis digelapkan 80% (pengaturan user tidak diubah) */
+body.view-bubu{--wp-dim:.8;--wp-dim-color:0,0,0}
 @media (prefers-reduced-motion:reduce){.blob,.bg-heart{animation:none}}
 
 /* ===== Pengaturan ===== */
@@ -1489,6 +1704,33 @@ body.head-compact .head-settings-compact{display:grid}
   </div>
   </div>
 
+  <section id="bubuPage" hidden aria-label="For Bubu">
+    <div class="bubu-head">
+      <div class="bubu-head-left">
+        <button class="bubu-back" id="bubuBack" type="button" aria-label="Kembali ke profil">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+        </button>
+        <h2 class="bubu-title">Hai, bubu</h2>
+      </div>
+      <div class="bubu-head-right">
+        <button class="bubu-add" id="bubuVideoBtn" type="button" aria-label="Putar video">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="4"/><path d="m10.4 9.6 4.2 2.4-4.2 2.4z"/></svg>
+        </button>
+        <div class="bubu-add-wrap">
+          <button class="bubu-add" id="bubuAdd" type="button" aria-label="Tambah" aria-haspopup="menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="menu bubu-add-menu hidden" id="bubuAddMenu" role="menu">
+            <button type="button" id="bubuAddText" role="menuitem">Tambah teks</button>
+            <button type="button" id="bubuAddChat" role="menuitem">Tambah chat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bubu-list" id="bubuList"></div>
+    <p class="bubu-empty" id="bubuEmpty">Belum ada isi.<br>Ketuk tombol + untuk menambah teks atau chat yang sudah kamu love.</p>
+  </section>
+
   <section id="profilePage" hidden>
     <div class="profile-card">
       <div class="avatar-wrap">
@@ -1555,6 +1797,11 @@ body.head-compact .head-settings-compact{display:grid}
       <button type="button" class="profile-action" id="statsBtn" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 20v-7"/><path d="M12 20V5"/><path d="M18.5 20V10"/></svg>
         <span>Statistik</span>
+      </button>
+
+      <button type="button" class="profile-action" id="bubuBtn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/></svg>
+        <span>For Bubu</span>
       </button>
 
       <p id="profileMessage" role="status"></p>
@@ -1824,6 +2071,42 @@ body.head-compact .head-settings-compact{display:grid}
   </section>
 </div>
 
+<div id="bubuVideo" role="dialog" aria-modal="true" aria-label="Video For Bubu" aria-hidden="true" inert>
+  <div class="bubu-vid-top">
+    <button class="bubu-vid-btn" id="bubuVidClose" type="button" aria-label="Tutup video">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <span class="bubu-vid-count" id="bubuVidCount"></span>
+  </div>
+  <div class="bubu-vid-progress" id="bubuVidProgress"></div>
+  <div class="bubu-vid-view" id="bubuVidView">
+    <div class="bubu-vid-stage out" id="bubuVidStage" aria-live="polite"></div>
+  </div>
+  <div class="bubu-vid-controls">
+    <button class="bubu-vid-btn" id="bubuVidPrev" type="button" aria-label="Sebelumnya">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14"/><path class="solid" d="M19 6.2v11.6a.8.8 0 0 1-1.25.66L9.4 12.66a.8.8 0 0 1 0-1.32l8.35-5.8A.8.8 0 0 1 19 6.2z"/></svg>
+    </button>
+    <button class="bubu-vid-btn main" id="bubuVidPlay" type="button" aria-label="Putar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="solid" id="bubuVidPlayIcon" d="M8 5.6v12.8a.8.8 0 0 0 1.22.68l10.2-6.4a.8.8 0 0 0 0-1.36L9.22 4.92A.8.8 0 0 0 8 5.6z"/></svg>
+    </button>
+    <button class="bubu-vid-btn" id="bubuVidNext" type="button" aria-label="Berikutnya">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14"/><path class="solid" d="M5 6.2v11.6a.8.8 0 0 0 1.25.66l8.35-5.8a.8.8 0 0 0 0-1.32l-8.35-5.8A.8.8 0 0 0 5 6.2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="bubuPickBackdrop" aria-hidden="true">
+  <section class="edit-modal bubu-pick-modal" role="dialog" aria-modal="true" aria-labelledby="bubuPickTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="bubuPickTitle">Pilih chat ♡</div>
+      <button class="modal-close" id="closeBubuPick" type="button" aria-label="Tutup">×</button>
+    </div>
+    <p class="modal-subtitle">Pesan yang sudah kamu love. Pilih satu atau lebih.</p>
+    <div class="bubu-pick-list" id="bubuPickList"></div>
+    <button class="bubu-pick-confirm" id="bubuPickConfirm" type="button" disabled>Tambahkan</button>
+  </section>
+</div>
+
 <div class="modal-backdrop zoom-backdrop" id="zoomBackdrop" aria-hidden="true">
   <div class="zoom-content" role="dialog" aria-modal="true" aria-label="Foto ukuran penuh" tabindex="-1">
     <div class="zoom-close-row">
@@ -1987,6 +2270,24 @@ let reactionAnimationId = null;
 let searchQuery = '';
 let showingGallery = false;
 let showingProfile = false;
+let showingBubu = false;
+/* For Bubu: kotak teks & chat (disimpan di user_metadata.bubu_blocks) */
+const BUBU_MAX = 200000;      /* batas pengaman saja, tidak ditampilkan */
+const BUBU_INLINE_MAX = 3000; /* cadangan bila Storage gagal: muat di data akun */
+let bubuBlocks = [];
+let bubuActiveId = null;
+let bubuSortId = null;
+let bubuGroupId = null;
+let bubuVideoOpen = false;
+let bubuAddMenu = false;
+let bubuEditingId = null;
+let bubuPickIds = new Set();
+let bubuSaveTimer = 0;
+let bubuSaving = false;
+let bubuPath = '';
+let bubuReady = false;
+let bubuLoadingPath = '';
+let bubuLastError = '';
 let photoGeneration = 0;
 let editPhotoGeneration = 0;
 let toastTimer = null;
@@ -2288,6 +2589,7 @@ function closeActiveModal() {
   const current = activeModal;
   if (current === $('dialogBackdrop')) finishDialog(false);
   else if (current === $('statsBackdrop')) closeStats();
+  else if (current === $('bubuPickBackdrop')) closeBubuPick();
   else if (current === $('editBackdrop')) closeEdit();
   else if (current === $('zoomBackdrop')) closeZoom();
   else if (current === $('mediaBackdrop')) closeMediaPopup();
@@ -2473,7 +2775,7 @@ function ensureVisible(id) {
 
 /* Kolom ketik pesan hanya tampil di halaman utama */
 function syncComposer() {
-  $('composerDock').classList.toggle('hidden',view === 'calendar' || showingGallery || showingProfile);
+  $('composerDock').classList.toggle('hidden',view === 'calendar' || showingGallery || showingProfile || showingBubu);
 }
 
 /* ===== Bar pesan disematkan ===== */
@@ -2491,7 +2793,7 @@ function updatePinnedBar() {
   const bar = $('pinnedBar');
   if (!bar) return;
 
-  const list = (showingGallery || showingProfile) ? [] : getPinnedList();
+  const list = (showingGallery || showingProfile || showingBubu) ? [] : getPinnedList();
   const signature = list.map(n => n.id).join(',');
   if (signature !== pinSignature) {
     pinSignature = signature;
@@ -2563,7 +2865,7 @@ $('pinnedBar').addEventListener('click',jumpToNextPinned);
 
 /* Satu fungsi untuk semua status navigasi (tab aktif + posisi indikator) */
 function updateNavigation() {
-  const tab = showingProfile ? 2 : (view === 'calendar' ? 1 : 0);
+  const tab = (showingProfile || showingBubu) ? 2 : (view === 'calendar' ? 1 : 0);
 
   ['allNav','calendarNav','profileNav'].forEach((id,i) => {
     $(id).classList.toggle('active',i === tab);
@@ -2572,14 +2874,15 @@ function updateNavigation() {
   const nav = $('bottomNav');
   nav.classList.remove('nav-pos-0','nav-pos-1','nav-pos-2');
   nav.classList.add('nav-pos-'+tab);
-  document.body.classList.toggle('view-calendar',view === 'calendar' && !showingGallery && !showingProfile);
+  document.body.classList.toggle('view-bubu',showingBubu);
+  document.body.classList.toggle('view-calendar',view === 'calendar' && !showingGallery && !showingProfile && !showingBubu);
 
   $('calendarPanel').classList.toggle(
     'hidden',
-    view !== 'calendar' || showingGallery || showingProfile
+    view !== 'calendar' || showingGallery || showingProfile || showingBubu
   );
   $('headBack').classList.toggle('hidden',!showingGallery);
-  document.body.classList.toggle('head-compact',showingProfile || (view === 'calendar' && !showingGallery));
+  document.body.classList.toggle('head-compact',showingProfile || showingBubu || (view === 'calendar' && !showingGallery));
   updateSearchUI();
   syncComposer();
   updatePinnedBar();
@@ -2765,6 +3068,7 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
     photo.src = note.photo;
     photo.alt = 'Foto riwayat';
     photo.loading = 'lazy';
+    photo.decoding = 'async';
     photo.addEventListener('click',event => {
       event.stopPropagation();
       if (Date.now() < menuSuppressUntil) return;
@@ -2839,6 +3143,7 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
 
     const actions = [
       {label:note.pinned ? 'Lepas sematan' : 'Sematkan',action:() => togglePin(note.id)},
+      {label:'Masukkan ke For Bubu',action:() => addNoteToBubu(note.id)},
       {label:'Edit',action:() => openEdit(note.id)},
       {label:'Hapus',danger:true,action:() => deleteNote(note.id)}
     ];
@@ -2981,7 +3286,7 @@ function restoreAnchor(anchor) {
 
 function updateLoadMore() {
   const box = $('loadMore');
-  const more = !showingProfile && (showingGallery
+  const more = !showingProfile && !showingBubu && (showingGallery
     ? galleryRendered < galleryPhotos.length
     : renderedRestShown < renderedRest.length);
 
@@ -3100,7 +3405,7 @@ function render(opts = {}) {
   updateLoadMore();
   if (getDisplayedNotes().some(needsSign)) queueResolve();
 
-  if (showingProfile) return;
+  if (showingProfile || showingBubu) return;
 
   const top = topMode();
 
@@ -3134,6 +3439,7 @@ function refreshAfterMutation() {
   updateStreakBadge();
   if (view === 'calendar') renderCalendar();
   render();
+  renderBubuIfIdle();
 }
 
 /* Tambah catatan */
@@ -3441,11 +3747,11 @@ let bgPauseTimer = 0;
 function pauseBg() {}
 
 function updateSearchUI() {
-  $('searchBtn').disabled = showingGallery || showingProfile;
+  $('searchBtn').disabled = showingGallery || showingProfile || showingBubu;
 }
 
 function openSearch() {
-  if (showingGallery || showingProfile) return;
+  if (showingGallery || showingProfile || showingBubu) return;
   searchOpen = true;
   pauseBg(320);
   $('headSearch').removeAttribute('inert');
@@ -3504,6 +3810,7 @@ function appendGalleryBatch() {
     if (note.photo) photo.src = note.photo;
     photo.alt = note.text || 'Foto kenangan';
     photo.loading = 'lazy';
+    photo.decoding = 'async';
     photo.addEventListener('click',() => { if (note.photo) openZoom(note.photo,note.text); });
 
     const timestamp = document.createElement('div');
@@ -3584,13 +3891,1005 @@ $('headBack').addEventListener('click',() => {
   }
 });
 
+
+/* ===== For Bubu: teks & chat yang bisa diedit, dihapus, dan diurutkan ===== */
+function bubuId() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+function bubuPack(list) {
+  const gm = bubuGroupMap(list);
+  return JSON.stringify(list.map(b => {
+    const o = b.type === 'chat' ? {i:b.id,t:'c',n:b.noteId} : {i:b.id,t:'t',x:b.text};
+    if (gm.has(b.id)) o.g = gm.get(b.id);
+    return o;
+  }));
+}
+
+/* Kelompok: tiap blok boleh punya b.group (teks id). Kelompok hanya dianggap ada bila anggotanya >= 2. */
+const BUBU_GROUP_COLORS = ['#e0558f','#3f9be0','#eaa238','#3fb887','#9a6bdc','#e8623f','#25b3b8','#b7a21e','#d467b9','#6482e0'];
+
+function bubuGroupMap(list = bubuBlocks) {
+  const count = new Map();
+  list.forEach(b => { if (b.group) count.set(b.group,(count.get(b.group)||0)+1); });
+  const map = new Map();
+  list.forEach(b => { if (b.group && count.get(b.group) >= 2) map.set(b.id,b.group); });
+  return map;
+}
+
+/* Urutan kelompok mengikuti kemunculan pertama di daftar; warna berbeda tiap kelompok */
+function bubuGroupInfo() {
+  const gm = bubuGroupMap();
+  const order = [];
+  bubuBlocks.forEach(b => { const g = gm.get(b.id); if (g && !order.includes(g)) order.push(g); });
+  const info = new Map();
+  order.forEach((g,i) => info.set(g,{index:i,color:BUBU_GROUP_COLORS[i % BUBU_GROUP_COLORS.length]}));
+  return {gm,info,order};
+}
+
+function bubuCleanGroups() {
+  const gm = bubuGroupMap();
+  bubuBlocks.forEach(b => { if (b.group && !gm.has(b.id)) delete b.group; });
+}
+
+/* ===== Kelompokkan ala Shift+Panah =====
+   Blok yang diketuk = jangkar. Panah atas/bawah (atau ketuk blok lain) menggeser ujung seleksi.
+   Tidak ada yang berubah sampai tombol "Kelompokkan" ditekan. */
+function bubuIdx(id) { return bubuBlocks.findIndex(b => b.id === id); }
+
+/* Id blok yang sedang terseleksi: rentang jangkar..ujung + seluruh kelompok lama yang tersentuh */
+function bubuGroupSelection() {
+  const a = bubuIdx(bubuGroupId);
+  const c = bubuIdx(bubuActiveId);
+  const set = new Set();
+  if (a < 0 || c < 0) return set;
+  const gm = bubuGroupMap();
+  const touched = new Set();
+  for (let i = Math.min(a,c); i <= Math.max(a,c); i++) {
+    const b = bubuBlocks[i];
+    set.add(b.id);
+    if (gm.has(b.id)) touched.add(gm.get(b.id));
+  }
+  bubuBlocks.forEach(b => { if (gm.has(b.id) && touched.has(gm.get(b.id))) set.add(b.id); });
+  return set;
+}
+
+/* Indeks tujuan ujung seleksi bila panah ditekan (-1 = tidak bisa) */
+function bubuSelTarget(dir) {
+  const a = bubuIdx(bubuGroupId);
+  const c = bubuIdx(bubuActiveId);
+  if (a < 0 || c < 0) return -1;
+  const idxs = Array.from(bubuGroupSelection()).map(bubuIdx);
+  let t;
+  if (dir < 0) t = c <= a ? Math.min(...idxs)-1 : c-1;
+  else t = c >= a ? Math.max(...idxs)+1 : c+1;
+  return (t < 0 || t >= bubuBlocks.length) ? -1 : t;
+}
+
+function moveBubuSel(dir) {
+  const t = bubuSelTarget(dir);
+  if (t < 0) return;
+  bubuActiveId = bubuBlocks[t].id;
+  renderBubu();
+  const el = $('bubuList').querySelector(`[data-id="${bubuActiveId}"]`);
+  if (el) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function commitBubuGroup() {
+  const sel = bubuGroupSelection();
+  if (sel.size < 2) { showToast('Pilih minimal 2 teks atau chat dengan panah atas/bawah.'); return; }
+  const gm = bubuGroupMap();
+  const anchor = bubuBlocks.find(b => b.id === bubuGroupId);
+  const gid = (anchor && gm.get(anchor.id)) || ('g'+bubuId());
+  bubuBlocks.forEach(b => { if (sel.has(b.id)) b.group = gid; });
+  bubuCleanGroups();
+  bubuGroupId = null;
+  bubuSortId = null;
+  bubuActiveId = null;
+  scheduleBubuSave();
+  renderBubu();
+  showToast('Kelompok dibuat ♡');
+}
+
+function resetBubuGroup(id) {
+  const gid = bubuGroupMap().get(id);
+  if (!gid) return;
+  showConfirm('Reset kelompok ini? Teks dan chat tetap ada, hanya pengelompokannya dilepas.',{okLabel:'Reset',danger:true}).then(ok => {
+    if (!ok) return;
+    bubuBlocks.forEach(b => { if (b.group === gid) delete b.group; });
+    bubuCleanGroups();
+    bubuGroupId = null;
+    bubuSortId = null;
+    bubuActiveId = null;
+    scheduleBubuSave();
+    renderBubuIfIdle();
+  });
+}
+
+function bubuUnpack(raw) {
+  try {
+    const arr = JSON.parse(raw || '[]');
+    if (!Array.isArray(arr)) return [];
+    return arr.map(o => {
+      if (!o || typeof o !== 'object') return null;
+      const id = String(o.i || bubuId());
+      const group = o.g ? String(o.g) : '';
+      if (o.t === 'c') return {id,type:'chat',noteId:String(o.n ?? ''),group};
+      return {id,type:'text',text:String(o.x ?? ''),group};
+    }).filter(Boolean);
+  } catch { return []; }
+}
+
+function bubuSize() { return bubuPack(bubuBlocks).length; }
+function findNoteById(id) { return notes.find(n => String(n.id) === String(id)); }
+
+function bubuCanEdit() {
+  if (bubuReady) return true;
+  showToast('For Bubu masih dimuat, coba lagi sebentar...');
+  return false;
+}
+
+function scheduleBubuSave() {
+  clearTimeout(bubuSaveTimer);
+  bubuSaveTimer = setTimeout(saveBubu,1200);
+}
+
+function removeBubuFile(path) {
+  if (!path) return;
+  try { Promise.resolve(supabaseClient.storage.from(PHOTO_BUCKET).remove([path])).catch(() => {}); } catch {}
+}
+
+/* Disimpan sebagai file JSON di Supabase Storage (tanpa batas kecil); alamatnya dicatat di data akun.
+   Bila Storage gagal dan isinya kecil, disimpan langsung di data akun sebagai cadangan. */
+async function saveBubu() {
+  bubuSaveTimer = 0;
+  if (!currentUserId || !syncReady || !bubuReady) { bubuSaveTimer = setTimeout(saveBubu,2500); return; }
+  if (bubuSaving) { bubuSaveTimer = setTimeout(saveBubu,400); return; }
+
+  bubuSaving = true;
+  const packed = bubuPack(bubuBlocks);
+  let path = '';
+
+  try {
+    try {
+      path = `${currentUserId}/bubu-${Date.now()}.json`;
+      const { error } = await supabaseClient.storage
+        .from(PHOTO_BUCKET)
+        .upload(path,new Blob([packed],{type:'application/json'}),{contentType:'application/json',upsert:false});
+      if (error) throw error;
+    } catch (storageError) {
+      path = '';
+      if (packed.length > BUBU_INLINE_MAX) throw storageError;
+    }
+
+    const data = path ? {bubu_path:path,bubu_blocks:null} : {bubu_blocks:packed,bubu_path:null};
+    const { error } = await supabaseClient.auth.updateUser({data});
+    if (error) { removeBubuFile(path); throw error; }
+
+    const old = bubuPath;
+    bubuPath = path;
+    if (old && old !== path) removeBubuFile(old);
+    bubuLastError = '';
+    notifyProfileChange();
+  } catch (error) {
+    const message = (error && error.message) || String(error);
+    if (message !== bubuLastError) {
+      bubuLastError = message;
+      showToast('Gagal menyimpan For Bubu: '+message,{duration:5000});
+    }
+    if (!bubuSaveTimer) bubuSaveTimer = setTimeout(saveBubu,6000);
+  } finally {
+    bubuSaving = false;
+  }
+}
+
+function setBubuBlocks(list) {
+  if (bubuPack(list) !== bubuPack(bubuBlocks)) {
+    bubuBlocks = list;
+    bubuActiveId = null;
+    bubuSortId = null; bubuGroupId = null;
+  }
+  renderBubuIfIdle();
+}
+
+async function loadBubuFile(path) {
+  if (bubuLoadingPath === path) return;
+  bubuLoadingPath = path;
+  try {
+    if (!currentUserId || !path.startsWith(currentUserId+'/')) return;
+    const { data, error } = await supabaseClient.storage.from(PHOTO_BUCKET).download(path);
+    if (error || !data) throw error || new Error('file kosong');
+    const text = await data.text();
+    if (bubuSaveTimer || bubuSaving || bubuEditingId || !currentUserId) return;
+    bubuPath = path;
+    bubuReady = true;
+    bubuLastError = '';
+    setBubuBlocks(bubuUnpack(text));
+  } catch (error) {
+    const message = (error && error.message) || String(error);
+    if (message !== bubuLastError) {
+      bubuLastError = message;
+      showToast('Gagal memuat For Bubu: '+message,{duration:5000});
+    }
+  } finally {
+    if (bubuLoadingPath === path) bubuLoadingPath = '';
+  }
+}
+
+/* fresh = data akun dari server (bukan salinan sesi lama). Penyimpanan baru dibuka setelah isi lama berhasil dimuat. */
+function applyBubuMeta(m,fresh) {
+  if (!fresh || bubuSaveTimer || bubuSaving || bubuEditingId) return;
+  const path = typeof m.bubu_path === 'string' ? m.bubu_path : '';
+
+  if (path) {
+    if (bubuReady && path === bubuPath) return;
+    loadBubuFile(path);
+  } else {
+    bubuPath = '';
+    bubuReady = true;
+    setBubuBlocks(bubuUnpack(typeof m.bubu_blocks === 'string' ? m.bubu_blocks : ''));
+  }
+}
+
+function resetBubu() {
+  clearTimeout(bubuSaveTimer);
+  bubuSaveTimer = 0;
+  bubuBlocks = [];
+  bubuActiveId = null;
+  bubuSortId = null; bubuGroupId = null;
+  bubuEditingId = null;
+  bubuPath = '';
+  bubuReady = false;
+  bubuLoadingPath = '';
+  bubuLastError = '';
+  renderBubuIfIdle();
+}
+
+function renderBubuIfIdle() {
+  if (showingBubu && !bubuEditingId) renderBubu();
+}
+
+function renderBubu() {
+  const list = $('bubuList');
+  list.replaceChildren();
+  const groups = bubuGroupInfo();
+  groups.sel = bubuGroupId !== null ? bubuGroupSelection() : null;
+  bubuBlocks.forEach((block,index) => list.appendChild(makeBubuBlock(block,index,groups)));
+
+  const empty = $('bubuEmpty');
+  empty.classList.toggle('hidden',bubuBlocks.length > 0);
+  empty.innerHTML = bubuReady
+    ? 'Belum ada isi.<br>Ketuk tombol + untuk menambah teks atau chat yang sudah kamu love.'
+    : 'Memuat For Bubu...';
+
+  list.querySelectorAll('textarea').forEach(ta => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight+'px';
+  });
+
+  const need = bubuBlocks.filter(b => b.type === 'chat').map(b => findNoteById(b.noteId)).filter(n => n && needsSign(n));
+  if (need.length) resolvePhotoUrls(need,true).then(changed => { if (changed) renderBubuIfIdle(); });
+}
+
+const BUBU_ICONS = {
+  up:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>',
+  down:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>'
+};
+
+function makeBubuAction(content,{label='',danger=false,disabled=false,onClick}) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'bubu-act'+(danger ? ' danger' : '');
+  if (label) button.setAttribute('aria-label',label);
+  button.disabled = disabled;
+  if (content.startsWith('<')) button.innerHTML = content;
+  else button.textContent = content;
+  button.addEventListener('click',event => { event.stopPropagation(); onClick(); });
+  return button;
+}
+
+function makeBubuBlock(block,index,groups) {
+  const el = document.createElement('div');
+  el.className = 'bubu-block '+block.type;
+  el.dataset.id = block.id;
+  if (bubuGroupId !== null && groups) {
+    const g = groups.gm.get(block.id);
+    const picked = groups.sel && groups.sel.has(block.id);
+    if (picked || g) {
+      const line = document.createElement('span');
+      line.className = 'bubu-gline'+(g ? '' : ' sel');
+      if (g) line.style.setProperty('--gc',groups.info.get(g).color);
+      line.setAttribute('aria-hidden','true');
+      el.appendChild(line);
+    }
+    if (picked) el.classList.add('gsel');
+  }
+  const editing = bubuEditingId === block.id;
+  const active = bubuActiveId === block.id;
+  if (active) el.classList.add('active');
+
+  if (block.type === 'text') {
+    const card = document.createElement('div');
+    card.className = 'bubu-note';
+    if (editing) {
+      const ta = document.createElement('textarea');
+      ta.className = 'bubu-input';
+      ta.rows = 1;
+      ta.value = block.text;
+      ta.placeholder = 'Tulis sesuatu untuk Bubu...';
+      ta.setAttribute('aria-label','Teks For Bubu');
+      ta.addEventListener('input',() => {
+        block.text = ta.value;
+        if (bubuSize() > BUBU_MAX) {
+          while (ta.value && bubuSize() > BUBU_MAX) { ta.value = ta.value.slice(0,-1); block.text = ta.value; }
+          showToast('For Bubu sudah penuh.');
+        }
+        ta.style.height = 'auto';
+        ta.style.height = ta.scrollHeight+'px';
+        scheduleBubuSave();
+      });
+      ta.addEventListener('blur',() => finishBubuEdit(block.id));
+      card.appendChild(ta);
+    } else {
+      const p = document.createElement('p');
+      p.className = 'bubu-text';
+      if (block.text) p.textContent = block.text;
+      else { p.textContent = 'Ketuk untuk menulis...'; p.classList.add('placeholder'); }
+      card.appendChild(p);
+    }
+    el.appendChild(card);
+  } else {
+    const note = findNoteById(block.noteId);
+    if (note) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubu-bubble';
+      if (note.photo) {
+        const img = document.createElement('img');
+        img.className = 'bubu-photo';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.alt = 'Foto';
+        img.draggable = false;
+        img.src = note.photo;
+        bubble.appendChild(img);
+      }
+      if (note.text) {
+        const p = document.createElement('p');
+        p.textContent = note.text;
+        bubble.appendChild(p);
+      }
+      const time = document.createElement('div');
+      time.className = 'bubu-time';
+      time.textContent = `${groupLabel(note.dayKey)}${note.time ? ' · '+note.time : ''}`;
+      bubble.appendChild(time);
+
+      const row = document.createElement('div');
+      row.className = 'bubu-row';
+      const avatar = document.createElement('div');
+      avatar.className = 'entry-avatar';
+      fillEntryAvatar(avatar);
+      row.append(avatar,bubble);
+      el.appendChild(row);
+    } else {
+      const p = document.createElement('p');
+      p.className = 'bubu-gone';
+      p.textContent = 'Pesan ini sudah dihapus dari chat.';
+      el.appendChild(p);
+    }
+  }
+
+  if (active && !editing) {
+    const bar = document.createElement('div');
+    bar.className = 'bubu-bar';
+
+    if (bubuSortId === block.id) {
+      bar.appendChild(makeBubuAction(BUBU_ICONS.up,{label:'Naikkan posisi',disabled:index === 0,onClick:() => moveBubu(block.id,-1)}));
+      bar.appendChild(makeBubuAction(BUBU_ICONS.down,{label:'Turunkan posisi',disabled:index === bubuBlocks.length-1,onClick:() => moveBubu(block.id,1)}));
+      bar.appendChild(makeBubuAction('Selesai',{onClick:() => { bubuSortId = null; bubuGroupId = null; renderBubu(); }}));
+    } else if (bubuGroupId !== null) {
+      const count = groups && groups.sel ? groups.sel.size : 1;
+      bar.appendChild(makeBubuAction(BUBU_ICONS.up,{label:'Perluas seleksi ke atas',disabled:bubuSelTarget(-1) < 0,onClick:() => moveBubuSel(-1)}));
+      bar.appendChild(makeBubuAction(BUBU_ICONS.down,{label:'Perluas seleksi ke bawah',disabled:bubuSelTarget(1) < 0,onClick:() => moveBubuSel(1)}));
+      bar.appendChild(makeBubuAction(`Kelompokkan (${count})`,{disabled:count < 2,onClick:commitBubuGroup}));
+      if (groups && groups.gm.has(block.id)) bar.appendChild(makeBubuAction('Reset kelompok',{danger:true,onClick:() => resetBubuGroup(block.id)}));
+      bar.appendChild(makeBubuAction('Batal',{onClick:() => { bubuGroupId = null; bubuSortId = null; bubuActiveId = null; renderBubu(); }}));
+    } else {
+      if (block.type === 'text') bar.appendChild(makeBubuAction('Edit',{onClick:() => startBubuEdit(block.id)}));
+      bar.appendChild(makeBubuAction('Urutkan',{onClick:() => { bubuSortId = block.id; bubuGroupId = null; renderBubu(); }}));
+      bar.appendChild(makeBubuAction('Kelompokkan',{onClick:() => { bubuGroupId = block.id; bubuSortId = null; renderBubu(); }}));
+      if (groups && groups.gm.has(block.id)) bar.appendChild(makeBubuAction('Reset kelompok',{danger:true,onClick:() => resetBubuGroup(block.id)}));
+      bar.appendChild(makeBubuAction('Hapus',{danger:true,onClick:() => deleteBubu(block.id)}));
+    }
+
+    el.appendChild(bar);
+  }
+
+  /* Ketuk sekali: tampilkan / sembunyikan opsi */
+  el.addEventListener('click',event => {
+    if (editing || event.target.closest('.bubu-bar')) return;
+    setBubuAddMenu(false);
+    if (bubuGroupId !== null) {
+      bubuActiveId = block.id;
+      renderBubu();
+      return;
+    }
+    if (bubuActiveId === block.id) { bubuActiveId = null; bubuSortId = null; bubuGroupId = null; }
+    else { bubuActiveId = block.id; bubuSortId = null; bubuGroupId = null; }
+    renderBubu();
+  });
+
+  return el;
+}
+
+function closeBubuUI() {
+  setBubuAddMenu(false);
+  if (bubuActiveId !== null) {
+    bubuActiveId = null;
+    bubuSortId = null; bubuGroupId = null;
+    renderBubuIfIdle();
+  }
+}
+
+function setBubuAddMenu(open) {
+  bubuAddMenu = open;
+  $('bubuAddMenu').classList.toggle('hidden',!open);
+  $('bubuAdd').setAttribute('aria-expanded',String(open));
+}
+
+function startBubuEdit(id) {
+  bubuActiveId = null;
+  bubuSortId = null; bubuGroupId = null;
+  bubuEditingId = id;
+  renderBubu();
+  const ta = $('bubuList').querySelector('textarea');
+  if (ta) {
+    ta.focus({preventScroll:true});
+    ta.setSelectionRange(ta.value.length,ta.value.length);
+    ta.scrollIntoView({block:'center',behavior:'smooth'});
+  }
+}
+
+function finishBubuEdit(id) {
+  if (bubuEditingId !== id) return;
+  bubuEditingId = null;
+  const block = bubuBlocks.find(b => b.id === id);
+  if (block) {
+    block.text = block.text.replace(/\s+$/,'');
+    if (!block.text.trim()) bubuBlocks = bubuBlocks.filter(b => b !== block);
+  }
+  scheduleBubuSave();
+  renderBubu();
+}
+
+function moveBubu(id,delta) {
+  const i = bubuBlocks.findIndex(b => b.id === id);
+  const j = i+delta;
+  if (i < 0 || j < 0 || j >= bubuBlocks.length) return;
+  [bubuBlocks[i],bubuBlocks[j]] = [bubuBlocks[j],bubuBlocks[i]];
+  scheduleBubuSave();
+  renderBubu();
+  const el = $('bubuList').querySelector(`[data-id="${id}"]`);
+  if (el) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function deleteBubu(id) {
+  showConfirm('Hapus ini dari For Bubu?',{okLabel:'Hapus',danger:true}).then(ok => {
+    if (!ok) return;
+    bubuBlocks = bubuBlocks.filter(b => b.id !== id);
+    if (bubuActiveId === id) { bubuActiveId = null; bubuSortId = null; bubuGroupId = null; }
+    scheduleBubuSave();
+    renderBubuIfIdle();
+  });
+}
+
+
+/* ===== For Bubu: video (kelompok teks & chat diputar berurutan) ===== */
+let vidScenes = [];
+let vidIndex = 0;
+let vidPlaying = false;
+let vidFinished = false;
+let vidReady = false;
+let vidElapsed = 0;
+let vidDur = 5000;
+let vidLast = 0;
+let vidRaf = 0;
+let vidSwapTimer = 0;
+
+const VID_PLAY_PATH = 'M8 5.6v12.8a.8.8 0 0 0 1.22.68l10.2-6.4a.8.8 0 0 0 0-1.36L9.22 4.92A.8.8 0 0 0 8 5.6z';
+const VID_PAUSE_PATH = 'M7 5h3.2v14H7zM13.8 5H17v14h-3.2z';
+
+function buildBubuScenes() {
+  const {gm,info,order} = bubuGroupInfo();
+  const byGroup = new Map();
+  bubuBlocks.forEach(b => {
+    const g = gm.get(b.id);
+    if (!g) return;
+    if (b.type === 'text' && !b.text.trim()) return;
+    if (b.type === 'chat' && !findNoteById(b.noteId)) return;
+    if (!byGroup.has(g)) byGroup.set(g,[]);
+    byGroup.get(g).push(b);
+  });
+  return order.filter(g => byGroup.has(g)).map(g => ({
+    group:g,
+    number:info.get(g).index+1,
+    color:info.get(g).color,
+    blocks:byGroup.get(g)
+  }));
+}
+
+function vidSceneDuration(scene) {
+  let ms = 1800;
+  scene.blocks.forEach(b => {
+    if (b.type === 'text') { ms += 500+Math.min(b.text.length,400)*55; return; }
+    const note = findNoteById(b.noteId);
+    ms += 500+Math.min(((note && note.text) || '').length,400)*55+(note && note.photo ? 1500 : 0);
+  });
+  return Math.max(4000,Math.min(ms,30000));
+}
+
+function makeBubuVideoItem(block,delay) {
+  const el = document.createElement('div');
+  el.className = 'bubu-block '+block.type+' bubu-vid-item';
+  el.style.animationDelay = delay+'s';
+
+  if (block.type === 'text') {
+    const card = document.createElement('div');
+    card.className = 'bubu-note';
+    const p = document.createElement('p');
+    p.className = 'bubu-text';
+    p.textContent = block.text;
+    card.appendChild(p);
+    el.appendChild(card);
+    return el;
+  }
+
+  const note = findNoteById(block.noteId);
+  const bubble = document.createElement('div');
+  bubble.className = 'bubu-bubble';
+  if (note.photo) {
+    const img = document.createElement('img');
+    img.className = 'bubu-photo';
+    img.decoding = 'async';
+    img.alt = 'Foto';
+    img.draggable = false;
+    img.addEventListener('load',fitVidScene);
+    img.src = note.photo;
+    bubble.appendChild(img);
+  }
+  if (note.text) {
+    const p = document.createElement('p');
+    p.textContent = note.text;
+    bubble.appendChild(p);
+  }
+  const time = document.createElement('div');
+  time.className = 'bubu-time';
+  time.textContent = `${groupLabel(note.dayKey)}${note.time ? ' · '+note.time : ''}`;
+  bubble.appendChild(time);
+
+  const row = document.createElement('div');
+  row.className = 'bubu-row';
+  const avatar = document.createElement('div');
+  avatar.className = 'entry-avatar';
+  fillEntryAvatar(avatar);
+  row.append(avatar,bubble);
+  el.appendChild(row);
+  return el;
+}
+
+/* Semua isi adegan harus muat satu layar: kecilkan box (skala) sampai pas, tanpa scroll */
+function fitVidScene() {
+  if (!bubuVideoOpen) return;
+  const view = $('bubuVidView');
+  const stage = $('bubuVidStage');
+  const fit = stage.querySelector('.bubu-vid-fit');
+  if (!fit) return;
+  const availH = Math.max(view.clientHeight-8,80);
+  let s = 1;
+  for (let i = 0; i < 6; i++) {
+    fit.style.width = (100/s)+'%';
+    const h = fit.offsetHeight || 1;
+    const next = Math.max(.2,Math.min(1,availH/h));
+    if (Math.abs(next-s) < .005) { s = next; break; }
+    s = next;
+  }
+  fit.style.width = (100/s)+'%';
+  const scaled = fit.offsetHeight*s;
+  if (scaled > availH) {
+    s = Math.max(.2,s*availH/scaled);
+    fit.style.width = (100/s)+'%';
+  }
+  fit.style.transform = `scale(${s})`;
+  stage.style.height = Math.ceil(fit.offsetHeight*s)+'px';
+}
+window.addEventListener('resize',fitVidScene);
+
+function renderVidScene(animate = true) {
+  const scene = vidScenes[vidIndex];
+  const stage = $('bubuVidStage');
+  if (!scene) return;
+  stage.replaceChildren();
+  stage.classList.toggle('still',!animate);
+
+  const fit = document.createElement('div');
+  fit.className = 'bubu-vid-fit';
+  const items = document.createElement('div');
+  items.className = 'bubu-vid-items';
+  scene.blocks.forEach((b,k) => items.appendChild(makeBubuVideoItem(b,0.25+k*0.5)));
+  fit.appendChild(items);
+  stage.appendChild(fit);
+  fitVidScene();
+
+  const need = scene.blocks.filter(b => b.type === 'chat').map(b => findNoteById(b.noteId)).filter(n => n && needsSign(n));
+  if (need.length) {
+    const shown = vidIndex;
+    resolvePhotoUrls(need,true).then(changed => {
+      if (changed && bubuVideoOpen && vidIndex === shown && vidReady) renderVidScene(false);
+    });
+  }
+}
+
+function updateVidUI() {
+  const total = vidScenes.length;
+  $('bubuVidCount').textContent = total ? `${vidIndex+1} / ${total}` : '';
+  const bar = $('bubuVidProgress');
+  if (bar.children.length !== total) {
+    bar.replaceChildren();
+    for (let i = 0; i < total; i++) {
+      const seg = document.createElement('div');
+      seg.className = 'bubu-vid-seg';
+      seg.appendChild(document.createElement('i'));
+      bar.appendChild(seg);
+    }
+  }
+  const ratio = vidDur ? Math.min(vidElapsed/vidDur,1) : 0;
+  Array.from(bar.children).forEach((seg,i) => {
+    seg.firstChild.style.width = (i < vidIndex ? 100 : i === vidIndex ? ratio*100 : 0)+'%';
+  });
+  $('bubuVidPrev').disabled = vidIndex <= 0;
+  $('bubuVidNext').disabled = vidIndex >= total-1;
+  $('bubuVidPlay').setAttribute('aria-label',vidPlaying ? 'Jeda' : 'Putar');
+  $('bubuVidPlayIcon').setAttribute('d',vidPlaying ? VID_PAUSE_PATH : VID_PLAY_PATH);
+}
+
+/* Pindah adegan dengan fade out → ganti isi → fade in */
+function goVidScene(index,{instant = false} = {}) {
+  if (index < 0 || index >= vidScenes.length) return;
+  clearTimeout(vidSwapTimer);
+  vidIndex = index;
+  vidFinished = false;
+  vidReady = false;
+  vidElapsed = 0;
+  vidDur = vidSceneDuration(vidScenes[index]);
+  updateVidUI();
+
+  const stage = $('bubuVidStage');
+  stage.classList.add('out');
+  vidSwapTimer = setTimeout(() => {
+    vidSwapTimer = 0;
+    if (!bubuVideoOpen) return;
+    renderVidScene(true);
+    void stage.offsetWidth;
+    stage.classList.remove('out');
+    vidReady = true;
+    vidLast = 0;
+  },instant ? 30 : 400);
+}
+
+function vidTick(time) {
+  if (!vidPlaying) return;
+  if (!vidLast) vidLast = time;
+  const dt = Math.min(time-vidLast,100);
+  vidLast = time;
+  if (vidReady) {
+    vidElapsed += dt;
+    updateVidUI();
+    if (vidElapsed >= vidDur) {
+      if (vidIndex < vidScenes.length-1) goVidScene(vidIndex+1);
+      else { vidFinished = true; setVidPlaying(false); return; }
+    }
+  }
+  vidRaf = requestAnimationFrame(vidTick);
+}
+
+function setVidPlaying(on) {
+  vidPlaying = on;
+  cancelAnimationFrame(vidRaf);
+  vidRaf = 0;
+  if (on) { vidLast = 0; vidRaf = requestAnimationFrame(vidTick); }
+  updateVidUI();
+}
+
+function toggleVidPlay() {
+  if (vidPlaying) { setVidPlaying(false); return; }
+  if (vidFinished) {
+    goVidScene(0);
+    setVidPlaying(true);
+    return;
+  }
+  setVidPlaying(true);
+}
+
+function openBubuVideo() {
+  if (!bubuCanEdit()) return;
+  closeBubuUI();
+  const scenes = buildBubuScenes();
+  if (!scenes.length) {
+    showToast('Belum ada kelompok. Ketuk teks atau chat, lalu pilih Kelompokkan.',{duration:4200});
+    return;
+  }
+  vidScenes = scenes;
+  vidPlaying = false;
+  vidFinished = false;
+  bubuVideoOpen = true;
+  $('bubuVidProgress').replaceChildren();
+  $('bubuVidStage').classList.add('out');
+
+  const box = $('bubuVideo');
+  box.removeAttribute('inert');
+  box.setAttribute('aria-hidden','false');
+  box.classList.add('open');
+  document.body.classList.add('bubu-video-open');
+  goVidScene(0,{instant:true});
+  requestAnimationFrame(() => $('bubuVidPlay').focus({preventScroll:true}));
+}
+
+function closeBubuVideo() {
+  if (!bubuVideoOpen) return;
+  bubuVideoOpen = false;
+  setVidPlaying(false);
+  clearTimeout(vidSwapTimer);
+  vidSwapTimer = 0;
+  const box = $('bubuVideo');
+  box.classList.remove('open');
+  box.setAttribute('aria-hidden','true');
+  box.setAttribute('inert','');
+  document.body.classList.remove('bubu-video-open');
+  const btn = $('bubuVideoBtn');
+  if (showingBubu && btn) btn.focus({preventScroll:true});
+}
+
+$('bubuVideoBtn').addEventListener('click',openBubuVideo);
+$('bubuVidClose').addEventListener('click',closeBubuVideo);
+$('bubuVidPlay').addEventListener('click',toggleVidPlay);
+$('bubuVidPrev').addEventListener('click',() => { if (vidIndex > 0) goVidScene(vidIndex-1); });
+$('bubuVidNext').addEventListener('click',() => { if (vidIndex < vidScenes.length-1) goVidScene(vidIndex+1); });
+
+document.addEventListener('keydown',event => {
+  if (!bubuVideoOpen) return;
+  if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeBubuVideo(); }
+  else if (event.key === 'ArrowRight') { event.preventDefault(); if (vidIndex < vidScenes.length-1) goVidScene(vidIndex+1); }
+  else if (event.key === 'ArrowLeft') { event.preventDefault(); if (vidIndex > 0) goVidScene(vidIndex-1); }
+},true);
+
+document.addEventListener('visibilitychange',() => {
+  if (document.hidden && bubuVideoOpen && vidPlaying) setVidPlaying(false);
+});
+
+/* Dari menu pesan di chat (tahan pesan → Masukkan ke For Bubu) */
+function addNoteToBubu(noteId) {
+  openMenuId = null;
+  render();
+  if (!bubuCanEdit()) return;
+  const goView = {actionLabel:'Lihat',onAction:() => openBubuPage()};
+
+  if (bubuBlocks.some(b => b.type === 'chat' && String(b.noteId) === String(noteId))) {
+    showToast('Pesan ini sudah ada di For Bubu.',goView);
+    return;
+  }
+
+  bubuBlocks.push({id:bubuId(),type:'chat',noteId:String(noteId)});
+  if (bubuSize() > BUBU_MAX) {
+    bubuBlocks.pop();
+    showToast('For Bubu sudah penuh. Hapus sesuatu dulu.');
+    return;
+  }
+
+  scheduleBubuSave();
+  showToast('Dimasukkan ke For Bubu ♡',goView);
+}
+
+/* Tombol + → Tambah teks / Tambah chat */
+$('bubuAdd').addEventListener('click',event => {
+  event.stopPropagation();
+  if (bubuEditingId || !bubuCanEdit()) return;
+  bubuActiveId = null;
+  bubuSortId = null; bubuGroupId = null;
+  const open = !bubuAddMenu;
+  renderBubu();
+  setBubuAddMenu(open);
+});
+
+$('bubuAddText').addEventListener('click',() => {
+  setBubuAddMenu(false);
+  if (bubuEditingId) return;
+  const block = {id:bubuId(),type:'text',text:''};
+  bubuBlocks.push(block);
+  if (bubuSize() > BUBU_MAX-10) {
+    bubuBlocks.pop();
+    showToast('For Bubu sudah penuh. Hapus sesuatu dulu.');
+    return;
+  }
+  startBubuEdit(block.id);
+});
+
+$('bubuAddChat').addEventListener('click',() => {
+  setBubuAddMenu(false);
+  if (bubuEditingId) return;
+  openBubuPick();
+});
+
+/* Daftar chat yang sudah di-love → pilih satu atau lebih */
+function openBubuPick() {
+  bubuPickIds = new Set();
+  renderBubuPick();
+  $('bubuPickBackdrop').classList.add('open');
+  $('bubuPickBackdrop').setAttribute('aria-hidden','false');
+  activeModal = $('bubuPickBackdrop');
+  requestAnimationFrame(() => $('bubuPickBackdrop').querySelector('[role="dialog"]').focus({preventScroll:true}));
+}
+
+function closeBubuPick() {
+  $('bubuPickBackdrop').classList.remove('open');
+  $('bubuPickBackdrop').setAttribute('aria-hidden','true');
+  if (activeModal === $('bubuPickBackdrop')) activeModal = null;
+}
+
+function updateBubuPickConfirm() {
+  const count = bubuPickIds.size;
+  $('bubuPickConfirm').disabled = count === 0;
+  $('bubuPickConfirm').textContent = count ? `Tambahkan (${count})` : 'Tambahkan';
+}
+
+function renderBubuPick() {
+  const box = $('bubuPickList');
+  box.replaceChildren();
+  const used = new Set(bubuBlocks.filter(b => b.type === 'chat').map(b => String(b.noteId)));
+  const lovedAll = notes.filter(n => n.reacted);
+  const loved = lovedAll.filter(n => !used.has(String(n.id))).sort((a,b) => b.createdAt-a.createdAt);
+
+  if (!loved.length) {
+    const empty = document.createElement('div');
+    empty.className = 'bubu-pick-empty';
+    empty.textContent = lovedAll.length
+      ? 'Semua pesan yang kamu love sudah ada di For Bubu.'
+      : 'Belum ada pesan yang di-love. Ketuk dua kali sebuah pesan di chat untuk memberi love ♡';
+    box.appendChild(empty);
+    updateBubuPickConfirm();
+    return;
+  }
+
+  loved.forEach(note => {
+    const id = String(note.id);
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'bubu-pick-item'+(bubuPickIds.has(id) ? ' on' : '');
+    row.setAttribute('aria-pressed',String(bubuPickIds.has(id)));
+
+    const check = document.createElement('span');
+    check.className = 'bubu-pick-check';
+    check.setAttribute('aria-hidden','true');
+    check.textContent = '✓';
+
+    const body = document.createElement('div');
+    body.className = 'bubu-pick-body';
+    const meta = document.createElement('div');
+    meta.className = 'bubu-pick-meta';
+    meta.textContent = `${groupLabel(note.dayKey)}${note.time ? ' · '+note.time : ''}`;
+    body.appendChild(meta);
+    if (note.photo) {
+      const img = document.createElement('img');
+      img.className = 'bubu-pick-thumb';
+      img.alt = 'Foto';
+      img.src = note.photo;
+      body.appendChild(img);
+    }
+    if (note.text) {
+      const text = document.createElement('div');
+      text.className = 'bubu-pick-text';
+      text.textContent = note.text;
+      body.appendChild(text);
+    }
+
+    row.append(check,body);
+    row.addEventListener('click',() => {
+      if (bubuPickIds.has(id)) bubuPickIds.delete(id); else bubuPickIds.add(id);
+      row.classList.toggle('on',bubuPickIds.has(id));
+      row.setAttribute('aria-pressed',String(bubuPickIds.has(id)));
+      updateBubuPickConfirm();
+    });
+    box.appendChild(row);
+  });
+
+  updateBubuPickConfirm();
+
+  const need = loved.filter(needsSign);
+  if (need.length) resolvePhotoUrls(need,true).then(changed => {
+    if (changed && activeModal === $('bubuPickBackdrop')) {
+      const keep = new Set(bubuPickIds);
+      renderBubuPick();
+      bubuPickIds = keep;
+      box.querySelectorAll('.bubu-pick-item').forEach((r,i) => {
+        const n = loved[i];
+        if (n && keep.has(String(n.id))) { r.classList.add('on'); r.setAttribute('aria-pressed','true'); }
+      });
+      updateBubuPickConfirm();
+    }
+  });
+}
+
+$('closeBubuPick').addEventListener('click',closeBubuPick);
+$('bubuPickBackdrop').addEventListener('click',event => {
+  if (event.target === $('bubuPickBackdrop')) closeBubuPick();
+});
+
+$('bubuPickConfirm').addEventListener('click',() => {
+  const chosen = notes
+    .filter(n => bubuPickIds.has(String(n.id)))
+    .sort((a,b) => a.createdAt-b.createdAt);
+  if (!chosen.length) return;
+
+  let added = 0;
+  for (const note of chosen) {
+    bubuBlocks.push({id:bubuId(),type:'chat',noteId:String(note.id)});
+    if (bubuSize() > BUBU_MAX) { bubuBlocks.pop(); break; }
+    added++;
+  }
+
+  closeBubuPick();
+  if (added) {
+    scheduleBubuSave();
+    renderBubu();
+    showToast(`${added} chat ditambahkan ♡`);
+  }
+  if (added < chosen.length) showToast('For Bubu penuh, sebagian chat tidak ditambahkan.');
+});
+
+/* Ketuk di luar: tutup menu + dan opsi kotak */
+document.addEventListener('click',event => {
+  if (!showingBubu) return;
+  if (bubuAddMenu && !event.target.closest('.bubu-add-wrap')) setBubuAddMenu(false);
+  if (bubuActiveId !== null && !event.target.closest('.bubu-block')) {
+    bubuActiveId = null;
+    bubuSortId = null; bubuGroupId = null;
+    renderBubuIfIdle();
+  }
+});
+
+document.addEventListener('visibilitychange',() => {
+  if (document.hidden && bubuSaveTimer) { clearTimeout(bubuSaveTimer); saveBubu(); }
+});
+
+/* For Bubu */
+function setBubuMode(enabled) {
+  showingBubu = enabled;
+  if (!enabled) closeBubuVideo();
+
+  $('bubuPage').hidden = !enabled;
+  if (enabled) closeSearch(true);
+  if (!enabled) {
+    bubuActiveId = null;
+    bubuSortId = null; bubuGroupId = null;
+    setBubuAddMenu(false);
+    if (bubuEditingId && document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  }
+  $('history').classList.toggle('hidden',enabled || showingProfile);
+  updateLoadMore();
+  syncComposer();
+
+  if (enabled) {
+    window.scrollTo(0,0);
+    setScrollMode(false);
+    renderBubu();
+  }
+
+  updateNavigation();
+}
+
 /* Profil */
 function setProfileMode(enabled) {
   showingProfile = enabled;
 
   $('profilePage').hidden = !enabled;
   if (enabled) closeSearch(true);
-  $('history').classList.toggle('hidden',enabled);
+  $('history').classList.toggle('hidden',enabled || showingBubu);
   updateLoadMore();
   syncComposer();
 
@@ -3604,6 +4903,7 @@ function setProfileMode(enabled) {
 
 $('allNav').addEventListener('click',() => {
   trackTab('all');
+  if (showingBubu) setBubuMode(false);
   if (showingProfile) setProfileMode(false);
   if (showingGallery) setGalleryMode(false);
 
@@ -3616,6 +4916,7 @@ $('allNav').addEventListener('click',() => {
 
 $('calendarNav').addEventListener('click',() => {
   trackTab('calendar');
+  if (showingBubu) setBubuMode(false);
   if (showingProfile) setProfileMode(false);
   if (showingGallery) setGalleryMode(false);
   closeSearch(true);
@@ -3630,8 +4931,20 @@ $('calendarNav').addEventListener('click',() => {
   playPagePop();
 });
 
+/* For Bubu: halaman tersendiri yang dibuka dari tombol di Profil (di bawah Statistik) */
+function openBubuPage() {
+  if (showingGallery) setGalleryMode(false);
+  if (showingProfile) setProfileMode(false);
+  setBubuMode(true);
+  playPagePop();
+}
+
+$('bubuBtn').addEventListener('click',openBubuPage);
+$('bubuBack').addEventListener('click',() => $('profileNav').click());
+
 $('profileNav').addEventListener('click',() => {
   trackTab('profile');
+  if (showingBubu) setBubuMode(false);
   if (showingGallery) setGalleryMode(false);
   setProfileMode(true);
   playPagePop();
@@ -3992,7 +5305,7 @@ let scrollActive = false;
 const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 function reduceMotion() { return reduceMotionQuery.matches; }
 /* chatMode = daftar menempel di bawah (Semua). Kalender, galeri, profil mengalir dari atas. */
-function chatMode() { return !showingGallery && !showingProfile && view !== 'calendar'; }
+function chatMode() { return !showingGallery && !showingProfile && !showingBubu && view !== 'calendar'; }
 function topMode() { return view === 'calendar' && !showingGallery; }
 
 function maxScrollY() {
@@ -5482,6 +6795,9 @@ function applyProfileMeta(meta,uid) {
 
   if (uid) syncWallpaperFromMeta(m,uid);
 
+  if (uid) applyBubuMeta(m,profileFreshUid === uid);
+  else resetBubu();
+
   if (m.theme === 'dark' || m.theme === 'light') {
     if ((m.theme === 'dark') !== document.body.classList.contains('dark-theme')) applyTheme(m.theme,false);
   }
@@ -5822,6 +7138,7 @@ signOutButton.addEventListener('click',async () => {
   profileMessage.textContent = 'Keluar dari akun...';
 
   try {
+    try { if (bubuSaveTimer) { clearTimeout(bubuSaveTimer); await saveBubu(); } } catch {}
     try { await flushSync(); } catch {}
     const { error } = await supabaseClient.auth.signOut();
     if (error) throw error;
@@ -5833,6 +7150,7 @@ signOutButton.addEventListener('click',async () => {
     showAuthPane('login');
 
     setProfileMode(false);
+    setBubuMode(false);
     view = 'all';
     updateNavigation();
     render();
@@ -6046,6 +7364,7 @@ document.addEventListener('keydown',event => {
 function handleAppBack() {
   if (dialogResolver) { finishDialog(false); return true; }
   if (callState !== 'idle') { confirmEndCall(); return true; }
+  if (bubuVideoOpen) { closeBubuVideo(); return true; }
   if (activeModal) { closeActiveModal(); return true; }
   if (headMenuOpen) { setHeadMenu(false); return true; }
 
@@ -6057,10 +7376,13 @@ function handleAppBack() {
     return false;
   }
 
+  if (bubuAddMenu || bubuActiveId !== null) { closeBubuUI(); return true; }
+  if (bubuEditingId) { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); return true; }
   if (openMenuId !== null) { openMenuId = null; render(); return true; }
   if (searchOpen) { closeSearch(); return true; }
   if (showingContact) { closeContact(); return true; }
   if (showingGallery) { setGalleryMode(false); playPagePop(); return true; }
+  if (showingBubu) { $('profileNav').click(); return true; }
 
   if (tabTrail.length > 1) {
     tabTrail.pop();
