@@ -1028,6 +1028,113 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
 .wp-dim input{width:100%;accent-color:#d6479a}
 .wp-msg{min-height:16px;margin-top:10px;color:var(--muted);font-size:11px;line-height:1.5}
 
+
+/* ===== Header gaya chat Instagram ===== */
+.sticky-head .chat-head{display:flex;align-items:center;justify-content:space-between;gap:8px;height:56px;padding:0;margin:0}
+.head-left{position:relative;display:flex;align-items:center;gap:11px;flex:1;min-width:0;height:100%}
+.head-tap{position:absolute;inset:0;z-index:1;padding:0;border:0;border-radius:14px;background:transparent;-webkit-tap-highlight-color:transparent;transition:background .2s ease}
+.head-tap:active:not(:disabled){background:rgba(255,150,210,.1)}
+.head-tap:disabled{cursor:default}
+.head-tap:focus-visible,.head-icon:focus-visible,.sticky-head .chat-head .streak-badge:focus-visible{outline:2px solid #bd91aa;outline-offset:1px}
+.dark-theme .head-tap:focus-visible,.dark-theme .head-icon:focus-visible,.dark-theme .sticky-head .chat-head .streak-badge:focus-visible{outline-color:#ff9fce}
+.head-avatar{position:relative;flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(145deg,#f3b8d3,#d98bb3);color:#fff;font-size:17px;font-weight:700;pointer-events:none}
+.dark-theme .head-avatar{background:linear-gradient(145deg,#e04a9b,#8f2a68);color:#ffe8f3}
+.head-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.head-text{position:relative;display:flex;flex-direction:column;justify-content:center;min-width:0;line-height:1.25;pointer-events:none}
+.head-row1{display:flex;align-items:center;gap:6px;min-width:0}
+.head-nick{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:16px;font-weight:700;color:var(--ink)}
+.sticky-head .chat-head .streak-badge{position:relative;z-index:2;pointer-events:auto;flex:none;display:inline-flex;align-items:center;gap:2px;width:auto;min-width:0;height:auto;padding:6px;margin:-6px -6px -6px -2px;border:0;border-radius:10px;background:transparent;box-shadow:none;color:var(--ink);font-size:12px;font-weight:600}
+.sticky-head .chat-head .streak-badge:active{transform:scale(.92)}
+.head-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--muted)}
+.head-actions{display:flex;align-items:center;flex:none}
+.head-icon{display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:12px;background:transparent;box-shadow:none;color:var(--ink);-webkit-tap-highlight-color:transparent;transition:transform .15s ease,color .2s ease}
+.head-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.head-icon:active{transform:scale(.92)}
+.head-icon.on{color:#d6479a}
+.dark-theme .head-icon.on{color:#ff9fce}
+
+/* Kolom pencarian: menimpa baris header (hanya opacity/transform = ringan) */
+.head-search{position:absolute;inset:0;z-index:4;display:flex;align-items:center;opacity:0;visibility:hidden;transform:translate3d(0,-6px,0);transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s}
+.chat-head.searching .head-search{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.head-left,.head-actions{transition:opacity .18s ease}
+.chat-head.searching .head-left,.chat-head.searching .head-actions{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility 0s linear .18s}
+.head-search .search-wrap{flex:1;min-width:0;margin:0;height:40px;padding:0 2px 0 12px;gap:8px;border-radius:20px;animation:none}
+.search-icon{flex:none;width:16px;height:16px;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.head-search #searchInput{font-size:16px;padding:0;height:100%}
+.head-search .clear-search{flex:none;display:grid;place-items:center;width:36px;height:36px;padding:0;font-size:22px;line-height:1}
+.head-icon:disabled{opacity:.35}
+
+/* Tombol Statistik di Profil */
+.profile-action{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:12px;padding:13px;border:1px solid var(--edge);border-radius:17px;background:var(--soft);color:var(--ink);font-size:13px;font-weight:650;transition:transform .18s ease}
+.profile-action svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.profile-action:active{transform:scale(.98)}
+.dark-theme .profile-action{background:#3b1330;border-color:#74305f}
+.modal-head + .set-sec{border-top:0;padding-top:6px}
+
+/* ===== Performa: kurangi blur & animasi saat scroll ===== */
+.message{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(246,231,239,.66));box-shadow:0 3px 12px rgba(124,88,112,.06)}
+.dark-theme .message{box-shadow:0 3px 12px rgba(0,0,0,.16)}
+.composer{-webkit-backdrop-filter:blur(14px) saturate(140%)!important;backdrop-filter:blur(14px) saturate(140%)!important}
+.bottom-nav{-webkit-backdrop-filter:blur(14px) saturate(140%)!important;backdrop-filter:blur(14px) saturate(140%)!important}
+.sticky-head{-webkit-backdrop-filter:blur(14px) saturate(140%)!important;backdrop-filter:blur(14px) saturate(140%)!important}
+.bg-layer.paused .blob,.bg-layer.paused .bg-heart{animation-play-state:paused}
+.sticky-head{contain:layout style}
+/* Pembatas antar bagian Pengaturan */
+.set-sec{padding:16px 0;border-top:1px solid var(--line)}
+.set-sec .field-label{margin-top:0}
+.set-sec:last-child{padding-bottom:4px}
+.set-sec .set-row{margin-bottom:0}
+.dark-theme .set-sec{border-top-color:rgba(255,150,210,.22)}
+
+/* Pembatas header ↔ pesan disematkan */
+.sticky-head .chat-head{border-bottom:1px solid rgba(215,155,189,.38)}
+.dark-theme .sticky-head .chat-head{border-bottom-color:rgba(255,150,210,.2)}
+/* Kolom disematkan: masuk/keluar di belakang header */
+.sticky-head .chat-head{position:relative;z-index:3}
+.pinned-wrap{display:grid;grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .28s ease}
+.pinned-inner{min-height:0;overflow:hidden}
+.sticky-head .pinned-wrap .pinned-bar{margin:8px 0;transform:translateY(0);opacity:1;transition:transform .28s ease,opacity .22s ease,background .25s}
+.sticky-head .pinned-wrap .pinned-bar:active{transform:scale(.985)}
+.pinned-wrap.collapsed{grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .28s ease,visibility 0s linear .28s}
+.sticky-head .pinned-wrap.collapsed .pinned-bar{transform:translateY(-130%);opacity:0;pointer-events:none}
+
+/* Tombol kembali (Galeri) */
+.head-back{flex:none;display:grid;place-items:center;width:40px;height:40px;margin-left:-8px;padding:0;border:0;border-radius:12px;background:transparent;color:var(--ink);position:relative;z-index:2;-webkit-tap-highlight-color:transparent;transition:transform .15s ease}
+.head-back svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.head-back:active{transform:scale(.92)}
+.head-back:focus-visible{outline:2px solid #bd91aa;outline-offset:1px}
+.dark-theme .head-back:focus-visible{outline-color:#ff9fce}
+.head-tap:disabled{pointer-events:none}
+
+/* Pengaturan: baris tema & urutan */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 16px}
+.set-label{font-size:13px;font-weight:600}
+.set-row-sort .dd{width:100%}
+.settings-sheet .dd-btn{width:100%;justify-content:space-between;padding:11px 14px;font-size:13px}
+.settings-sheet .dd-chev{width:14px;height:14px}
+.settings-sheet .dd-panel,.settings-sheet .dd.open .dd-panel{position:static;display:none;width:100%;min-width:0;margin-top:6px;opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:none}
+.settings-sheet .dd.open .dd-panel{display:block}
+
+/* Profil: nickname */
+.nickname-box{margin-bottom:12px}
+#nicknameInput{display:block;width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:14px;outline:0;background:var(--soft);color:var(--ink);font-size:16px}
+#nicknameInput:focus{border-color:#d7b4c8}
+.dark-theme #nicknameInput{background:#3b1330;border-color:#74305f;color:var(--ink)}
+.dark-theme #nicknameInput:focus{border-color:#f06aae}
+#nicknameInput::placeholder{color:var(--muted)}
+.nickname-hint{margin-top:8px;color:var(--muted);font-size:11.5px;line-height:1.5}
+#nicknameSave{width:100%;margin-top:12px;padding:12px;border:1px solid var(--edge);border-radius:15px;background:linear-gradient(145deg,#f7e4ed,#edcbdc);color:#89566f;font-size:13px;font-weight:650;transition:transform .18s ease,opacity .18s ease}
+#nicknameSave:active{transform:scale(.98)}
+#nicknameSave:disabled{opacity:.6}
+.dark-theme #nicknameSave{background:linear-gradient(145deg,#62224d,#4a193c);color:#ffe8f3;border-color:var(--line)}
+#nicknameMessage{margin:10px 0 0;min-height:16px;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+#nicknameMessage[data-state="error"]{color:var(--danger)}
+
+@media (prefers-reduced-motion:reduce){
+  .head-icon,.head-back,.head-tap,#nicknameSave,.pinned-wrap,.pinned-wrap .pinned-bar,.head-search,.head-left,.head-actions{transition:none!important}
+  .head-icon:active,.head-back:active,.sticky-head .chat-head .streak-badge:active{transform:none}
+}
+@media(max-width:380px){.head-nick{font-size:15px}}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1157,50 +1264,52 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
 
 <div class="app">
   <div class="sticky-head" id="stickyHead">
-  <header class="topbar">
-    <div class="brand-row">
-      <div class="brand">Unsent</div>
-      <button class="streak-badge" id="streakBadge" type="button" aria-label="Buka statistik streak">🔥 <span id="streakCount">0</span></button>
+  <header class="chat-head">
+    <div class="head-left" id="headLeft">
+      <button class="head-tap" id="headTap" type="button" aria-label="Sembunyikan pesan disematkan" aria-expanded="true" aria-controls="pinnedWrap" disabled></button>
+      <button class="head-back hidden" id="headBack" type="button" aria-label="Kembali ke halaman utama">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+      </button>
+      <span class="head-avatar" id="headAvatar" aria-hidden="true">
+        <span class="head-avatar-ph" id="headAvatarPh">♡</span>
+        <img id="headAvatarImg" class="hidden" alt="">
+      </span>
+      <span class="head-text">
+        <span class="head-row1">
+          <span class="head-nick" id="headNick">Unsent</span>
+          <button class="streak-badge" id="streakBadge" type="button" aria-label="Buka statistik streak">🔥 <span id="streakCount">0</span></button>
+        </span>
+        <span class="head-sub" id="count">0 pesan</span>
+      </span>
     </div>
-    <div class="top-actions">
-      <button class="settings-btn" id="settingsBtn" type="button" aria-label="Pengaturan" aria-haspopup="dialog">
+    <div class="head-actions">
+      <button class="head-icon" id="galleryViewBtn" type="button" aria-label="Galeri" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="18" height="17" rx="4"/><circle cx="8.6" cy="9.1" r="1.6"/><path d="m21 15.5-4.6-4.6a1.6 1.6 0 0 0-2.3 0L5 20"/></svg>
+      </button>
+      <button class="head-icon" id="searchBtn" type="button" aria-label="Cari pesan" aria-expanded="false" aria-controls="headSearch">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+      </button>
+      <button class="head-icon" id="settingsBtn" type="button" aria-label="Pengaturan" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
       </button>
-    <button class="theme-switch" id="themeToggle" type="button" role="switch" aria-checked="true" aria-label="Mode gelap">
-        <span class="ts-knob" aria-hidden="true">
-          <svg class="ts-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-          <svg class="ts-moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/></svg>
-        </span>
-      </button>
+    </div>
+    <div class="head-search" id="headSearch" inert>
+      <div class="search-wrap" id="searchWrap">
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+        <input id="searchInput" type="search" placeholder="Cari isi pesan..." autocomplete="off" aria-label="Cari pesan" enterkeyhint="search">
+        <button class="clear-search" id="clearSearch" type="button" aria-label="Tutup pencarian">×</button>
+      </div>
     </div>
   </header>
-  <div class="search-wrap" id="searchWrap">
-    <span class="search-icon" aria-hidden="true">⌕</span>
-    <input id="searchInput" type="search" placeholder="Cari isi pesan..." autocomplete="off" aria-label="Cari pesan">
-    <button class="clear-search hidden" id="clearSearch" type="button" aria-label="Hapus pencarian">×</button>
-  </div>
-  <div class="toolbar">
-    <span class="count" id="count">0 pesan</span>
-    <div class="toolbar-right">
-      <div class="dd" id="sort">
-        <button class="dd-btn" id="sortBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="sortList" aria-label="Urutkan pesan">
-          <span class="dd-label">Terbaru</span>
-          <svg class="dd-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="dd-panel" id="sortList" role="listbox" aria-label="Urutkan pesan">
-          <button class="dd-opt sel" id="sortOptNewest" type="button" role="option" aria-selected="true" tabindex="-1" data-value="newest" data-label="Terbaru">Terbaru di bawah<svg class="dd-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
-          <button class="dd-opt" id="sortOptOldest" type="button" role="option" aria-selected="false" tabindex="-1" data-value="oldest" data-label="Terlama">Terlama di bawah<svg class="dd-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
-        </div>
-      </div>
-      <button class="small-btn" id="galleryViewBtn" type="button">🖼️ Galeri</button>
-      <button class="small-btn" id="statsBtn" type="button">📊 Statistik</button>
+  <div class="pinned-wrap hidden" id="pinnedWrap">
+    <div class="pinned-inner">
+      <button class="pinned-bar" id="pinnedBar" type="button" aria-label="Lompat ke pesan disematkan">
+        <svg class="pb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"/></svg>
+        <span class="pb-text" id="pinnedBarText"></span>
+        <span class="pb-step hidden" id="pinnedBarStep"></span>
+      </button>
     </div>
   </div>
-  <button class="pinned-bar hidden" id="pinnedBar" type="button" aria-label="Lompat ke pesan disematkan">
-    <svg class="pb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"/></svg>
-    <span class="pb-text" id="pinnedBarText"></span>
-    <span class="pb-step hidden" id="pinnedBarStep"></span>
-  </button>
   </div>
 
   <section id="profilePage" hidden>
@@ -1218,11 +1327,24 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
       </div>
       <h2>Profil</h2>
 
+      <div class="profile-info nickname-box">
+        <label class="profile-info-label" for="nicknameInput">Nickname</label>
+        <input id="nicknameInput" type="text" maxlength="24" autocomplete="nickname" autocapitalize="none" spellcheck="false" placeholder="Nama panggilanmu">
+        <div class="nickname-hint" id="nicknameHint">Tambahkan nickname biar lebih personal</div>
+        <button type="button" id="nicknameSave">Simpan nickname</button>
+        <p id="nicknameMessage" role="status"></p>
+      </div>
+
       <div class="profile-info">
         <span class="profile-info-label">Email akun</span>
         <div id="profileEmail">Memuat email...</div>
         <div id="syncStatus" style="margin-top:8px;font-size:11px;color:var(--muted)"></div>
       </div>
+
+      <button type="button" class="profile-action" id="statsBtn" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 20v-7"/><path d="M12 20V5"/><path d="M18.5 20V10"/></svg>
+        <span>Statistik</span>
+      </button>
 
       <p id="profileMessage" role="status"></p>
 
@@ -1328,6 +1450,34 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
       <div class="modal-title">Pengaturan</div>
       <button class="modal-close" id="settingsClose" type="button" aria-label="Tutup">×</button>
     </div>
+    <div class="set-sec">
+      <div class="field-label">Tampilan</div>
+    <div class="set-row">
+      <span class="set-label">Mode gelap</span>
+      <button class="theme-switch" id="themeToggle" type="button" role="switch" aria-checked="true" aria-label="Mode gelap">
+        <span class="ts-knob" aria-hidden="true">
+          <svg class="ts-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="ts-moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/></svg>
+        </span>
+      </button>
+    </div>
+    </div>
+    <div class="set-sec">
+    <div class="field-label">Urutan pesan</div>
+    <div class="set-row set-row-sort">
+      <div class="dd" id="sort">
+        <button class="dd-btn" id="sortBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="sortList" aria-label="Urutkan pesan">
+          <span class="dd-label">Terbaru</span>
+          <svg class="dd-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dd-panel" id="sortList" role="listbox" aria-label="Urutkan pesan">
+          <button class="dd-opt sel" id="sortOptNewest" type="button" role="option" aria-selected="true" tabindex="-1" data-value="newest" data-label="Terbaru">Terbaru di bawah<svg class="dd-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+          <button class="dd-opt" id="sortOptOldest" type="button" role="option" aria-selected="false" tabindex="-1" data-value="oldest" data-label="Terlama">Terlama di bawah<svg class="dd-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="set-sec">
     <div class="field-label">Wallpaper</div>
     <div class="wp-preview" id="wpPreview"><span id="wpPreviewText">Default · hati + gradient</span></div>
     <div class="wp-actions">
@@ -1337,6 +1487,7 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
     <div class="wp-dim hidden" id="wpDimBox">
       <label for="wpDim">Gelapkan wallpaper <span id="wpDimVal">45%</span></label>
       <input id="wpDim" type="range" min="0" max="85" step="5" value="45">
+    </div>
     </div>
     <div class="wp-msg" id="wpMsg" role="status"></div>
   </section>
@@ -2034,7 +2185,8 @@ function updatePinnedBar() {
     pinCursor = -1;
   }
 
-  bar.classList.toggle('hidden',!list.length);
+  $('pinnedWrap').classList.toggle('hidden',!list.length);
+  $('headTap').disabled = !list.length;
   $('pinnedBarText').textContent = `${list.length} pesan disematkan`;
 
   const step = $('pinnedBarStep');
@@ -2063,7 +2215,6 @@ function jumpToNextPinned() {
     clearTimeout(searchTimer);
     searchQuery = '';
     $('searchInput').value = '';
-    $('clearSearch').classList.add('hidden');
     changed = true;
   }
   if (changed) {
@@ -2115,6 +2266,8 @@ function updateNavigation() {
     'hidden',
     view !== 'calendar' || showingGallery || showingProfile
   );
+  $('headBack').classList.toggle('hidden',!showingGallery);
+  updateSearchUI();
   syncComposer();
   updatePinnedBar();
 }
@@ -2562,6 +2715,7 @@ function render(opts = {}) {
     ? `${filtered.length} hasil`
     : `${filtered.length} pesan`;
 
+  updateSearchUI();
   renderedNotes = buildDisplayList(filtered);
   updatePinnedBar();
   const firstData = pendingBottom && filtered.length > 0;
@@ -2656,7 +2810,6 @@ form.addEventListener('submit',event => {
   selectedDate = null;
   searchQuery = '';
   $('searchInput').value = '';
-  $('clearSearch').classList.add('hidden');
   ensureVisible(note.id);
 
   resetComposer();
@@ -2910,7 +3063,6 @@ sort.addEventListener('change',() => {
 
 $('searchInput').addEventListener('input',event => {
   const value = event.target.value.trim();
-  $('clearSearch').classList.toggle('hidden',!value);
 
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
@@ -2921,13 +3073,67 @@ $('searchInput').addEventListener('input',event => {
   },200);
 });
 
-$('clearSearch').addEventListener('click',() => {
+/* Kolom cari: ikon di header membuka kolom yang menimpa baris header */
+let searchOpen = false;
+let bgPauseTimer = 0;
+
+function pauseBg(ms) {
+  const layer = document.querySelector('.bg-layer');
+  if (!layer) return;
+  layer.classList.add('paused');
+  clearTimeout(bgPauseTimer);
+  bgPauseTimer = setTimeout(() => layer.classList.remove('paused'),ms || 220);
+}
+
+function updateSearchUI() {
+  $('searchBtn').disabled = showingGallery || showingProfile;
+}
+
+function openSearch() {
+  if (showingGallery || showingProfile) return;
+  searchOpen = true;
+  pauseBg(320);
+  $('headSearch').removeAttribute('inert');
+  document.querySelector('.chat-head').classList.add('searching');
+  $('searchBtn').setAttribute('aria-expanded','true');
+  requestAnimationFrame(() => $('searchInput').focus({preventScroll:true}));
+}
+
+function closeSearch(silent) {
   clearTimeout(searchTimer);
+  const hadQuery = !!searchQuery;
   searchQuery = '';
   $('searchInput').value = '';
-  $('clearSearch').classList.add('hidden');
-  resetVisible();
-  render(TO_DEFAULT);
+  searchOpen = false;
+  document.querySelector('.chat-head').classList.remove('searching');
+  $('headSearch').setAttribute('inert','');
+  $('searchBtn').setAttribute('aria-expanded','false');
+  if (document.activeElement === $('searchInput')) $('searchInput').blur();
+  if (hadQuery && !silent) {
+    resetVisible();
+    render(TO_DEFAULT);
+  }
+}
+
+$('searchBtn').addEventListener('click',() => { if (!searchOpen) openSearch(); });
+$('clearSearch').addEventListener('click',() => closeSearch());
+$('searchInput').addEventListener('keydown',event => {
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeSearch();
+  } else if (event.key === 'Enter') {
+    event.preventDefault();
+    $('searchInput').blur();
+  }
+});
+
+/* Ketuk header: sembunyikan / tampilkan kolom pesan disematkan */
+$('headTap').addEventListener('click',() => {
+  pauseBg(360);
+  const wrap = $('pinnedWrap');
+  const collapsed = wrap.classList.toggle('collapsed');
+  $('headTap').setAttribute('aria-expanded',String(!collapsed));
+  $('headTap').setAttribute('aria-label',collapsed ? 'Tampilkan pesan disematkan' : 'Sembunyikan pesan disematkan');
 });
 
 /* Galeri */
@@ -2993,10 +3199,10 @@ function renderGallery() {
 
 function setGalleryMode(enabled) {
   showingGallery = enabled;
-  $('galleryViewBtn').textContent = enabled ? '← Kembali' : '🖼️ Galeri';
-  $('searchWrap').classList.toggle('hidden',enabled);
-  $('sort').classList.toggle('hidden',enabled);
-  $('statsBtn').classList.toggle('hidden',enabled);
+  $('galleryViewBtn').classList.toggle('on',enabled);
+  $('galleryViewBtn').setAttribute('aria-pressed',String(enabled));
+  $('galleryViewBtn').setAttribute('aria-label',enabled ? 'Kembali dari galeri' : 'Galeri');
+  if (enabled) closeSearch(true);
   syncComposer();
 
   updateNavigation();
@@ -3021,13 +3227,19 @@ $('galleryViewBtn').addEventListener('click',() => {
   playPagePop();
 });
 
+$('headBack').addEventListener('click',() => {
+  if (showingGallery) {
+    setGalleryMode(false);
+    playPagePop();
+  }
+});
+
 /* Profil */
 function setProfileMode(enabled) {
   showingProfile = enabled;
 
   $('profilePage').hidden = !enabled;
-  $('searchWrap').classList.toggle('hidden',enabled);
-  document.querySelector('.toolbar').classList.toggle('hidden',enabled);
+  if (enabled) closeSearch(true);
   $('history').classList.toggle('hidden',enabled);
   updateLoadMore();
   syncComposer();
@@ -3504,6 +3716,7 @@ function handleScroll() {
 }
 
 window.addEventListener('scroll',() => {
+  pauseBg(180);
   if (scrollFrame) return;
   scrollFrame = requestAnimationFrame(handleScroll);
 },{passive:true});
@@ -4276,6 +4489,107 @@ window.addEventListener('online',() => { if (currentUserId && syncReady) schedul
 setInterval(() => { if (currentUserId && syncReady) { resolvePhotoUrls(); refreshAvatarUrl(); } },20*60*1000);
 
 
+/* ===== Identitas header: nickname + foto profil ===== */
+let userNickname = '';
+let userEmail = '';
+let nicknameDirty = false;
+const NICKNAME_MAX = 24;
+const nicknameInput = $('nicknameInput');
+const nicknameMessage = $('nicknameMessage');
+
+function displayName() {
+  if (userNickname) return userNickname;
+  if (userEmail) {
+    const local = userEmail.split('@')[0].trim();
+    return local || userEmail;
+  }
+  return 'Unsent';
+}
+
+function updateHeaderAvatar() {
+  const img = $('headAvatarImg');
+  const ph = $('headAvatarPh');
+  if (avatarUrl) {
+    if (img.getAttribute('src') !== avatarUrl) img.src = avatarUrl;
+    img.classList.remove('hidden');
+    ph.classList.add('hidden');
+  } else {
+    img.classList.add('hidden');
+    img.removeAttribute('src');
+    ph.classList.remove('hidden');
+  }
+}
+
+function updateHeaderIdentity() {
+  const name = displayName();
+  $('headNick').textContent = name;
+  const hasName = !!(userNickname || userEmail);
+  const first = hasName ? Array.from(name)[0] : '';
+  $('headAvatarPh').textContent = first ? first.toLocaleUpperCase('id-ID') : '♡';
+  updateHeaderAvatar();
+  if (!nicknameDirty) nicknameInput.value = userNickname;
+  $('nicknameHint').classList.toggle('hidden',!!userNickname);
+}
+
+$('headAvatarImg').addEventListener('error',() => {
+  if (!$('headAvatarImg').getAttribute('src')) return;
+  $('headAvatarImg').classList.add('hidden');
+  $('headAvatarPh').classList.remove('hidden');
+});
+
+function setNicknameMessage(text,state) {
+  nicknameMessage.textContent = text || '';
+  nicknameMessage.dataset.state = state || '';
+}
+
+nicknameInput.addEventListener('input',() => {
+  nicknameDirty = true;
+  setNicknameMessage('','');
+});
+nicknameInput.addEventListener('keydown',event => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    saveNickname();
+  }
+});
+$('nicknameSave').addEventListener('click',saveNickname);
+
+async function saveNickname() {
+  const nickname = nicknameInput.value.trim();
+  if (!nickname) {
+    setNicknameMessage('Nickname tidak boleh kosong.','error');
+    return;
+  }
+  if (Array.from(nickname).length > NICKNAME_MAX) {
+    setNicknameMessage('Nickname maksimal '+NICKNAME_MAX+' karakter.','error');
+    return;
+  }
+  if (!currentUserId) {
+    setNicknameMessage('Belum tersambung ke akun. Coba lagi sebentar.','error');
+    return;
+  }
+
+  const button = $('nicknameSave');
+  button.disabled = true;
+  setNicknameMessage('Menyimpan nickname...','');
+  try {
+    /* Hanya field nickname yang dikirim; Supabase menggabungkan user_metadata (avatar_path & theme aman) */
+    const { data, error } = await supabaseClient.auth.updateUser({data:{nickname}});
+    if (error) throw error;
+    const saved = data && data.user && data.user.user_metadata && typeof data.user.user_metadata.nickname === 'string'
+      ? data.user.user_metadata.nickname.trim().slice(0,NICKNAME_MAX)
+      : nickname;
+    userNickname = saved;
+    nicknameDirty = false;
+    updateHeaderIdentity();
+    setNicknameMessage('Nickname tersimpan.','ok');
+  } catch (error) {
+    setNicknameMessage('Gagal menyimpan nickname: '+((error && error.message) || 'coba lagi.'),'error');
+  } finally {
+    button.disabled = false;
+  }
+}
+
 /* ===== Foto profil (Supabase Storage + user_metadata.avatar_path) ===== */
 function compressAvatar(file) {
   return new Promise((resolve,reject) => {
@@ -4310,6 +4624,7 @@ function compressAvatar(file) {
 
 function updateAvatarUI(hadBefore) {
   const has = !!avatarPath;
+  updateHeaderAvatar();
 
   $('profileAvatarImg').classList.toggle('hidden',!avatarUrl);
   $('profileAvatarPlaceholder').classList.toggle('hidden',!!avatarUrl);
@@ -4493,6 +4808,12 @@ function applySession(session) {
 
   const meta = session && session.user ? session.user.user_metadata : null;
   syncAvatar((meta && typeof meta.avatar_path === 'string') ? meta.avatar_path : '');
+
+  const previousEmail = userEmail;
+  userEmail = email || '';
+  userNickname = (meta && typeof meta.nickname === 'string') ? meta.nickname.trim().slice(0,NICKNAME_MAX) : '';
+  if (!session || previousEmail !== userEmail) { nicknameDirty = false; setNicknameMessage('',''); }
+  updateHeaderIdentity();
 
   const remoteTheme = session && session.user && session.user.user_metadata
     ? session.user.user_metadata.theme : null;
