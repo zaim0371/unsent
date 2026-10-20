@@ -1063,6 +1063,18 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
 .head-search #searchInput{font-size:16px;padding:0;height:100%}
 .head-search .clear-search{flex:none;display:grid;place-items:center;width:36px;height:36px;padding:0;font-size:22px;line-height:1}
 .head-icon:disabled{opacity:.35}
+.head-settings-compact{display:none}
+.head-more{position:relative}
+.head-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:6;min-width:188px;padding:6px;border:1px solid var(--line);border-radius:18px;background:#fff8fc;box-shadow:0 14px 34px -8px rgba(112,83,104,.38);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.96);transform-origin:top right;transition:opacity .16s ease,transform .18s ease,visibility 0s linear .18s}
+.head-more.open .head-menu{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.dark-theme .head-menu{background:#3a122e;border-color:rgba(255,150,210,.28);box-shadow:0 14px 34px -8px rgba(0,0,0,.6)}
+.head-menu-item{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border:0;border-radius:12px;background:transparent;color:var(--ink);font-size:14px;font-weight:600;text-align:left;-webkit-tap-highlight-color:transparent;transition:background .15s ease,color .2s ease}
+.head-menu-item svg{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.head-menu-item:active:not(:disabled){background:rgba(255,150,210,.16)}
+.head-menu-item.on{color:#d6479a}
+.dark-theme .head-menu-item.on{color:#ff9fce}
+.head-menu-item:disabled{opacity:.38}
+.head-menu-item:focus-visible{outline:2px solid #bd91aa;outline-offset:-2px}
 
 /* Tombol Statistik di Profil */
 .profile-action{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:12px;padding:13px;border:1px solid var(--edge);border-radius:17px;background:var(--soft);color:var(--ink);font-size:13px;font-weight:650;transition:transform .18s ease}
@@ -1174,7 +1186,10 @@ body.contact-open{overflow:hidden}
 body.head-compact .sticky-head .chat-head{justify-content:flex-end;height:46px}
 body.head-compact .head-left,
 body.head-compact #galleryViewBtn,
-body.head-compact #searchBtn{display:none}
+body.head-compact #searchBtn,
+body.head-compact .head-call,
+body.head-compact .head-more{display:none}
+body.head-compact .head-settings-compact{display:grid}
 .cal-foot{flex-wrap:wrap;row-gap:8px}
 .cal-count{display:inline-flex;align-items:center;padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--soft);color:var(--ink);font-size:11px;font-weight:650}
 
@@ -1190,28 +1205,45 @@ body.head-compact #searchBtn{display:none}
 .profile-streak{display:flex;align-items:center;gap:12px;width:100%;margin-top:12px;padding:12px 14px;border:1px solid var(--edge);border-radius:17px;background:var(--soft);color:var(--ink);text-align:left;transition:transform .18s ease}
 .profile-streak:active{transform:scale(.98)}
 .dark-theme .profile-streak{background:#3b1330;border-color:#74305f}
+.profile-info{transition:background-color .45s ease,border-color .45s ease,box-shadow .45s ease}
+.profile-info.sync-ok{background:rgba(76,195,138,.22);border-color:#3fb37f;box-shadow:0 0 0 2px rgba(63,179,127,.25)}
+.profile-info.sync-bad{background:rgba(235,87,87,.20);border-color:#e05252;box-shadow:0 0 0 2px rgba(224,82,82,.25)}
+.dark-theme .profile-info.sync-ok{background:rgba(63,179,127,.28);border-color:#4cd197}
+.dark-theme .profile-info.sync-bad{background:rgba(235,87,87,.28);border-color:#ff7070}
 .profile-streak{position:relative;isolation:isolate}
-.ps-flame{position:relative;flex:none;display:grid;place-items:center;width:34px;height:34px;font-size:26px;line-height:1;transform-origin:50% 90%;animation:flameFlicker 1.3s ease-in-out infinite;filter:drop-shadow(0 0 5px rgba(255,140,0,.85)) drop-shadow(0 0 12px rgba(255,80,0,.45))}
-.ps-flame::before{content:"";position:absolute;inset:-8px;z-index:-1;border-radius:50%;background:radial-gradient(circle,rgba(255,170,60,.55) 0%,rgba(255,100,20,.25) 45%,transparent 70%);animation:flameGlow 1.6s ease-in-out infinite}
-.ps-flame::after{content:"";position:absolute;left:58%;bottom:62%;width:4px;height:4px;border-radius:50%;background:#ffc23d;box-shadow:-9px 5px 0 -1px #ff9a2e,6px 8px 0 -1px #ffd36b;opacity:0;animation:flameSpark 1.8s ease-out infinite}
-@keyframes flameFlicker{0%,100%{transform:scale(1,1) rotate(-2deg)}20%{transform:scale(1.05,1.12) rotate(2deg)}45%{transform:scale(.96,1.04) rotate(-1deg)}70%{transform:scale(1.04,1.1) rotate(2.5deg)}}
-@keyframes flameGlow{0%,100%{opacity:.7;transform:scale(.92)}50%{opacity:1;transform:scale(1.15)}}
-@keyframes flameSpark{0%{opacity:0;transform:translateY(0) scale(1)}15%{opacity:1}100%{opacity:0;transform:translateY(-16px) scale(.4)}}
-@media (prefers-reduced-motion:reduce){.ps-flame,.ps-flame::before,.ps-flame::after{animation:none}.ps-flame::after{display:none}}
+.ps-flame{position:relative;flex:none;display:block;width:34px;height:46px;margin:-2px 2px -2px 0;animation:flameHue 5.6s infinite both}
+.ps-flame::before{content:"";position:absolute;left:50%;top:58%;z-index:-1;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:radial-gradient(circle,rgba(255,110,30,.6) 0%,rgba(255,60,10,.28) 42%,transparent 70%);animation:flameGlow 1.7s ease-in-out infinite}
+.ps-flame::after{content:"";position:absolute;left:56%;bottom:68%;width:3px;height:3px;border-radius:50%;background:#ffc23d;box-shadow:-9px 6px 0 -.5px #ff9a2e,7px 9px 0 -.5px #ffd36b;opacity:0;animation:flameSpark 2.1s ease-out infinite}
+.flame-svg{display:block;width:100%;height:100%;overflow:visible}
+.flame-svg .fl{transform-box:fill-box;transform-origin:50% 100%}
+.fl-outer{animation:flameA 1.15s ease-in-out infinite alternate}
+.fl-mid{animation:flameB .83s ease-in-out infinite alternate}
+.fl-core{animation:flameC .61s ease-in-out infinite alternate}
+.fl-back{animation:flameD 1.37s ease-in-out infinite alternate}
+@keyframes flameA{0%{transform:scale(1,1) skewX(0)}30%{transform:scale(.97,1.05) skewX(-3deg)}65%{transform:scale(1.03,.97) skewX(2.5deg)}100%{transform:scale(.98,1.07) skewX(-1.5deg)}}
+@keyframes flameB{0%{transform:scale(1,1) skewX(1deg)}40%{transform:scale(.95,1.09) skewX(-3.5deg)}100%{transform:scale(1.04,.94) skewX(3deg)}}
+@keyframes flameC{0%{transform:scale(1,1)}50%{transform:scale(.9,1.12) skewX(-2deg)}100%{transform:scale(1.06,.92) skewX(2deg)}}
+@keyframes flameD{0%{transform:scale(1,1) skewX(0);opacity:.35}50%{transform:scale(1.04,1.1) skewX(4deg);opacity:.7}100%{transform:scale(.96,.9) skewX(-2deg);opacity:.4}}
+@keyframes flameGlow{0%,100%{opacity:.72;transform:scale(.92)}50%{opacity:1;transform:scale(1.14)}}
+@keyframes flameSpark{0%{opacity:0;transform:translateY(0) scale(1)}15%{opacity:1}100%{opacity:0;transform:translateY(-18px) scale(.4)}}
+/* 2 dtk api merah → transisi mulus 0,8 dtk → 2 dtk api ungu → transisi mulus 0,8 dtk → ulang */
+@keyframes flameHue{
+  0%,35.7%{filter:hue-rotate(0deg) saturate(1) brightness(1);animation-timing-function:ease-in-out}
+  50%,85.7%{filter:hue-rotate(-78deg) saturate(1.15) brightness(1.08);animation-timing-function:ease-in-out}
+  100%{filter:hue-rotate(0deg) saturate(1) brightness(1)}
+}
+@media (prefers-reduced-motion:reduce){.ps-flame,.ps-flame::before,.ps-flame::after,.flame-svg .fl{animation:none}.ps-flame::after{display:none}}
+.profile-streak{gap:14px;padding:12px 18px}
+.ps-count{font-size:21px;letter-spacing:-.3px}
+.ps-best{line-height:1.35}
+/* Samakan dengan kolom Email akun & Nickname: putih bening */
+.profile-streak,.profile-action,
+.dark-theme .profile-streak,.dark-theme .profile-action{background:var(--surface);border-color:var(--line)}
 .ps-main{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.3}
 .ps-count{font-size:15px;font-weight:700}
 .ps-label{font-size:11px;color:var(--muted)}
 .ps-best{flex:none;font-size:11px;color:var(--muted);text-align:right}
 .ps-best b{color:var(--ink)}
-
-/* ===== Tombol telepon di info kontak ===== */
-.contact-actions{display:flex;justify-content:center;gap:22px;margin-top:22px}
-.contact-action{display:flex;flex-direction:column;align-items:center;gap:7px;padding:0;border:0;background:transparent;color:var(--ink);font-size:12px;font-weight:600;-webkit-tap-highlight-color:transparent}
-.ca-ico{display:grid;place-items:center;width:52px;height:52px;border:1px solid var(--edge);border-radius:50%;background:var(--soft);transition:transform .18s ease}
-.dark-theme .ca-ico{background:#3b1330;border-color:#74305f}
-.contact-action:active .ca-ico{transform:scale(.92)}
-.ca-ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.contact-action:focus-visible .ca-ico{outline:2px solid #bd91aa;outline-offset:2px}
 
 /* ===== Layar panggilan (gaya Instagram) ===== */
 .call-screen{position:fixed;inset:0;z-index:110;display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 24px) 24px calc(env(safe-area-inset-bottom,0px) + 36px);background:radial-gradient(ellipse at 50% 0%,#5b2a55,transparent 60%),linear-gradient(170deg,#1c0d22,#0b0610 70%);color:#fff;opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.04);transition:opacity .25s ease,transform .4s var(--spring),visibility 0s linear .4s}
@@ -1245,7 +1277,7 @@ body.head-compact #searchBtn{display:none}
 .call-remote #callRemotePh{display:none}
 .call-shade{position:absolute;inset:0;z-index:1;display:none;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 28%,transparent 55%,rgba(0,0,0,.6))}
 .call-screen.video .call-remote,.call-screen.video .call-shade{display:grid}
-.call-screen.video .call-avatar{display:grid;position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 36px + 82px + 32px);width:clamp(104px,30vw,150px);height:clamp(104px,30vw,150px);font-size:44px;transform:translateX(-50%);border:2px solid rgba(255,255,255,.55);box-shadow:0 8px 26px rgba(0,0,0,.45);z-index:3}
+.call-screen.video .call-avatar{display:grid;position:absolute;left:50%;top:50%;width:clamp(120px,36vw,170px);height:clamp(120px,36vw,170px);font-size:48px;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.55);box-shadow:0 8px 26px rgba(0,0,0,.45);z-index:3}
 .call-mid,.call-controls{position:relative;z-index:2}
 .call-screen.video .call-mid{justify-content:flex-start;align-items:center;padding-top:6px}
 .call-screen.video .call-name{margin:0;font-size:20px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
@@ -1412,15 +1444,31 @@ body.head-compact #searchBtn{display:none}
       </span>
     </div>
     <div class="head-actions">
-      <button class="head-icon" id="galleryViewBtn" type="button" aria-label="Galeri" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="18" height="17" rx="4"/><circle cx="8.6" cy="9.1" r="1.6"/><path d="m21 15.5-4.6-4.6a1.6 1.6 0 0 0-2.3 0L5 20"/></svg>
+      <button class="head-icon head-call" id="callBtn" type="button" aria-label="Telepon lawan bicara">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       </button>
-      <button class="head-icon" id="searchBtn" type="button" aria-label="Cari pesan" aria-expanded="false" aria-controls="headSearch">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+      <button class="head-icon head-call" id="videoBtn" type="button" aria-label="Video call lawan bicara">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="3"/><path d="m15.5 10.5 6-3.5v10l-6-3.5"/></svg>
       </button>
-      <button class="head-icon" id="settingsBtn" type="button" aria-label="Pengaturan" aria-haspopup="dialog">
+      <button class="head-icon head-settings-compact" id="settingsBtnCompact" type="button" aria-label="Pengaturan" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
       </button>
+      <div class="head-more">
+        <button class="head-icon" id="headMoreBtn" type="button" aria-label="Menu lainnya" aria-haspopup="menu" aria-expanded="false" aria-controls="headMenu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.7" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <div class="head-menu" id="headMenu" role="menu" aria-label="Menu lainnya">
+          <button class="head-menu-item" id="galleryViewBtn" type="button" role="menuitem" aria-label="Galeri" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="18" height="17" rx="4"/><circle cx="8.6" cy="9.1" r="1.6"/><path d="m21 15.5-4.6-4.6a1.6 1.6 0 0 0-2.3 0L5 20"/></svg><span id="galleryMenuLabel">Galeri</span>
+          </button>
+          <button class="head-menu-item" id="searchBtn" type="button" role="menuitem" aria-label="Cari pesan" aria-expanded="false" aria-controls="headSearch">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><span>Cari pesan</span>
+          </button>
+          <button class="head-menu-item" id="settingsBtn" type="button" role="menuitem" aria-label="Pengaturan" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg><span>Pengaturan</span>
+          </button>
+        </div>
+      </div>
     </div>
     <div class="head-search" id="headSearch" inert>
       <div class="search-wrap" id="searchWrap">
@@ -1456,10 +1504,10 @@ body.head-compact #searchBtn{display:none}
       </div>
       <h2>Profil</h2>
 
-      <div class="profile-info">
+      <div class="profile-info" id="emailBox">
         <span class="profile-info-label">Email akun</span>
         <div id="profileEmail">Memuat email...</div>
-        <div id="syncStatus" style="margin-top:8px;font-size:11px;color:var(--muted)"></div>
+        <div id="syncStatus" hidden></div>
       </div>
 
       <div class="profile-info nickname-box" id="nicknameBox">
@@ -1473,12 +1521,35 @@ body.head-compact #searchBtn{display:none}
       </div>
 
       <button type="button" class="profile-streak" id="streakBadge" aria-haspopup="dialog" aria-label="Streak menulis">
-        <span class="ps-flame" aria-hidden="true">🔥</span>
-        <span class="ps-main">
-          <span class="ps-count"><span id="streakCount">0</span> hari</span>
-          <span class="ps-label">Streak menulis saat ini</span>
+        <span class="ps-flame" aria-hidden="true">
+        <svg class="flame-svg" viewBox="0 0 48 64" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="flOuter" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stop-color="#b80000"/>
+              <stop offset=".55" stop-color="#ff2a00"/>
+              <stop offset="1" stop-color="#ff6a1a" stop-opacity=".85"/>
+            </linearGradient>
+            <linearGradient id="flMid" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stop-color="#ff3d00"/>
+              <stop offset=".6" stop-color="#ff7a00"/>
+              <stop offset="1" stop-color="#ffb02e" stop-opacity=".9"/>
+            </linearGradient>
+            <radialGradient id="flCore" cx=".5" cy=".75" r=".6">
+              <stop offset="0" stop-color="#fffbe0"/>
+              <stop offset=".5" stop-color="#ffe066"/>
+              <stop offset="1" stop-color="#ffb300" stop-opacity=".9"/>
+            </radialGradient>
+          </defs>
+          <path class="fl fl-back" d="M33 22C35 28 40 33 40 42C40 53 33 62 24 62C30 56 31 50 29 44C28 38 31 32 33 22Z" fill="url(#flMid)" opacity=".55"/>
+          <path class="fl fl-outer" d="M24 2C25 12 37 19 40 35C42 49 34 62 24 62C14 62 6 50 8 36C9 28 14 24 16 13C18 17 20 19 20 24C23 18 24 10 24 2Z" fill="url(#flOuter)"/>
+          <path class="fl fl-mid" d="M24 19C26 28 34 33 34 44C34 54 30 60 24 60C18 60 14 54 14 44C14 36 20 31 24 19Z" fill="url(#flMid)"/>
+          <path class="fl fl-core" d="M24 34C26 40 30 44 30 50C30 56 27 59 24 59C21 59 18 56 18 50C18 44 22 40 24 34Z" fill="url(#flCore)"/>
+        </svg>
         </span>
-        <span class="ps-best">Terpanjang<br><b id="streakLongest">0</b> hari</span>
+        <span class="ps-main">
+          <span class="ps-count"><span id="streakCount">0</span> days</span>
+        </span>
+        <span class="ps-best">Longest<br><b id="streakLongest">0</b> days</span>
       </button>
 
       <button type="button" class="profile-action" id="statsBtn" aria-haspopup="dialog">
@@ -1553,16 +1624,6 @@ body.head-compact #searchBtn{display:none}
       </button>
     </div>
     <h2 class="contact-name" id="contactName"></h2>
-    <div class="contact-actions">
-      <button class="contact-action" id="callBtn" type="button" aria-label="Telepon lawan bicara">
-        <span class="ca-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-        <span>Telepon</span>
-      </button>
-      <button class="contact-action" id="videoBtn" type="button" aria-label="Video call lawan bicara">
-        <span class="ca-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="3"/><path d="m15.5 10.5 6-3.5v10l-6-3.5"/></svg></span>
-        <span>Video</span>
-      </button>
-    </div>
   </div>
 </section>
 
@@ -3490,6 +3551,7 @@ function setGalleryMode(enabled) {
   $('galleryViewBtn').classList.toggle('on',enabled);
   $('galleryViewBtn').setAttribute('aria-pressed',String(enabled));
   $('galleryViewBtn').setAttribute('aria-label',enabled ? 'Kembali dari galeri' : 'Galeri');
+  $('galleryMenuLabel').textContent = enabled ? 'Kembali dari galeri' : 'Galeri';
   if (enabled) closeSearch(true);
   syncComposer();
 
@@ -3574,6 +3636,7 @@ $('profileNav').addEventListener('click',() => {
   setProfileMode(true);
   playPagePop();
   if (typeof refreshProfileEmail === 'function') refreshProfileEmail();
+  flashSyncColor();
 });
 
 document.addEventListener('click',event => {
@@ -3871,6 +3934,11 @@ document.addEventListener('keydown',event => {
   if (event.key === 'Escape') {
     if (dialogResolver) {
       finishDialog(false);
+      return;
+    }
+
+    if (headMenuOpen) {
+      setHeadMenu(false);
       return;
     }
 
@@ -4266,6 +4334,25 @@ function closeSettings() {
 }
 
 $('settingsBtn').addEventListener('click',openSettings);
+$('settingsBtnCompact').addEventListener('click',openSettings);
+
+/* Menu titik tiga di header (Galeri, Cari pesan, Pengaturan) */
+let headMenuOpen = false;
+function setHeadMenu(open) {
+  headMenuOpen = open;
+  document.querySelector('.head-more').classList.toggle('open',open);
+  $('headMoreBtn').setAttribute('aria-expanded',String(open));
+}
+$('headMoreBtn').addEventListener('click',event => {
+  event.stopPropagation();
+  setHeadMenu(!headMenuOpen);
+});
+$('headMenu').addEventListener('click',event => {
+  if (event.target.closest('.head-menu-item')) setHeadMenu(false);
+});
+document.addEventListener('click',event => {
+  if (headMenuOpen && !event.target.closest('.head-more')) setHeadMenu(false);
+});
 $('settingsClose').addEventListener('click',closeSettings);
 $('settingsBackdrop').addEventListener('click',event => {
   if (event.target === $('settingsBackdrop')) closeSettings();
@@ -4404,7 +4491,33 @@ let suppressSession = false;
 const photoUrlCache = new Map();
 const syncStatus = $('syncStatus');
 
-function setSyncStatus(text) { syncStatus.textContent = text; }
+/* Status sinkron tidak lagi berupa teks: kolom "Email akun" berwarna hijau (tersinkron) / merah (gagal) selama 2 detik */
+let syncState = '';          /* '' = belum tahu | 'ok' | 'bad' */
+let syncFlashPending = false;
+let syncFlashTimer = 0;
+
+function setSyncStatus(text) {
+  syncStatus.textContent = text;
+  if (/^Tersinkron/.test(text)) syncState = 'ok';
+  else if (/^(Gagal|Realtime terputus)/.test(text)) syncState = 'bad';
+  else {
+    if (text === '' || /^Memuat/.test(text)) syncState = ''; /* mulai ulang: tunggu hasil akhir */
+    return;
+  }
+  if (syncFlashPending && showingProfile) flashSyncColor();
+}
+
+function flashSyncColor() {
+  const box = $('emailBox');
+  if (!box) return;
+  if (!syncState) { syncFlashPending = true; return; } /* masih memuat: warnai begitu hasilnya keluar */
+  syncFlashPending = false;
+  clearTimeout(syncFlashTimer);
+  box.classList.remove('sync-ok','sync-bad');
+  void box.offsetWidth;
+  box.classList.add(syncState === 'ok' ? 'sync-ok' : 'sync-bad');
+  syncFlashTimer = setTimeout(() => box.classList.remove('sync-ok','sync-bad'),2000);
+}
 
 function saveThemeRemote(theme) {
   if (!currentUserId) return;
@@ -5934,6 +6047,7 @@ function handleAppBack() {
   if (dialogResolver) { finishDialog(false); return true; }
   if (callState !== 'idle') { confirmEndCall(); return true; }
   if (activeModal) { closeActiveModal(); return true; }
+  if (headMenuOpen) { setHeadMenu(false); return true; }
 
   if (document.body.classList.contains('login-active')) {
     if ($('forgotForm').classList.contains('active') || $('signupForm').classList.contains('active')) {
