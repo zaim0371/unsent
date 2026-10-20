@@ -1071,12 +1071,15 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
 .dark-theme .profile-action{background:#3b1330;border-color:#74305f}
 .modal-head + .set-sec{border-top:0;padding-top:6px}
 
-/* ===== Performa: kurangi blur & animasi saat scroll ===== */
+/* ===== Performa: tanpa blur berat & tanpa animasi background ===== */
+.blob,.bg-heart{animation:none!important;will-change:auto!important}
 .message{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(246,231,239,.66));box-shadow:0 3px 12px rgba(124,88,112,.06)}
 .dark-theme .message{box-shadow:0 3px 12px rgba(0,0,0,.16)}
-.composer{-webkit-backdrop-filter:blur(14px) saturate(140%)!important;backdrop-filter:blur(14px) saturate(140%)!important}
-.bottom-nav{-webkit-backdrop-filter:blur(14px) saturate(140%)!important;backdrop-filter:blur(14px) saturate(140%)!important}
-.sticky-head{-webkit-backdrop-filter:blur(14px) saturate(140%)!important;backdrop-filter:blur(14px) saturate(140%)!important}
+.composer{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(255,255,255,.93)}
+.bottom-nav{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(255,249,253,.95)}
+.sticky-head{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(180deg,rgba(249,240,246,.97),rgba(249,240,246,.92))}
+.dark-theme .sticky-head{background:linear-gradient(180deg,rgba(33,9,26,.97),rgba(33,9,26,.92))}
+.glass,.dd-panel,.profile-card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .bg-layer.paused .blob,.bg-layer.paused .bg-heart{animation-play-state:paused}
 .sticky-head{contain:layout style}
 /* Pembatas antar bagian Pengaturan */
@@ -1116,18 +1119,30 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
 .settings-sheet .dd.open .dd-panel{display:block}
 
 /* Profil: nickname */
-.nickname-box{margin-bottom:12px}
+.nickname-box{margin:12px 0 0;padding:3px 4px 3px 15px}
+.nickname-box.editing{padding:15px}
 #nicknameInput{display:block;width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:14px;outline:0;background:var(--soft);color:var(--ink);font-size:16px}
 #nicknameInput:focus{border-color:#d7b4c8}
 .dark-theme #nicknameInput{background:#3b1330;border-color:#74305f;color:var(--ink)}
 .dark-theme #nicknameInput:focus{border-color:#f06aae}
 #nicknameInput::placeholder{color:var(--muted)}
-.nickname-hint{margin-top:8px;color:var(--muted);font-size:11.5px;line-height:1.5}
-#nicknameSave{width:100%;margin-top:12px;padding:12px;border:1px solid var(--edge);border-radius:15px;background:linear-gradient(145deg,#f7e4ed,#edcbdc);color:#89566f;font-size:13px;font-weight:650;transition:transform .18s ease,opacity .18s ease}
+.nickname-view{display:flex;align-items:center;gap:10px}
+.nickname-label{flex:none;color:var(--muted);font-size:12px}
+.nickname-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:650}
+.nickname-text.placeholder{color:var(--muted);font-weight:500}
+.nickname-edit{flex:none;display:grid;place-items:center;width:40px;height:40px;margin:0;padding:0;border:0;border-radius:12px;background:transparent;color:var(--ink);transition:transform .15s ease}
+.nickname-edit svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.nickname-edit:active{transform:scale(.92)}
+.nickname-actions{display:flex;gap:10px;margin-top:12px}
+#nicknameCancel,#nicknameSave{flex:1;padding:12px;border:1px solid var(--edge);border-radius:15px;background:linear-gradient(145deg,#f7e4ed,#edcbdc);color:#89566f;font-size:13px;font-weight:650;transition:transform .18s ease,opacity .18s ease}
+#nicknameCancel{background:transparent}
+#nicknameCancel:active{transform:scale(.98)}
+.dark-theme #nicknameCancel{background:transparent;color:var(--ink);border-color:var(--line)}
 #nicknameSave:active{transform:scale(.98)}
 #nicknameSave:disabled{opacity:.6}
 .dark-theme #nicknameSave{background:linear-gradient(145deg,#62224d,#4a193c);color:#ffe8f3;border-color:var(--line)}
-#nicknameMessage{margin:10px 0 0;min-height:16px;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+#nicknameMessage:empty{display:none}
+#nicknameMessage{margin:8px 0 0;min-height:16px;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
 #nicknameMessage[data-state="error"]{color:var(--danger)}
 
 @media (prefers-reduced-motion:reduce){
@@ -1327,18 +1342,28 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
       </div>
       <h2>Profil</h2>
 
-      <div class="profile-info nickname-box">
-        <label class="profile-info-label" for="nicknameInput">Nickname</label>
-        <input id="nicknameInput" type="text" maxlength="24" autocomplete="nickname" autocapitalize="none" spellcheck="false" placeholder="Nama panggilanmu">
-        <div class="nickname-hint" id="nicknameHint">Tambahkan nickname biar lebih personal</div>
-        <button type="button" id="nicknameSave">Simpan nickname</button>
-        <p id="nicknameMessage" role="status"></p>
-      </div>
-
       <div class="profile-info">
         <span class="profile-info-label">Email akun</span>
         <div id="profileEmail">Memuat email...</div>
         <div id="syncStatus" style="margin-top:8px;font-size:11px;color:var(--muted)"></div>
+      </div>
+
+      <div class="profile-info nickname-box" id="nicknameBox">
+        <div class="nickname-view" id="nicknameView">
+          <span class="nickname-label">Nickname</span>
+          <span class="nickname-text" id="nicknameText"></span>
+          <button class="nickname-edit" id="nicknameEditBtn" type="button" aria-label="Edit nickname">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </button>
+        </div>
+        <div class="nickname-form hidden" id="nicknameForm">
+          <input id="nicknameInput" type="text" maxlength="24" autocomplete="nickname" autocapitalize="none" spellcheck="false" placeholder="Nama panggilanmu" aria-label="Nickname">
+          <div class="nickname-actions">
+            <button type="button" id="nicknameCancel">Batal</button>
+            <button type="button" id="nicknameSave">Simpan</button>
+          </div>
+        </div>
+        <p id="nicknameMessage" role="status"></p>
       </div>
 
       <button type="button" class="profile-action" id="statsBtn" aria-haspopup="dialog">
@@ -3077,13 +3102,7 @@ $('searchInput').addEventListener('input',event => {
 let searchOpen = false;
 let bgPauseTimer = 0;
 
-function pauseBg(ms) {
-  const layer = document.querySelector('.bg-layer');
-  if (!layer) return;
-  layer.classList.add('paused');
-  clearTimeout(bgPauseTimer);
-  bgPauseTimer = setTimeout(() => layer.classList.remove('paused'),ms || 220);
-}
+function pauseBg() {}
 
 function updateSearchUI() {
   $('searchBtn').disabled = showingGallery || showingProfile;
@@ -3716,7 +3735,6 @@ function handleScroll() {
 }
 
 window.addEventListener('scroll',() => {
-  pauseBg(180);
   if (scrollFrame) return;
   scrollFrame = requestAnimationFrame(handleScroll);
 },{passive:true});
@@ -3813,25 +3831,17 @@ function playPagePop() {
       !!(target.closest && target.closest('.modal-backdrop,.media-backdrop,.picker-backdrop,.login-screen,.dd-panel,.wheel,textarea,input'));
   }
 
-  document.addEventListener('touchstart',event => {
-    armed = false;
-    pulling = false;
-    if (event.touches.length !== 1 || window.scrollY > 0 || blocked(event.target)) return;
-    startY = event.touches[0].clientY;
-    startX = event.touches[0].clientX;
-    armed = true;
-  },{passive:true});
-
-  document.addEventListener('touchmove',event => {
-    if (!armed) return;
+  /* Listener touchmove non-pasif memblokir scroll di thread utama → hanya dipasang saat tarik-refresh mungkin terjadi */
+  function onMove(event) {
+    if (!armed) { dropMove(); return; }
 
     const dy = event.touches[0].clientY-startY;
     const dx = event.touches[0].clientX-startX;
 
     if (!pulling) {
-      if (dy < -6 || Math.abs(dx) > 12 && Math.abs(dx) > dy) { armed = false; return; }
+      if (dy < -6 || Math.abs(dx) > 12 && Math.abs(dx) > dy) { armed = false; dropMove(); return; }
       if (dy <= 6) return;
-      if (window.scrollY > 0) { armed = false; return; }
+      if (window.scrollY > 0) { armed = false; dropMove(); return; }
       pulling = true;
       clearTimeout(settleTimer);
       document.body.classList.add('ptr-pulling');
@@ -3839,12 +3849,26 @@ function playPagePop() {
 
     if (event.cancelable) event.preventDefault();
     setDist(Math.min(MAX,(dy-6)*.55),false);
-  },{passive:false});
+  }
+  function addMove() { document.addEventListener('touchmove',onMove,{passive:false}); }
+  function dropMove() { document.removeEventListener('touchmove',onMove); }
+
+  document.addEventListener('touchstart',event => {
+    armed = false;
+    pulling = false;
+    dropMove();
+    if (event.touches.length !== 1 || window.scrollY > 0 || blocked(event.target)) return;
+    startY = event.touches[0].clientY;
+    startX = event.touches[0].clientX;
+    armed = true;
+    addMove();
+  },{passive:true});
 
   function end() {
     const wasPulling = pulling;
     armed = false;
     pulling = false;
+    dropMove();
     if (!wasPulling) return;
     if (dist >= THRESHOLD) refresh();
     else release();
@@ -3858,8 +3882,14 @@ function playPagePop() {
 /* ===== Background & wallpaper ===== */
 const WP_KEY = 'unsent-wallpaper';
 const WP_DIM_KEY = 'unsent-wallpaper-dim';
+const WP_PATH_KEY = 'unsent-wallpaper-path';
+const WP_UID_KEY = 'unsent-wallpaper-uid';
 let wallpaper = '';
 let wallpaperDim = 45;
+let wpPath = '';          /* path file wallpaper di Supabase Storage */
+let wpPendingPath = '';   /* path yang sedang disimpan (abaikan event USER_UPDATED miliknya sendiri) */
+let wpUid = '';           /* akun pemilik wallpaper yang sedang dipakai */
+let wpDimBusy = false;
 
 function buildHearts() {
   const box = $('bgHearts');
@@ -3880,15 +3910,24 @@ function buildHearts() {
 function loadWallpaperPrefs() {
   try {
     wallpaper = localStorage.getItem(WP_KEY) || '';
+    wpPath = localStorage.getItem(WP_PATH_KEY) || '';
+    wpUid = localStorage.getItem(WP_UID_KEY) || '';
     const dim = localStorage.getItem(WP_DIM_KEY);
     if (dim !== null) wallpaperDim = Math.min(85,Math.max(0,Number(dim) || 0));
   } catch {}
 }
 
+/* Salinan lokal (cache) agar wallpaper langsung tampil saat app dibuka; sumber utama = Supabase */
 function saveWallpaperPrefs() {
   try {
-    if (wallpaper) localStorage.setItem(WP_KEY,wallpaper);
-    else localStorage.removeItem(WP_KEY);
+    if (wallpaper && wallpaper.startsWith('data:')) {
+      localStorage.setItem(WP_KEY,wallpaper);
+      localStorage.setItem(WP_PATH_KEY,wpPath);
+    } else if (!wallpaper) {
+      localStorage.removeItem(WP_KEY);
+      localStorage.removeItem(WP_PATH_KEY);
+    }
+    localStorage.setItem(WP_UID_KEY,wpUid);
     localStorage.setItem(WP_DIM_KEY,String(wallpaperDim));
     return true;
   } catch {
@@ -3964,36 +4003,93 @@ $('settingsBackdrop').addEventListener('click',event => {
 });
 $('wpPick').addEventListener('click',() => $('wallpaperInput').click());
 
+function setWpBusy(busy) {
+  $('wpPick').disabled = busy;
+  $('wpReset').disabled = busy;
+}
+
 $('wallpaperInput').addEventListener('change',async () => {
   const file = $('wallpaperInput').files && $('wallpaperInput').files[0];
   $('wallpaperInput').value = '';
   if (!file) return;
 
-  $('wpMsg').textContent = 'Memproses gambar...';
+  if (!wpUid) {
+    $('wpMsg').textContent = 'Belum tersambung ke akun. Coba lagi sebentar.';
+    return;
+  }
+
+  setWpBusy(true);
+  $('wpMsg').textContent = 'Memproses dan mengunggah wallpaper...';
+  let uploaded = '';
   try {
-    wallpaper = await compressWallpaper(file);
+    const dataUrl = await compressWallpaper(file);
+    uploaded = await uploadWallpaper(dataUrl,wpUid);
+    wpPendingPath = uploaded;
+    await saveWallpaperRemote(uploaded);
+
+    const old = wpPath;
+    wallpaper = dataUrl;
+    wpPath = uploaded;
+    wpPendingPath = '';
     applyWallpaper();
-    $('wpMsg').textContent = saveWallpaperPrefs()
-      ? 'Wallpaper diterapkan.'
-      : 'Wallpaper diterapkan, tapi gambarnya terlalu besar untuk disimpan di perangkat, jadi hilang saat app ditutup.';
+    const cached = saveWallpaperPrefs();
+    if (old && old !== uploaded) removeWallpaperFile(old);
+    $('wpMsg').textContent = cached
+      ? 'Wallpaper diterapkan dan tersimpan di akunmu.'
+      : 'Wallpaper tersimpan di akunmu (tidak di-cache di perangkat ini, jadi muncul setelah login dimuat).';
   } catch (error) {
-    $('wpMsg').textContent = error.message || 'Wallpaper gagal diterapkan.';
+    wpPendingPath = '';
+    if (uploaded) removeWallpaperFile(uploaded);
+    $('wpMsg').textContent = 'Gagal menyimpan wallpaper: ' + ((error && error.message) || 'coba lagi.');
+  } finally {
+    setWpBusy(false);
   }
 });
 
-$('wpReset').addEventListener('click',() => {
-  wallpaper = '';
-  saveWallpaperPrefs();
-  applyWallpaper();
-  $('wpMsg').textContent = 'Kembali ke background default.';
+$('wpReset').addEventListener('click',async () => {
+  if (!wallpaper && !wpPath) return;
+  if (!wpUid) {
+    $('wpMsg').textContent = 'Belum tersambung ke akun. Coba lagi sebentar.';
+    return;
+  }
+
+  setWpBusy(true);
+  $('wpMsg').textContent = 'Mengembalikan ke default...';
+  try {
+    wpPendingPath = '';
+    await saveWallpaperRemote('');
+    const old = wpPath;
+    wallpaper = '';
+    wpPath = '';
+    saveWallpaperPrefs();
+    applyWallpaper();
+    removeWallpaperFile(old);
+    $('wpMsg').textContent = 'Kembali ke background default.';
+  } catch (error) {
+    $('wpMsg').textContent = 'Gagal mengembalikan default: ' + ((error && error.message) || 'coba lagi.');
+  } finally {
+    setWpBusy(false);
+  }
 });
 
 $('wpDim').addEventListener('input',event => {
+  wpDimBusy = true;
   wallpaperDim = Number(event.target.value) || 0;
   document.documentElement.style.setProperty('--wp-dim',String(wallpaperDim/100));
   $('wpDimVal').textContent = wallpaperDim+'%';
 });
-$('wpDim').addEventListener('change',saveWallpaperPrefs);
+$('wpDim').addEventListener('change',async () => {
+  saveWallpaperPrefs();
+  if (!wpUid) { wpDimBusy = false; return; }
+  try {
+    const { error } = await supabaseClient.auth.updateUser({data:{wallpaper_dim:wallpaperDim}});
+    if (error) throw error;
+  } catch (error) {
+    $('wpMsg').textContent = 'Tingkat gelap belum tersimpan di akun: ' + ((error && error.message) || 'coba lagi.');
+  } finally {
+    wpDimBusy = false;
+  }
+});
 
 
 /* Inisialisasi */
@@ -4520,15 +4616,36 @@ function updateHeaderAvatar() {
   }
 }
 
+let nicknameEditing = false;
+
+function setNicknameEditing(on) {
+  nicknameEditing = on;
+  $('nicknameView').classList.toggle('hidden',on);
+  $('nicknameForm').classList.toggle('hidden',!on);
+  $('nicknameBox').classList.toggle('editing',on);
+  if (on) {
+    nicknameInput.value = userNickname;
+    nicknameDirty = false;
+    setNicknameMessage('','');
+    requestAnimationFrame(() => {
+      nicknameInput.focus({preventScroll:true});
+      nicknameInput.select();
+    });
+  } else {
+    nicknameDirty = false;
+  }
+}
+
 function updateHeaderIdentity() {
   const name = displayName();
   $('headNick').textContent = name;
+  $('nicknameText').textContent = userNickname || 'Tambahkan nickname biar personal';
+  $('nicknameText').classList.toggle('placeholder',!userNickname);
   const hasName = !!(userNickname || userEmail);
   const first = hasName ? Array.from(name)[0] : '';
   $('headAvatarPh').textContent = first ? first.toLocaleUpperCase('id-ID') : '♡';
   updateHeaderAvatar();
-  if (!nicknameDirty) nicknameInput.value = userNickname;
-  $('nicknameHint').classList.toggle('hidden',!!userNickname);
+  if (!nicknameDirty && nicknameEditing) nicknameInput.value = userNickname;
 }
 
 $('headAvatarImg').addEventListener('error',() => {
@@ -4550,9 +4667,14 @@ nicknameInput.addEventListener('keydown',event => {
   if (event.key === 'Enter') {
     event.preventDefault();
     saveNickname();
+  } else if (event.key === 'Escape') {
+    event.preventDefault();
+    $('nicknameCancel').click();
   }
 });
 $('nicknameSave').addEventListener('click',saveNickname);
+$('nicknameEditBtn').addEventListener('click',() => setNicknameEditing(true));
+$('nicknameCancel').addEventListener('click',() => { setNicknameEditing(false); setNicknameMessage('',''); updateHeaderIdentity(); });
 
 async function saveNickname() {
   const nickname = nicknameInput.value.trim();
@@ -4581,6 +4703,7 @@ async function saveNickname() {
       : nickname;
     userNickname = saved;
     nicknameDirty = false;
+    setNicknameEditing(false);
     updateHeaderIdentity();
     setNicknameMessage('Nickname tersimpan.','ok');
   } catch (error) {
@@ -4588,6 +4711,114 @@ async function saveNickname() {
   } finally {
     button.disabled = false;
   }
+}
+
+/* ===== Wallpaper kustom di Supabase (Storage + user_metadata.wallpaper_path / wallpaper_dim) ===== */
+let wpMigrating = false;
+let wpLoadSeq = 0;
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve,reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
+}
+
+function removeWallpaperFile(path) {
+  if (!path) return;
+  try { supabaseClient.storage.from(PHOTO_BUCKET).remove([path]); } catch {}
+}
+
+async function uploadWallpaper(dataUrl,uid) {
+  const blob = await (await fetch(dataUrl)).blob();
+  const path = `${uid}/wallpaper-${Date.now()}.jpg`;
+  const { error } = await supabaseClient.storage
+    .from(PHOTO_BUCKET)
+    .upload(path,blob,{contentType:'image/jpeg',upsert:false});
+  if (error) throw error;
+  return path;
+}
+
+/* Hanya field wallpaper yang dikirim; Supabase menggabungkan user_metadata (nickname/avatar/theme aman) */
+async function saveWallpaperRemote(path) {
+  const { error } = await supabaseClient.auth.updateUser({data:{wallpaper_path:path,wallpaper_dim:wallpaperDim}});
+  if (error) throw error;
+}
+
+/* Wallpaper lama yang baru ada di perangkat → naikkan sekali ke akun */
+async function migrateLocalWallpaper(uid) {
+  if (wpMigrating || !wallpaper || !wallpaper.startsWith('data:')) return;
+  wpMigrating = true;
+  let path = '';
+  try {
+    path = await uploadWallpaper(wallpaper,uid);
+    wpPendingPath = path;
+    await saveWallpaperRemote(path);
+    wpPath = path;
+    saveWallpaperPrefs();
+  } catch {
+    if (path) removeWallpaperFile(path);
+  } finally {
+    wpPendingPath = '';
+    wpMigrating = false;
+  }
+}
+
+function syncWallpaperFromMeta(meta,uid) {
+  if (!meta || !uid) return;
+
+  /* Ganti akun di perangkat yang sama → buang cache wallpaper akun sebelumnya */
+  if (wpUid && wpUid !== uid) {
+    wallpaper = '';
+    wpPath = '';
+    wpPendingPath = '';
+    applyWallpaper();
+    saveWallpaperPrefs();
+  }
+  wpUid = uid;
+
+  if (typeof meta.wallpaper_dim === 'number' && !wpDimBusy) {
+    const dim = Math.min(85,Math.max(0,Math.round(meta.wallpaper_dim)));
+    if (dim !== wallpaperDim) {
+      wallpaperDim = dim;
+      applyWallpaper();
+      saveWallpaperPrefs();
+    }
+  }
+
+  const path = typeof meta.wallpaper_path === 'string' ? meta.wallpaper_path : null;
+
+  if (path === null) { migrateLocalWallpaper(uid); return; }
+
+  if (!path) {
+    if (wallpaper || wpPath) {
+      wallpaper = '';
+      wpPath = '';
+      saveWallpaperPrefs();
+      applyWallpaper();
+    }
+    return;
+  }
+
+  if (path === wpPath || path === wpPendingPath) return;
+
+  wpPath = path;
+  const seq = ++wpLoadSeq;
+  getSignedUrl(path).then(async url => {
+    if (seq !== wpLoadSeq) return;
+    if (!url) { wpPath = ''; return; }
+    wallpaper = url;
+    applyWallpaper();
+    try {
+      const data = await blobToDataUrl(await (await fetch(url)).blob());
+      if (seq === wpLoadSeq && wpPath === path) {
+        wallpaper = data;
+        saveWallpaperPrefs();
+      }
+    } catch {}
+  }).catch(() => { if (seq === wpLoadSeq) wpPath = ''; });
 }
 
 /* ===== Foto profil (Supabase Storage + user_metadata.avatar_path) ===== */
@@ -4812,8 +5043,9 @@ function applySession(session) {
   const previousEmail = userEmail;
   userEmail = email || '';
   userNickname = (meta && typeof meta.nickname === 'string') ? meta.nickname.trim().slice(0,NICKNAME_MAX) : '';
-  if (!session || previousEmail !== userEmail) { nicknameDirty = false; setNicknameMessage('',''); }
+  if (!session || previousEmail !== userEmail) { nicknameDirty = false; nicknameEditing = false; $('nicknameBox').classList.remove('editing'); $('nicknameView').classList.remove('hidden'); $('nicknameForm').classList.add('hidden'); setNicknameMessage('',''); }
   updateHeaderIdentity();
+  if (session && session.user) syncWallpaperFromMeta(meta,session.user.id);
 
   const remoteTheme = session && session.user && session.user.user_metadata
     ? session.user.user_metadata.theme : null;
