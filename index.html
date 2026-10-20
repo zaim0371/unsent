@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f5edf2">
+<meta name="theme-color" content="#1b0713">
 <title>Unsent</title>
 
 <style>
@@ -16,7 +16,7 @@
   background: var(--glass);
   backdrop-filter: blur(24px) saturate(150%);
   -webkit-backdrop-filter: blur(24px) saturate(150%);
-  box-shadow: inset 0 1px 0 white, 0 8px 26px rgba(112,83,104,.07);
+  box-shadow: 0 8px 26px rgba(112,83,104,.07);
   text-align: center;
   animation: profileAppear .28s ease both;
 }
@@ -49,7 +49,7 @@
   width: 100%;
   margin-top: 14px;
   padding: 14px;
-  border: 1px solid rgba(255,255,255,.9);
+  border:1px solid var(--edge);
   border-radius: 17px;
   background: linear-gradient(145deg,#f7e4ed,#edcbdc);
   color: #89566f;
@@ -67,6 +67,7 @@
 .dark-theme #signOutButton { background: linear-gradient(145deg,#62224d,#4a193c); color: #ffe8f3; border-color: var(--line); }
 
 :root {
+  --edge:#d79bbd;
   --ink:#594958;
   --muted:#a18d9c;
   --glass:rgba(255,255,255,.68);
@@ -128,7 +129,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @keyframes authIn { from { opacity:0; transform:translateY(22px) scale(.97); } }
 .auth-logo {
   display:grid; place-items:center; width:66px; height:66px; margin:0 auto 14px;
-  border:1px solid rgba(255,255,255,.95); border-radius:22px;
+  border:1px solid var(--edge); border-radius:22px;
   background:linear-gradient(145deg,#fff,#f1d3e4); color:#c47ba4; font-size:30px;
   box-shadow:0 10px 28px rgba(170,105,140,.22),inset 0 1px 0 #fff;
   animation:logoPulse 3.6s ease-in-out infinite;
@@ -138,10 +139,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .auth-tag { margin:6px 0 22px; color:#9a8496; font-size:13px; line-height:1.6; }
 .auth-card {
   padding:24px 20px 20px; text-align:left;
-  border:1px solid rgba(255,255,255,.85); border-radius:30px;
+  border:1px solid var(--edge); border-radius:30px;
   background:rgba(255,255,255,.5);
   backdrop-filter:blur(28px) saturate(160%); -webkit-backdrop-filter:blur(28px) saturate(160%);
-  box-shadow:0 16px 48px rgba(170,105,140,.16),inset 0 1px 0 rgba(255,255,255,.95);
+  box-shadow:0 16px 48px rgba(170,105,140,.16);
 }
 .auth-pane { display:none; margin:0; }
 .auth-pane.active { display:block; animation:paneIn .42s cubic-bezier(.22,1,.36,1) both; }
@@ -154,7 +155,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .auth-label { display:block; margin:0 0 6px 4px; color:#806a7c; font-size:11.5px; font-weight:600; }
 .auth-input-wrap { position:relative; }
 .auth-input {
-  display:block; width:100%; padding:14px 15px; border:1px solid rgba(255,255,255,.9); border-radius:17px;
+  display:block; width:100%; padding:14px 15px; border:1px solid var(--edge); border-radius:17px;
   outline:none; background:rgba(255,255,255,.62); color:#594958; font-size:16px;
   box-shadow:inset 0 1px 2px rgba(150,110,140,.06);
   transition:border-color .25s,background .25s,box-shadow .25s;
@@ -212,7 +213,7 @@ body.dark-theme .auth-msg.ok { color:#8fd0aa; }
   background:var(--glass);
   backdrop-filter:blur(24px) saturate(150%);
   -webkit-backdrop-filter:blur(24px) saturate(150%);
-  box-shadow:inset 0 1px 0 white,0 6px 20px rgba(112,83,104,.05);
+  box-shadow:0 6px 20px rgba(112,83,104,.05);
 }
 .topbar { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:22px 3px 12px; }
 .brand-row { display:flex; align-items:center; gap:9px; min-width:0; }
@@ -222,7 +223,7 @@ body.dark-theme .auth-msg.ok { color:#8fd0aa; }
   place-items:center;
   min-width:39px;
   height:39px;
-  border:1px solid white;
+  border:1px solid var(--edge);
   border-radius:50%;
   background:var(--surface);
   font-size:17px;
@@ -237,7 +238,7 @@ body.dark-theme .auth-msg.ok { color:#8fd0aa; }
   border:1px solid var(--line);
   border-radius:20px;
   background:var(--surface);
-  box-shadow:inset 0 1px 0 white;
+  box-shadow:none;
 }
 .search-icon { color:var(--muted); font-size:17px; }
 #searchInput { flex:1; min-width:0; padding:13px 0; border:0; outline:0; background:transparent; color:var(--ink); font-size:13px; }
@@ -259,7 +260,7 @@ select,.small-btn {
 .calendar-panel { padding:17px; margin:8px 0 18px; border-radius:25px; background:rgba(255,255,255,.4); }
 .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
 .cal-title { font-size:14px; font-weight:650; }
-.month-btn { width:35px; height:35px; border:1px solid white; border-radius:50%; background:var(--surface); font-size:20px; }
+.month-btn { width:35px; height:35px; border:1px solid var(--edge); border-radius:50%; background:var(--surface); font-size:20px; }
 .weekdays,.days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px; text-align:center; }
 .weekdays { margin-bottom:8px; color:var(--muted); font-size:10px; }
 .day { position:relative; min-width:0; aspect-ratio:1; border:1px solid transparent; border-radius:12px; background:transparent; font-size:12px; }
@@ -267,72 +268,72 @@ select,.small-btn {
 .day.selected { border-color:white; background:#ecd2e2; }
 .day.today { box-shadow:inset 0 0 0 1px #d7b4c8; }
 .cal-foot {
-  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  display:flex; align-items:center; justify-content:center; gap:8px; text-align:center;
   margin-top:14px; padding-top:12px; border-top:1px solid rgba(210,188,204,.35);
   color:var(--muted); font-size:11px;
 }
 .day-divider { display:flex; align-items:center; gap:12px; margin:24px 2px 14px; color:#9b8795; font-size:11px; }
 .day-divider::before,.day-divider::after { content:""; flex:1; height:1px; background:linear-gradient(90deg,transparent,#c4a8bb); }
 .day-divider::after { background:linear-gradient(90deg,#c4a8bb,transparent); }
-.entry { display:flex; align-items:flex-start; gap:3px; margin-bottom:12px; }
+.entry { display:flex; flex-direction:row-reverse; align-items:flex-start; gap:3px; margin-bottom:12px; }
 .entry.pop-in { animation:messagePop .38s cubic-bezier(.2,.85,.25,1.15) both; }
 @keyframes messagePop {
   0% { opacity:0; transform:translateY(12px) scale(.94); }
   70% { opacity:1; transform:translateY(-2px) scale(1.01); }
   100% { opacity:1; transform:translateY(0) scale(1); }
 }
-.message-stack { display:flex; flex:1; flex-direction:column; align-items:flex-start; min-width:0; }
+.message-stack { position:relative; display:flex; flex:1; flex-direction:column; align-items:flex-end; min-width:0; }
 .message {
-  width:100%;
+  position:relative;
+  -webkit-touch-callout:none;
+  width:fit-content;
+  max-width:82%;
   min-width:0;
-  padding:15px 15px 11px;
-  border:1px solid var(--line);
-  border-radius:23px 23px 23px 8px;
+  padding:9px 14px 7px;
+  border:1px solid #d79bbd;
+  border-radius:20px 20px 6px 20px;
   background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(246,231,239,.48));
   backdrop-filter:blur(14px) saturate(135%);
   -webkit-backdrop-filter:blur(14px) saturate(135%);
-  box-shadow:inset 0 1px 0 white,0 5px 22px rgba(124,88,112,.045);
+  box-shadow:0 5px 22px rgba(124,88,112,.045);
   overflow-wrap:anywhere;
   cursor:default;
   user-select:none;
   -webkit-user-select:none;
 }
-.entry.pinned .message { border-color:rgba(220,184,207,.9); background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(239,216,230,.65)); }
-.pin-label { margin-bottom:8px; color:#a2718d; font-size:10px; }
-.message p { margin:0; white-space:pre-wrap; font-size:14px; line-height:1.8; }
+.entry.pinned .message { border-color:#c4709f; background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(239,216,230,.65)); }
+.message p { margin:0; white-space:pre-wrap; font-size:13px; line-height:1.5; }
 .message-photo {
-  display:block; width:auto; max-width:100%; max-height:190px; margin:0 0 10px;
+  display:block; width:auto; max-width:100%; max-height:190px; margin:0 0 7px;
   object-fit:contain; object-position:left center; border-radius:13px;
   background:rgba(230,215,227,.3); cursor:zoom-in;
 }
 .message-photo:only-child { margin-bottom:0; }
-.time { margin-top:9px; color:var(--muted); font-size:10px; }
+.time { margin-top:4px; color:var(--muted); font-size:9.5px; text-align:right; }
 .message-reaction {
   display:flex; align-items:center; justify-content:center;
-  min-width:39px; min-height:34px; margin-top:-10px; margin-left:9px; padding:5px 11px;
-  border:1px solid rgba(255,255,255,.96); border-radius:18px;
+  min-width:39px; min-height:34px; margin-top:-10px; margin-right:9px; padding:5px 11px;
+  border:1px solid #d79bbd; border-radius:18px;
   background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(248,226,239,.84));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 3px 10px rgba(145,94,125,.11);
-  color:#d95b91; transform-origin:left top;
+  box-shadow:0 3px 10px rgba(145,94,125,.11);
+  color:#d95b91; transform-origin:right top;
+  position:relative; z-index:3;
 }
-.message-reaction.animate { animation:reactionPop .3s cubic-bezier(.2,.9,.3,1.35) both; }
 .message-reaction svg { width:19px; height:19px; fill:#e66b9e; stroke:#e66b9e; }
 @keyframes reactionPop {
   0% { opacity:0; transform:scale(.35) translateY(-5px); }
   72% { opacity:1; transform:scale(1.12); }
   100% { opacity:1; transform:scale(1); }
 }
-.menu-wrap { position:relative; flex-shrink:0; z-index:30; }
-.menu-trigger {
-  position:relative; z-index:31; display:grid; place-items:center;
-  width:36px; height:38px; border:0; border-radius:14px; background:transparent; color:#a38b9a; font-size:22px;
-}
+.menu-wrap { position:absolute; right:12px; top:calc(100% + 2px); width:0; height:0; z-index:60; }
+.menu-wrap.up { top:-2px; }
 .menu {
-  position:absolute; z-index:50; top:36px; right:0; width:145px; padding:5px;
-  border:1px solid white; border-radius:17px; background:var(--modal);
+  position:absolute; z-index:50; top:0; right:0; width:145px; padding:5px;
+  border:1px solid var(--edge); border-radius:17px; background:var(--modal);
   box-shadow:0 8px 26px rgba(104,76,96,.14);
   backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
 }
+.menu-wrap.up .menu { top:auto; bottom:0; }
 .menu button { display:block; width:100%; padding:12px 10px; border:0; border-radius:11px; background:transparent; text-align:left; font-size:12px; }
 .menu button:active { background:var(--soft); }
 .menu .danger { color:var(--danger); }
@@ -358,10 +359,10 @@ select,.small-btn {
 }
 .composer {
   display:flex; align-items:flex-end; gap:8px; padding:8px 9px;
-  border:1px solid rgba(255,255,255,.95); border-radius:27px;
+  border:1px solid var(--edge); border-radius:27px;
   background:rgba(255,255,255,.77);
   backdrop-filter:blur(38px) saturate(185%); -webkit-backdrop-filter:blur(38px) saturate(185%);
-  box-shadow:inset 0 1px 0 white,0 8px 28px rgba(112,83,104,.1);
+  box-shadow:0 8px 28px rgba(112,83,104,.1);
 }
 .composer:focus-within { border-color:#dfbfd3; }
 #input {
@@ -371,12 +372,15 @@ select,.small-btn {
 #input::placeholder { color:#ad9ba8; }
 .icon-btn,.send {
   display:grid; place-items:center; width:40px; height:40px; flex-shrink:0;
-  border:1px solid white; border-radius:50%; background:rgba(245,228,237,.8); color:#795c70; font-size:19px;
+  border:1px solid var(--edge); border-radius:50%; background:rgba(245,228,237,.8); color:#795c70; font-size:19px;
 }
 .send { background:linear-gradient(145deg,#f5e4ed,#e5c9dc); font-size:21px; }
+.send svg { width:21px; height:21px; fill:currentColor; transform:translateX(1px); }
 .icon-btn.active { background:#e8ccdd; }
+.dark-theme .send { background:linear-gradient(145deg,#6b2556,#46173a); border-color:#9c3f7a; color:#ffc4e1; }
+.dark-theme .icon-btn.active { background:#6b2556; border-color:#e04a9b; }
 #editStatus { padding:5px 10px 0; color:#a27b91; font-size:11px; }
-.photo-preview { margin:0 0 7px; padding:8px; border:1px solid white; border-radius:20px; background:rgba(255,255,255,.75); box-shadow:0 4px 15px rgba(112,83,104,.06); }
+.photo-preview { margin:0 0 7px; padding:8px; border:1px solid var(--edge); border-radius:20px; background:rgba(255,255,255,.75); box-shadow:0 4px 15px rgba(112,83,104,.06); }
 .preview-row { display:flex; align-items:center; gap:10px; }
 #previewImage { width:58px; height:58px; flex-shrink:0; object-fit:cover; border-radius:13px; }
 .preview-info { flex:1; min-width:0; color:var(--muted); font-size:11px; }
@@ -392,7 +396,7 @@ select,.small-btn {
 .media-backdrop { align-items:flex-end; padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
 .media-backdrop.open,.modal-backdrop.open { opacity:1; visibility:visible; pointer-events:auto; }
 .media-sheet,.edit-modal {
-  width:min(100%,430px); padding:20px; border:1px solid white; border-radius:26px;
+  width:min(100%,430px); padding:20px; border:1px solid var(--edge); border-radius:26px;
   background:var(--modal); color:var(--ink); box-shadow:0 20px 70px rgba(83,57,77,.2);
   transform:translateY(12px) scale(.98); transition:transform .2s;
 }
@@ -400,17 +404,17 @@ select,.small-btn {
 .media-options { display:grid; grid-template-columns:1fr; gap:12px; }
 .media-option {
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
-  min-height:105px; border:1px solid white; border-radius:21px;
+  min-height:105px; border:1px solid var(--edge); border-radius:21px;
   background:linear-gradient(145deg,#fff,#f4e4ee); color:#76576d; font-size:12px; font-weight:600;
 }
 .media-option svg { width:30px; height:30px; fill:none; stroke:currentColor; stroke-width:1.7; }
-.media-cancel { width:100%; margin-top:12px; padding:12px; border:1px solid white; border-radius:16px; background:var(--soft); font-size:12px; }
+.media-cancel { width:100%; margin-top:12px; padding:12px; border:1px solid var(--edge); border-radius:16px; background:var(--soft); font-size:12px; }
 .modal-backdrop { z-index:100; }
 .edit-modal { max-height:85vh; max-height:85dvh; overflow-y:auto; overscroll-behavior:contain; }
 .modal-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
 .modal-title { font-size:18px; font-weight:700; }
 .modal-subtitle { margin:0 0 18px; color:var(--muted); font-size:12px; line-height:1.7; }
-.modal-close { width:34px; height:34px; flex-shrink:0; border:1px solid white; border-radius:50%; background:var(--field); color:var(--ink); font-size:21px; }
+.modal-close { width:34px; height:34px; flex-shrink:0; border:1px solid var(--edge); border-radius:50%; background:var(--field); color:var(--ink); font-size:21px; }
 .field-label { display:block; margin:14px 0 7px; color:#806a7c; font-size:12px; font-weight:600; }
 .edit-text {
   width:100%; min-height:125px; padding:12px; resize:vertical;
@@ -423,7 +427,7 @@ select,.small-btn {
 .photo-edit-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
 .photo-edit-actions .small-btn { flex:1; }
 .modal-actions { display:flex; gap:9px; margin-top:20px; }
-.modal-actions button { flex:1; min-width:0; padding:12px 8px; border:1px solid white; border-radius:15px; font-size:12px; font-weight:600; }
+.modal-actions button { flex:1; min-width:0; padding:12px 8px; border:1px solid var(--edge); border-radius:15px; font-size:12px; font-weight:600; }
 .cancel-btn { background:var(--field); }
 .save-btn { background:linear-gradient(145deg,#f1dce8,#dfbfd3); color:#594958; }
 .zoom-backdrop { background:rgba(38,27,37,.88); }
@@ -492,12 +496,12 @@ select,.small-btn {
   width:min(390px,calc(100% - 32px));
   height:58px;
   padding:6px;
-  border:1px solid rgba(255,255,255,.92);
+  border:1px solid var(--edge);
   border-radius:29px;
   background:rgba(255,249,253,.78);
   backdrop-filter:blur(42px) saturate(190%);
   -webkit-backdrop-filter:blur(42px) saturate(190%);
-  box-shadow:inset 0 1px 0 white,0 9px 35px rgba(101,73,94,.12);
+  box-shadow:0 9px 35px rgba(101,73,94,.12);
   isolation:isolate;
   overflow:hidden;
   user-select:none;
@@ -520,7 +524,7 @@ select,.small-btn {
   bottom:6px;
   left:6px;
   width:calc((100% - 22px)/3);
-  border:1px solid white;
+  border:1px solid var(--edge);
   border-radius:23px;
   background:linear-gradient(145deg,white,#efd8e7);
   transition:transform .34s cubic-bezier(.32,.72,0,1),opacity .2s ease;
@@ -552,6 +556,7 @@ select,.small-btn {
 
 /* Tema gelap */
 body.dark-theme {
+  --edge:#74305f;
   --ink:#ffe8f3;
   --muted:#d9a0c2;
   --glass:rgba(58,18,46,.76);
@@ -569,8 +574,8 @@ body.dark-theme {
   border-color:var(--line);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 28px rgba(0,0,0,.16);
 }
-.dark-theme .message { background:linear-gradient(145deg,rgba(92,32,72,.92),rgba(60,19,48,.9)); border-color:var(--line); }
-.dark-theme .entry.pinned .message { background:linear-gradient(145deg,#632550,#431833); border-color:#b04c8a; }
+.dark-theme .message { background:linear-gradient(145deg,rgba(92,32,72,.92),rgba(60,19,48,.9)); border-color:#9c3f7a; box-shadow:0 5px 22px rgba(0,0,0,.18); }
+.dark-theme .entry.pinned .message { background:linear-gradient(145deg,#632550,#431833); border-color:#c2579a; }
 .dark-theme .search-wrap,.dark-theme select,.dark-theme .small-btn,.dark-theme .theme-btn,.dark-theme .streak-badge,.dark-theme .icon-btn,.dark-theme .send,.dark-theme .month-btn,.dark-theme .media-sheet,.dark-theme .edit-modal,.dark-theme .menu,.dark-theme .modal-close,.dark-theme .date-field,.dark-theme .edit-text {
   color:var(--ink);
   background-color:#3b1330;
@@ -579,12 +584,12 @@ body.dark-theme {
 .dark-theme #input,.dark-theme #searchInput,.dark-theme .edit-text,.dark-theme .date-field { color:var(--ink); }
 .dark-theme #input::placeholder,.dark-theme #searchInput::placeholder { color:#c088a8; }
 .dark-theme .nav-indicator { background:linear-gradient(145deg,#7a2a60,#521d41); border-color:#a14584; }
-.dark-theme .nav-btn.active,.dark-theme .menu-trigger,.dark-theme .field-label { color:#ffc4e1; }
+.dark-theme .nav-btn.active,.dark-theme .field-label { color:#ffc4e1; }
 .dark-theme .day.selected { background:#7a2a60; border-color:#f06aae; }
 .dark-theme .day.has-notes::after { background:#ff9fce; }
 .dark-theme .day-divider { color:#d9a0c2; }
 .dark-theme .day-divider::before,.dark-theme .day-divider::after { background:linear-gradient(90deg,transparent,#92407a); }
-.dark-theme .message-reaction { background:linear-gradient(145deg,#5a2149,#3d1432); border-color:#843a6e; }
+.dark-theme .message-reaction { background:linear-gradient(145deg,#5a2149,#3d1432); border-color:#9c3f7a; box-shadow:0 3px 10px rgba(0,0,0,.25); }
 .dark-theme .media-option { background:linear-gradient(145deg,#531d44,#3b1330); border-color:#74305f; color:#ffd9ec; }
 .dark-theme .media-cancel,.dark-theme .cancel-btn { background:#3b1330; color:var(--ink); border-color:#74305f; }
 .dark-theme .gallery-photo { border-color:#74305f; }
@@ -617,12 +622,12 @@ button:active:not(:disabled){transform:scale(.95)}
 .nav-btn:active{transform:scale(.92)}
 .brand{background:linear-gradient(120deg,#594958,#b0759a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .dark-theme .brand{background:linear-gradient(120deg,#ffe8f3,#ff9fce);-webkit-background-clip:text;background-clip:text}
-.small-btn,.theme-btn,.streak-badge{box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 3px 10px rgba(112,83,104,.06)}
+.small-btn,.theme-btn,.streak-badge{box-shadow:0 3px 10px rgba(112,83,104,.06)}
 .dark-theme .small-btn,.dark-theme .theme-btn,.dark-theme .streak-badge{box-shadow:0 3px 10px rgba(0,0,0,.18)}
 
 /* Dropdown custom */
 .dd{position:relative}
-.dd-btn{display:flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--ink);font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 3px 10px rgba(112,83,104,.06)}
+.dd-btn{display:flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--ink);font-size:12px;box-shadow:0 3px 10px rgba(112,83,104,.06)}
 .dd.open .dd-btn{border-color:#d7b4c8}
 .dd-chev,.dd-check{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .dd-chev{width:14px;height:14px;transition:transform .35s var(--spring)}
@@ -681,7 +686,8 @@ button:active:not(:disabled){transform:scale(.95)}
 @keyframes themeSpin{from{transform:rotate(-200deg) scale(.5)}to{transform:none}}
 .heart-burst{position:fixed;z-index:200;pointer-events:none;color:#e66b9e;font-size:18px;line-height:1;transform:translate(-50%,-50%);animation:heartFly .95s ease-out forwards}
 @keyframes heartFly{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}15%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.25) rotate(var(--r))}}
-.entry.pinned .message{box-shadow:inset 0 1px 0 white,0 8px 26px rgba(190,130,170,.16)}
+.entry.pinned .message{box-shadow:0 8px 26px rgba(190,130,170,.16)}
+.dark-theme .entry.pinned .message{box-shadow:0 8px 26px rgba(0,0,0,.3)}
 
 /* Login: tambahan */
 .auth-row{display:flex;justify-content:flex-end;margin:-4px 2px 4px}
@@ -702,7 +708,7 @@ button:active:not(:disabled){transform:scale(.95)}
 .dark-theme .dt-trigger svg{stroke:#ff9fce}
 .picker-backdrop{position:fixed;z-index:130;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:18px 18px calc(18px + env(safe-area-inset-bottom));background:rgba(77,57,73,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s,visibility .28s}
 .picker-backdrop.open{opacity:1;visibility:visible;pointer-events:auto}
-.picker-card{width:min(100%,400px);padding:18px;border:1px solid white;border-radius:28px;background:var(--modal);color:var(--ink);box-shadow:0 24px 70px rgba(83,57,77,.28);outline:none;opacity:0;transform:translateY(40px) scale(.96);transition:transform .5s var(--spring),opacity .25s}
+.picker-card{width:min(100%,400px);padding:18px;border:1px solid var(--edge);border-radius:28px;background:var(--modal);color:var(--ink);box-shadow:0 24px 70px rgba(83,57,77,.28);outline:none;opacity:0;transform:translateY(40px) scale(.96);transition:transform .5s var(--spring),opacity .25s}
 .picker-backdrop.open .picker-card{opacity:1;transform:none}
 .picker-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .picker-title{margin-bottom:12px;text-align:center;font-size:15px;font-weight:700}
@@ -739,10 +745,10 @@ button:active:not(:disabled){transform:scale(.95)}
 .avatar-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 22px}
 .dark-theme .avatar-ring{background:linear-gradient(145deg,#e04a9b,#ff9fce)}
 .dark-theme .avatar-ring .profile-avatar{border-color:#2a0e20}
-.entry-avatar{flex-shrink:0;align-self:flex-end;width:32px;height:32px;margin:0 7px 0 0;overflow:hidden;border:1px solid var(--line);border-radius:50%;background:linear-gradient(145deg,#fff,#efd8e7)}
+.entry-avatar{flex-shrink:0;align-self:flex-end;width:32px;height:32px;margin:0 0 0 7px;overflow:hidden;border:1px solid #d79bbd;border-radius:50%;background:linear-gradient(145deg,#fff,#efd8e7)}
 .entry-avatar img{display:block;width:100%;height:100%;object-fit:cover}
 .entry.has-reaction .entry-avatar{margin-bottom:24px}
-.dark-theme .entry-avatar{background:linear-gradient(145deg,#7a2a60,#521d41)}
+.dark-theme .entry-avatar{background:linear-gradient(145deg,#7a2a60,#521d41);border-color:#9c3f7a}
 
 /* ===== Polish v6: pensil foto profil + popup ===== */
 .avatar-wrap{position:relative;width:104px;margin:0 auto 18px}
@@ -751,7 +757,7 @@ button:active:not(:disabled){transform:scale(.95)}
 .avatar-edit::after{content:"";position:absolute;inset:-7px}
 .avatar-edit svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .dark-theme .avatar-edit{border-color:#2a0e20;background:linear-gradient(145deg,#e04a9b,#b02d78);box-shadow:0 4px 12px rgba(0,0,0,.35)}
-.avatar-sheet-btn{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 9px;padding:15px 16px;border:1px solid white;border-radius:18px;background:linear-gradient(145deg,#fff,#f4e4ee);color:#76576d;font-size:13px;font-weight:600;text-align:left}
+.avatar-sheet-btn{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 9px;padding:15px 16px;border:1px solid var(--edge);border-radius:18px;background:linear-gradient(145deg,#fff,#f4e4ee);color:#76576d;font-size:13px;font-weight:600;text-align:left}
 .avatar-sheet-btn svg{width:21px;height:21px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .avatar-sheet-btn.danger{color:var(--danger)}
 .dark-theme .avatar-sheet-btn{background:linear-gradient(145deg,#531d44,#3b1330);border-color:#74305f;color:#ffd9ec}
@@ -768,7 +774,7 @@ button:active:not(:disabled){transform:scale(.95)}
 /* Pesan: muncul halus dari bawah */
 .entry.enter{animation:entryIn .6s var(--spring) calc(var(--i,0)*40ms) backwards}
 @keyframes entryIn{from{opacity:0;transform:translateY(26px) scale(.9)}}
-.entry.pop-in{animation:messageSend .6s cubic-bezier(.22,1.1,.36,1) both;transform-origin:left bottom}
+.entry.pop-in{animation:messageSend .6s cubic-bezier(.22,1.1,.36,1) both;transform-origin:right bottom}
 @keyframes messageSend{0%{opacity:0;transform:translateY(28px) scale(.9)}55%{opacity:1}100%{opacity:1;transform:none}}
 
 /* Navigasi: pil -> orb, semua dimensi pakai satu kurva supaya sinkron */
@@ -858,7 +864,6 @@ body.dark-theme .login-screen{
 .dark-theme .dialog-actions .danger{background:#6e2338;color:#ffb4b4}
 .dark-theme #editStatus{color:#ffa9d3}
 .dark-theme .toast-action{color:#ff9fce}
-.dark-theme .pin-label{color:#ff9fce}
 .dark-theme .chart-bar{background:linear-gradient(180deg,#ff9fce,#c23a86)}
 .dark-theme .streak-day.today .streak-dot{box-shadow:0 0 0 2px #f06aae}
 .dark-theme .day.today{box-shadow:inset 0 0 0 1px #c0508f}
@@ -929,12 +934,115 @@ body.ptr-settle .ptr{transition:transform .45s var(--ease-nav),opacity .3s ease}
 .profile-card>:nth-child(4){animation-delay:.15s}
 .profile-card>:nth-child(5){animation-delay:.2s}
 .profile-card>:nth-child(6){animation-delay:.25s}
+/* ===== Switch tema (kecil, kiri = terang, kanan = gelap) ===== */
+.theme-switch{position:relative;flex-shrink:0;width:54px;height:30px;padding:0;border:1px solid #d79bbd;border-radius:999px;background:var(--surface);cursor:pointer;transition:background .35s,border-color .35s}
+.theme-switch .ts-knob{position:absolute;top:3px;left:3px;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:linear-gradient(145deg,#f3b8d3,#d98bb3);box-shadow:0 2px 6px rgba(112,83,104,.3);transition:transform .38s var(--spring),background .35s}
+.theme-switch[aria-checked="true"] .ts-knob{transform:translateX(24px)}
+.theme-switch svg{grid-area:1/1;width:13px;height:13px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s,transform .38s var(--spring)}
+.theme-switch .ts-moon{opacity:0;transform:rotate(-60deg) scale(.5)}
+.theme-switch[aria-checked="true"] .ts-sun{opacity:0;transform:rotate(60deg) scale(.5)}
+.theme-switch[aria-checked="true"] .ts-moon{opacity:1;transform:none;fill:#fff}
+.theme-switch:active .ts-knob{width:26px}
+.theme-switch[aria-checked="true"]:active .ts-knob{transform:translateX(20px)}
+.dark-theme .theme-switch{background:#3b1330;border-color:#9c3f7a}
+.dark-theme .theme-switch .ts-knob{background:linear-gradient(145deg,#e04a9b,#b02d78);box-shadow:0 2px 6px rgba(0,0,0,.4)}
+
+/* ===== Bar pesan disematkan ===== */
+.pinned-bar{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 8px;padding:7px 12px;border:1.5px solid #c4709f;border-radius:14px;background:rgba(244,214,230,.75);color:#8d3f69;font-size:11.5px;font-weight:600;text-align:left;transition:transform .2s var(--smooth),background .25s}
+.pinned-bar:active{transform:scale(.985)}
+.pinned-bar.hidden{display:none}
+.pb-icon{flex-shrink:0;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pb-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pb-step{flex-shrink:0;padding:2px 9px;border-radius:999px;background:#c4709f;color:#fff;font-size:10.5px;font-weight:700}
+.pb-step.hidden{display:none}
+.dark-theme .pinned-bar{border-color:#e04a9b;background:rgba(98,34,77,.85);color:#ffc4e1}
+.dark-theme .pb-step{background:#e04a9b}
+
+/* ===== Label Pinned di samping bubble ===== */
+.pin-row{display:flex;align-items:center;justify-content:flex-end;gap:4px;margin:-1px 0 5px;color:#b0507f;font-size:9.5px;font-weight:700;letter-spacing:.2px}
+.pin-row svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transform:rotate(35deg)}
+.dark-theme .pin-row{color:#ff9fce}
+.message.flash{animation:pinFlash 1.5s ease}
+@keyframes pinFlash{0%,100%{box-shadow:0 0 0 0 rgba(224,74,155,0)}25%,65%{box-shadow:0 0 0 4px rgba(224,74,155,.45)}}
+
+/* ===== Efek tahan chat + animasi menu ===== */
+.message.pressing{transform:scale(.95);transition:transform .5s cubic-bezier(.3,0,.2,1)}
+.menu{transform-origin:top right;animation:menuIn .24s var(--spring) both}
+.menu-wrap.up .menu{transform-origin:bottom right;animation-name:menuInUp}
+@keyframes menuIn{from{opacity:0;transform:scale(.8) translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes menuInUp{from{opacity:0;transform:scale(.8) translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.menu{animation:none}.message.pressing{transform:none}}
+
+/* ===== Background: hati samar + gradient bergerak pelan ===== */
+:root{
+  --b1:#f6bfdc;--b2:#d9c4f5;--b3:#ffd3e6;--b4:#e8b9ff;--blob-o:.6;
+  --heart-1:#f6b4d2;--heart-2:#e283b6;--heart-o:.5;
+  --wp-dim:.45;--wp-dim-color:249,240,246;
+}
+body.dark-theme{
+  --b1:#a8307f;--b2:#5e1f8a;--b3:#c03a8d;--b4:#3d1466;--blob-o:.55;
+  --heart-1:#a2338a;--heart-2:#5a1a55;--heart-o:.55;
+  --wp-dim-color:24,5,17;
+}
+.bg-layer{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg-mesh,.bg-hearts,.bg-photo,.bg-dim{position:absolute;inset:0}
+.blob{position:absolute;width:85vmax;height:85vmax;border-radius:50%;opacity:var(--blob-o);will-change:transform;
+  background:radial-gradient(circle,var(--c) 0%,transparent 62%)}
+.blob.b1{--c:var(--b1);left:-35vmax;top:-30vmax;animation:drift1 26s ease-in-out infinite alternate}
+.blob.b2{--c:var(--b2);right:-40vmax;top:12vh;animation:drift2 32s ease-in-out infinite alternate}
+.blob.b3{--c:var(--b3);left:-30vmax;bottom:-35vmax;animation:drift3 29s ease-in-out infinite alternate}
+.blob.b4{--c:var(--b4);right:-35vmax;bottom:-30vmax;animation:drift1 35s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate3d(14vmax,10vmax,0) scale(1.08)}}
+@keyframes drift2{to{transform:translate3d(-16vmax,-8vmax,0) scale(.94)}}
+@keyframes drift3{to{transform:translate3d(12vmax,-12vmax,0) scale(1.1)}}
+.bg-heart{position:absolute;width:var(--s);height:var(--s);opacity:calc(var(--o) * var(--heart-o));
+  transform:rotate(var(--r));will-change:transform;animation:heartFloat 22s ease-in-out infinite}
+.bg-heart svg{display:block;width:100%;height:100%}
+@keyframes heartFloat{
+  0%,100%{transform:translate3d(0,0,0) rotate(var(--r))}
+  50%{transform:translate3d(0,-20px,0) rotate(calc(var(--r) + 6deg))}
+}
+.bg-photo{display:none;background-size:cover;background-position:center;background-repeat:no-repeat}
+.bg-dim{display:none;background:rgba(var(--wp-dim-color),var(--wp-dim))}
+body.has-wallpaper .bg-mesh,body.has-wallpaper .bg-hearts{display:none}
+body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
+@media (prefers-reduced-motion:reduce){.blob,.bg-heart{animation:none}}
+
+/* ===== Pengaturan ===== */
+.top-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.settings-btn{display:grid;place-items:center;width:30px;height:30px;padding:0;border:1px solid var(--edge);border-radius:50%;background:var(--surface);color:var(--ink);transition:transform .2s var(--smooth)}
+.settings-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.settings-btn:active{transform:scale(.92) rotate(40deg)}
+.dark-theme .settings-btn{background:#3b1330;border-color:#9c3f7a;color:#ffc4e1}
+.settings-sheet{max-height:85vh;max-height:85dvh;overflow-y:auto;overscroll-behavior:contain}
+.wp-preview{display:grid;place-items:center;width:100%;aspect-ratio:16/7;border:1px solid var(--edge);border-radius:18px;background:linear-gradient(145deg,#f4c3dc,#cdb4f0) center/cover no-repeat;color:#7b4a67;font-size:11.5px;font-weight:600;overflow:hidden}
+.dark-theme .wp-preview{background-image:linear-gradient(145deg,#8a2a6b,#3a1348);color:#ffc4e1}
+.wp-preview.has-img span{display:none}
+.wp-actions{display:flex;gap:8px;margin-top:10px}
+.wp-btn{flex:1;min-width:0;padding:11px 10px;border:1px solid var(--edge);border-radius:15px;background:var(--soft);color:var(--ink);font-size:12px;font-weight:600}
+.wp-btn.danger{color:var(--danger)}
+.dark-theme .wp-btn{background:#531d44;border-color:#74305f;color:#ffd9ec}
+.dark-theme .wp-btn.danger{color:var(--danger)}
+.wp-dim{margin-top:14px;font-size:12px;color:var(--muted)}
+.wp-dim label{display:flex;justify-content:space-between;margin-bottom:6px;font-weight:600}
+.wp-dim input{width:100%;accent-color:#d6479a}
+.wp-msg{min-height:16px;margin-top:10px;color:var(--muted);font-size:11px;line-height:1.5}
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body class="login-active">
+<body class="login-active dark-theme">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="bgHeartGrad" cx="35%" cy="30%" r="80%"><stop offset="0" style="stop-color:var(--heart-1)"/><stop offset="1" style="stop-color:var(--heart-2)"/></radialGradient>
+</defs></svg>
+<div class="bg-layer" id="bgLayer" aria-hidden="true">
+  <div class="bg-mesh"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i></div>
+  <div class="bg-hearts" id="bgHearts"></div>
+  <div class="bg-photo" id="bgPhoto"></div>
+  <div class="bg-dim"></div>
+</div>
 
 <div class="login-screen" id="loginScreen">
   <div class="auth-blob b1" aria-hidden="true"></div>
@@ -1054,7 +1162,17 @@ body.ptr-settle .ptr{transition:transform .45s var(--ease-nav),opacity .3s ease}
       <div class="brand">Unsent</div>
       <button class="streak-badge" id="streakBadge" type="button" aria-label="Buka statistik streak">🔥 <span id="streakCount">0</span></button>
     </div>
-    <button class="theme-btn" id="themeToggle" type="button" aria-label="Ganti tema">🌙</button>
+    <div class="top-actions">
+      <button class="settings-btn" id="settingsBtn" type="button" aria-label="Pengaturan" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+      </button>
+    <button class="theme-switch" id="themeToggle" type="button" role="switch" aria-checked="true" aria-label="Mode gelap">
+        <span class="ts-knob" aria-hidden="true">
+          <svg class="ts-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="ts-moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z"/></svg>
+        </span>
+      </button>
+    </div>
   </header>
   <div class="search-wrap" id="searchWrap">
     <span class="search-icon" aria-hidden="true">⌕</span>
@@ -1078,6 +1196,11 @@ body.ptr-settle .ptr{transition:transform .45s var(--ease-nav),opacity .3s ease}
       <button class="small-btn" id="statsBtn" type="button">📊 Statistik</button>
     </div>
   </div>
+  <button class="pinned-bar hidden" id="pinnedBar" type="button" aria-label="Lompat ke pesan disematkan">
+    <svg class="pb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"/></svg>
+    <span class="pb-text" id="pinnedBarText"></span>
+    <span class="pb-step hidden" id="pinnedBarStep"></span>
+  </button>
   </div>
 
   <section id="profilePage" hidden>
@@ -1119,8 +1242,7 @@ body.ptr-settle .ptr{transition:transform .45s var(--ease-nav),opacity .3s ease}
     </div>
     <div class="days" id="days"></div>
     <div class="cal-foot">
-      <span id="calendarInfo">Pilih tanggal</span>
-      <button class="small-btn" id="clearDate" type="button">Semua tanggal</button>
+      <span id="calendarInfo"></span>
     </div>
   </section>
 
@@ -1144,7 +1266,7 @@ body.ptr-settle .ptr{transition:transform .45s var(--ease-nav),opacity .3s ease}
   <form class="composer" id="form">
     <button class="icon-btn" id="photoButton" type="button" aria-label="Tambah media" aria-haspopup="dialog">＋</button>
     <textarea id="input" placeholder="Tulis di sini..." rows="1"></textarea>
-    <button class="send" type="submit" aria-label="Simpan pesan">↑</button>
+    <button class="send" type="submit" aria-label="Kirim pesan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
   </form>
   <div id="editStatus"></div>
 </div>
@@ -1199,6 +1321,27 @@ body.ptr-settle .ptr{transition:transform .45s var(--ease-nav),opacity .3s ease}
     <div class="dialog-actions" id="dialogActions"></div>
   </section>
 </div>
+
+<div class="media-backdrop" id="settingsBackdrop" aria-hidden="true">
+  <section class="media-sheet settings-sheet" role="dialog" aria-modal="true" aria-label="Pengaturan" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title">Pengaturan</div>
+      <button class="modal-close" id="settingsClose" type="button" aria-label="Tutup">×</button>
+    </div>
+    <div class="field-label">Wallpaper</div>
+    <div class="wp-preview" id="wpPreview"><span id="wpPreviewText">Default · hati + gradient</span></div>
+    <div class="wp-actions">
+      <button class="wp-btn" id="wpPick" type="button">Pilih gambar</button>
+      <button class="wp-btn danger hidden" id="wpReset" type="button">Kembali ke default</button>
+    </div>
+    <div class="wp-dim hidden" id="wpDimBox">
+      <label for="wpDim">Gelapkan wallpaper <span id="wpDimVal">45%</span></label>
+      <input id="wpDim" type="range" min="0" max="85" step="5" value="45">
+    </div>
+    <div class="wp-msg" id="wpMsg" role="status"></div>
+  </section>
+</div>
+<input id="wallpaperInput" type="file" accept="image/*" hidden>
 
 <div class="media-backdrop" id="avatarBackdrop" aria-hidden="true">
   <section class="media-sheet" role="dialog" aria-modal="true" aria-label="Foto profil" tabindex="-1">
@@ -1508,6 +1651,11 @@ function getTodayKey() {
   return dateKey(new Date());
 }
 
+/* Kalender selalu punya tanggal aktif: tanggal yang dipilih, atau hari ini */
+function activeDate() {
+  return selectedDate || getTodayKey();
+}
+
 function getWrittenDays() {
   const today = getTodayKey();
   /* Hari di masa depan tidak pernah dihitung (anti-curang) */
@@ -1681,6 +1829,7 @@ function closeActiveModal() {
   else if (current === $('zoomBackdrop')) closeZoom();
   else if (current === $('mediaBackdrop')) closeMediaPopup();
   else if (current === $('avatarBackdrop')) closeAvatarSheet();
+  else if (current === $('settingsBackdrop')) closeSettings();
 }
 
 function finishDialog(result) {
@@ -1834,12 +1983,11 @@ function getFilteredNotes() {
   const query = searchQuery.toLocaleLowerCase('id-ID');
 
   return notes.filter(note => {
-    const matchesDate = view !== 'calendar' || !selectedDate || note.dayKey === selectedDate;
+    const matchesDate = view !== 'calendar' || note.dayKey === activeDate();
     if (!matchesDate) return false;
     if (!query) return true;
     return `${note.text} ${note.time} ${note.dayKey}`.toLocaleLowerCase('id-ID').includes(query);
   }).sort((a,b) => {
-    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
     return sort.value === 'newest' ? a.createdAt-b.createdAt : b.createdAt-a.createdAt;
   });
 }
@@ -1852,12 +2000,103 @@ function resetVisible() {
 
 /* Pastikan catatan tertentu ikut tampil (dihitung dari ujung bawah, karena batch dimuat dari bawah) */
 function ensureVisible(id) {
-  const rest = getFilteredNotes().filter(n => !n.pinned);
+  const rest = getFilteredNotes();
   const index = rest.findIndex(n => String(n.id) === String(id));
   if (index < 0) return;
   const need = topMode() ? index+1 : rest.length-index;
   if (need > visibleCount) visibleCount = Math.ceil(need/PAGE_SIZE)*PAGE_SIZE;
 }
+
+/* Kolom ketik pesan hanya tampil di halaman utama */
+function syncComposer() {
+  $('composerDock').classList.toggle('hidden',view === 'calendar' || showingGallery || showingProfile);
+}
+
+/* ===== Bar pesan disematkan ===== */
+let pinCursor = -1;
+let pinSignature = '';
+
+/* Urutan lompat: mulai dari pesan sematan yang paling dekat posisi awal (bawah di chat, atas di kalender) */
+function getPinnedList() {
+  const asc = sort.value === 'newest';
+  const list = notes.filter(n => n.pinned).sort((a,b) => asc ? a.createdAt-b.createdAt : b.createdAt-a.createdAt);
+  return topMode() ? list : list.reverse();
+}
+
+function updatePinnedBar() {
+  const bar = $('pinnedBar');
+  if (!bar) return;
+
+  const list = (showingGallery || showingProfile) ? [] : getPinnedList();
+  const signature = list.map(n => n.id).join(',');
+  if (signature !== pinSignature) {
+    pinSignature = signature;
+    pinCursor = -1;
+  }
+
+  bar.classList.toggle('hidden',!list.length);
+  $('pinnedBarText').textContent = `${list.length} pesan disematkan`;
+
+  const step = $('pinnedBarStep');
+  step.classList.toggle('hidden',pinCursor < 0 || !list.length);
+  step.textContent = `${pinCursor+1}/${list.length}`;
+}
+
+function jumpToNextPinned() {
+  const list = getPinnedList();
+  if (!list.length) return;
+
+  pinCursor = (pinCursor+1) % list.length;
+  const note = list[pinCursor];
+  const find = () => [...historyBox.querySelectorAll('.entry')].find(e => e.dataset.id === String(note.id));
+
+  /* Sematan bisa di tanggal lain / tersaring pencarian → sesuaikan tampilan dulu */
+  let changed = false;
+  if (view === 'calendar' && activeDate() !== note.dayKey) {
+    selectedDate = note.dayKey === getTodayKey() ? null : note.dayKey;
+    const [ny,nm] = note.dayKey.split('-').map(Number);
+    calendarMonth = new Date(ny,nm-1,1);
+    renderCalendar();
+    changed = true;
+  }
+  if (searchQuery && !`${note.text} ${note.time} ${note.dayKey}`.toLocaleLowerCase('id-ID').includes(searchQuery.toLocaleLowerCase('id-ID'))) {
+    clearTimeout(searchTimer);
+    searchQuery = '';
+    $('searchInput').value = '';
+    $('clearSearch').classList.add('hidden');
+    changed = true;
+  }
+  if (changed) {
+    resetVisible();
+    ensureVisible(note.id);
+    render({focusId:note.id});
+  }
+
+  let target = find();
+  if (!target) {
+    /* pesan belum dimuat (lazy load) → muat dulu sampai ketemu */
+    ensureVisible(note.id);
+    render({focusId:note.id});
+    target = find();
+  } else {
+    target.scrollIntoView({behavior:reduceMotion() ? 'auto' : 'smooth',block:'center'});
+    stuckToBottom = false;
+  }
+
+  if (target) {
+    const msg = target.querySelector('.message');
+    if (msg) {
+      msg.classList.remove('flash');
+      void msg.offsetWidth;
+      msg.classList.add('flash');
+      setTimeout(() => msg.classList.remove('flash'),1600);
+    }
+  }
+
+  updatePinnedBar();
+}
+
+$('pinnedBar').addEventListener('click',jumpToNextPinned);
 
 /* Satu fungsi untuk semua status navigasi (tab aktif + posisi indikator) */
 function updateNavigation() {
@@ -1876,6 +2115,8 @@ function updateNavigation() {
     'hidden',
     view !== 'calendar' || showingGallery || showingProfile
   );
+  syncComposer();
+  updatePinnedBar();
 }
 
 function renderCalendar() {
@@ -1909,11 +2150,11 @@ function renderCalendar() {
     button.setAttribute('aria-label',formatDate(key));
 
     if (key === todayKey) button.classList.add('today');
-    if (key === selectedDate) button.classList.add('selected');
+    if (key === activeDate()) button.classList.add('selected');
     if (notesByDate.has(key)) button.classList.add('has-notes');
 
     button.addEventListener('click',() => {
-      selectedDate = selectedDate === key ? null : key;
+      selectedDate = key === getTodayKey() ? null : key;
       resetVisible();
       renderCalendar();
       render(TO_DEFAULT);
@@ -1922,7 +2163,7 @@ function renderCalendar() {
     daysBox.appendChild(button);
   }
 
-  $('calendarInfo').textContent = selectedDate ? formatDate(selectedDate) : 'Pilih tanggal';
+  $('calendarInfo').textContent = (selectedDate ? '' : 'Hari ini · ') + formatDate(activeDate());
 }
 
 function spawnHearts(x,y) {
@@ -1941,6 +2182,42 @@ function spawnHearts(x,y) {
   }
 }
 
+/* Getaran (didukung Android/Chrome; iOS Safari tidak mendukung) */
+function haptic(pattern) {
+  try { if (navigator.vibrate) navigator.vibrate(pattern); } catch {}
+}
+
+let menuSuppressUntil = 0;
+
+function openNoteMenu(id) {
+  openMenuId = id;
+  render();
+  requestAnimationFrame(positionOpenMenu);
+}
+
+/* Menu terbuka ke bawah; kalau tidak muat (tertutup kolom ketik/navigasi) buka ke atas */
+function positionOpenMenu() {
+  const wrap = document.querySelector('.menu-wrap');
+  if (!wrap) return;
+  const menu = wrap.querySelector('.menu');
+  const bubble = wrap.parentElement.querySelector('.message');
+  if (!menu || !bubble) return;
+
+  wrap.classList.remove('up');
+  let limit = window.innerHeight;
+  ['composerDock','bottomNav'].forEach(id => {
+    const el = $(id);
+    if (el && !el.classList.contains('hidden')) {
+      const top = el.getBoundingClientRect().top;
+      if (top > 0) limit = Math.min(limit,top);
+    }
+  });
+
+  const below = limit-wrap.getBoundingClientRect().top;
+  const above = bubble.getBoundingClientRect().top-$('stickyHead').getBoundingClientRect().bottom;
+  if (below < menu.offsetHeight+8 && above > below) wrap.classList.add('up');
+}
+
 function toggleReaction(id,ev) {
   const note = notes.find(item => String(item.id) === String(id));
   if (!note) return;
@@ -1953,8 +2230,8 @@ function toggleReaction(id,ev) {
     return;
   }
 
-  reactionAnimationId = note.reacted ? String(note.id) : null;
-  if (note.reacted && ev) spawnHearts(ev.clientX,ev.clientY);
+  reactionAnimationId = null;
+  haptic(note.reacted ? 20 : 12);
   render();
 }
 
@@ -1981,10 +2258,11 @@ function makeEntry(note) {
   message.className = 'message';
 
   if (note.pinned) {
-    const pin = document.createElement('div');
-    pin.className = 'pin-label';
-    pin.textContent = '♡ Disematkan';
-    message.appendChild(pin);
+    const pinRow = document.createElement('div');
+    pinRow.className = 'pin-row';
+    pinRow.setAttribute('aria-label','Pesan disematkan');
+    pinRow.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17v5"/><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"/></svg><span>Pinned</span>';
+    message.appendChild(pinRow);
   }
 
   if (note.photo) {
@@ -1995,6 +2273,7 @@ function makeEntry(note) {
     photo.loading = 'lazy';
     photo.addEventListener('click',event => {
       event.stopPropagation();
+      if (Date.now() < menuSuppressUntil) return;
       openZoom(note.photo,note.text);
     });
     message.appendChild(photo);
@@ -2011,8 +2290,31 @@ function makeEntry(note) {
   time.textContent = note.time;
   message.appendChild(time);
 
+  /* Tahan 0,5 detik → menu (Sematkan / Edit / Hapus) */
+  let pressTimer = 0, pressX = 0, pressY = 0;
+  const cancelPress = () => { clearTimeout(pressTimer); pressTimer = 0; message.classList.remove('pressing'); };
+  message.addEventListener('pointerdown',event => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    cancelPress();
+    pressX = event.clientX;
+    pressY = event.clientY;
+    message.classList.add('pressing');
+    pressTimer = setTimeout(() => {
+      pressTimer = 0;
+      menuSuppressUntil = Date.now()+700;
+      haptic(30);
+      openNoteMenu(note.id);
+    },500);
+  });
+  message.addEventListener('pointermove',event => {
+    if (pressTimer && Math.hypot(event.clientX-pressX,event.clientY-pressY) > 10) cancelPress();
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(type => message.addEventListener(type,cancelPress));
+  message.addEventListener('contextmenu',event => event.preventDefault());
+
   let lastTap = 0;
   message.addEventListener('click',event => {
+    if (Date.now() < menuSuppressUntil) return;
     const now = Date.now();
     if (now-lastTap < 320) {
       lastTap = 0;
@@ -2026,30 +2328,12 @@ function makeEntry(note) {
 
   if (note.reacted) {
     const reaction = document.createElement('div');
-    reaction.className = 'message-reaction'+
-      (String(note.id) === reactionAnimationId ? ' animate' : '');
+    reaction.className = 'message-reaction';
     reaction.setAttribute('aria-label','Reaksi love');
     reaction.setAttribute('role','img');
     reaction.appendChild(makeHeartSvg());
     stack.appendChild(reaction);
   }
-
-  const menuWrap = document.createElement('div');
-  menuWrap.className = 'menu-wrap';
-
-  const menuTrigger = document.createElement('button');
-  menuTrigger.type = 'button';
-  menuTrigger.className = 'menu-trigger';
-  menuTrigger.textContent = '···';
-  menuTrigger.setAttribute('aria-label','Menu pesan');
-
-  menuTrigger.addEventListener('click',event => {
-    event.stopPropagation();
-    openMenuId = String(openMenuId) === String(note.id) ? null : note.id;
-    render();
-  });
-
-  menuWrap.appendChild(menuTrigger);
 
   if (String(openMenuId) === String(note.id)) {
     const menu = document.createElement('div');
@@ -2075,7 +2359,10 @@ function makeEntry(note) {
       menu.appendChild(button);
     });
 
+    const menuWrap = document.createElement('div');
+    menuWrap.className = 'menu-wrap';
     menuWrap.appendChild(menu);
+    stack.appendChild(menuWrap);
   }
 
   if (note.reacted) entry.classList.add('has-reaction');
@@ -2091,7 +2378,7 @@ function makeEntry(note) {
     entry.appendChild(avatar);
   }
 
-  entry.append(stack,menuWrap);
+  entry.appendChild(stack);
   if (String(note.id) === String(newNoteId)) entry.classList.add('pop-in');
   return entry;
 }
@@ -2114,15 +2401,14 @@ function queueResolve() {
   resolveTimer = setTimeout(() => resolvePhotoUrls(),0);
 }
 
-/* Sematan selalu tampil di atas; sisanya dimuat per batch dari ujung bawah (terbaru) */
+/* Pesan (termasuk yang disematkan) tetap di posisi aslinya; dimuat per batch dari ujung bawah (terbaru) */
 function buildDisplayList(filtered) {
-  const pinned = filtered.filter(n => n.pinned);
-  renderedRest = filtered.filter(n => !n.pinned);
+  renderedRest = filtered;
   const shown = topMode()
     ? renderedRest.slice(0,visibleCount)
     : renderedRest.slice(Math.max(0,renderedRest.length-visibleCount));
   renderedRestShown = shown.length;
-  return [...pinned,...shown];
+  return shown;
 }
 
 function paintNotes(animate) {
@@ -2277,6 +2563,7 @@ function render(opts = {}) {
     : `${filtered.length} pesan`;
 
   renderedNotes = buildDisplayList(filtered);
+  updatePinnedBar();
   const firstData = pendingBottom && filtered.length > 0;
 
   if (!filtered.length) {
@@ -2285,7 +2572,7 @@ function render(opts = {}) {
     empty.className = 'empty';
 
     if (searchQuery) empty.textContent = 'Pesan yang cocok belum ditemukan.';
-    else if (view === 'calendar' && selectedDate) empty.textContent = 'Belum ada riwayat di tanggal ini.';
+    else if (view === 'calendar') empty.textContent = selectedDate ? 'Belum ada riwayat di tanggal ini.' : 'Belum ada riwayat hari ini.';
     else empty.textContent = 'Belum ada riwayat.';
 
     historyBox.appendChild(empty);
@@ -2615,12 +2902,6 @@ $('nextMonth').addEventListener('click',() => {
   calendarMonth = new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);
   renderCalendar();
 });
-$('clearDate').addEventListener('click',() => {
-  selectedDate = null;
-  resetVisible();
-  renderCalendar();
-  render(TO_DEFAULT);
-});
 
 sort.addEventListener('change',() => {
   resetVisible();
@@ -2716,7 +2997,7 @@ function setGalleryMode(enabled) {
   $('searchWrap').classList.toggle('hidden',enabled);
   $('sort').classList.toggle('hidden',enabled);
   $('statsBtn').classList.toggle('hidden',enabled);
-  $('composerDock').classList.toggle('hidden',enabled);
+  syncComposer();
 
   updateNavigation();
 
@@ -2749,7 +3030,7 @@ function setProfileMode(enabled) {
   document.querySelector('.toolbar').classList.toggle('hidden',enabled);
   $('history').classList.toggle('hidden',enabled);
   updateLoadMore();
-  $('composerDock').classList.toggle('hidden',enabled);
+  syncComposer();
 
   if (enabled) {
     window.scrollTo(0,0);
@@ -2775,6 +3056,8 @@ $('calendarNav').addEventListener('click',() => {
   if (showingGallery) setGalleryMode(false);
 
   view = 'calendar';
+  const [cy,cm] = activeDate().split('-').map(Number);
+  calendarMonth = new Date(cy,cm-1,1);
   resetVisible();
   updateNavigation();
   renderCalendar();
@@ -2790,6 +3073,7 @@ $('profileNav').addEventListener('click',() => {
 });
 
 document.addEventListener('click',event => {
+  if (Date.now() < menuSuppressUntil) return;
   if (!event.target.closest('.menu-wrap') && openMenuId !== null) {
     openMenuId = null;
     render();
@@ -3066,13 +3350,10 @@ $('statsBackdrop').addEventListener('click',event => {
 
 /* Tema */
 function applyTheme(theme,save = true) {
-  document.body.classList.toggle('dark-theme',theme === 'dark');
-  $('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
-
-  $('themeToggle').setAttribute(
-    'aria-label',
-    theme === 'dark' ? 'Ganti ke tema terang' : 'Ganti ke tema gelap'
-  );
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('dark-theme',isDark);
+  $('themeToggle').setAttribute('aria-checked',String(isDark));
+  $('themeToggle').setAttribute('aria-label',isDark ? 'Mode gelap aktif, ketuk untuk mode terang' : 'Mode terang aktif, ketuk untuk mode gelap');
 
   document.querySelector('meta[name="theme-color"]').content =
     theme === 'dark' ? '#1b0713' : '#f5edf2';
@@ -3080,15 +3361,12 @@ function applyTheme(theme,save = true) {
   if (save && typeof saveThemeRemote === 'function') saveThemeRemote(theme);
 }
 
-const savedTheme = 'light';
+const savedTheme = 'dark';
 
 $('themeToggle').addEventListener('click',() => {
   const nextTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
   if (document.startViewTransition && !reduceMotion()) document.startViewTransition(() => applyTheme(nextTheme));
   else applyTheme(nextTheme);
-  $('themeToggle').classList.remove('spin');
-  void $('themeToggle').offsetWidth;
-  $('themeToggle').classList.add('spin');
 });
 
 /* Modal: Esc menutup lapisan teratas; dialog konfirmasi selalu diselesaikan */
@@ -3104,6 +3382,7 @@ document.addEventListener('keydown',event => {
     else if (activeModal === $('zoomBackdrop')) closeZoom();
     else if (activeModal === $('mediaBackdrop')) closeMediaPopup();
     else if (activeModal === $('avatarBackdrop')) closeAvatarSheet();
+    else if (activeModal === $('settingsBackdrop')) closeSettings();
     return;
   }
 
@@ -3362,7 +3641,152 @@ function playPagePop() {
   document.addEventListener('touchcancel',end);
 })();
 
+
+/* ===== Background & wallpaper ===== */
+const WP_KEY = 'unsent-wallpaper';
+const WP_DIM_KEY = 'unsent-wallpaper-dim';
+let wallpaper = '';
+let wallpaperDim = 45;
+
+function buildHearts() {
+  const box = $('bgHearts');
+  if (!box || box.childElementCount) return;
+  const svg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="url(#bgHeartGrad)" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>';
+  /* [kiri %, atas %, ukuran vmin, rotasi, delay s, durasi s, kekuatan] */
+  [[-10,4,52,-18,0,20,.9],[58,-3,34,14,-5,24,.7],[74,24,62,22,-9,26,.85],[-14,38,46,-10,-3,22,.75],
+   [34,52,76,-6,-12,28,.8],[68,70,40,18,-7,21,.7],[2,80,58,-22,-2,25,.85],[44,90,30,10,-10,19,.65]]
+    .forEach(([x,y,size,rot,delay,dur,power]) => {
+      const heart = document.createElement('div');
+      heart.className = 'bg-heart';
+      heart.style.cssText = `left:${x}%;top:${y}%;--s:${size}vmin;--r:${rot}deg;--o:${power};animation-delay:${delay}s;animation-duration:${dur}s`;
+      heart.innerHTML = svg;
+      box.appendChild(heart);
+    });
+}
+
+function loadWallpaperPrefs() {
+  try {
+    wallpaper = localStorage.getItem(WP_KEY) || '';
+    const dim = localStorage.getItem(WP_DIM_KEY);
+    if (dim !== null) wallpaperDim = Math.min(85,Math.max(0,Number(dim) || 0));
+  } catch {}
+}
+
+function saveWallpaperPrefs() {
+  try {
+    if (wallpaper) localStorage.setItem(WP_KEY,wallpaper);
+    else localStorage.removeItem(WP_KEY);
+    localStorage.setItem(WP_DIM_KEY,String(wallpaperDim));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function applyWallpaper() {
+  const has = !!wallpaper;
+  document.body.classList.toggle('has-wallpaper',has);
+  $('bgPhoto').style.backgroundImage = has ? `url("${wallpaper}")` : '';
+  document.documentElement.style.setProperty('--wp-dim',String(wallpaperDim/100));
+
+  const preview = $('wpPreview');
+  preview.classList.toggle('has-img',has);
+  preview.style.backgroundImage = has ? `url("${wallpaper}")` : '';
+  $('wpReset').classList.toggle('hidden',!has);
+  $('wpDimBox').classList.toggle('hidden',!has);
+  $('wpDim').value = String(wallpaperDim);
+  $('wpDimVal').textContent = wallpaperDim+'%';
+}
+
+function compressWallpaper(file) {
+  return new Promise((resolve,reject) => {
+    if (!file || !file.type.startsWith('image/')) { reject(new Error('File bukan gambar.')); return; }
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Gambar tidak bisa dibaca.'));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error('Gambar tidak bisa dibuka.'));
+      image.onload = () => {
+        const ratio = Math.min(1,1600/Math.max(image.width,image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1,Math.round(image.width*ratio));
+        canvas.height = Math.max(1,Math.round(image.height*ratio));
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { reject(new Error('Gambar tidak bisa diproses.')); return; }
+        ctx.drawImage(image,0,0,canvas.width,canvas.height);
+        try { resolve(canvas.toDataURL('image/jpeg',.8)); }
+        catch { reject(new Error('Gambar gagal dikompres. Coba gambar lain.')); }
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function openSettings() {
+  const sheet = $('settingsBackdrop');
+  focusReturnElement = document.activeElement;
+  activeModal = sheet;
+  $('wpMsg').textContent = '';
+  sheet.classList.add('open');
+  sheet.setAttribute('aria-hidden','false');
+  requestAnimationFrame(() => sheet.querySelector('[role="dialog"]').focus());
+}
+
+function closeSettings() {
+  const sheet = $('settingsBackdrop');
+  sheet.classList.remove('open');
+  sheet.setAttribute('aria-hidden','true');
+  if (activeModal === sheet) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) {
+    focusReturnElement.focus({preventScroll:true});
+  }
+  focusReturnElement = null;
+}
+
+$('settingsBtn').addEventListener('click',openSettings);
+$('settingsClose').addEventListener('click',closeSettings);
+$('settingsBackdrop').addEventListener('click',event => {
+  if (event.target === $('settingsBackdrop')) closeSettings();
+});
+$('wpPick').addEventListener('click',() => $('wallpaperInput').click());
+
+$('wallpaperInput').addEventListener('change',async () => {
+  const file = $('wallpaperInput').files && $('wallpaperInput').files[0];
+  $('wallpaperInput').value = '';
+  if (!file) return;
+
+  $('wpMsg').textContent = 'Memproses gambar...';
+  try {
+    wallpaper = await compressWallpaper(file);
+    applyWallpaper();
+    $('wpMsg').textContent = saveWallpaperPrefs()
+      ? 'Wallpaper diterapkan.'
+      : 'Wallpaper diterapkan, tapi gambarnya terlalu besar untuk disimpan di perangkat, jadi hilang saat app ditutup.';
+  } catch (error) {
+    $('wpMsg').textContent = error.message || 'Wallpaper gagal diterapkan.';
+  }
+});
+
+$('wpReset').addEventListener('click',() => {
+  wallpaper = '';
+  saveWallpaperPrefs();
+  applyWallpaper();
+  $('wpMsg').textContent = 'Kembali ke background default.';
+});
+
+$('wpDim').addEventListener('input',event => {
+  wallpaperDim = Number(event.target.value) || 0;
+  document.documentElement.style.setProperty('--wp-dim',String(wallpaperDim/100));
+  $('wpDimVal').textContent = wallpaperDim+'%';
+});
+$('wpDim').addEventListener('change',saveWallpaperPrefs);
+
+
 /* Inisialisasi */
+buildHearts();
+loadWallpaperPrefs();
+applyWallpaper();
 applyTheme(savedTheme,false);
 updateNavigation();
 updateStreakBadge();
