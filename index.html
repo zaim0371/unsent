@@ -1150,6 +1150,25 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
   .head-icon:active,.head-back:active,.sticky-head .chat-head .streak-badge:active{transform:none}
 }
 @media(max-width:380px){.head-nick{font-size:15px}}
+
+/* ===== Halaman info lawan bicara ===== */
+:root{--page-bg:radial-gradient(ellipse at 12% 0%,#f9e7f0,transparent 43%),linear-gradient(145deg,#f8f4f6,#f0eaf1)}
+body.dark-theme{--page-bg:radial-gradient(ellipse at 10% 0%,#6a1f52,transparent 46%),linear-gradient(145deg,#1d0816,#2c0f23)}
+body.contact-open{overflow:hidden}
+.contact-page{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;padding:env(safe-area-inset-top,0px) 15px env(safe-area-inset-bottom,0px);background:var(--page-bg);color:var(--ink);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(14px);transition:opacity .25s ease,transform .45s var(--spring),visibility 0s linear .45s}
+.contact-page.open{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .25s ease,transform .45s var(--spring),visibility 0s}
+.contact-top{display:flex;align-items:center;flex:none;height:56px}
+.contact-body{display:flex;flex-direction:column;align-items:center;padding:28px 0 40px}
+.contact-avatar-wrap{width:clamp(96px,26vw,132px);margin:0 auto}
+.contact-avatar-wrap .avatar-ring{width:100%;height:100%;aspect-ratio:1}
+.contact-page .avatar-ring .profile-avatar{cursor:default}
+.contact-name{margin:22px 0 0;max-width:100%;padding:0 12px;text-align:center;font-size:26px;font-weight:500;letter-spacing:-.4px;overflow-wrap:anywhere}
+.contact-name.placeholder{color:var(--muted);font-size:16px}
+
+/* ===== Avatar kamu di samping bubble ===== */
+.entry-avatar{display:grid;place-items:center;color:#b7799c;font-size:14px;font-weight:700;line-height:1}
+.entry-avatar.spacer{visibility:hidden}
+.dark-theme .entry-avatar{color:#ffd9ec}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1281,7 +1300,7 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
   <div class="sticky-head" id="stickyHead">
   <header class="chat-head">
     <div class="head-left" id="headLeft">
-      <button class="head-tap" id="headTap" type="button" aria-label="Sembunyikan pesan disematkan" aria-expanded="true" aria-controls="pinnedWrap" disabled></button>
+      <button class="head-tap" id="headTap" type="button" aria-label="Buka info kontak" aria-haspopup="dialog"></button>
       <button class="head-back hidden" id="headBack" type="button" aria-label="Kembali ke halaman utama">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
       </button>
@@ -1356,14 +1375,6 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
           </button>
         </div>
-        <div class="nickname-form hidden" id="nicknameForm">
-          <input id="nicknameInput" type="text" maxlength="24" autocomplete="nickname" autocapitalize="none" spellcheck="false" placeholder="Nama panggilanmu" aria-label="Nickname">
-          <div class="nickname-actions">
-            <button type="button" id="nicknameCancel">Batal</button>
-            <button type="button" id="nicknameSave">Simpan</button>
-          </div>
-        </div>
-        <p id="nicknameMessage" role="status"></p>
       </div>
 
       <button type="button" class="profile-action" id="statsBtn" aria-haspopup="dialog">
@@ -1416,6 +1427,46 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
     <button class="send" type="submit" aria-label="Kirim pesan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
   </form>
   <div id="editStatus"></div>
+</div>
+
+<section class="contact-page" id="contactPage" role="dialog" aria-modal="true" aria-label="Info kontak" aria-hidden="true">
+  <div class="contact-top">
+    <button class="head-back" id="contactBack" type="button" aria-label="Kembali">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    </button>
+  </div>
+  <div class="contact-body">
+    <div class="avatar-wrap contact-avatar-wrap">
+      <div class="avatar-ring">
+        <div class="profile-avatar" id="contactAvatar">
+          <span id="contactAvatarPh" aria-hidden="true">♡</span>
+          <img id="contactAvatarImg" class="hidden" alt="Foto profil">
+        </div>
+      </div>
+      <button class="avatar-edit" id="contactEditBtn" type="button" aria-label="Edit foto profil dan nickname lawan bicara" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </button>
+    </div>
+    <h2 class="contact-name" id="contactName"></h2>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="nickBackdrop" aria-hidden="true">
+  <section class="edit-modal dialog-modal" role="dialog" aria-modal="true" aria-labelledby="nickTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="nickTitle">Nickname</div>
+      <button class="modal-close" id="nickClose" type="button" aria-label="Tutup">×</button>
+    </div>
+    <form id="nickForm">
+      <label class="field-label" for="nicknameInput">Nama panggilan</label>
+      <input id="nicknameInput" type="text" maxlength="24" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Nickname" aria-label="Nickname">
+      <p id="nicknameMessage" role="status"></p>
+      <div class="modal-actions">
+        <button class="cancel-btn" id="nickCancel" type="button">Batal</button>
+        <button class="save-btn" id="nickSave" type="submit">Simpan</button>
+      </div>
+    </form>
+  </section>
 </div>
 
 <input id="galleryInput" type="file" accept="image/*" hidden>
@@ -1532,6 +1583,10 @@ body.has-wallpaper .bg-photo,body.has-wallpaper .bg-dim{display:block}
     <button class="avatar-sheet-btn danger" id="avatarRemove" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6.5 7l1 13h9l1-13"/><path d="M10 11v6M14 11v6"/></svg>
       <span>Hapus foto profil</span>
+    </button>
+    <button class="avatar-sheet-btn" id="nickOpen" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20v-2a7 7 0 0 1 14 0v2"/></svg>
+      <span id="nickOpenLabel">Tambahkan nickname</span>
     </button>
     <button class="media-cancel" id="avatarCancel" type="button">Batal</button>
   </section>
@@ -1742,8 +1797,11 @@ let loadMoreBusy = false;
 let resolveTimer = 0;
 let searchTimer = null;
 let underModal = null;
-let avatarPath = '';
-let avatarUrl = '';
+/* Dua data terpisah: "me" = kamu (tab Profil, samping bubble), "partner" = lawan bicara (header) */
+const profiles = {
+  me:{nickKey:'nickname',avatarKey:'avatar_path',nickname:'',path:'',url:''},
+  partner:{nickKey:'partner_nickname',avatarKey:'partner_avatar_path',nickname:'',path:'',url:''}
+};
 
 function dateKey(date) {
   return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
@@ -2006,6 +2064,7 @@ function closeActiveModal() {
   else if (current === $('mediaBackdrop')) closeMediaPopup();
   else if (current === $('avatarBackdrop')) closeAvatarSheet();
   else if (current === $('settingsBackdrop')) closeSettings();
+  else if (current === $('nickBackdrop')) closeNickModal();
 }
 
 function finishDialog(result) {
@@ -2211,7 +2270,6 @@ function updatePinnedBar() {
   }
 
   $('pinnedWrap').classList.toggle('hidden',!list.length);
-  $('headTap').disabled = !list.length;
   $('pinnedBarText').textContent = `${list.length} pesan disematkan`;
 
   const step = $('pinnedBarStep');
@@ -2424,7 +2482,35 @@ function makeHeartSvg() {
   return svg;
 }
 
-function makeEntry(note) {
+function entryInitial() {
+  const first = profiles.me.nickname ? Array.from(profiles.me.nickname)[0] : '';
+  return first ? first.toLocaleUpperCase('id-ID') : '♡';
+}
+
+function fillEntryAvatar(el) {
+  el.replaceChildren();
+  const fallback = () => {
+    const span = document.createElement('span');
+    span.textContent = entryInitial();
+    el.replaceChildren(span);
+  };
+
+  if (profiles.me.url) {
+    const img = document.createElement('img');
+    img.alt = 'Foto profil';
+    img.addEventListener('error',fallback);
+    img.src = profiles.me.url;
+    el.appendChild(img);
+  } else {
+    fallback();
+  }
+}
+
+function refreshEntryAvatars() {
+  document.querySelectorAll('.entry-avatar:not(.spacer)').forEach(fillEntryAvatar);
+}
+
+function makeEntry(note,showAvatar) {
   const entry = document.createElement('article');
   entry.className = 'entry'+(note.pinned ? ' pinned' : '');
   entry.dataset.id = String(note.id);
@@ -2545,16 +2631,11 @@ function makeEntry(note) {
 
   if (note.reacted) entry.classList.add('has-reaction');
 
-  if (avatarPath) {
-    const avatar = document.createElement('div');
-    avatar.className = 'entry-avatar';
-    const avatarImg = document.createElement('img');
-    avatarImg.alt = 'Foto profil';
-    if (avatarUrl) avatarImg.src = avatarUrl;
-    avatarImg.addEventListener('error',() => avatarImg.classList.add('hidden'));
-    avatar.appendChild(avatarImg);
-    entry.appendChild(avatar);
-  }
+  /* Foto kamu hanya di bubble terakhir tiap rangkaian; bubble lain diberi ruang kosong agar sejajar */
+  const avatarCol = document.createElement('div');
+  avatarCol.className = 'entry-avatar'+(showAvatar ? '' : ' spacer');
+  if (showAvatar) fillEntryAvatar(avatarCol);
+  entry.appendChild(avatarCol);
 
   entry.appendChild(stack);
   if (String(note.id) === String(newNoteId)) entry.classList.add('pop-in');
@@ -2605,7 +2686,10 @@ function paintNotes(animate) {
       lastDividerDate = note.dayKey;
     }
 
-    fragment.appendChild(makeEntry(note));
+    /* Rangkaian beruntun = pesan berjarak maksimal 5 detik di hari yang sama; avatar di bubble paling bawah tiap rangkaian */
+    const next = i+1 < total ? renderedNotes[i+1] : (topMode() ? renderedRest[renderedRestShown] : null);
+    const lastOfRun = !next || next.dayKey !== note.dayKey || Math.abs(next.createdAt-note.createdAt) > 5000;
+    fragment.appendChild(makeEntry(note,lastOfRun));
   });
 
   historyBox.appendChild(fragment);
@@ -3146,14 +3230,8 @@ $('searchInput').addEventListener('keydown',event => {
   }
 });
 
-/* Ketuk header: sembunyikan / tampilkan kolom pesan disematkan */
-$('headTap').addEventListener('click',() => {
-  pauseBg(360);
-  const wrap = $('pinnedWrap');
-  const collapsed = wrap.classList.toggle('collapsed');
-  $('headTap').setAttribute('aria-expanded',String(!collapsed));
-  $('headTap').setAttribute('aria-label',collapsed ? 'Tampilkan pesan disematkan' : 'Sembunyikan pesan disematkan');
-});
+/* Ketuk header: buka info lawan bicara */
+$('headTap').addEventListener('click',() => { if (typeof openContact === 'function') openContact(); });
 
 /* Galeri */
 function appendGalleryBatch() {
@@ -3614,6 +3692,8 @@ document.addEventListener('keydown',event => {
     else if (activeModal === $('mediaBackdrop')) closeMediaPopup();
     else if (activeModal === $('avatarBackdrop')) closeAvatarSheet();
     else if (activeModal === $('settingsBackdrop')) closeSettings();
+    else if (activeModal === $('nickBackdrop')) closeNickModal();
+    else if (!activeModal && showingContact) closeContact();
     return;
   }
 
@@ -3810,6 +3890,7 @@ function playPagePop() {
     const started = Date.now();
     try {
       if (typeof refreshFromCloud === 'function') await refreshFromCloud(true);
+      if (typeof refreshProfileFromServer === 'function') await refreshProfileFromServer();
     } catch {}
 
     updateStreakBadge();
@@ -3828,7 +3909,7 @@ function playPagePop() {
   function blocked(target) {
     return busy || activeModal || dialogResolver ||
       document.body.classList.contains('login-active') ||
-      !!(target.closest && target.closest('.modal-backdrop,.media-backdrop,.picker-backdrop,.login-screen,.dd-panel,.wheel,textarea,input'));
+      !!(target.closest && target.closest('.modal-backdrop,.media-backdrop,.picker-backdrop,.login-screen,.contact-page,.dd-panel,.wheel,textarea,input'));
   }
 
   /* Listener touchmove non-pasif memblokir scroll di thread utama → hanya dipasang saat tarik-refresh mungkin terjadi */
@@ -4084,6 +4165,7 @@ $('wpDim').addEventListener('change',async () => {
   try {
     const { error } = await supabaseClient.auth.updateUser({data:{wallpaper_dim:wallpaperDim}});
     if (error) throw error;
+    notifyProfileChange();
   } catch (error) {
     $('wpMsg').textContent = 'Tingkat gelap belum tersimpan di akun: ' + ((error && error.message) || 'coba lagi.');
   } finally {
@@ -4138,7 +4220,7 @@ function setSyncStatus(text) { syncStatus.textContent = text; }
 
 function saveThemeRemote(theme) {
   if (!currentUserId) return;
-  supabaseClient.auth.updateUser({data:{theme}}).catch(() => {});
+  supabaseClient.auth.updateUser({data:{theme}}).then(r => { if (!r || !r.error) notifyProfileChange(); }).catch(() => {});
 }
 
 function noteToRow(n) {
@@ -4524,6 +4606,8 @@ async function startSync(session) {
   pendingBottom = true;
   refreshAfterMutation();
   setSyncStatus('Memuat data dari cloud...');
+  subscribeProfileChannel();
+  refreshProfileFromServer();
 
   try {
     await pullRemote(false);
@@ -4553,6 +4637,8 @@ function stopSync() {
   clearTimeout(syncTimer);
   syncTimer = null;
   unsubscribeRealtime();
+  unsubscribeProfileChannel();
+  profileFreshUid = '';
   if (!currentUserId && !notes.length) return;
 
   currentUserId = null;
@@ -4579,34 +4665,31 @@ async function refreshFromCloud(force) {
   } catch {}
 }
 
-document.addEventListener('visibilitychange',() => { if (!document.hidden) refreshFromCloud(); });
-window.addEventListener('focus',() => refreshFromCloud());
-window.addEventListener('online',() => { if (currentUserId && syncReady) scheduleSync(); });
+document.addEventListener('visibilitychange',() => { if (!document.hidden) { refreshFromCloud(); refreshProfileFromServer(); } });
+window.addEventListener('focus',() => { refreshFromCloud(); refreshProfileFromServer(); });
+window.addEventListener('online',() => { if (currentUserId && syncReady) scheduleSync(); refreshProfileFromServer(); });
+setInterval(() => { if (currentUserId && !document.hidden) refreshProfileFromServer(); },10000);
 setInterval(() => { if (currentUserId && syncReady) { resolvePhotoUrls(); refreshAvatarUrl(); } },20*60*1000);
 
 
-/* ===== Identitas header: nickname + foto profil ===== */
-let userNickname = '';
-let userEmail = '';
-let nicknameDirty = false;
+/* ===== Profil: data kamu (tab Profil + samping bubble) dan data lawan bicara (header) ===== */
+let showingContact = false;
+let avatarTarget = 'me';
+let nickTarget = 'me';
 const NICKNAME_MAX = 24;
 const nicknameInput = $('nicknameInput');
 const nicknameMessage = $('nicknameMessage');
+const PROFILE_LABEL = {me:'kamu',partner:'lawan bicara'};
 
-function displayName() {
-  if (userNickname) return userNickname;
-  if (userEmail) {
-    const local = userEmail.split('@')[0].trim();
-    return local || userEmail;
-  }
-  return 'Unsent';
+function initialOf(p) {
+  const first = p.nickname ? Array.from(p.nickname)[0] : '';
+  return first ? first.toLocaleUpperCase('id-ID') : '♡';
 }
 
-function updateHeaderAvatar() {
-  const img = $('headAvatarImg');
-  const ph = $('headAvatarPh');
-  if (avatarUrl) {
-    if (img.getAttribute('src') !== avatarUrl) img.src = avatarUrl;
+function setPhotoPair(img,ph,p) {
+  ph.textContent = initialOf(p);
+  if (p.url) {
+    if (img.getAttribute('src') !== p.url) img.src = p.url;
     img.classList.remove('hidden');
     ph.classList.add('hidden');
   } else {
@@ -4616,68 +4699,114 @@ function updateHeaderAvatar() {
   }
 }
 
-let nicknameEditing = false;
-
-function setNicknameEditing(on) {
-  nicknameEditing = on;
-  $('nicknameView').classList.toggle('hidden',on);
-  $('nicknameForm').classList.toggle('hidden',!on);
-  $('nicknameBox').classList.toggle('editing',on);
-  if (on) {
-    nicknameInput.value = userNickname;
-    nicknameDirty = false;
-    setNicknameMessage('','');
-    requestAnimationFrame(() => {
-      nicknameInput.focus({preventScroll:true});
-      nicknameInput.select();
-    });
-  } else {
-    nicknameDirty = false;
-  }
-}
-
-function updateHeaderIdentity() {
-  const name = displayName();
-  $('headNick').textContent = name;
-  $('nicknameText').textContent = userNickname || 'Tambahkan nickname biar personal';
-  $('nicknameText').classList.toggle('placeholder',!userNickname);
-  const hasName = !!(userNickname || userEmail);
-  const first = hasName ? Array.from(name)[0] : '';
-  $('headAvatarPh').textContent = first ? first.toLocaleUpperCase('id-ID') : '♡';
-  updateHeaderAvatar();
-  if (!nicknameDirty && nicknameEditing) nicknameInput.value = userNickname;
-}
-
-$('headAvatarImg').addEventListener('error',() => {
-  if (!$('headAvatarImg').getAttribute('src')) return;
-  $('headAvatarImg').classList.add('hidden');
-  $('headAvatarPh').classList.remove('hidden');
+[['headAvatarImg','headAvatarPh'],['contactAvatarImg','contactAvatarPh'],['profileAvatarImg','profileAvatarPlaceholder']].forEach(([imgId,phId]) => {
+  const img = $(imgId);
+  img.addEventListener('error',() => {
+    if (!img.getAttribute('src')) return;
+    img.classList.add('hidden');
+    $(phId).classList.remove('hidden');
+  });
 });
 
+function syncSheetState() {
+  const p = profiles[avatarTarget];
+  const has = !!p.path;
+  $('avatarAdd').disabled = has;
+  $('avatarChange').disabled = !has;
+  $('avatarRemove').disabled = !has;
+  $('nickOpenLabel').textContent = p.nickname ? 'Ganti nickname' : 'Tambahkan nickname';
+  $('nickOpen').classList.toggle('hidden',avatarTarget === 'me');
+}
+
+function updateProfileUI(key) {
+  const p = profiles[key];
+
+  if (key === 'partner') {
+    $('headNick').textContent = p.nickname || 'Unsent';
+    setPhotoPair($('headAvatarImg'),$('headAvatarPh'),p);
+    setPhotoPair($('contactAvatarImg'),$('contactAvatarPh'),p);
+    $('contactName').textContent = p.nickname || 'Belum ada nickname';
+    $('contactName').classList.toggle('placeholder',!p.nickname);
+  } else {
+    setPhotoPair($('profileAvatarImg'),$('profileAvatarPlaceholder'),p);
+    $('nicknameText').textContent = p.nickname || 'Tambahkan nickname biar personal';
+    $('nicknameText').classList.toggle('placeholder',!p.nickname);
+    refreshEntryAvatars();
+  }
+
+  if (avatarTarget === key) syncSheetState();
+}
+
+/* Halaman info lawan bicara (dibuka dengan menekan header) */
+function setBackgroundInert(on) {
+  ['.app','#composerDock','#bottomNav'].forEach(selector => {
+    const el = document.querySelector(selector);
+    if (el) el.inert = on;
+  });
+}
+
+function openContact() {
+  if (showingContact || document.body.classList.contains('login-active')) return;
+  showingContact = true;
+  const page = $('contactPage');
+  page.classList.add('open');
+  page.setAttribute('aria-hidden','false');
+  document.body.classList.add('contact-open');
+  setBackgroundInert(true);
+  requestAnimationFrame(() => $('contactBack').focus({preventScroll:true}));
+}
+
+function closeContact() {
+  if (!showingContact) return;
+  showingContact = false;
+  const page = $('contactPage');
+  page.classList.remove('open');
+  page.setAttribute('aria-hidden','true');
+  document.body.classList.remove('contact-open');
+  setBackgroundInert(false);
+  $('headTap').focus({preventScroll:true});
+}
+
+$('contactBack').addEventListener('click',closeContact);
+
+/* Nickname (dipakai untuk kamu maupun lawan bicara) */
 function setNicknameMessage(text,state) {
   nicknameMessage.textContent = text || '';
   nicknameMessage.dataset.state = state || '';
 }
 
-nicknameInput.addEventListener('input',() => {
-  nicknameDirty = true;
+function openNickModal(key) {
+  const backdrop = $('nickBackdrop');
+  nickTarget = key;
+  $('nickTitle').textContent = 'Nickname ' + PROFILE_LABEL[key];
+  focusReturnElement = document.activeElement;
+  activeModal = backdrop;
+  nicknameInput.value = profiles[key].nickname;
   setNicknameMessage('','');
-});
-nicknameInput.addEventListener('keydown',event => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    saveNickname();
-  } else if (event.key === 'Escape') {
-    event.preventDefault();
-    $('nicknameCancel').click();
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden','false');
+  requestAnimationFrame(() => {
+    nicknameInput.focus({preventScroll:true});
+    nicknameInput.select();
+  });
+}
+
+function closeNickModal() {
+  const backdrop = $('nickBackdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden','true');
+  if (activeModal === backdrop) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) {
+    focusReturnElement.focus({preventScroll:true});
   }
-});
-$('nicknameSave').addEventListener('click',saveNickname);
-$('nicknameEditBtn').addEventListener('click',() => setNicknameEditing(true));
-$('nicknameCancel').addEventListener('click',() => { setNicknameEditing(false); setNicknameMessage('',''); updateHeaderIdentity(); });
+  focusReturnElement = null;
+}
 
 async function saveNickname() {
+  const key = nickTarget;
+  const p = profiles[key];
   const nickname = nicknameInput.value.trim();
+
   if (!nickname) {
     setNicknameMessage('Nickname tidak boleh kosong.','error');
     return;
@@ -4691,27 +4820,37 @@ async function saveNickname() {
     return;
   }
 
-  const button = $('nicknameSave');
+  const button = $('nickSave');
   button.disabled = true;
   setNicknameMessage('Menyimpan nickname...','');
   try {
-    /* Hanya field nickname yang dikirim; Supabase menggabungkan user_metadata (avatar_path & theme aman) */
-    const { data, error } = await supabaseClient.auth.updateUser({data:{nickname}});
+    /* Hanya field nickname yang dikirim; Supabase menggabungkan user_metadata */
+    const { data, error } = await supabaseClient.auth.updateUser({data:{[p.nickKey]:nickname}});
     if (error) throw error;
-    const saved = data && data.user && data.user.user_metadata && typeof data.user.user_metadata.nickname === 'string'
-      ? data.user.user_metadata.nickname.trim().slice(0,NICKNAME_MAX)
-      : nickname;
-    userNickname = saved;
-    nicknameDirty = false;
-    setNicknameEditing(false);
-    updateHeaderIdentity();
-    setNicknameMessage('Nickname tersimpan.','ok');
+    const meta = data && data.user && data.user.user_metadata;
+    p.nickname = meta && typeof meta[p.nickKey] === 'string' ? meta[p.nickKey].trim().slice(0,NICKNAME_MAX) : nickname;
+    updateProfileUI(key);
+    notifyProfileChange();
+    closeNickModal();
+    showToast('Nickname tersimpan');
   } catch (error) {
     setNicknameMessage('Gagal menyimpan nickname: '+((error && error.message) || 'coba lagi.'),'error');
   } finally {
     button.disabled = false;
   }
 }
+
+nicknameInput.addEventListener('input',() => setNicknameMessage('',''));
+$('nickForm').addEventListener('submit',event => {
+  event.preventDefault();
+  saveNickname();
+});
+$('nickCancel').addEventListener('click',closeNickModal);
+$('nickClose').addEventListener('click',closeNickModal);
+$('nickBackdrop').addEventListener('click',event => {
+  if (event.target === $('nickBackdrop')) closeNickModal();
+});
+$('nicknameEditBtn').addEventListener('click',() => openNickModal('me'));
 
 /* ===== Wallpaper kustom di Supabase (Storage + user_metadata.wallpaper_path / wallpaper_dim) ===== */
 let wpMigrating = false;
@@ -4745,6 +4884,7 @@ async function uploadWallpaper(dataUrl,uid) {
 async function saveWallpaperRemote(path) {
   const { error } = await supabaseClient.auth.updateUser({data:{wallpaper_path:path,wallpaper_dim:wallpaperDim}});
   if (error) throw error;
+  notifyProfileChange();
 }
 
 /* Wallpaper lama yang baru ada di perangkat → naikkan sekali ke akun */
@@ -4821,7 +4961,7 @@ function syncWallpaperFromMeta(meta,uid) {
   }).catch(() => { if (seq === wpLoadSeq) wpPath = ''; });
 }
 
-/* ===== Foto profil (Supabase Storage + user_metadata.avatar_path) ===== */
+/* ===== Foto profil (Supabase Storage + user_metadata) — untuk kamu dan lawan bicara ===== */
 function compressAvatar(file) {
   return new Promise((resolve,reject) => {
     if (!file || !file.type.startsWith('image/')) { reject(new Error('File bukan gambar.')); return; }
@@ -4853,50 +4993,31 @@ function compressAvatar(file) {
   });
 }
 
-function updateAvatarUI(hadBefore) {
-  const has = !!avatarPath;
-  updateHeaderAvatar();
+function syncAvatar(key,path) {
+  const p = profiles[key];
+  if (path === p.path && (p.url || !path)) return;
 
-  $('profileAvatarImg').classList.toggle('hidden',!avatarUrl);
-  $('profileAvatarPlaceholder').classList.toggle('hidden',!!avatarUrl);
-  if (avatarUrl) $('profileAvatarImg').src = avatarUrl;
-  else $('profileAvatarImg').removeAttribute('src');
-
-  $('avatarAdd').disabled = has;
-  $('avatarChange').disabled = !has;
-  $('avatarRemove').disabled = !has;
-
-  if (hadBefore !== has) {
-    refreshAfterMutation();
-  } else {
-    document.querySelectorAll('.entry-avatar img').forEach(img => {
-      if (avatarUrl && img.getAttribute('src') !== avatarUrl) img.src = avatarUrl;
-    });
-  }
-}
-
-function syncAvatar(path) {
-  if (path === avatarPath && (avatarUrl || !path)) return;
-
-  const had = !!avatarPath;
-  if (path !== avatarPath) { avatarPath = path; avatarUrl = ''; }
-  updateAvatarUI(had);
+  if (path !== p.path) { p.path = path; p.url = ''; }
+  updateProfileUI(key);
 
   if (path) {
     getSignedUrl(path).then(url => {
-      if (avatarPath === path && url) { avatarUrl = url; updateAvatarUI(true); }
+      if (p.path === path && url) { p.url = url; updateProfileUI(key); }
     }).catch(() => {});
   }
 }
 
 function refreshAvatarUrl() {
-  if (!avatarPath) return;
-  const cached = photoUrlCache.get(avatarPath);
-  if (cached && cached.exp > Date.now()+3600000) return;
-  const path = avatarPath;
-  getSignedUrl(path).then(url => {
-    if (avatarPath === path && url) { avatarUrl = url; updateAvatarUI(true); }
-  }).catch(() => {});
+  Object.keys(profiles).forEach(key => {
+    const p = profiles[key];
+    if (!p.path) return;
+    const cached = photoUrlCache.get(p.path);
+    if (cached && cached.exp > Date.now()+3600000) return;
+    const path = p.path;
+    getSignedUrl(path).then(url => {
+      if (p.path === path && url) { p.url = url; updateProfileUI(key); }
+    }).catch(() => {});
+  });
 }
 
 function removeAvatarFile(path) {
@@ -4912,16 +5033,18 @@ async function handleAvatarFile(file) {
     return;
   }
 
-  const buttons = [$('profileAvatar'),$('avatarEditBtn')];
-  buttons.forEach(b => { b.disabled = true; });
-  profileMessage.textContent = 'Mengunggah foto profil...';
+  const key = avatarTarget;
+  const p = profiles[key];
+  const editButton = key === 'me' ? $('avatarEditBtn') : $('contactEditBtn');
+  editButton.disabled = true;
+  showToast('Mengunggah foto profil...',{duration:10000});
 
   let uploadedPath = '';
 
   try {
     const dataUrl = await compressAvatar(file);
     const blob = await (await fetch(dataUrl)).blob();
-    const path = `${currentUserId}/avatar-${Date.now()}.jpg`;
+    const path = `${currentUserId}/avatar-${key}-${Date.now()}.jpg`;
 
     const { error: uploadError } = await supabaseClient.storage
       .from(PHOTO_BUCKET)
@@ -4929,54 +5052,61 @@ async function handleAvatarFile(file) {
     if (uploadError) throw uploadError;
     uploadedPath = path;
 
-    /* Catat path lama SEBELUM updateUser: event USER_UPDATED bisa menimpa avatarPath lebih dulu */
-    const old = avatarPath;
-    const { error: metaError } = await supabaseClient.auth.updateUser({data:{avatar_path:path}});
+    /* Catat path lama SEBELUM updateUser: event USER_UPDATED bisa menimpa path lebih dulu */
+    const old = p.path;
+    const { error: metaError } = await supabaseClient.auth.updateUser({data:{[p.avatarKey]:path}});
     if (metaError) throw metaError;
 
-    avatarPath = path;
-    avatarUrl = dataUrl;   /* tampil instan; URL bertanda tangan menyusul */
-    updateAvatarUI(!!old);
+    p.path = path;
+    p.url = dataUrl;   /* tampil instan; URL bertanda tangan menyusul */
+    updateProfileUI(key);
     if (old && old !== path) removeAvatarFile(old);
-    profileMessage.textContent = '';
+    notifyProfileChange();
+    showToast('Foto profil diperbarui');
 
     getSignedUrl(path).then(url => {
-      if (avatarPath === path && url) { avatarUrl = url; updateAvatarUI(true); }
+      if (p.path === path && url) { p.url = url; updateProfileUI(key); }
     }).catch(() => {});
   } catch (error) {
     if (uploadedPath) removeAvatarFile(uploadedPath);
-    profileMessage.textContent = 'Gagal menyimpan foto profil: ' + (error.message || 'coba lagi.');
+    $('toast').classList.remove('open');
+    showAlert('Gagal menyimpan foto profil: ' + ((error && error.message) || 'coba lagi.'));
   } finally {
-    buttons.forEach(b => { b.disabled = false; });
+    editButton.disabled = false;
     $('avatarInput').value = '';
   }
 }
 
 async function removeAvatar() {
-  if (!avatarPath) return;
+  const key = avatarTarget;
+  const p = profiles[key];
+  if (!p.path) return;
 
   const accepted = await showConfirm('Hapus foto profil?',{okLabel:'Hapus',danger:true});
   if (!accepted) return;
 
-  const old = avatarPath;
-  profileMessage.textContent = 'Menghapus foto profil...';
+  const old = p.path;
 
   try {
-    const { error } = await supabaseClient.auth.updateUser({data:{avatar_path:null}});
+    const { error } = await supabaseClient.auth.updateUser({data:{[p.avatarKey]:null}});
     if (error) throw error;
 
-    avatarPath = '';
-    avatarUrl = '';
-    updateAvatarUI(true);
+    p.path = '';
+    p.url = '';
+    updateProfileUI(key);
     removeAvatarFile(old);
-    profileMessage.textContent = '';
+    notifyProfileChange();
+    showToast('Foto profil dihapus');
   } catch (error) {
-    profileMessage.textContent = 'Gagal menghapus foto profil: ' + (error.message || 'coba lagi.');
+    showAlert('Gagal menghapus foto profil: ' + ((error && error.message) || 'coba lagi.'));
   }
 }
 
-function openAvatarSheet() {
+function openAvatarSheet(key) {
   const sheet = $('avatarBackdrop');
+  avatarTarget = key;
+  syncSheetState();
+  sheet.querySelector('[role="dialog"]').setAttribute('aria-label','Foto profil '+PROFILE_LABEL[key]);
   focusReturnElement = document.activeElement;
   activeModal = sheet;
   sheet.classList.add('open');
@@ -4995,8 +5125,9 @@ function closeAvatarSheet() {
   focusReturnElement = null;
 }
 
-$('profileAvatar').addEventListener('click',openAvatarSheet);
-$('avatarEditBtn').addEventListener('click',openAvatarSheet);
+$('profileAvatar').addEventListener('click',() => openAvatarSheet('me'));
+$('avatarEditBtn').addEventListener('click',() => openAvatarSheet('me'));
+$('contactEditBtn').addEventListener('click',() => openAvatarSheet('partner'));
 $('avatarCancel').addEventListener('click',closeAvatarSheet);
 $('avatarBackdrop').addEventListener('click',event => {
   if (event.target === $('avatarBackdrop')) closeAvatarSheet();
@@ -5009,20 +5140,103 @@ $('avatarRemove').addEventListener('click',() => {
   closeAvatarSheet();
   removeAvatar();
 });
-
-/* Jika gambar profil gagal dimuat, tampilkan placeholder (bukan teks alt) */
-$('profileAvatarImg').addEventListener('error',() => {
-  if (!$('profileAvatarImg').getAttribute('src')) return;
-  $('profileAvatarImg').classList.add('hidden');
-  $('profileAvatarPlaceholder').classList.remove('hidden');
+$('nickOpen').addEventListener('click',() => {
+  const key = avatarTarget;
+  closeAvatarSheet();
+  openNickModal(key);
 });
 $('avatarInput').addEventListener('change',() => {
   const file = $('avatarInput').files && $('avatarInput').files[0];
   if (file) handleAvatarFile(file);
 });
 
+updateProfileUI('me');
+updateProfileUI('partner');
+
+/* ===== Sinkron profil + wallpaper + tema antar perangkat =====
+   Data disimpan di user_metadata. Sesi di perangkat lain hanya menyimpan salinan lama,
+   jadi data diambil langsung dari server (getUser) dan perangkat lain diberi tahu lewat
+   broadcast realtime. Polling 10 detik jadi cadangan bila broadcast terlewat. */
+let profileFreshUid = '';
+let profileEpoch = 0;
+let profileFetching = false;
+let profilePending = false;
+let profileChannel = null;
+
+function applyProfileMeta(meta,uid) {
+  const m = meta || {};
+
+  Object.keys(profiles).forEach(key => {
+    const p = profiles[key];
+    syncAvatar(key,typeof m[p.avatarKey] === 'string' ? m[p.avatarKey] : '');
+    const nick = typeof m[p.nickKey] === 'string' ? m[p.nickKey].trim().slice(0,NICKNAME_MAX) : '';
+    if (nick !== p.nickname) {
+      p.nickname = nick;
+      updateProfileUI(key);
+    }
+  });
+
+  if (uid) syncWallpaperFromMeta(m,uid);
+
+  if (m.theme === 'dark' || m.theme === 'light') {
+    if ((m.theme === 'dark') !== document.body.classList.contains('dark-theme')) applyTheme(m.theme,false);
+  }
+}
+
+async function refreshProfileFromServer() {
+  if (recoveryMode) return;
+  if (profileFetching) { profilePending = true; return; }
+
+  profileFetching = true;
+  const epoch = profileEpoch;
+  try {
+    const { data, error } = await supabaseClient.auth.getUser();
+    if (error || !data || !data.user) return;
+    if (epoch !== profileEpoch) { profilePending = true; return; }
+    if (currentUserId && data.user.id !== currentUserId) return;
+    profileFreshUid = data.user.id;
+    applyProfileMeta(data.user.user_metadata,data.user.id);
+  } catch {
+  } finally {
+    profileFetching = false;
+    if (profilePending) {
+      profilePending = false;
+      setTimeout(refreshProfileFromServer,0);
+    }
+  }
+}
+
+function unsubscribeProfileChannel() {
+  if (profileChannel) {
+    supabaseClient.removeChannel(profileChannel);
+    profileChannel = null;
+  }
+}
+
+function subscribeProfileChannel() {
+  unsubscribeProfileChannel();
+  if (!currentUserId) return;
+
+  profileChannel = supabaseClient
+    .channel('profile-' + currentUserId)
+    .on('broadcast',{event:'profile'},() => refreshProfileFromServer())
+    .subscribe(status => {
+      if (status === 'SUBSCRIBED') refreshProfileFromServer();
+    });
+}
+
+/* Dipanggil setelah menyimpan nickname / foto / wallpaper / tema → perangkat lain langsung memuat ulang */
+function notifyProfileChange() {
+  profileEpoch++;
+  try {
+    if (profileChannel) {
+      Promise.resolve(profileChannel.send({type:'broadcast',event:'profile',payload:{t:Date.now()}})).catch(() => {});
+    }
+  } catch {}
+}
+
 /* Tampilkan / sembunyikan aplikasi sesuai sesi, sekaligus isi email profil */
-function applySession(session) {
+function applySession(session,event) {
   if (suppressSession && session) return;
 
   if (recoveryMode && session) {
@@ -5034,28 +5248,27 @@ function applySession(session) {
     }
     return;
   }
+
   const email = session && session.user ? session.user.email : '';
   profileEmail.textContent = email || 'Belum masuk';
 
-  const meta = session && session.user ? session.user.user_metadata : null;
-  syncAvatar((meta && typeof meta.avatar_path === 'string') ? meta.avatar_path : '');
-
-  const previousEmail = userEmail;
-  userEmail = email || '';
-  userNickname = (meta && typeof meta.nickname === 'string') ? meta.nickname.trim().slice(0,NICKNAME_MAX) : '';
-  if (!session || previousEmail !== userEmail) { nicknameDirty = false; nicknameEditing = false; $('nicknameBox').classList.remove('editing'); $('nicknameView').classList.remove('hidden'); $('nicknameForm').classList.add('hidden'); setNicknameMessage('',''); }
-  updateHeaderIdentity();
-  if (session && session.user) syncWallpaperFromMeta(meta,session.user.id);
-
-  const remoteTheme = session && session.user && session.user.user_metadata
-    ? session.user.user_metadata.theme : null;
-  if (remoteTheme === 'dark' || remoteTheme === 'light') applyTheme(remoteTheme,false);
+  if (session && session.user) {
+    /* Salinan sesi di perangkat bisa usang: setelah data server dimuat, hanya event yang membawa data baru yang dipakai */
+    const uid = session.user.id;
+    if (profileFreshUid !== uid || event === 'USER_UPDATED' || event === 'TOKEN_REFRESHED') {
+      applyProfileMeta(session.user.user_metadata,uid);
+    }
+  } else {
+    profileFreshUid = '';
+    applyProfileMeta({},'');
+  }
 
   if (session) {
     loginScreen.classList.add('hidden');
     document.body.classList.remove('login-active');
     setTimeout(() => startSync(session),0);
   } else {
+    closeContact();
     loginScreen.classList.remove('hidden');
     document.body.classList.add('login-active');
     stopSync();
@@ -5076,7 +5289,7 @@ async function refreshProfileEmail() {
 /* Pantau perubahan sesi (masuk, keluar, token diperbarui, sesi awal) */
 supabaseClient.auth.onAuthStateChange((event,session) => {
   if (event === 'PASSWORD_RECOVERY') recoveryMode = true;
-  applySession(session);
+  applySession(session,event);
 });
 
 supabaseClient.auth.getSession().then(({ data, error }) => {
