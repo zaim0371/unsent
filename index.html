@@ -401,7 +401,52 @@ select,.small-btn {
   transform:translateY(12px) scale(.98); transition:transform .2s;
 }
 .media-backdrop.open .media-sheet,.modal-backdrop.open .edit-modal { transform:translateY(0) scale(1); }
-.media-options { display:grid; grid-template-columns:1fr; gap:12px; }
+.media-options { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+/* ===== Kamera ===== */
+#cameraScreen {
+  position:fixed; inset:0; z-index:300; display:flex; flex-direction:column; background:#000; color:#fff;
+  opacity:0; visibility:hidden; pointer-events:none; transition:opacity .25s ease,visibility 0s linear .25s;
+}
+#cameraScreen.open { opacity:1; visibility:visible; pointer-events:auto; transition:opacity .25s ease,visibility 0s; }
+body.camera-open { overflow:hidden; }
+.cam-stage { position:relative; flex:1; min-height:0; overflow:hidden; background:#000; }
+.cam-stage video,.cam-stage img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000; }
+.cam-stage video.mirror { transform:scaleX(-1); }
+.cam-stage img,#cameraScreen.review .cam-stage video { display:none; }
+#cameraScreen.review .cam-stage img { display:block; }
+.cam-top {
+  position:absolute; z-index:2; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 24px; background:linear-gradient(180deg,rgba(0,0,0,.55),transparent);
+}
+.cam-round {
+  display:grid; place-items:center; width:44px; height:44px; padding:0; border:1px solid rgba(255,255,255,.3); border-radius:50%;
+  background:rgba(255,255,255,.16); color:#fff; -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+}
+.cam-round svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.cam-round:active { transform:scale(.92); }
+.cam-bar {
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex:none; min-height:118px;
+  padding:16px 26px calc(env(safe-area-inset-bottom,0px) + 18px); background:#000;
+}
+.cam-shutter {
+  position:relative; width:72px; height:72px; padding:0; border:4px solid #fff; border-radius:50%; background:transparent;
+}
+.cam-shutter::after { content:""; position:absolute; inset:5px; border-radius:50%; background:#fff; transition:transform .12s ease; }
+.cam-shutter:active::after { transform:scale(.86); }
+.cam-shutter:disabled { opacity:.4; }
+.cam-side { width:44px; height:44px; }
+.cam-review-actions { display:none; width:100%; align-items:center; justify-content:space-between; gap:12px; }
+#cameraScreen.review .cam-review-actions { display:flex; }
+#cameraScreen.review .cam-live-actions { display:none; }
+.cam-live-actions { display:flex; width:100%; align-items:center; justify-content:space-between; }
+.cam-text-btn {
+  min-width:104px; height:46px; padding:0 20px; border:1px solid rgba(255,255,255,.3); border-radius:23px;
+  background:rgba(255,255,255,.14); color:#fff; font-size:14px; font-weight:650;
+}
+.cam-text-btn.send { display:inline-flex; align-items:center; justify-content:center; gap:8px; border-color:transparent; background:linear-gradient(145deg,#ec6fb0,#c23a86); }
+.cam-text-btn.send svg { width:18px; height:18px; fill:currentColor; }
+.cam-text-btn:active { transform:scale(.95); }
+.cam-msg { position:absolute; z-index:2; left:16px; right:16px; bottom:14px; text-align:center; font-size:12px; color:rgba(255,255,255,.8); pointer-events:none; }
 .media-option {
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
   min-height:105px; border:1px solid var(--edge); border-radius:21px;
@@ -531,10 +576,33 @@ select,.small-btn {
 }
 .bottom-nav.nav-pos-1 .nav-indicator { transform:translateX(calc(100% + 5px)); }
 .bottom-nav.nav-pos-2 .nav-indicator { transform:translateX(calc(200% + 10px)); }
-#bubuPage { min-height:60vh; padding-top:14px; }
+#bubuPage { min-height:60vh; padding-top:0; }
 #bubuPage,#bubuVideo { --bubu-ink:#000; --bubu-sub:rgba(0,0,0,.55); }
 body.dark-theme #bubuPage,body.has-wallpaper #bubuPage,body.dark-theme #bubuVideo,body.has-wallpaper #bubuVideo { --bubu-ink:#fff; --bubu-sub:rgba(255,255,255,.7); }
-.bubu-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 16px; }
+.bubu-head {
+  --bubu-strip:rgba(248,244,246,.94);
+  position:sticky; top:calc(var(--head-h,46px) - 1px); z-index:30;
+  display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0; padding:14px 0 6px;
+}
+body.dark-theme #bubuPage .bubu-head,body.has-wallpaper #bubuPage .bubu-head { --bubu-strip:rgba(18,5,14,.82); }
+.bubu-head::before {
+  content:""; position:absolute; z-index:-1; top:0; bottom:0; left:-15px; right:-15px; pointer-events:none;
+  background:linear-gradient(180deg,var(--bubu-strip) 0,var(--bubu-strip) 72%,transparent 100%);
+}
+@media(max-width:380px){ .bubu-head::before { left:-11px; right:-11px; } }
+/* ===== For Bubu: coretan panah menunjuk ke ikon play (menyatu dengan doodle scrapbook) ===== */
+.bubu-hint { position:relative; height:46px; margin:-5px 0 8px; color:var(--doodle); pointer-events:none; user-select:none; -webkit-user-select:none; }
+.bubu-hint svg {
+  position:absolute; top:0; right:35px; width:150px; height:46px; overflow:visible;
+  fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;
+  animation:bubuHintBob 1.8s ease-in-out infinite;
+}
+.bubu-hint text {
+  fill:currentColor; stroke:none; font-size:15px; letter-spacing:.2px;
+  font-family:"Segoe Print","Bradley Hand","Chalkboard SE","Marker Felt","Comic Sans MS","Comic Neue",cursive;
+}
+@keyframes bubuHintBob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-3px); } }
+@media (prefers-reduced-motion:reduce) { .bubu-hint svg { animation:none; } }
 .bubu-head-left { display:flex; align-items:center; gap:4px; min-width:0; }
 .bubu-back { display:grid; place-items:center; flex:none; width:40px; height:40px; margin-left:-8px; padding:0; border:0; border-radius:12px; background:transparent; color:var(--bubu-ink); -webkit-tap-highlight-color:transparent; }
 .bubu-back svg { width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
@@ -1727,6 +1795,13 @@ body.head-compact .head-settings-compact{display:grid}
         </div>
       </div>
     </div>
+    <div class="bubu-hint" aria-hidden="true">
+      <svg viewBox="0 0 150 46" focusable="false">
+        <text x="1" y="36" transform="rotate(-4 1 36)">klik ini bu</text>
+        <path d="M81 33C92 40 106 38 113 28S124 14 120 6"/>
+        <path d="M112 16 120 5 128.5 14.5"/>
+      </svg>
+    </div>
     <div class="bubu-list" id="bubuList"></div>
     <p class="bubu-empty" id="bubuEmpty">Belum ada isi.<br>Ketuk tombol + untuk menambah teks atau chat yang sudah kamu love.</p>
   </section>
@@ -1938,6 +2013,7 @@ body.head-compact .head-settings-compact{display:grid}
 </div>
 
 <input id="galleryInput" type="file" accept="image/*" hidden>
+<input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
 <input id="avatarInput" type="file" accept="image/*" hidden>
 <input id="editGalleryInput" type="file" accept="image/*" hidden>
 
@@ -1952,9 +2028,45 @@ body.head-compact .head-settings-compact{display:grid}
         </svg>
         <span>Galeri</span>
       </button>
+      <button class="media-option" id="cameraOption" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.4a1 1 0 0 0 .8-.4l.9-1.2a1 1 0 0 1 .8-.4h3.2a1 1 0 0 1 .8.4l.9 1.2a1 1 0 0 0 .8.4h1.4A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z"/>
+          <circle cx="12" cy="12.5" r="3.4"/>
+        </svg>
+        <span>Kamera</span>
+      </button>
     </div>
     <button class="media-cancel" id="cancelMedia" type="button">Batal</button>
   </section>
+</div>
+
+<div id="cameraScreen" role="dialog" aria-modal="true" aria-label="Kamera" aria-hidden="true" inert>
+  <div class="cam-stage">
+    <video id="cameraVideo" playsinline muted autoplay></video>
+    <img id="cameraShot" alt="Hasil foto">
+    <div class="cam-top">
+      <button class="cam-round" id="cameraClose" type="button" aria-label="Tutup kamera">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <button class="cam-round" id="cameraFlip" type="button" aria-label="Ganti kamera depan atau belakang">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-9a5 5 0 0 0-5 5"/><path d="m17 4 3 3-3 3"/><path d="M4 17h9a5 5 0 0 0 5-5"/><path d="m7 20-3-3 3-3"/></svg>
+      </button>
+    </div>
+    <div class="cam-msg" id="cameraMsg" aria-live="polite"></div>
+  </div>
+  <div class="cam-bar">
+    <div class="cam-live-actions">
+      <span class="cam-side" aria-hidden="true"></span>
+      <button class="cam-shutter" id="cameraShutter" type="button" aria-label="Ambil foto"></button>
+      <span class="cam-side" aria-hidden="true"></span>
+    </div>
+    <div class="cam-review-actions">
+      <button class="cam-text-btn" id="cameraRetake" type="button">Ulangi</button>
+      <button class="cam-text-btn send" id="cameraSend" type="button">
+        Kirim <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="modal-backdrop" id="editBackdrop" aria-hidden="true">
@@ -2738,6 +2850,147 @@ galleryInput.addEventListener('change',() => {
   const file = galleryInput.files && galleryInput.files[0];
   if (file) handleSelectedPhoto(file);
 });
+/* ===== Kamera: ambil foto lalu langsung kirim ===== */
+const snapScreen = $('cameraScreen');
+const snapVideo = $('cameraVideo');
+let snapStream = null;
+let snapFacing = 'environment';
+let snapShot = '';
+let snapToken = 0;
+let snapOpen = false;
+let snapUseInput = false;
+
+function snapStopStream() {
+  if (snapStream) { snapStream.getTracks().forEach(track => track.stop()); snapStream = null; }
+  snapVideo.srcObject = null;
+}
+
+function snapSetReview(dataUrl) {
+  snapShot = dataUrl || '';
+  $('cameraShot').src = snapShot;
+  snapScreen.classList.toggle('review',!!snapShot);
+  $('cameraFlip').classList.toggle('hidden',!!snapShot);
+}
+
+function snapShow(open) {
+  snapOpen = open;
+  snapScreen.classList.toggle('open',open);
+  snapScreen.setAttribute('aria-hidden',String(!open));
+  if (open) snapScreen.removeAttribute('inert'); else snapScreen.setAttribute('inert','');
+  document.body.classList.toggle('camera-open',open);
+}
+
+async function snapStart() {
+  const token = ++snapToken;
+  snapStopStream();
+  snapSetReview('');
+  $('cameraMsg').textContent = 'Membuka kamera...';
+  $('cameraShutter').disabled = true;
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:snapFacing},width:{ideal:1920},height:{ideal:1920}},
+      audio:false
+    });
+    if (token !== snapToken || !snapOpen) { stream.getTracks().forEach(track => track.stop()); return; }
+    snapStream = stream;
+    snapVideo.srcObject = stream;
+    snapVideo.classList.toggle('mirror',snapFacing === 'user');
+    await snapVideo.play().catch(() => {});
+    $('cameraMsg').textContent = '';
+    $('cameraShutter').disabled = false;
+  } catch (error) {
+    if (token !== snapToken) return;
+    /* Izin ditolak / kamera tidak ada: pakai kamera bawaan perangkat lewat input file */
+    closeSnap();
+    showToast('Kamera langsung tidak tersedia, memakai kamera bawaan perangkat.',{duration:3200});
+    snapUseInput = true;
+    $('cameraInput').click();
+  }
+}
+
+function openSnap() {
+  closeMediaPopup();
+  snapUseInput = false;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || window.isSecureContext === false) {
+    snapUseInput = true;
+    $('cameraInput').click();
+    return;
+  }
+  snapShow(true);
+  snapStart();
+}
+
+function closeSnap() {
+  snapToken++;
+  snapStopStream();
+  snapShow(false);
+  snapSetReview('');
+  snapVideo.classList.remove('mirror');
+}
+
+function snapCapture() {
+  if (!snapStream || !snapVideo.videoWidth) return;
+  const w = snapVideo.videoWidth, h = snapVideo.videoHeight;
+  const ratio = Math.min(1,1200/Math.max(w,h));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1,Math.round(w*ratio));
+  canvas.height = Math.max(1,Math.round(h*ratio));
+  const ctx = canvas.getContext('2d');
+  if (!ctx) { showToast('Foto tidak bisa diproses.'); return; }
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(snapVideo,0,0,canvas.width,canvas.height);
+  let data = '';
+  try { data = canvas.toDataURL('image/jpeg',.76); } catch { showToast('Foto gagal diambil, coba lagi.'); return; }
+  snapStopStream();
+  snapSetReview(data);
+}
+
+function snapRetake() {
+  if (snapUseInput) { closeSnap(); $('cameraInput').click(); return; }
+  snapStart();
+}
+
+function snapSend() {
+  if (!snapShot) return;
+  photoGeneration++;
+  setPhotoPreview(snapShot);
+  closeSnap();
+  /* Langsung kirim (teks yang sudah diketik ikut jadi keterangan foto) */
+  form.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}));
+}
+
+$('cameraOption').addEventListener('click',openSnap);
+$('cameraShutter').addEventListener('click',snapCapture);
+$('cameraRetake').addEventListener('click',snapRetake);
+$('cameraSend').addEventListener('click',snapSend);
+$('cameraClose').addEventListener('click',closeSnap);
+$('cameraFlip').addEventListener('click',() => {
+  snapFacing = snapFacing === 'environment' ? 'user' : 'environment';
+  snapStart();
+});
+$('cameraInput').addEventListener('change',async () => {
+  const file = $('cameraInput').files && $('cameraInput').files[0];
+  $('cameraInput').value = '';
+  if (!file) return;
+  try {
+    const data = await compressImage(file);
+    snapUseInput = true;
+    snapShow(true);
+    snapSetReview(data);
+  } catch (error) {
+    await showAlert(error.message || 'Foto gagal diambil.');
+  }
+});
+document.addEventListener('keydown',event => {
+  if (event.key === 'Escape' && snapOpen) { event.stopImmediatePropagation(); closeSnap(); }
+},true);
+document.addEventListener('visibilitychange',() => {
+  if (document.hidden && snapOpen && !snapShot) snapStopStream();
+  else if (!document.hidden && snapOpen && !snapShot && !snapUseInput) snapStart();
+});
+
 $('removePhoto').addEventListener('click',() => {
   photoGeneration++;
   setPhotoPreview('');
@@ -3904,14 +4157,14 @@ function bubuPack(list) {
   }));
 }
 
-/* Kelompok: tiap blok boleh punya b.group (teks id). Kelompok hanya dianggap ada bila anggotanya >= 2. */
+/* Kelompok: tiap blok boleh punya b.group (teks id). Kelompok boleh berisi 1 pesan saja. */
 const BUBU_GROUP_COLORS = ['#e0558f','#3f9be0','#eaa238','#3fb887','#9a6bdc','#e8623f','#25b3b8','#b7a21e','#d467b9','#6482e0'];
 
 function bubuGroupMap(list = bubuBlocks) {
   const count = new Map();
   list.forEach(b => { if (b.group) count.set(b.group,(count.get(b.group)||0)+1); });
   const map = new Map();
-  list.forEach(b => { if (b.group && count.get(b.group) >= 2) map.set(b.id,b.group); });
+  list.forEach(b => { if (b.group && count.get(b.group) >= 1) map.set(b.id,b.group); });
   return map;
 }
 
@@ -3975,7 +4228,7 @@ function moveBubuSel(dir) {
 
 function commitBubuGroup() {
   const sel = bubuGroupSelection();
-  if (sel.size < 2) { showToast('Pilih minimal 2 teks atau chat dengan panah atas/bawah.'); return; }
+  if (sel.size < 1) { showToast('Pilih dulu teks atau chat yang mau dikelompokkan.'); return; }
   const gm = bubuGroupMap();
   const anchor = bubuBlocks.find(b => b.id === bubuGroupId);
   const gid = (anchor && gm.get(anchor.id)) || ('g'+bubuId());
@@ -4288,7 +4541,7 @@ function makeBubuBlock(block,index,groups) {
       const count = groups && groups.sel ? groups.sel.size : 1;
       bar.appendChild(makeBubuAction(BUBU_ICONS.up,{label:'Perluas seleksi ke atas',disabled:bubuSelTarget(-1) < 0,onClick:() => moveBubuSel(-1)}));
       bar.appendChild(makeBubuAction(BUBU_ICONS.down,{label:'Perluas seleksi ke bawah',disabled:bubuSelTarget(1) < 0,onClick:() => moveBubuSel(1)}));
-      bar.appendChild(makeBubuAction(`Kelompokkan (${count})`,{disabled:count < 2,onClick:commitBubuGroup}));
+      bar.appendChild(makeBubuAction(`Kelompokkan (${count})`,{disabled:count < 1,onClick:commitBubuGroup}));
       if (groups && groups.gm.has(block.id)) bar.appendChild(makeBubuAction('Reset kelompok',{danger:true,onClick:() => resetBubuGroup(block.id)}));
       bar.appendChild(makeBubuAction('Batal',{onClick:() => { bubuGroupId = null; bubuSortId = null; bubuActiveId = null; renderBubu(); }}));
     } else {
