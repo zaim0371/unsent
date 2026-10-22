@@ -1642,6 +1642,20 @@ body.head-compact .head-settings-compact{display:grid}
 .call-self.off .call-self-off{display:flex}
 .call-self.off video{visibility:hidden}
 .call-self-off svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== Riwayat panggilan (gaya WhatsApp, warna mengikuti tema) ===== */
+.message.call-msg{min-width:min(236px,100%);padding:10px 13px 8px}
+.call-card{display:flex;align-items:center;gap:11px;min-width:0}
+.call-ico{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--soft);color:#b0508a}
+.call-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.call-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.call-title{font-size:14px;font-weight:650;line-height:1.25;color:var(--ink)}
+.call-sub{display:flex;align-items:center;gap:4px;min-width:0;font-size:12px;line-height:1.3;color:var(--muted)}
+.call-sub svg{flex:none;width:13px;height:13px;fill:none;stroke:#d6479a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.call-sub .call-time{margin-left:auto;padding-left:16px;font-size:9.5px;white-space:nowrap}
+.dark-theme .call-ico{color:#ff9fce}
+.dark-theme .call-sub svg{stroke:#ff9fce}
+.bubu-bubble .call-card{min-width:200px}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2580,11 +2594,81 @@ function parseOldDate(value) {
   return month === undefined ? null : dateKey(new Date(+match[3],month,+match[1]));
 }
 
+/* Riwayat panggilan disimpan di kolom `content` (tanpa perlu mengubah tabel Supabase) */
+const CALL_PREFIX = '⁠call:';
+const CALL_MIN_SECONDS = 60;
+
+function parseCallContent(text) {
+  if (typeof text !== 'string' || !text.startsWith(CALL_PREFIX)) return null;
+  try {
+    const o = JSON.parse(text.slice(CALL_PREFIX.length));
+    const dur = Math.max(0,Math.round(Number(o.d)) || 0);
+    return {kind:o.k === 'video' ? 'video' : 'voice',dur};
+  } catch { return null; }
+}
+
+function formatCallDuration(sec) {
+  const h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), s = sec%60;
+  const parts = [];
+  if (h) parts.push(h+' jam');
+  if (m) parts.push(m+' menit');
+  if (s && !h) parts.push(s+' detik');
+  return parts.join(' ') || '0 detik';
+}
+
+function callTitle(call) { return call.kind === 'video' ? 'Panggilan video' : 'Panggilan suara'; }
+
+const CALL_SVG = {
+  voice:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+  video:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="3"/><path d="m15.5 10.5 6-3.5v10l-6-3.5"/></svg>',
+  out:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>'
+};
+
+/* Isi bubble riwayat panggilan (dipakai di chat, For Bubu, dan video For Bubu) */
+function makeCallBody(note,{inlineTime=false}={}) {
+  const call = note.call;
+  const card = document.createElement('div');
+  card.className = 'call-card';
+
+  const ico = document.createElement('div');
+  ico.className = 'call-ico';
+  ico.innerHTML = CALL_SVG[call.kind];
+
+  const meta = document.createElement('div');
+  meta.className = 'call-meta';
+
+  const title = document.createElement('div');
+  title.className = 'call-title';
+  title.textContent = callTitle(call);
+
+  const sub = document.createElement('div');
+  sub.className = 'call-sub';
+  sub.insertAdjacentHTML('afterbegin',CALL_SVG.out);
+  const dur = document.createElement('span');
+  dur.textContent = formatCallDuration(call.dur);
+  sub.appendChild(dur);
+  if (inlineTime) {
+    const t = document.createElement('span');
+    t.className = 'call-time';
+    t.textContent = note.time;
+    sub.appendChild(t);
+  }
+
+  meta.append(title,sub);
+  card.append(ico,meta);
+  return card;
+}
+
 function normalizeNote(n,i) {
   const createdAt = Number(n.createdAt) || Number(n.id) || Date.now()+i;
+  const rawText = String(n.text ?? '');
+  const call = (n.call && typeof n.call === 'object')
+    ? {kind:n.call.kind === 'video' ? 'video' : 'voice',dur:Math.max(0,Math.round(Number(n.call.dur)) || 0)}
+    : parseCallContent(rawText);
   return {
     id:n.id ?? createdAt+i,
-    text:String(n.text ?? ''),
+    text:call ? '' : rawText,
+    call,
     photo:typeof n.photo === 'string' ? n.photo :
       (typeof n.image === 'string' ? n.image : ''),
     time:n.time || '',
@@ -2632,7 +2716,8 @@ function activeDate() {
 function getWrittenDays() {
   const today = getTodayKey();
   /* Hari di masa depan tidak pernah dihitung (anti-curang) */
-  return new Set(notes.filter(note => note.dayKey && note.dayKey <= today).map(note => note.dayKey));
+  /* Riwayat panggilan bukan tulisan, jadi tidak dihitung untuk streak */
+  return new Set(notes.filter(note => !note.call && note.dayKey && note.dayKey <= today).map(note => note.dayKey));
 }
 
 function getStreakStats() {
@@ -3413,7 +3498,12 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
     message.appendChild(pinRow);
   }
 
-  if (note.photo) {
+  if (note.call) {
+    message.classList.add('call-msg');
+    message.appendChild(makeCallBody(note,{inlineTime:true}));
+  }
+
+  if (note.photo && !note.call) {
     const photo = document.createElement('img');
     photo.className = 'message-photo';
     photo.src = note.photo;
@@ -3434,7 +3524,9 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
     message.appendChild(paragraph);
   }
 
-  if (hideTime) {
+  if (note.call) {
+    /* waktu sudah ada di dalam kartu panggilan */
+  } else if (hideTime) {
     message.classList.add('no-time');
   } else {
     const time = document.createElement('div');
@@ -3492,11 +3584,16 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
     const menu = document.createElement('div');
     menu.className = 'menu';
 
-    const actions = [
-      {label:note.pinned ? 'Lepas sematan' : 'Sematkan',action:() => togglePin(note.id)},
-      {label:'Edit',action:() => openEdit(note.id)},
-      {label:'Hapus',danger:true,action:() => deleteNote(note.id)}
-    ];
+    const actions = note.call
+      ? [
+          {label:'Tambah ke For Bubu',action:() => addNoteToBubu(note.id)},
+          {label:'Hapus',danger:true,action:() => deleteNote(note.id)}
+        ]
+      : [
+          {label:note.pinned ? 'Lepas sematan' : 'Sematkan',action:() => togglePin(note.id)},
+          {label:'Edit',action:() => openEdit(note.id)},
+          {label:'Hapus',danger:true,action:() => deleteNote(note.id)}
+        ];
 
     actions.forEach(item => {
       const button = document.createElement('button');
@@ -3561,7 +3658,7 @@ function buildDisplayList(filtered) {
 
 const RUN_GAP = 10000; /* ms */
 function sameRun(a,b) {
-  return !!a && !!b && a.dayKey === b.dayKey && Math.abs(a.createdAt-b.createdAt) <= RUN_GAP;
+  return !!a && !!b && !a.call && !b.call && a.dayKey === b.dayKey && Math.abs(a.createdAt-b.createdAt) <= RUN_GAP;
 }
 
 function paintNotes(animate) {
@@ -4441,16 +4538,21 @@ async function saveBubu() {
   let path = '';
 
   try {
-    try {
-      path = `${currentUserId}/bubu-${Date.now()}.json`;
-      const { error } = await supabaseClient.storage
-        .from(PHOTO_BUCKET)
-        .upload(path,new Blob([packed],{type:'application/json'}),{contentType:'application/json',upsert:false});
-      if (error) throw error;
-    } catch (storageError) {
-      path = '';
-      if (packed.length > BUBU_INLINE_MAX) throw storageError;
+    /* Coba beberapa tipe file: sebagian bucket membatasi MIME type */
+    let storageError = null;
+    for (const type of ['application/json','text/plain']) {
+      try {
+        const attempt = `${currentUserId}/bubu-${Date.now()}.${type === 'text/plain' ? 'txt' : 'json'}`;
+        const { error } = await supabaseClient.storage
+          .from(PHOTO_BUCKET)
+          .upload(attempt,new Blob([packed],{type}),{contentType:type,upsert:false});
+        if (error) throw error;
+        path = attempt;
+        storageError = null;
+        break;
+      } catch (e) { storageError = e; }
     }
+    if (!path && packed.length > BUBU_INLINE_MAX) throw storageError;
 
     const data = path ? {bubu_path:path,bubu_blocks:null} : {bubu_blocks:packed,bubu_path:null};
     const { error } = await supabaseClient.auth.updateUser({data});
@@ -4657,7 +4759,8 @@ function makeBubuBlock(block,index,groups) {
     if (note) {
       const bubble = document.createElement('div');
       bubble.className = 'bubu-bubble';
-      if (note.photo) {
+      if (note.call) bubble.appendChild(makeCallBody(note));
+      if (note.photo && !note.call) {
         const img = document.createElement('img');
         img.className = 'bubu-photo';
         img.loading = 'lazy';
@@ -4886,7 +4989,8 @@ function makeBubuVideoItem(block,delay) {
   const note = findNoteById(block.noteId);
   const bubble = document.createElement('div');
   bubble.className = 'bubu-bubble';
-  if (note.photo) {
+  if (note.call) bubble.appendChild(makeCallBody(note));
+  if (note.photo && !note.call) {
     const img = document.createElement('img');
     img.className = 'bubu-photo';
     img.decoding = 'async';
@@ -5253,7 +5357,13 @@ function renderBubuPick() {
     meta.className = 'bubu-pick-meta';
     meta.textContent = `${groupLabel(note.dayKey)}${note.time ? ' · '+note.time : ''}`;
     body.appendChild(meta);
-    if (note.photo) {
+    if (note.call) {
+      const text = document.createElement('div');
+      text.className = 'bubu-pick-text';
+      text.textContent = `${callTitle(note.call)} · ${formatCallDuration(note.call.dur)}`;
+      body.appendChild(text);
+    }
+    if (note.photo && !note.call) {
       const img = document.createElement('img');
       img.className = 'bubu-pick-thumb';
       img.alt = 'Foto';
@@ -5320,6 +5430,37 @@ $('bubuPickConfirm').addEventListener('click',() => {
   }
   if (added < chosen.length) showToast('For Bubu penuh, sebagian chat tidak ditambahkan.');
 });
+
+/* Tambah satu pesan/riwayat panggilan langsung ke For Bubu (dari menu tahan di chat) */
+function addNoteToBubu(id) {
+  openMenuId = null;
+  const note = findNoteById(id);
+  if (!note) { render(); return; }
+  if (!bubuCanEdit()) { render(); return; }
+  if (bubuBlocks.some(b => b.type === 'chat' && String(b.noteId) === String(note.id))) {
+    render();
+    showToast('Sudah ada di For Bubu');
+    return;
+  }
+  bubuBlocks.push({id:bubuId(),type:'chat',noteId:String(note.id)});
+  if (bubuSize() > BUBU_MAX) {
+    bubuBlocks.pop();
+    render();
+    showToast('For Bubu penuh, hapus sesuatu dulu.');
+    return;
+  }
+  scheduleBubuSave();
+  renderBubuIfIdle();
+  render();
+  showToast('Ditambahkan ke For Bubu ♡');
+}
+
+/* Simpan For Bubu sebelum halaman ditutup / saat koneksi kembali */
+function flushBubuNow() {
+  if (bubuSaveTimer) { clearTimeout(bubuSaveTimer); bubuSaveTimer = 0; saveBubu(); }
+}
+window.addEventListener('pagehide',flushBubuNow);
+window.addEventListener('online',flushBubuNow);
 
 /* Ketuk di luar: tutup menu + dan opsi kotak */
 document.addEventListener('click',event => {
@@ -6339,7 +6480,7 @@ function noteToRow(n) {
   return {
     user_id:currentUserId,
     id:String(n.id),
-    content:String(n.text || ''),
+    content:n.call ? CALL_PREFIX+JSON.stringify({k:n.call.kind,d:n.call.dur}) : String(n.text || ''),
     photo:'',
     photo_path:n.photoPath || '',
     time_label:String(n.time || ''),
@@ -7812,6 +7953,8 @@ function endCall() {
   clearInterval(callTickTimer);
   callState = 'ending';
   const screen = $('callScreen');
+  const wasVideo = screen.classList.contains('video');
+  const startedAt = callStartedAt || Date.now();
   screen.classList.remove('ringing');
   screen.classList.add('ending');
   $('callStatus').textContent = wasConnected ? `Panggilan berakhir · ${formatCallTime(seconds)}` : 'Panggilan dibatalkan';
@@ -7826,7 +7969,41 @@ function endCall() {
     if (!showingContact) document.body.classList.remove('contact-open');
     if (wasConnected) showToast(`Panggilan berakhir · ${formatCallTime(seconds)}`);
     if (showingContact) $('callBtn').focus({preventScroll:true});
+    /* Hanya panggilan yang tersambung minimal 1 menit yang dicatat ke riwayat (dan Supabase) */
+    if (wasConnected && seconds >= CALL_MIN_SECONDS) saveCallNote(wasVideo ? 'video' : 'voice',seconds,startedAt);
   },850);
+}
+
+function saveCallNote(kind,seconds,startedAt) {
+  const when = new Date(startedAt);
+  const previousStreak = getStreakStats().current;
+  const note = normalizeNote({
+    id:Date.now()+Math.random(),
+    text:'',
+    call:{kind,dur:seconds},
+    time:formatTime(when),
+    createdAt:startedAt,
+    dayKey:dateKey(when),
+    pinned:false,
+    reacted:false
+  },0);
+
+  notes.push(note);
+  if (!persist()) { notes.pop(); return; }
+
+  newNoteId = note.id;
+  clearTimeout(searchTimer);
+  const resetNeeded = !!(searchQuery || selectedDate);
+  if (resetNeeded) resetVisible();
+  selectedDate = null;
+  searchQuery = '';
+  $('searchInput').value = '';
+  ensureVisible(note.id);
+  checkStreakGrowth(previousStreak);
+  if (view === 'calendar') renderCalendar();
+  const newestAtBottom = sort.value === 'newest';
+  render({toBottom:newestAtBottom,smooth:true,focusId:newestAtBottom ? null : note.id,animate:resetNeeded});
+  flushSync().catch(() => {});
 }
 
 $('callBtn').addEventListener('click',() => openCall(false));
