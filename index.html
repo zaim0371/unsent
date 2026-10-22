@@ -411,7 +411,24 @@ select,.small-btn {
 body.camera-open { overflow:hidden; }
 .cam-stage { position:relative; flex:1; min-height:0; overflow:hidden; background:#000; }
 .cam-stage video,.cam-stage img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000; }
-.cam-stage video.mirror { transform:scaleX(-1); }
+.cam-stage { touch-action:none; }
+.cam-zoom {
+  position:absolute; z-index:2; left:50%; bottom:14px; transform:translateX(-50%); display:flex; align-items:center; gap:4px;
+  padding:4px; border-radius:24px; background:rgba(0,0,0,.38); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+}
+.cam-zoom:empty,#cameraScreen.review .cam-zoom { display:none; }
+.cam-zoom button {
+  min-width:42px; height:36px; padding:0 10px; border:0; border-radius:18px; background:transparent; color:#fff;
+  font-size:13px; font-weight:700; letter-spacing:.1px; -webkit-tap-highlight-color:transparent;
+}
+.cam-zoom button.on { background:rgba(255,255,255,.92); color:#111; }
+.cam-zoom button:active { transform:scale(.94); }
+.cam-zoom-val {
+  position:absolute; z-index:2; left:50%; bottom:64px; transform:translateX(-50%); padding:4px 11px; border-radius:14px;
+  background:rgba(0,0,0,.45); color:#ffd60a; font-size:13px; font-weight:700; opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+.cam-zoom-val.show { opacity:1; }
+#cameraScreen.review .cam-zoom-val { display:none; }
 .cam-stage img,#cameraScreen.review .cam-stage video { display:none; }
 #cameraScreen.review .cam-stage img { display:block; }
 .cam-top {
@@ -600,22 +617,29 @@ body.dark-theme #bubuPage .bubu-head,body.has-wallpaper #bubuPage .bubu-head { -
 }
 .bubu-env:active { transform:scale(.95); }
 .bubu-env.tearing { pointer-events:none; }
-.bubu-env svg { display:block; width:100%; height:auto; overflow:visible; transform-origin:50% 60%; animation:envIdle 2.6s ease-in-out infinite; }
+.bubu-env svg { display:block; width:100%; height:auto; overflow:visible; transform-origin:50% 60%; }
 .bubu-env text { font-family:"Segoe Print","Bradley Hand","Chalkboard SE","Marker Felt","Comic Sans MS","Comic Neue",cursive; fill:#7d2c58; font-size:15px; text-anchor:middle; }
 .bubu-env g { transform-box:fill-box; }
 .env-flap-l { transform-origin:0 0; }
 .env-flap-r { transform-origin:100% 0; }
 .env-heart { transform-origin:50% 50%; }
 .env-scrap { opacity:0; transform-origin:50% 50%; }
-@keyframes envIdle {
-  0%,50%,100% { transform:rotate(0); }
-  54% { transform:rotate(-3.5deg) translateX(-1px); }
-  58% { transform:rotate(3.5deg) translateX(1px); }
-  62% { transform:rotate(-3deg) translateX(-1px); }
-  66% { transform:rotate(3deg) translateX(1px); }
-  70% { transform:rotate(-2deg); }
-  74% { transform:rotate(1.5deg); }
-  78% { transform:rotate(0); }
+/* Shiny idle: kilau putih menyapu amplop, lalu jeda sebentar */
+.env-shine { pointer-events:none; transition:opacity .15s ease; }
+.env-shine-bar { transform:translateX(-90px); animation:envShine 8s cubic-bezier(.45,.05,.35,1) infinite; animation-delay:var(--envd,0s); }
+@keyframes envShine {
+  0% { transform:translateX(-90px); }
+  30%,100% { transform:translateX(260px); }
+}
+/* Bunga-bunga: muncul setelah kilau selesai, lalu menghilang sebelum siklus berikutnya (siklus 8 dtk, gantian dengan shiny) */
+.env-flowers { pointer-events:none; transition:opacity .15s ease; }
+.env-flower { opacity:0; transform:scale(0); animation:envBloom 8s ease-in-out infinite; animation-delay:calc(var(--envd,0s) + var(--fd,0s)); }
+@keyframes envBloom {
+  0%,36% { opacity:0; transform:scale(0) rotate(-40deg); }
+  44% { opacity:1; transform:scale(1.15) rotate(0deg); }
+  50% { opacity:1; transform:scale(1) rotate(8deg); }
+  84% { opacity:1; transform:scale(1) translateY(-5px) rotate(30deg); }
+  92%,100% { opacity:0; transform:scale(.5) translateY(-9px) rotate(50deg); }
 }
 @keyframes envBuzz {
   0%,100% { transform:translate(0,0) rotate(0); }
@@ -644,12 +668,13 @@ body.dark-theme #bubuPage .bubu-head,body.has-wallpaper #bubuPage .bubu-head { -
   100% { opacity:0; transform:translate(var(--dx),var(--dy)) rotate(var(--r)); }
 }
 .bubu-env.tearing svg { animation:envBuzz .07s linear 0s 5; }
+.bubu-env.tearing .env-shine,.bubu-env.tearing .env-flowers { opacity:0; }
 .bubu-env.tearing .env-flap-l { animation:envTearL .7s ease-in .3s forwards; }
 .bubu-env.tearing .env-flap-r { animation:envTearR .7s ease-in .3s forwards; }
 .bubu-env.tearing .env-heart { animation:envHeart .4s ease-out .3s forwards; }
 .bubu-env.tearing .env-letter { animation:envLetter .6s ease-out .45s forwards; }
 .bubu-env.tearing .env-scrap { animation:envScrap .7s ease-out .32s forwards; }
-@media (prefers-reduced-motion:reduce) { .bubu-env svg { animation:none!important; } }
+@media (prefers-reduced-motion:reduce) { .bubu-env svg,.env-shine-bar,.env-flower { animation:none!important; } .env-shine,.env-flowers { display:none; } }
 #bubuPage:not(.editing) .bubu-add-wrap,#bubuPage.editing #bubuEditorBtn { display:none; }
 #bubuPage:not(.editing) .bubu-list,#bubuPage:not(.editing) .bubu-empty { display:none!important; }
 .bubu-head-left { display:flex; align-items:center; gap:4px; min-width:0; }
@@ -782,6 +807,50 @@ body.view-bubu .bottom-nav {
 
 /* ===== For Bubu: header kanan (video + tambah) ===== */
 .bubu-head-right { display:flex; align-items:center; gap:8px; }
+
+
+/* ===== For Bubu: banyak video ===== */
+.bubu-head { flex-wrap:wrap; }
+.bubu-home { flex-direction:column; gap:30px; padding:6px 0 48px; }
+.bubu-env-item { display:flex; flex-direction:column; align-items:center; gap:12px; }
+.bubu-env-name {
+  max-width:100%; box-sizing:border-box; padding:4px 11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  color:var(--bubu-ink); font-size:11px; font-weight:650; letter-spacing:.1px; line-height:1.35;
+  border:1px solid color-mix(in srgb,#c4709f 55%,transparent); border-radius:14px 14px 14px 4px; background:transparent;
+}
+body.dark-theme .bubu-env-name,body.has-wallpaper .bubu-env-name { border-color:color-mix(in srgb,#f06aae 55%,transparent); }
+/* Banyak video: grid 2 kolom (2×2), turun ke baris berikutnya bila penuh */
+.bubu-home.multi { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-content:start; align-items:start; justify-items:center; gap:26px 16px; min-height:0; padding:10px 0 48px; }
+.bubu-home.multi .bubu-env-item { width:100%; gap:9px; }
+.bubu-home.multi .bubu-env { width:100%; }
+#bubuPage.editing #bubuNewVid { display:none; }
+.bubu-tabs { display:none; flex:1 0 100%; align-items:center; gap:7px; margin-top:10px; padding:2px 2px 4px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+.bubu-tabs::-webkit-scrollbar { display:none; }
+#bubuPage.editing .bubu-tabs { display:flex; }
+.bubu-tab {
+  display:flex; align-items:center; gap:6px; flex:none; max-width:170px; min-height:38px; padding:0 8px 0 14px;
+  border:1px solid var(--g-edge); border-radius:14px; background:var(--g-bg); color:var(--bubu-sub);
+  font-size:13px; font-weight:650; box-shadow:var(--g-shadow); cursor:pointer; -webkit-tap-highlight-color:transparent;
+  backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+}
+.bubu-tab.on { color:var(--bubu-ink); border-color:#c4709f; }
+body.dark-theme .bubu-tab.on,body.has-wallpaper .bubu-tab.on { border-color:#f06aae; }
+.bubu-tab .t { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bubu-tab-x { display:grid; place-items:center; flex:none; width:22px; height:22px; padding:0; border:0; border-radius:50%; background:rgba(128,128,128,.18); color:inherit; }
+.bubu-tab-edit { display:grid; place-items:center; flex:none; width:22px; height:22px; margin-right:-2px; padding:0; border:0; border-radius:50%; background:transparent; color:inherit; opacity:.7; }
+.bubu-tab.on .bubu-tab-edit { opacity:1; }
+.bubu-tab-edit svg { width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.bubu-tab-x svg,.bubu-tab-new svg { width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; }
+.bubu-tab-new { display:grid; place-items:center; flex:none; width:38px; height:38px; padding:0; border:1px solid var(--g-edge); border-radius:50%; background:var(--g-bg); color:var(--bubu-ink); box-shadow:var(--g-shadow); }
+.bubu-tab-new svg { width:17px; height:17px; }
+.bubu-tab-new:active,.bubu-tab-x:active,.bubu-tab-edit:active { transform:scale(.9); }
+#bubuRenameInput{display:block;width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:14px;outline:0;background:var(--soft);color:var(--ink);font-size:16px}
+#bubuRenameInput:focus{border-color:#d7b4c8}
+.dark-theme #bubuRenameInput{background:#3b1330;border-color:#74305f;color:var(--ink)}
+.dark-theme #bubuRenameInput:focus{border-color:#f06aae}
+#bubuRenameInput::placeholder{color:var(--muted)}
+#bubuRenameMsg:empty{display:none}
+#bubuRenameMsg{margin:8px 0 0;color:var(--danger);font-size:12px;line-height:1.5}
 
 /* ===== For Bubu: garis warna kelompok (hanya muncul saat mode Kelompokkan) ===== */
 .bubu-gline {
@@ -1799,7 +1868,7 @@ body.head-compact .head-settings-compact{display:grid}
         <span class="head-row1">
           <span class="head-nick" id="headNick">Unsent</span>
         </span>
-        <span class="head-sub" id="count">0 pesan</span>
+        <span class="head-sub" id="count">Last seen 20 Sept 2026</span>
       </span>
     </div>
     <div class="head-actions">
@@ -1857,6 +1926,9 @@ body.head-compact .head-settings-compact{display:grid}
         <h2 class="bubu-title" id="bubuTitle">Hai, bubu</h2>
       </div>
       <div class="bubu-head-right">
+        <button class="bubu-add" id="bubuNewVid" type="button" aria-label="Tambah video">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
         <button class="bubu-add" id="bubuEditorBtn" type="button" aria-label="Buka editor">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
         </button>
@@ -1871,46 +1943,9 @@ body.head-compact .head-settings-compact{display:grid}
           </div>
         </div>
       </div>
+      <div class="bubu-tabs" id="bubuTabs" role="tablist" aria-label="Pilih video"></div>
     </div>
-    <div class="bubu-home" id="bubuHome">
-      <button class="bubu-env" id="bubuVideoBtn" type="button" aria-label="Buka surat cinta untuk Bubu">
-        <svg viewBox="-10 -30 260 210" aria-hidden="true" focusable="false">
-          <defs>
-            <linearGradient id="envBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7c4d8"/><stop offset="1" stop-color="#e68fb4"/></linearGradient>
-            <linearGradient id="envFlap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbd6e4"/><stop offset="1" stop-color="#ef9dbf"/></linearGradient>
-            <clipPath id="envClip"><rect x="10" y="30" width="220" height="130" rx="11"/></clipPath>
-          </defs>
-          <rect x="10" y="30" width="220" height="130" rx="11" fill="url(#envBody)"/>
-          <g class="env-letter">
-            <rect x="32" y="42" width="176" height="104" rx="5" fill="#fff9fc"/>
-            <path d="M50 62h110M50 78h140M50 94h92" fill="none" stroke="#eab3cb" stroke-width="3" stroke-linecap="round"/>
-          </g>
-          <g clip-path="url(#envClip)" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linejoin="round">
-            <path d="M10 30 120 100 10 160z" fill="#f2adc9"/>
-            <path d="M230 30 120 100 230 160z" fill="#f2adc9"/>
-            <path d="M10 160 120 100 230 160z" fill="#f8c3d7"/>
-          </g>
-          <text x="120" y="133">untuk bubu</text>
-          <text x="120" y="152">dari dudu</text>
-          <g class="env-flap-l">
-            <path d="M12 30 118 30 124 44 114 58 125 72 116 86 120 100z" fill="url(#envFlap)" stroke="rgba(255,255,255,.65)" stroke-width="1.4" stroke-linejoin="round"/>
-          </g>
-          <g class="env-flap-r">
-            <path d="M228 30 118 30 124 44 114 58 125 72 116 86 120 100z" fill="url(#envFlap)" stroke="rgba(255,255,255,.65)" stroke-width="1.4" stroke-linejoin="round"/>
-          </g>
-          <g class="env-heart">
-            <path d="M120 112s-15-9-15-19.5a8.2 8.2 0 0 1 15-4.6 8.2 8.2 0 0 1 15 4.6C135 103 120 112 120 112z" fill="#d6479a" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
-          </g>
-          <g class="env-scraps" fill="#f8c3d7">
-            <path class="env-scrap" style="--dx:-34px;--dy:-26px;--r:-140deg" d="M118 52l8 3-4 7z"/>
-            <path class="env-scrap" style="--dx:36px;--dy:-30px;--r:150deg" d="M122 64l8-2-1 8z"/>
-            <path class="env-scrap" style="--dx:-26px;--dy:20px;--r:-110deg" d="M116 78l7 0-3 7z"/>
-            <path class="env-scrap" style="--dx:30px;--dy:24px;--r:120deg" d="M121 88l8 1-5 6z"/>
-            <path class="env-scrap" style="--dx:2px;--dy:-44px;--r:80deg" d="M119 40l6 2-3 6z"/>
-          </g>
-        </svg>
-      </button>
-    </div>
+    <div class="bubu-home" id="bubuHome"></div>
     <div class="bubu-list" id="bubuList"></div>
     <p class="bubu-empty" id="bubuEmpty">Belum ada isi.<br>Ketuk tombol + untuk menambah teks, chat yang sudah kamu love, atau gambar.</p>
   </section>
@@ -2121,6 +2156,24 @@ body.head-compact .head-settings-compact{display:grid}
   </section>
 </div>
 
+<div class="modal-backdrop" id="bubuRenameBackdrop" aria-hidden="true">
+  <section class="edit-modal dialog-modal" role="dialog" aria-modal="true" aria-labelledby="bubuRenameTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="bubuRenameTitle">Ganti nama video</div>
+      <button class="modal-close" id="bubuRenameClose" type="button" aria-label="Tutup">×</button>
+    </div>
+    <form id="bubuRenameForm">
+      <label class="field-label" for="bubuRenameInput">Nama video</label>
+      <input id="bubuRenameInput" type="text" maxlength="40" autocomplete="off" spellcheck="false" placeholder="Nama video" aria-label="Nama video">
+      <p id="bubuRenameMsg" role="status"></p>
+      <div class="modal-actions">
+        <button class="cancel-btn" id="bubuRenameCancel" type="button">Batal</button>
+        <button class="save-btn" id="bubuRenameSave" type="submit">Simpan</button>
+      </div>
+    </form>
+  </section>
+</div>
+
 <input id="galleryInput" type="file" accept="image/*" hidden>
 <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
 <input id="avatarInput" type="file" accept="image/*" hidden>
@@ -2163,6 +2216,8 @@ body.head-compact .head-settings-compact{display:grid}
       </button>
     </div>
     <div class="cam-msg" id="cameraMsg" aria-live="polite"></div>
+    <div class="cam-zoom-val" id="cameraZoomVal" aria-hidden="true"></div>
+    <div class="cam-zoom" id="cameraZoom" role="group" aria-label="Zoom dan lensa"></div>
   </div>
   <div class="cam-bar">
     <div class="cam-live-actions">
@@ -2307,9 +2362,6 @@ body.head-compact .head-settings-compact{display:grid}
   <div class="bubu-vid-controls">
     <button class="bubu-vid-btn" id="bubuVidPrev" type="button" aria-label="Sebelumnya">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14"/><path class="solid" d="M19 6.2v11.6a.8.8 0 0 1-1.25.66L9.4 12.66a.8.8 0 0 1 0-1.32l8.35-5.8A.8.8 0 0 1 19 6.2z"/></svg>
-    </button>
-    <button class="bubu-vid-btn main" id="bubuVidPlay" type="button" aria-label="Putar">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="solid" id="bubuVidPlayIcon" d="M8 5.6v12.8a.8.8 0 0 0 1.22.68l10.2-6.4a.8.8 0 0 0 0-1.36L9.22 4.92A.8.8 0 0 0 8 5.6z"/></svg>
     </button>
     <button class="bubu-vid-btn" id="bubuVidNext" type="button" aria-label="Berikutnya">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14"/><path class="solid" d="M5 6.2v11.6a.8.8 0 0 0 1.25.66l8.35-5.8a.8.8 0 0 0 0-1.32l-8.35-5.8A.8.8 0 0 0 5 6.2z"/></svg>
@@ -2496,7 +2548,12 @@ let showingBubu = false;
 /* For Bubu: kotak teks & chat (disimpan di user_metadata.bubu_blocks) */
 const BUBU_MAX = 200000;      /* batas pengaman saja, tidak ditampilkan */
 const BUBU_INLINE_MAX = 3000; /* cadangan bila Storage gagal: muat di data akun */
-let bubuBlocks = [];
+let bubuVideos = [{id:'v1',name:'Video 1',blocks:[]}];
+let bubuCurVid = 'v1';
+const BUBU_MAX_VIDEOS = 30;
+function bubuCurrent() { return bubuVideos.find(v => v.id === bubuCurVid) || bubuVideos[0]; }
+/* bubuBlocks = isi video yang sedang dipilih (semua fungsi lama tetap memakainya) */
+Object.defineProperty(window,'bubuBlocks',{get(){ return bubuCurrent().blocks; },set(v){ bubuCurrent().blocks = v; }});
 let bubuActiveId = null;
 let bubuSortId = null;
 let bubuGroupId = null;
@@ -2891,6 +2948,7 @@ function closeActiveModal() {
   else if (current === $('avatarBackdrop')) closeAvatarSheet();
   else if (current === $('settingsBackdrop')) closeSettings();
   else if (current === $('nickBackdrop')) closeNickModal();
+  else if (current === $('bubuRenameBackdrop')) closeBubuRename();
 }
 
 function finishDialog(result) {
@@ -3042,6 +3100,12 @@ let snapShot = '';
 let snapToken = 0;
 let snapOpen = false;
 let snapUseInput = false;
+let snapDeviceId = '';      /* lensa tertentu (mis. ultra wide di iOS); kosong = pakai facingMode */
+let snapMainId = '';        /* id lensa utama kamera belakang */
+let snapZoomReq = 1;        /* zoom yang diminta untuk dipasang setelah kamera terbuka */
+let snapZoom = 1;
+let snapZoomCaps = null;    /* {min,max,step} dari lensa yang sedang aktif */
+let snapLenses = {ultra:'',tele:''};
 
 function snapStopStream() {
   if (snapStream) { snapStream.getTracks().forEach(track => track.stop()); snapStream = null; }
@@ -3054,6 +3118,117 @@ function snapSetReview(dataUrl) {
   snapScreen.classList.toggle('review',!!snapShot);
   $('cameraFlip').classList.toggle('hidden',!!snapShot);
 }
+
+function snapFmtZoom(z) { return (Math.round(z*10)/10).toString().replace(/\.0$/,'')+'×'; }
+
+async function snapApplyZoom(z) {
+  const track = snapStream && snapStream.getVideoTracks()[0];
+  if (!track || !snapZoomCaps) return false;
+  z = Math.min(snapZoomCaps.max,Math.max(snapZoomCaps.min,z));
+  try { await track.applyConstraints({advanced:[{zoom:z}]}); snapZoom = z; return true; } catch { return false; }
+}
+
+/* Setelah kamera terbuka: baca kemampuan zoom, cari lensa ultra wide / tele (iOS menamainya di label), lalu tampilkan pilihan */
+async function snapSetupLens(stream,token) {
+  const track = stream.getVideoTracks()[0];
+  if (!track) return;
+  const settings = track.getSettings ? track.getSettings() : {};
+  const caps = track.getCapabilities ? track.getCapabilities() : {};
+  snapZoomCaps = caps.zoom && typeof caps.zoom.max === 'number' ? {min:caps.zoom.min || 1,max:caps.zoom.max,step:caps.zoom.step || .1} : null;
+  snapZoom = 1;
+  const isFront = snapFacing === 'user' && !snapDeviceId;
+  if (!snapDeviceId && settings.deviceId) snapMainId = settings.deviceId;
+
+  if (!isFront && !snapLenses.ultra && !snapLenses.tele && navigator.mediaDevices.enumerateDevices) {
+    try {
+      const devices = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+      devices.forEach(d => {
+        const label = d.label || '';
+        if (/front|depan|user/i.test(label)) return;
+        if (/ultra/i.test(label)) snapLenses.ultra = d.deviceId;
+        else if (/tele/i.test(label)) snapLenses.tele = d.deviceId;
+      });
+    } catch {}
+  }
+  if (token !== snapToken || !snapOpen || snapShot) return;
+
+  if (snapZoomReq !== 1 && snapZoomCaps) await snapApplyZoom(snapZoomReq);
+  snapZoomReq = 1;
+  snapRenderZoom();
+}
+
+function snapRenderZoom() {
+  const bar = $('cameraZoom');
+  const isFront = snapFacing === 'user' && !snapDeviceId;
+  const mainId = snapMainId;
+  const onMain = !snapDeviceId || snapDeviceId === mainId;
+  const items = [];
+  const caps = snapZoomCaps;
+
+  if (!isFront && snapLenses.ultra) items.push({l:'0.5×',dev:snapLenses.ultra,z:1,on:snapDeviceId === snapLenses.ultra});
+  else if (caps && caps.min <= .55 && onMain) items.push({l:'0.5×',dev:'',z:.5,on:Math.abs(snapZoom-.5) < .08});
+  else if (caps && caps.min <= .55 && !onMain) items.push({l:'0.5×',dev:mainId,z:.5,on:false});
+
+  const mainOn = !isFront && snapLenses.ultra && onMain ? Math.abs(snapZoom-1) < .08 : onMain && Math.abs(snapZoom-1) < .08;
+  items.push({l:'1×',dev:isFront ? '' : mainId,z:1,on:mainOn});
+
+  const zoomable = caps && (onMain || !snapLenses.ultra);
+  if (zoomable) [2,3,5].forEach(z => { if (z <= caps.max+.001) items.push({l:z+'×',dev:isFront ? '' : mainId,z,on:onMain && Math.abs(snapZoom-z) < .12}); });
+  if (!isFront && snapLenses.tele) items.push({l:'Tele',dev:snapLenses.tele,z:1,on:snapDeviceId === snapLenses.tele});
+
+  if (items.length < 2) { bar.replaceChildren(); return; }
+  bar.replaceChildren(...items.map(it => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = it.l;
+    b.className = it.on ? 'on' : '';
+    b.setAttribute('aria-label','Zoom '+it.l);
+    b.addEventListener('click',() => snapPickLens(it));
+    return b;
+  }));
+}
+
+async function snapPickLens(it) {
+  const curDev = snapDeviceId || snapMainId;
+  if (it.dev && it.dev !== curDev && !(it.dev === snapMainId && !snapDeviceId)) {
+    snapDeviceId = it.dev === snapMainId ? '' : it.dev;
+    snapZoomReq = it.z;
+    snapStart();
+    return;
+  }
+  if (!snapZoomCaps) return;
+  await snapApplyZoom(it.z);
+  snapRenderZoom();
+}
+function isFrontNow() { return snapFacing === 'user' && !snapDeviceId; }
+
+/* Cubit dua jari untuk zoom halus (bila perangkat mendukung zoom) */
+const snapPtrs = new Map();
+let snapPinch0 = 0, snapPinchZ0 = 1, snapZoomShowTimer = 0, snapPinchBusy = false;
+const snapStage = snapScreen.querySelector('.cam-stage');
+function snapPinchDist() { const [a,b] = [...snapPtrs.values()]; return Math.hypot(a.x-b.x,a.y-b.y); }
+snapStage.addEventListener('pointerdown',e => {
+  if (e.target.closest('button') || !snapStream || snapShot) return;
+  snapPtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if (snapPtrs.size === 2) { snapPinch0 = snapPinchDist() || 1; snapPinchZ0 = snapZoom; }
+});
+snapStage.addEventListener('pointermove',e => {
+  if (!snapPtrs.has(e.pointerId)) return;
+  snapPtrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if (snapPtrs.size !== 2 || !snapZoomCaps || snapPinchBusy) return;
+  snapPinchBusy = true;
+  const target = snapPinchZ0*(snapPinchDist()/snapPinch0);
+  snapApplyZoom(target).then(() => {
+    snapPinchBusy = false;
+    const v = $('cameraZoomVal');
+    v.textContent = snapFmtZoom(snapZoom);
+    v.classList.add('show');
+    clearTimeout(snapZoomShowTimer);
+    snapZoomShowTimer = setTimeout(() => v.classList.remove('show'),900);
+    snapRenderZoom();
+  });
+});
+['pointerup','pointercancel','pointerleave'].forEach(t => snapStage.addEventListener(t,e => { snapPtrs.delete(e.pointerId); }));
 
 function snapShow(open) {
   snapOpen = open;
@@ -3072,18 +3247,28 @@ async function snapStart() {
 
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      video:{facingMode:{ideal:snapFacing},width:{ideal:1920},height:{ideal:1920}},
+      video:snapDeviceId
+        ? {deviceId:{exact:snapDeviceId},width:{ideal:1920},height:{ideal:1920}}
+        : {facingMode:{ideal:snapFacing},width:{ideal:1920},height:{ideal:1920}},
       audio:false
     });
     if (token !== snapToken || !snapOpen) { stream.getTracks().forEach(track => track.stop()); return; }
     snapStream = stream;
     snapVideo.srcObject = stream;
-    snapVideo.classList.toggle('mirror',snapFacing === 'user');
+    /* Pratinjau tidak dicerminkan, supaya sama persis dengan hasil foto */
+    snapVideo.classList.remove('mirror');
     await snapVideo.play().catch(() => {});
     $('cameraMsg').textContent = '';
     $('cameraShutter').disabled = false;
+    snapSetupLens(stream,token);
   } catch (error) {
     if (token !== snapToken) return;
+    if (snapDeviceId) {
+      /* Lensa pilihan gagal dibuka: kembali ke kamera bawaan */
+      snapDeviceId = ''; snapZoomReq = 1;
+      snapStart();
+      return;
+    }
     /* Izin ditolak / kamera tidak ada: pakai kamera bawaan perangkat lewat input file */
     closeSnap();
     showToast('Kamera langsung tidak tersedia, memakai kamera bawaan perangkat.',{duration:3200});
@@ -3110,6 +3295,9 @@ function closeSnap() {
   snapShow(false);
   snapSetReview('');
   snapVideo.classList.remove('mirror');
+  snapDeviceId = ''; snapMainId = ''; snapZoomReq = 1; snapZoom = 1; snapZoomCaps = null;
+  snapLenses = {ultra:'',tele:''};
+  $('cameraZoom').replaceChildren();
 }
 
 function snapCapture() {
@@ -3151,6 +3339,8 @@ $('cameraSend').addEventListener('click',snapSend);
 $('cameraClose').addEventListener('click',closeSnap);
 $('cameraFlip').addEventListener('click',() => {
   snapFacing = snapFacing === 'environment' ? 'user' : 'environment';
+  snapDeviceId = ''; snapMainId = ''; snapZoomReq = 1;
+  snapLenses = {ultra:'',tele:''};
   snapStart();
 });
 $('cameraInput').addEventListener('change',async () => {
@@ -3822,9 +4012,6 @@ function render(opts = {}) {
   const filtered = getFilteredNotes();
 
   /* Teks jumlah = TOTAL yang cocok, bukan yang sudah dimuat */
-  $('count').textContent = searchQuery
-    ? `${filtered.length} hasil`
-    : `${filtered.length} pesan`;
 
   $('calendarCount').textContent = `${filtered.length} pesan`;
 
@@ -4278,7 +4465,6 @@ function renderGallery() {
 
   /* Termasuk foto yang URL-nya belum ditandatangani (photoPath ada) */
   galleryPhotos = notes.filter(note => note.photo || note.photoPath).sort((a,b) => b.createdAt-a.createdAt);
-  $('count').textContent = `${galleryPhotos.length} foto`;
 
   const grid = document.createElement('div');
   grid.className = 'photo-gallery';
@@ -4451,19 +4637,32 @@ function resetBubuGroup(id) {
   });
 }
 
+function bubuUnpackList(arr) {
+  if (!Array.isArray(arr)) return [];
+  return arr.map(o => {
+    if (!o || typeof o !== 'object') return null;
+    const id = String(o.i || bubuId());
+    const group = o.g ? String(o.g) : '';
+    if (o.t === 'c') return {id,type:'chat',noteId:String(o.n ?? ''),group};
+    if (o.t === 'i') return {id,type:'image',path:String(o.p ?? ''),url:'',group};
+    return {id,type:'text',text:String(o.x ?? ''),group};
+  }).filter(Boolean);
+}
+
+/* Format baru: {v:2,videos:[{i,n,b:[...]}]}. Format lama (array) = satu video. */
 function bubuUnpack(raw) {
   try {
-    const arr = JSON.parse(raw || '[]');
-    if (!Array.isArray(arr)) return [];
-    return arr.map(o => {
-      if (!o || typeof o !== 'object') return null;
-      const id = String(o.i || bubuId());
-      const group = o.g ? String(o.g) : '';
-      if (o.t === 'c') return {id,type:'chat',noteId:String(o.n ?? ''),group};
-      if (o.t === 'i') return {id,type:'image',path:String(o.p ?? ''),url:'',group};
-      return {id,type:'text',text:String(o.x ?? ''),group};
-    }).filter(Boolean);
-  } catch { return []; }
+    const data = JSON.parse(raw || '[]');
+    if (Array.isArray(data)) return [{id:'v1',name:'Video 1',blocks:bubuUnpackList(data)}];
+    if (data && Array.isArray(data.videos) && data.videos.length) {
+      return data.videos.map((v,k) => ({id:String(v.i || 'v'+bubuId()),name:String(v.n || 'Video '+(k+1)).slice(0,40),blocks:bubuUnpackList(v.b)}));
+    }
+  } catch {}
+  return [{id:'v1',name:'Video 1',blocks:[]}];
+}
+
+function bubuPackAll(videos = bubuVideos) {
+  return JSON.stringify({v:2,videos:videos.map(v => ({i:v.id,n:v.name,b:JSON.parse(bubuPack(v.blocks))}))});
 }
 
 function bubuSize() { return bubuPack(bubuBlocks).length; }
@@ -4534,7 +4733,7 @@ async function saveBubu() {
   if (bubuSaving) { bubuSaveTimer = setTimeout(saveBubu,400); return; }
 
   bubuSaving = true;
-  const packed = bubuPack(bubuBlocks);
+  const packed = bubuPackAll();
   let path = '';
 
   try {
@@ -4576,14 +4775,15 @@ async function saveBubu() {
   }
 }
 
-function setBubuBlocks(list) {
-  if (bubuPack(list) !== bubuPack(bubuBlocks)) {
-    bubuBlocks = list;
+function setBubuBlocks(videos) {
+  if (bubuPackAll(videos) !== bubuPackAll()) {
+    bubuVideos = videos;
+    if (!bubuVideos.some(v => v.id === bubuCurVid)) bubuCurVid = bubuVideos[0].id;
     bubuActiveId = null;
     bubuSortId = null; bubuGroupId = null;
   }
   renderBubuIfIdle();
-  const stale = bubuBlocks.filter(bubuImgStale);
+  const stale = bubuVideos.flatMap(v => v.blocks).filter(bubuImgStale);
   if (stale.length) resolveBubuImages(stale).then(changed => { if (changed) renderBubuIfIdle(); });
 }
 
@@ -4629,7 +4829,8 @@ function applyBubuMeta(m,fresh) {
 function resetBubu() {
   clearTimeout(bubuSaveTimer);
   bubuSaveTimer = 0;
-  bubuBlocks = [];
+  bubuVideos = [{id:'v1',name:'Video 1',blocks:[]}];
+  bubuCurVid = 'v1';
   bubuActiveId = null;
   bubuSortId = null; bubuGroupId = null;
   bubuEditingId = null;
@@ -4641,10 +4842,13 @@ function resetBubu() {
 }
 
 function renderBubuIfIdle() {
+  renderBubuHome();
   if (showingBubu && bubuEditorOn && !bubuEditingId) renderBubu();
 }
 
 function renderBubu() {
+  renderBubuTabs();
+  renderBubuHome();
   const list = $('bubuList');
   list.replaceChildren();
   const groups = bubuGroupInfo();
@@ -5095,12 +5299,10 @@ function updateVidUI() {
   }
   const ratio = vidDur ? Math.min(vidElapsed/vidDur,1) : 0;
   Array.from(bar.children).forEach((seg,i) => {
-    seg.firstChild.style.width = (i < vidIndex ? 100 : i === vidIndex ? ratio*100 : 0)+'%';
+    seg.firstChild.style.width = (i <= vidIndex ? 100 : 0)+'%';
   });
   $('bubuVidPrev').disabled = vidIndex <= 0;
   $('bubuVidNext').disabled = vidIndex >= total-1;
-  $('bubuVidPlay').setAttribute('aria-label',vidPlaying ? 'Jeda' : 'Putar');
-  $('bubuVidPlayIcon').setAttribute('d',vidPlaying ? VID_PAUSE_PATH : VID_PLAY_PATH);
 }
 
 /* Pindah adegan dengan fade out → ganti isi → fade in */
@@ -5182,7 +5384,7 @@ function openBubuVideo() {
   box.classList.add('open');
   document.body.classList.add('bubu-video-open');
   goVidScene(0,{instant:true});
-  requestAnimationFrame(() => $('bubuVidPlay').focus({preventScroll:true}));
+  requestAnimationFrame(() => $('bubuVidNext').focus({preventScroll:true}));
 }
 
 function closeBubuVideo() {
@@ -5196,13 +5398,14 @@ function closeBubuVideo() {
   box.setAttribute('aria-hidden','true');
   box.setAttribute('inert','');
   document.body.classList.remove('bubu-video-open');
-  const btn = $('bubuVideoBtn');
+  const btn = document.querySelector('#bubuHome .bubu-env');
   if (showingBubu && btn) btn.focus({preventScroll:true});
 }
 
-$('bubuVideoBtn').addEventListener('click',() => {
-  const btn = $('bubuVideoBtn');
-  if (btn.classList.contains('tearing')) return;
+$('bubuHome').addEventListener('click',event => {
+  const btn = event.target.closest('.bubu-env');
+  if (!btn || btn.classList.contains('tearing')) return;
+  if (bubuVideos.some(v => v.id === btn.dataset.vid)) bubuCurVid = btn.dataset.vid;
   /* Belum siap / belum ada kelompok: biar openBubuVideo menampilkan pesannya, tanpa efek robek */
   if (!bubuReady || !buildBubuScenes().length) { openBubuVideo(); return; }
   btn.classList.add('tearing');
@@ -5212,7 +5415,6 @@ $('bubuVideoBtn').addEventListener('click',() => {
   },1000);
 });
 $('bubuVidClose').addEventListener('click',closeBubuVideo);
-$('bubuVidPlay').addEventListener('click',toggleVidPlay);
 $('bubuVidPrev').addEventListener('click',() => { if (vidIndex > 0) goVidScene(vidIndex-1); });
 $('bubuVidNext').addEventListener('click',() => { if (vidIndex < vidScenes.length-1) goVidScene(vidIndex+1); });
 
@@ -5226,6 +5428,234 @@ document.addEventListener('keydown',event => {
 document.addEventListener('visibilitychange',() => {
   if (document.hidden && bubuVideoOpen && vidPlaying) setVidPlaying(false);
 });
+
+
+/* ===== For Bubu: banyak video (tab ala Safari di editor, amplop per video di beranda) ===== */
+function bubuEnvSvg(k) {
+  return `<svg viewBox="-10 -30 260 210" aria-hidden="true" focusable="false" style="--envd:-${((k*1.7)%8).toFixed(1)}s">
+          <defs>
+            <g id="envFl${k}"><g style="fill:var(--fc,#fff)" stroke="#e68fb4" stroke-width=".7"><ellipse cx="0" cy="-5" rx="3.2" ry="5"/><ellipse cx="0" cy="-5" rx="3.2" ry="5" transform="rotate(72)"/><ellipse cx="0" cy="-5" rx="3.2" ry="5" transform="rotate(144)"/><ellipse cx="0" cy="-5" rx="3.2" ry="5" transform="rotate(216)"/><ellipse cx="0" cy="-5" rx="3.2" ry="5" transform="rotate(288)"/></g><circle r="2.6" fill="#ffd36e" stroke="#e8a93a" stroke-width=".6"/></g>
+            <linearGradient id="envBody${k}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7c4d8"/><stop offset="1" stop-color="#e68fb4"/></linearGradient>
+            <linearGradient id="envFlap${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbd6e4"/><stop offset="1" stop-color="#ef9dbf"/></linearGradient>
+            <clipPath id="envClip${k}"><rect x="10" y="30" width="220" height="130" rx="11"/></clipPath>
+            <linearGradient id="envShine${k}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          </defs>
+          <rect x="10" y="30" width="220" height="130" rx="11" fill="url(#envBody${k})"/>
+          <g class="env-letter">
+            <rect x="32" y="42" width="176" height="104" rx="5" fill="#fff9fc"/>
+            <path d="M50 62h110M50 78h140M50 94h92" fill="none" stroke="#eab3cb" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <g clip-path="url(#envClip${k})" stroke="rgba(255,255,255,.6)" stroke-width="1.4" stroke-linejoin="round">
+            <path d="M10 30 120 100 10 160z" fill="#f2adc9"/>
+            <path d="M230 30 120 100 230 160z" fill="#f2adc9"/>
+            <path d="M10 160 120 100 230 160z" fill="#f8c3d7"/>
+          </g>
+          <text x="120" y="133">untuk bubu</text>
+          <text x="120" y="152">dari dudu</text>
+          <g class="env-flap-l">
+            <path d="M12 30 118 30 124 44 114 58 125 72 116 86 120 100z" fill="url(#envFlap${k})" stroke="rgba(255,255,255,.65)" stroke-width="1.4" stroke-linejoin="round"/>
+          </g>
+          <g class="env-flap-r">
+            <path d="M228 30 118 30 124 44 114 58 125 72 116 86 120 100z" fill="url(#envFlap${k})" stroke="rgba(255,255,255,.65)" stroke-width="1.4" stroke-linejoin="round"/>
+          </g>
+          <g class="env-heart">
+            <path d="M120 112s-15-9-15-19.5a8.2 8.2 0 0 1 15-4.6 8.2 8.2 0 0 1 15 4.6C135 103 120 112 120 112z" fill="#d6479a" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+          </g>
+          <g class="env-shine" clip-path="url(#envClip${k})">
+            <path class="env-shine-bar" d="M30 24h56l-34 142h-56z" fill="url(#envShine${k})"/>
+          </g>
+          <g class="env-flowers">
+            <g transform="translate(24 40) scale(1.0)"><g class="env-flower" style="--fd:0s;--fc:#fff"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(216 42) scale(1.1)"><g class="env-flower" style="--fd:0.12s;--fc:#ffc2dc"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(122 18) scale(0.8)"><g class="env-flower" style="--fd:0.25s;--fc:#fff"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(70 22) scale(0.7)"><g class="env-flower" style="--fd:0.35s;--fc:#ffc2dc"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(172 22) scale(0.75)"><g class="env-flower" style="--fd:0.05s;--fc:#fff"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(20 102) scale(0.9)"><g class="env-flower" style="--fd:0.3s;--fc:#ffc2dc"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(220 106) scale(0.9)"><g class="env-flower" style="--fd:0.18s;--fc:#fff"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(34 152) scale(1.05)"><g class="env-flower" style="--fd:0.4s;--fc:#fff"><use href="#envFl${k}"/></g></g>
+            <g transform="translate(206 152) scale(1.0)"><g class="env-flower" style="--fd:0.22s;--fc:#ffc2dc"><use href="#envFl${k}"/></g></g>
+          </g>
+          <g class="env-scraps" fill="#f8c3d7">
+            <path class="env-scrap" style="--dx:-34px;--dy:-26px;--r:-140deg" d="M118 52l8 3-4 7z"/>
+            <path class="env-scrap" style="--dx:36px;--dy:-30px;--r:150deg" d="M122 64l8-2-1 8z"/>
+            <path class="env-scrap" style="--dx:-26px;--dy:20px;--r:-110deg" d="M116 78l7 0-3 7z"/>
+            <path class="env-scrap" style="--dx:30px;--dy:24px;--r:120deg" d="M121 88l8 1-5 6z"/>
+            <path class="env-scrap" style="--dx:2px;--dy:-44px;--r:80deg" d="M119 40l6 2-3 6z"/>
+          </g>
+        </svg>`;
+}
+
+let bubuHomeSig = '';
+function renderBubuHome() {
+  const home = $('bubuHome');
+  if (!home) return;
+  const sig = bubuVideos.map(v => v.id+'|'+v.name).join('\n');
+  if (sig === bubuHomeSig && home.children.length) return;
+  bubuHomeSig = sig;
+  home.replaceChildren();
+  home.classList.toggle('multi',bubuVideos.length > 1);
+  bubuVideos.forEach((v,k) => {
+    const item = document.createElement('div');
+    item.className = 'bubu-env-item';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'bubu-env';
+    btn.dataset.vid = v.id;
+    btn.setAttribute('aria-label','Buka surat cinta untuk Bubu: '+v.name);
+    btn.innerHTML = bubuEnvSvg(k);
+    item.appendChild(btn);
+    if (bubuVideos.length > 1) {
+      const name = document.createElement('span');
+      name.className = 'bubu-env-name';
+      name.textContent = v.name;
+      name.title = v.name;
+      item.appendChild(name);
+    }
+    home.appendChild(item);
+  });
+}
+
+function renderBubuTabs() {
+  const bar = $('bubuTabs');
+  if (!bar) return;
+  bar.replaceChildren();
+  bubuVideos.forEach(v => {
+    const on = v.id === bubuCurVid;
+    const tab = document.createElement('div');
+    tab.className = 'bubu-tab'+(on ? ' on' : '');
+    tab.setAttribute('role','tab');
+    tab.setAttribute('aria-selected',String(on));
+    tab.tabIndex = 0;
+    tab.dataset.vid = v.id;
+    const t = document.createElement('span');
+    t.className = 't';
+    t.textContent = v.name;
+    tab.appendChild(t);
+    const edit = document.createElement('button');
+    edit.type = 'button';
+    edit.className = 'bubu-tab-edit';
+    edit.setAttribute('aria-label','Ganti nama '+v.name);
+    edit.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
+    edit.addEventListener('click',e => { e.stopPropagation(); openBubuRename(v.id); });
+    tab.appendChild(edit);
+    if (bubuVideos.length > 1) {
+      const x = document.createElement('button');
+      x.type = 'button';
+      x.className = 'bubu-tab-x';
+      x.setAttribute('aria-label','Hapus '+v.name);
+      x.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>';
+      x.addEventListener('click',e => { e.stopPropagation(); deleteBubuVideo(v.id); });
+      tab.appendChild(x);
+    }
+    const open = () => { if (!on) switchBubuVideo(v.id); };
+    tab.addEventListener('click',open);
+    tab.addEventListener('keydown',e => { if (e.target === tab && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(); } });
+    bar.appendChild(tab);
+  });
+  const add = document.createElement('button');
+  add.type = 'button';
+  add.className = 'bubu-tab-new';
+  add.setAttribute('aria-label','Tambah video');
+  add.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  add.addEventListener('click',() => addBubuVideo());
+  bar.appendChild(add);
+  const cur = bar.querySelector('.bubu-tab.on');
+  if (cur) cur.scrollIntoView({inline:'nearest',block:'nearest'});
+}
+
+function switchBubuVideo(id) {
+  if (bubuEditingId && document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  if (id === bubuCurVid) return;
+  bubuCurVid = id;
+  bubuActiveId = null; bubuSortId = null; bubuGroupId = null;
+  setBubuAddMenu(false);
+  renderBubu();
+}
+
+function addBubuVideo() {
+  if (!bubuCanEdit() || bubuEditingId) return;
+  if (bubuVideos.length >= BUBU_MAX_VIDEOS) { showToast('Jumlah video sudah maksimal.'); return; }
+  let n = bubuVideos.length+1;
+  while (bubuVideos.some(v => v.name === 'Video '+n)) n++;
+  const video = {id:'v'+bubuId(),name:'Video '+n,blocks:[]};
+  bubuVideos.push(video);
+  bubuCurVid = video.id;
+  bubuActiveId = null; bubuSortId = null; bubuGroupId = null;
+  if (!bubuEditorOn) setBubuEditor(true);
+  scheduleBubuSave();
+  renderBubu();
+  showToast('Video baru dibuat ♡');
+}
+
+let bubuRenameId = null;
+
+function openBubuRename(id) {
+  const v = bubuVideos.find(x => x.id === id);
+  if (!v || !bubuCanEdit()) return;
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  const backdrop = $('bubuRenameBackdrop');
+  const input = $('bubuRenameInput');
+  bubuRenameId = id;
+  focusReturnElement = document.activeElement;
+  activeModal = backdrop;
+  input.value = v.name;
+  $('bubuRenameMsg').textContent = '';
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden','false');
+  requestAnimationFrame(() => {
+    input.focus({preventScroll:true});
+    input.select();
+  });
+}
+
+function closeBubuRename() {
+  const backdrop = $('bubuRenameBackdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden','true');
+  if (activeModal === backdrop) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) {
+    focusReturnElement.focus({preventScroll:true});
+  }
+  focusReturnElement = null;
+  bubuRenameId = null;
+}
+
+function saveBubuRename() {
+  const v = bubuVideos.find(x => x.id === bubuRenameId);
+  if (!v) { closeBubuRename(); return; }
+  const clean = $('bubuRenameInput').value.trim().slice(0,40);
+  if (!clean) { $('bubuRenameMsg').textContent = 'Nama video tidak boleh kosong.'; return; }
+  if (clean !== v.name) {
+    v.name = clean;
+    scheduleBubuSave();
+    renderBubu();
+    showToast('Nama video diganti ♡');
+  }
+  closeBubuRename();
+}
+
+$('bubuRenameInput').addEventListener('input',() => { $('bubuRenameMsg').textContent = ''; });
+$('bubuRenameForm').addEventListener('submit',e => { e.preventDefault(); saveBubuRename(); });
+$('bubuRenameCancel').addEventListener('click',closeBubuRename);
+$('bubuRenameClose').addEventListener('click',closeBubuRename);
+$('bubuRenameBackdrop').addEventListener('click',e => { if (e.target === $('bubuRenameBackdrop')) closeBubuRename(); });
+
+function deleteBubuVideo(id) {
+  const v = bubuVideos.find(x => x.id === id);
+  if (!v || bubuVideos.length < 2) return;
+  showConfirm(`Hapus "${v.name}" beserta seluruh isinya?`,{okLabel:'Hapus',danger:true}).then(ok => {
+    if (!ok) return;
+    v.blocks.forEach(b => { if (b.type === 'image' && b.path) bubuOrphans.push(b.path); });
+    const i = bubuVideos.indexOf(v);
+    bubuVideos.splice(i,1);
+    if (bubuCurVid === id) bubuCurVid = bubuVideos[Math.min(i,bubuVideos.length-1)].id;
+    bubuActiveId = null; bubuSortId = null; bubuGroupId = null;
+    scheduleBubuSave();
+    renderBubu();
+  });
+}
+
+$('bubuNewVid').addEventListener('click',() => addBubuVideo());
 
 /* Tombol + → Tambah teks / Tambah chat */
 $('bubuAdd').addEventListener('click',event => {
@@ -5482,6 +5912,7 @@ function setBubuEditor(on) {
   if (!on && bubuEditingId && document.activeElement && document.activeElement.blur) document.activeElement.blur();
   bubuEditorOn = on;
   $('bubuPage').classList.toggle('editing',on);
+  if (!on) renderBubuHome();
   $('bubuTitle').textContent = on ? 'Editor' : 'Hai, bubu';
   $('bubuBack').setAttribute('aria-label',on ? 'Kembali ke For Bubu' : 'Kembali ke profil');
   if (on) {
@@ -5574,6 +6005,7 @@ function openBubuPage() {
   if (showingGallery) setGalleryMode(false);
   if (showingProfile) setProfileMode(false);
   setBubuMode(true);
+  renderBubuHome();
   playPagePop();
 }
 
@@ -5901,6 +6333,7 @@ document.addEventListener('keydown',event => {
     else if (activeModal === $('avatarBackdrop')) closeAvatarSheet();
     else if (activeModal === $('settingsBackdrop')) closeSettings();
     else if (activeModal === $('nickBackdrop')) closeNickModal();
+    else if (activeModal === $('bubuRenameBackdrop')) closeBubuRename();
     else if (!activeModal && showingContact) closeContact();
     return;
   }
@@ -7804,6 +8237,45 @@ signOutButton.addEventListener('click',async () => {
 /* ===== Telepon (simulasi UI gaya Instagram) ===== */
 let callState = 'idle'; /* idle | ringing | connected | ending */
 let callRingTimer = 0, callTickTimer = 0, callStartedAt = 0;
+const CALL_ANSWER_MIN = 1000, CALL_ANSWER_MAX = 5000; /* waktu "diangkat" acak, maksimal 5 detik */
+
+/* Suara panggilan (disintesis dengan Web Audio, tanpa file audio) */
+let callAudio = null, callRingTone = 0;
+function callCtx() {
+  try {
+    if (!callAudio) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; callAudio = new AC(); }
+    if (callAudio.state === 'suspended') callAudio.resume().catch(() => {});
+    return callAudio;
+  } catch { return null; }
+}
+function callTone(freqs,start,dur,vol = .12) {
+  const ctx = callCtx();
+  if (!ctx) return;
+  const t0 = ctx.currentTime+start;
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0,t0);
+  gain.gain.linearRampToValueAtTime(vol,t0+.03);
+  gain.gain.setValueAtTime(vol,t0+dur-.05);
+  gain.gain.linearRampToValueAtTime(0,t0+dur);
+  gain.connect(ctx.destination);
+  freqs.forEach(f => {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = f;
+    osc.connect(gain);
+    osc.start(t0);
+    osc.stop(t0+dur+.02);
+  });
+}
+function startRingTone() {
+  stopRingTone();
+  const beep = () => callTone([440,480],0,.9);
+  beep();
+  callRingTone = setInterval(beep,1800);
+}
+function stopRingTone() { clearInterval(callRingTone); callRingTone = 0; }
+function playAnswerSound() { callTone([660],0,.12,.1); callTone([880],.14,.18,.1); }
+function playEndSound() { callTone([480],0,.16,.1); callTone([380],.2,.16,.1); callTone([300],.4,.22,.1); }
 
 function formatCallTime(total) {
   const h = Math.floor(total/3600);
@@ -7933,15 +8405,19 @@ function openCall(withVideo = false) {
   document.body.classList.add('contact-open');
   requestAnimationFrame(() => $('callEnd').focus({preventScroll:true}));
 
+  startRingTone();
+  const answerAfter = CALL_ANSWER_MIN+Math.random()*(CALL_ANSWER_MAX-CALL_ANSWER_MIN);
   callRingTimer = setTimeout(() => {
     if (callState !== 'ringing') return;
+    stopRingTone();
+    playAnswerSound();
     callState = 'connected';
     callStartedAt = Date.now();
     screen.classList.remove('ringing');
     screen.classList.add('connected');
     tickCall();
     callTickTimer = setInterval(tickCall,1000);
-  },2200);
+  },answerAfter);
 }
 
 function endCall() {
@@ -7951,6 +8427,8 @@ function endCall() {
   stopCamera();
   clearTimeout(callRingTimer);
   clearInterval(callTickTimer);
+  stopRingTone();
+  playEndSound();
   callState = 'ending';
   const screen = $('callScreen');
   const wasVideo = screen.classList.contains('video');
@@ -7974,7 +8452,13 @@ function endCall() {
   },850);
 }
 
-function saveCallNote(kind,seconds,startedAt) {
+function saveCallNote(kind,seconds,startedAt,attempt = 0) {
+  /* Cloud belum siap (misal koneksi baru pulih): tunggu sebentar, jangan sampai riwayat hilang */
+  if (!currentUserId || !syncReady) {
+    if (attempt < 20) setTimeout(() => saveCallNote(kind,seconds,startedAt,attempt+1),1000);
+    else showAlert('Riwayat panggilan belum bisa disimpan karena belum tersambung ke cloud.');
+    return;
+  }
   const when = new Date(startedAt);
   const previousStreak = getStreakStats().current;
   const note = normalizeNote({
