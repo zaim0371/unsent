@@ -3255,8 +3255,9 @@ async function snapStart() {
     if (token !== snapToken || !snapOpen) { stream.getTracks().forEach(track => track.stop()); return; }
     snapStream = stream;
     snapVideo.srcObject = stream;
-    /* Pratinjau tidak dicerminkan, supaya sama persis dengan hasil foto */
-    snapVideo.classList.remove('mirror');
+    /* Kamera depan: pratinjau dan hasil foto sama-sama searah cermin (tangan kiri tetap tampil di kiri).
+       Kamera belakang: tidak pernah dibalik. */
+    snapVideo.classList.toggle('mirror',snapFacing === 'user' && !snapDeviceId);
     await snapVideo.play().catch(() => {});
     $('cameraMsg').textContent = '';
     $('cameraShutter').disabled = false;
@@ -3311,6 +3312,8 @@ function snapCapture() {
   if (!ctx) { showToast('Foto tidak bisa diproses.'); return; }
   ctx.fillStyle = '#fff';
   ctx.fillRect(0,0,canvas.width,canvas.height);
+  /* Hasil foto mengikuti pratinjau: kalau pratinjau dicerminkan, foto yang disimpan ikut dicerminkan */
+  if (snapVideo.classList.contains('mirror')) { ctx.translate(canvas.width,0); ctx.scale(-1,1); }
   ctx.drawImage(snapVideo,0,0,canvas.width,canvas.height);
   let data = '';
   try { data = canvas.toDataURL('image/jpeg',.76); } catch { showToast('Foto gagal diambil, coba lagi.'); return; }
