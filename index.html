@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Pacifico&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b0713">
@@ -585,7 +588,7 @@ body.camera-open { overflow:hidden; }
   top:6px;
   bottom:6px;
   left:6px;
-  width:calc((100% - 22px)/3);
+  width:calc((100% - 27px)/4);
   border:1px solid var(--edge);
   border-radius:23px;
   background:linear-gradient(145deg,white,#efd8e7);
@@ -593,6 +596,7 @@ body.camera-open { overflow:hidden; }
 }
 .bottom-nav.nav-pos-1 .nav-indicator { transform:translateX(calc(100% + 5px)); }
 .bottom-nav.nav-pos-2 .nav-indicator { transform:translateX(calc(200% + 10px)); }
+.bottom-nav.nav-pos-3 .nav-indicator { transform:translateX(calc(300% + 15px)); }
 #bubuPage { min-height:60vh; padding-top:0; }
 #bubuPage,#bubuVideo { --bubu-ink:#000; --bubu-sub:rgba(0,0,0,.55); }
 body.dark-theme #bubuPage,body.has-wallpaper #bubuPage,body.dark-theme #bubuVideo,body.has-wallpaper #bubuVideo { --bubu-ink:#fff; --bubu-sub:rgba(255,255,255,.7); }
@@ -798,8 +802,8 @@ body.dark-theme #bubuPage,body.has-wallpaper #bubuPage,body.dark-theme #bubuVide
 .bubu-text:not(.placeholder)::before { content:"\201C"; }
 .bubu-text:not(.placeholder)::after { content:"\201D"; }
 
-/* ===== For Bubu: bar navigasi disembunyikan di halaman ini ===== */
-body.view-bubu .bottom-nav {
+/* ===== Beranda: bar navigasi hanya disembunyikan saat editor / video For Bubu terbuka ===== */
+body.view-bubu.bubu-editing .bottom-nav,body.bubu-video-open .bottom-nav {
   opacity:0; visibility:hidden; pointer-events:none;
   transform:translate3d(-50%,40px,0);
   transition:opacity .25s ease,transform .35s ease,visibility 0s linear .35s;
@@ -1725,6 +1729,306 @@ body.head-compact .head-settings-compact{display:grid}
 .dark-theme .call-ico{color:#ff9fce}
 .dark-theme .call-sub svg{stroke:#ff9fce}
 .bubu-bubble .call-card{min-width:200px}
+
+/* ===== Beranda: tombol kembali hanya di editor ===== */
+#bubuPage:not(.editing) .bubu-back { display:none; }
+#bubuPage .bubu-home,#bubuPage .bubu-home.multi { min-height:0; }
+#bubuPage.editing .hv-card { display:none; }
+
+/* ===== Beranda: kotak pemutar video ===== */
+.hv-card { margin:6px 0 28px; padding:12px; border:1px solid var(--g-edge); border-radius:24px; background:var(--g-bg); box-shadow:var(--g-shadow); color:var(--bubu-ink); }
+.hv-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+.hv-title { margin:0; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:15px; font-weight:700; letter-spacing:-.2px; color:var(--bubu-ink); }
+.hv-head-btns { display:flex; flex:none; gap:8px; }
+.hv-ibtn { display:grid; place-items:center; width:34px; height:34px; padding:0; border:1px solid var(--g-edge); border-radius:50%; background:var(--g-bg); color:var(--bubu-ink); box-shadow:var(--g-shadow); }
+.hv-ibtn svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hv-ibtn:active { transform:scale(.92); }
+.hv-ibtn[hidden],.hv-chips[hidden] { display:none; }
+.hv-stage { position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; }
+.hv-stage video,.hv-stage iframe,.hv-stage .hv-yt { position:absolute; inset:0; width:100%; height:100%; border:0; background:#000; }
+.hv-empty { display:grid; place-items:center; aspect-ratio:16/9; padding:18px; border:1.5px dashed var(--g-edge); border-radius:18px; color:var(--bubu-sub); font-size:12.5px; line-height:1.7; text-align:center; }
+.hv-note { margin:9px 2px 0; color:var(--bubu-sub); font-size:11.5px; line-height:1.5; }
+.hv-note:empty { display:none; }
+.hv-chips { display:flex; gap:7px; margin-top:10px; padding:2px 1px 4px; overflow-x:auto; scrollbar-width:none; }
+.hv-chips::-webkit-scrollbar { display:none; }
+.hv-chip { flex:none; max-width:170px; padding:7px 12px; border:1px solid var(--g-edge); border-radius:14px; background:var(--g-bg); color:var(--bubu-sub); font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hv-chip.on { color:var(--bubu-ink); border-color:#c4709f; }
+body.dark-theme .hv-chip.on,body.has-wallpaper .hv-chip.on { border-color:#f06aae; }
+
+/* ===== Beranda: pemutar video (tema glass For Bubu) ===== */
+.hv-card { position:relative; backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%); }
+.hv-ibtn { transition:transform .18s ease,color .2s ease,border-color .2s ease; }
+.hv-ibtn[aria-pressed="true"] { color:#d6479a; border-color:#c4709f; }
+body.dark-theme .hv-ibtn[aria-pressed="true"],body.has-wallpaper .hv-ibtn[aria-pressed="true"] { color:#ff8cc0; border-color:#f06aae; }
+
+/* satu ikon pensil: menu ganti judul + hapus muncul / hilang */
+.hv-tools { display:grid; grid-template-rows:0fr; opacity:0; margin-bottom:0; transition:grid-template-rows .34s cubic-bezier(.32,.72,0,1),opacity .22s ease,margin .34s cubic-bezier(.32,.72,0,1); }
+.hv-tools.open { grid-template-rows:1fr; opacity:1; margin-bottom:2px; }
+.hv-tools-in { display:flex; gap:8px; min-height:0; overflow:hidden; padding:1px 1px 8px; }
+.hv-tool { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; height:40px; padding:0 10px; border:1px solid var(--g-edge); border-radius:14px; background:var(--g-bg); color:var(--bubu-ink); box-shadow:var(--g-shadow); font-size:12.5px; font-weight:650; transition:transform .18s ease; }
+.hv-tool svg { flex:none; width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hv-tool.danger { color:var(--danger); }
+.hv-tool:active { transform:scale(.96); }
+
+/* panggung video */
+.hv-stage { border-radius:20px; background:radial-gradient(ellipse at 30% 0%,#3a1330,#12040d 70%); box-shadow:0 10px 26px rgba(124,88,112,.28),0 0 0 1px var(--g-edge); }
+.hv-stage.custom { cursor:pointer; user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent; outline:0; }
+.hv-stage.custom video { object-fit:contain; }
+.hv-stage:focus-visible { box-shadow:0 0 0 2px #ff8cc0,0 10px 26px rgba(124,88,112,.28); }
+.hv-stage:fullscreen,.hv-stage:-webkit-full-screen { width:100%; height:100%; aspect-ratio:auto; border-radius:0; box-shadow:none; }
+.hv-big { position:absolute; left:50%; top:50%; z-index:3; display:grid; place-items:center; width:62px; height:62px; margin:-31px 0 0 -31px; padding:0; border:1px solid rgba(255,255,255,.55); border-radius:50%; color:#fff; background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(224,85,143,.22)); backdrop-filter:blur(14px) saturate(160%); -webkit-backdrop-filter:blur(14px) saturate(160%); box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.5); transition:opacity .25s ease,transform .32s cubic-bezier(.32,.72,0,1); }
+.hv-big svg { width:26px; height:26px; margin-left:3px; fill:currentColor; }
+.hv-big:active { transform:scale(.92); }
+.hv-stage.playing .hv-big,.hv-stage.loading .hv-big { opacity:0; transform:scale(.8); pointer-events:none; }
+.hv-spin { position:absolute; left:50%; top:50%; z-index:3; width:34px; height:34px; margin:-17px 0 0 -17px; border:3px solid rgba(255,255,255,.28); border-top-color:#ff8cc0; border-radius:50%; opacity:0; pointer-events:none; transition:opacity .2s ease; animation:hvSpin .8s linear infinite; }
+.hv-stage.loading .hv-spin { opacity:1; }
+@keyframes hvSpin { to { transform:rotate(360deg); } }
+.hv-bar { position:absolute; left:0; right:0; bottom:0; z-index:4; display:flex; flex-direction:column; gap:2px; padding:30px 12px 8px; color:#fff; background:linear-gradient(to top,rgba(36,6,26,.82),rgba(36,6,26,0)); cursor:default; transition:opacity .3s ease; }
+.hv-stage.idle .hv-bar { opacity:0; pointer-events:none; }
+.hv-stage.idle { cursor:none; }
+.hv-seek { position:relative; height:24px; touch-action:none; cursor:pointer; outline:0; }
+.hv-seek-track { position:absolute; left:0; right:0; top:50%; height:5px; margin-top:-2.5px; border-radius:5px; background:rgba(255,255,255,.26); overflow:hidden; }
+.hv-seek-track i { position:absolute; left:0; top:0; bottom:0; width:0; border-radius:5px; }
+.hv-seek-buf { background:rgba(255,255,255,.3); transition:width .3s ease; }
+.hv-seek-fill { background:linear-gradient(90deg,#e0558f,#ff8cc0); transition:width .25s linear; }
+.hv-seek.drag .hv-seek-fill { transition:none; }
+.hv-seek-thumb { position:absolute; top:50%; left:0; width:15px; height:15px; margin:-7.5px 0 0 -7.5px; border-radius:50%; background:#fff; box-shadow:0 0 0 3px rgba(224,85,143,.5),0 2px 6px rgba(0,0,0,.35); transition:left .25s linear,transform .18s ease; }
+.hv-seek.drag .hv-seek-thumb { transform:scale(1.3); transition:transform .18s ease; }
+.hv-seek:focus-visible .hv-seek-thumb { box-shadow:0 0 0 4px rgba(255,140,192,.8); }
+.hv-ctl-row { display:flex; align-items:center; gap:4px; }
+.hv-cbtn { display:grid; place-items:center; flex:none; width:34px; height:34px; padding:0; border:0; border-radius:50%; background:transparent; color:#fff; transition:transform .15s ease,background .15s ease; }
+.hv-cbtn:active { transform:scale(.88); background:rgba(255,255,255,.16); }
+.hv-cbtn svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hv-time { margin-left:2px; font-size:11.5px; font-weight:650; font-variant-numeric:tabular-nums; letter-spacing:.1px; text-shadow:0 1px 4px rgba(0,0,0,.55); }
+.hv-sp { flex:1; }
+.hv-stage.playing .ic-play,.hv-stage:not(.playing) .ic-pause,.hv-stage.muted .ic-vol,.hv-stage:not(.muted) .ic-mute { display:none; }
+
+/* kosong */
+.hv-empty { gap:4px; align-content:center; border-radius:20px; background:var(--g-bg); }
+.hv-empty.act { cursor:pointer; -webkit-tap-highlight-color:transparent; transition:transform .2s ease; }
+.hv-empty.act:active { transform:scale(.98); }
+.hv-empty .hv-empty-ic { display:grid; place-items:center; width:46px; height:46px; margin:0 auto 6px; border:1px solid var(--g-edge); border-radius:50%; background:var(--g-bg); box-shadow:var(--g-shadow); color:var(--bubu-ink); }
+.hv-empty .hv-empty-ic svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hv-empty b { color:var(--bubu-ink); font-size:13.5px; font-weight:700; }
+.hv-empty small { font-size:11.5px; }
+
+/* progress upload latar belakang */
+.hv-up { margin-top:10px; padding:10px 12px 11px; border:1px solid var(--g-edge); border-radius:16px; background:var(--g-bg); box-shadow:var(--g-shadow); color:var(--bubu-ink); animation:hvUpIn .34s cubic-bezier(.32,.72,0,1); }
+.hv-up[hidden] { display:none; }
+@keyframes hvUpIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+.hv-up-top { display:flex; align-items:center; gap:9px; }
+.hv-up-pct { flex:none; min-width:40px; font-size:14px; font-weight:750; letter-spacing:-.2px; font-variant-numeric:tabular-nums; }
+.hv-up-txt { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--bubu-sub); font-size:12px; }
+.hv-up-cancel { flex:none; padding:5px 11px; border:1px solid var(--g-edge); border-radius:12px; background:transparent; color:var(--danger); font-size:11.5px; font-weight:650; }
+.hv-up-cancel[hidden] { display:none; }
+.hv-up-cancel:active { transform:scale(.94); }
+.hv-up-bar { height:7px; margin-top:9px; border-radius:7px; background:rgba(128,128,128,.22); overflow:hidden; }
+.hv-up-bar i { display:block; width:0; height:100%; border-radius:7px; background:linear-gradient(90deg,#e0558f,#c4709f); transition:width .25s ease; }
+.hv-up.wait .hv-up-bar i { background:linear-gradient(90deg,#e0558f,#ff8cc0,#e0558f); background-size:200% 100%; animation:hvProgWait 1.1s linear infinite; }
+.hv-up.done .hv-up-bar i { background:linear-gradient(90deg,#e0558f,#ff8cc0); }
+.hv-up-info { margin-top:6px; min-height:1em; color:var(--bubu-sub); font-size:11px; line-height:1.4; font-variant-numeric:tabular-nums; }
+.hv-up-info:empty { display:none; }
+@media (prefers-reduced-motion:reduce) { .hv-tools,.hv-big,.hv-spin,.hv-up,.hv-seek-fill,.hv-seek-thumb { transition:none; animation:none; } .hv-spin { animation:hvSpin 1.6s linear infinite; } }
+
+/* tab video di editor: pensil membuka / menutup tombol ganti nama + hapus */
+.bubu-tabs:not(.tabs-edit) .bubu-tab-edit,.bubu-tabs:not(.tabs-edit) .bubu-tab-x { display:none; }
+.bubu-tabs:not(.tabs-edit) .bubu-tab { padding-right:14px; }
+.bubu-tab-pencil svg { fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.bubu-tab-pencil[aria-pressed="true"] { color:#d6479a; border-color:#c4709f; }
+body.dark-theme .bubu-tab-pencil[aria-pressed="true"],body.has-wallpaper .bubu-tab-pencil[aria-pressed="true"] { color:#ff8cc0; border-color:#f06aae; }
+
+/* modal tambah video */
+.hv-seg { display:flex; gap:6px; padding:4px; border:1px solid var(--line); border-radius:15px; background:var(--soft); }
+.hv-seg button { flex:1; padding:9px 6px; border:0; border-radius:11px; background:transparent; color:var(--muted); font-size:12px; font-weight:650; }
+.hv-seg button.on { background:var(--field); color:var(--ink); box-shadow:0 1px 4px rgba(0,0,0,.08); }
+.hv-input { display:block; width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:14px; outline:0; background:var(--soft); color:var(--ink); font-size:16px; }
+.hv-input:focus { border-color:#d7b4c8; }
+.dark-theme .hv-input { background:#3b1330; border-color:#74305f; }
+.dark-theme .hv-input:focus { border-color:#f06aae; }
+.hv-input::placeholder { color:var(--muted); }
+.hv-pick { display:flex; align-items:center; gap:10px; width:100%; padding:12px 13px; border:1.5px dashed var(--edge); border-radius:14px; background:var(--soft); color:var(--ink); font-size:13px; text-align:left; }
+.hv-pick svg { flex:none; width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.hv-pick span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hv-msg { margin:8px 0 0; color:var(--danger); font-size:12px; line-height:1.5; }
+.hv-msg.ok { color:var(--muted); }
+.hv-msg:empty { display:none; }
+.hv-seg button:disabled,.hv-pick:disabled,.hv-input:disabled { opacity:.55; }
+.hv-prog { margin-top:12px; }
+.hv-prog[hidden] { display:none; }
+.hv-prog-bar { height:9px; border-radius:9px; background:rgba(128,128,128,.25); overflow:hidden; }
+.hv-prog-bar i { display:block; width:0; height:100%; border-radius:9px; background:linear-gradient(90deg,#e0558f,#c4709f); transition:width .25s ease; }
+.hv-prog.wait .hv-prog-bar i { background:linear-gradient(90deg,#e0558f,#c4709f,#e0558f); background-size:200% 100%; animation:hvProgWait 1.1s linear infinite; }
+@keyframes hvProgWait { from { background-position:200% 0; } to { background-position:0 0; } }
+.hv-prog-info { display:flex; justify-content:space-between; gap:10px; margin-top:7px; color:var(--muted); font-size:11.5px; line-height:1.5; }
+.hv-prog-info span:first-child { color:var(--ink); font-size:13px; font-weight:700; }
+
+/* ===== Riwayat tonton (halaman penuh dari Profil) ===== */
+#historyPage {
+  position:fixed; inset:0; z-index:90; display:flex; flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 0; color:var(--ink);
+  background:radial-gradient(ellipse at 12% 0%,#f9e7f0,transparent 48%),radial-gradient(ellipse at 100% 60%,#ece5f2,transparent 45%),linear-gradient(145deg,#f8f4f6,#f0eaf1);
+  opacity:0; visibility:hidden; pointer-events:none; transform:translateY(14px);
+  transition:opacity .3s ease,transform .4s cubic-bezier(.32,.72,0,1),visibility 0s linear .4s;
+}
+body.dark-theme #historyPage { background:radial-gradient(ellipse at 15% 0%,#4a1a3b,transparent 50%),radial-gradient(ellipse at 95% 70%,#34112a,transparent 48%),linear-gradient(145deg,#1b0713,#2a0e20); }
+#historyPage.open { opacity:1; visibility:visible; pointer-events:auto; transform:none; transition:opacity .3s ease,transform .4s cubic-bezier(.32,.72,0,1),visibility 0s; }
+body.history-open { overflow:hidden; }
+.hist-top { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.hist-back { display:grid; place-items:center; flex:none; width:38px; height:38px; padding:0; border:1px solid var(--edge); border-radius:50%; background:var(--surface); color:var(--ink); }
+.hist-back svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.hist-back:active { transform:scale(.92); }
+.hist-title { margin:0; font-size:23px; font-weight:750; letter-spacing:-.5px; }
+.hist-sub { margin:0 0 14px 48px; color:var(--muted); font-size:12px; line-height:1.5; }
+.hist-list { flex:1; min-height:0; display:flex; flex-direction:column; gap:10px; padding:2px 0 calc(env(safe-area-inset-bottom,0px) + 24px); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+.hist-item { flex:none; padding:13px 14px; border:1px solid var(--edge); border-radius:18px; background:var(--soft); }
+.dark-theme .hist-item { background:#3b1330; border-color:#74305f; }
+.hist-row { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+.hist-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:14px; font-weight:700; }
+.hist-clock { flex:none; font-size:12px; font-weight:650; color:#b16b91; }
+.dark-theme .hist-clock { color:#ffa6d2; }
+.hist-date { margin-top:2px; color:var(--muted); font-size:11.5px; }
+.hist-bar { height:5px; margin:11px 0 8px; border-radius:5px; background:rgba(128,128,128,.25); overflow:hidden; }
+.hist-bar i { display:block; height:100%; border-radius:5px; background:linear-gradient(90deg,#e0558f,#c4709f); }
+.hist-info { display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 12px; font-size:12px; line-height:1.5; }
+.hist-info span:last-child { color:var(--muted); }
+.hist-empty { padding:40px 12px; color:var(--muted); font-size:13px; line-height:1.9; text-align:center; }
+.hist-retry { display:block; margin:12px auto 0; padding:9px 18px; border:1px solid var(--edge); border-radius:14px; background:var(--soft); color:var(--ink); font-size:12.5px; font-weight:650; }
+
+/* ===== Patch: satu pensil di Beranda + pemutar video ===== */
+#bubuNewVid { display:none!important; }
+#bubuPage.editing .bubu-pen-wrap { display:none; }
+.bubu-pen-wrap { position:relative; }
+.hv-pen-menu { top:calc(100% + 8px); right:0; z-index:60; min-width:160px; }
+#bubuPage .menu button { color:var(--ink); }
+.hv-pen-menu button { color:var(--ink); font-size:13px; font-weight:600; }
+.hv-pen-menu button:disabled { opacity:.4; }
+
+/* overlay video: hanya satu tombol play/jeda di tengah + progres + perbesar/perkecil */
+.hv-stage.playing .hv-big { opacity:1; transform:none; pointer-events:auto; }
+.hv-stage.playing.idle .hv-big { opacity:0; transform:scale(.8); pointer-events:none; }
+.hv-stage.loading .hv-big { opacity:1; transform:none; pointer-events:auto; }
+.hv-stage.loading .hv-big svg { opacity:0; }
+.hv-big { z-index:6; width:54px; height:54px; margin:-33px 0 0 -27px; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+.hv-big svg { width:22px; height:22px; }
+.hv-big::before { content:""; position:absolute; inset:-6px; border-radius:50%; }
+/* tombol putar ulang, di samping tombol play */
+.hv-replay { position:absolute; left:50%; top:50%; z-index:6; display:grid; place-items:center; width:40px; height:40px; margin:-26px 0 0 41px; padding:0; border:1px solid rgba(255,255,255,.55); border-radius:50%; color:#fff; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(224,85,143,.22)); backdrop-filter:blur(14px) saturate(160%); -webkit-backdrop-filter:blur(14px) saturate(160%); box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.5); transition:opacity .25s ease,transform .32s cubic-bezier(.32,.72,0,1); }
+.hv-replay::before { content:""; position:absolute; inset:-6px; border-radius:50%; }
+.hv-replay svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+.hv-replay:active { transform:scale(.9); }
+.hv-stage.idle .hv-replay { opacity:0; transform:scale(.8); pointer-events:none; }
+.hv-stage.loading .hv-replay { opacity:.5; }
+/* layar penuh: blur (backdrop-filter) di atas video bisa membuat video jadi hitam saat overlay muncul / hilang, jadi dimatikan */
+.hv-big,.hv-replay { backdrop-filter:none!important; -webkit-backdrop-filter:none!important; background:linear-gradient(145deg,rgba(70,24,52,.66),rgba(160,44,108,.6))!important; }
+.hv-stage { isolation:isolate; }
+.hv-stage video { z-index:0; background:#000; }
+.hv-stage.fs,.hv-stage:fullscreen,.hv-stage:-webkit-full-screen { background:#000; }
+.hv-stage.fs video,.hv-stage:fullscreen video { width:100%; height:100%; object-fit:contain; }
+.hv-bar { transition:opacity .3s ease,visibility 0s linear 0s; }
+.hv-stage.idle .hv-bar { visibility:hidden; transition:opacity .3s ease,visibility 0s linear .3s; }
+.hv-bar { pointer-events:none; }
+.hv-bar .hv-seek, .hv-bar .hv-cbtn { pointer-events:auto; }
+.hv-stage.idle .hv-bar { pointer-events:none; }
+.hv-stage.idle .hv-bar .hv-seek, .hv-stage.idle .hv-bar .hv-cbtn { pointer-events:none; }
+.hv-big .ic-pause { margin-left:0; }
+.hv-stage .ic-shrink { display:none; }
+.hv-stage.fs .ic-shrink { display:block; }
+.hv-stage.fs .ic-expand { display:none; }
+.hv-stage.fs .hv-bar { padding-bottom:calc(10px + env(safe-area-inset-bottom,0px)); }
+.hv-stage.pseudo-fs { position:fixed; inset:0; z-index:2000; width:100vw; height:100vh; height:100dvh; aspect-ratio:auto; border-radius:0; box-shadow:none; }
+body.hv-pfs { overflow:hidden; }
+
+/* riwayat: tombol hapus */
+.hist-clear { display:flex; align-items:center; gap:6px; flex:none; margin-left:auto; padding:8px 12px; border:1px solid var(--edge); border-radius:14px; background:var(--surface); color:var(--danger); font-size:12px; font-weight:650; }
+.hist-clear[hidden] { display:none; }
+.hist-clear svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hist-clear:active { transform:scale(.95); }
+.hist-del { display:grid; place-items:center; flex:none; width:28px; height:28px; margin:-4px -4px 0 4px; padding:0; border:0; border-radius:50%; background:transparent; color:var(--danger); opacity:.85; }
+.hist-del svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hist-del:active { transform:scale(.9); background:rgba(128,128,128,.18); }
+.hist-bar { position:relative; }
+.hist-bar i.seg { position:absolute; top:0; bottom:0; min-width:4px; }
+.hist-row { align-items:center; }
+.hist-clock { margin-left:auto; }
+
+/* ===== Beranda: tombol bulat "tap!!" + 3 minion (ngintip saat amplop disembunyikan) ===== */
+.pk-stage { position:relative; width:220px; height:128px; margin:-4px auto 8px; isolation:isolate; }
+.pk-stage[hidden] { display:none; }
+#bubuPage.editing .pk-stage { display:none; }
+.pk-minions { position:absolute; inset:0; pointer-events:none; }
+.bubu-peek { position:absolute; left:50%; bottom:0; z-index:2; width:72px; height:72px; margin-left:-36px; padding:0; display:flex; align-items:center; justify-content:center; border:3px solid #e7a9c4; border-radius:50%; color:#6b3a2a; background:radial-gradient(circle at 34% 28%,#fffdf2 0,#fff3d4 45%,#ffdcae 100%); box-shadow:0 5px 0 rgba(231,169,196,.75),0 12px 22px rgba(0,0,0,.2),inset 0 -4px 8px rgba(231,169,196,.25); transition:transform .18s ease,box-shadow .18s ease; -webkit-tap-highlight-color:transparent; touch-action:manipulation; cursor:pointer; }
+.bubu-peek:active { transform:translateY(4px) scale(.95); box-shadow:0 1px 0 rgba(231,169,196,.75),0 5px 12px rgba(0,0,0,.2),inset 0 -4px 8px rgba(231,169,196,.25); }
+.bubu-peek::after { content:""; position:absolute; inset:-3px; border-radius:50%; border:2px solid #e7a9c4; opacity:0; pointer-events:none; animation:pkRing 2.6s ease-out infinite; }
+.pk-stage.out .bubu-peek::after { display:none; }
+.pk-text { display:block; padding-bottom:3px; font-family:"Pacifico","Snell Roundhand","Segoe Script","Brush Script MT","Lucida Handwriting",cursive; font-size:21px; font-weight:400; line-height:1; letter-spacing:.3px; white-space:nowrap; color:#c2255c; text-shadow:0 1px 0 #fff,0 2px 6px rgba(194,37,92,.28); transform:rotate(-6deg); }
+.pk-pop { position:absolute; z-index:3; pointer-events:none; font-style:normal; font-size:16px; line-height:1; text-shadow:0 1px 2px rgba(0,0,0,.18); animation:pkPop .85s ease-out forwards; }
+
+/* minion: --x posisi, --pr/--or sudut (ngintip / keluar), --oy tinggi saat keluar */
+.mn { position:absolute; left:calc(50% + var(--x) - 22px); bottom:17px; width:44px; height:70px; z-index:1; transform-origin:50% 100%; transform:translateY(var(--py)) rotate(var(--pr)) scale(var(--s)); transition:transform .75s cubic-bezier(.34,1.56,.64,1) var(--d),opacity .35s ease; }
+.pk-stage.out .mn { transform:translateY(var(--oy)) rotate(var(--or)) scale(var(--s)); }
+.mn-in { width:100%; height:100%; transform-origin:50% 100%; animation:mnPeek var(--peek) ease-in-out infinite; animation-delay:var(--dl); }
+.pk-stage.out .mn-in { animation:mnHop var(--hop) ease-in-out infinite; animation-delay:var(--dl); }
+.pk-stage.cheer .mn-in { animation:mnCheer .65s cubic-bezier(.3,1.4,.5,1) both; animation-delay:var(--d); }
+.mn-svg { display:block; width:44px; height:70px; overflow:visible; transform-origin:50% 100%; }
+.pk-stage.out .mn-svg { animation:mnSway var(--sway) ease-in-out infinite; animation-delay:var(--dl); }
+.mn-all { transform-box:view-box; transform-origin:20px 60px; }
+.pk-stage.out .mn-all { animation:mnBreath 2.5s ease-in-out infinite; animation-delay:var(--dl); }
+.mn-pupil { animation:mnLook var(--look) ease-in-out infinite; animation-delay:var(--dl); }
+.mn-lid { transform-box:fill-box; transform-origin:50% 0; transform:scaleY(0); animation:mnBlink var(--blink) infinite; animation-delay:var(--dl); }
+.mn-al,.mn-ar { transform-box:view-box; }
+.mn-al { transform-origin:6px 32px; }
+.mn-ar { transform-origin:34px 32px; }
+.pk-stage.out .mn-al { animation:mnArmL 3.4s ease-in-out infinite; animation-delay:var(--dl); }
+.pk-stage.out .mn-ar { animation:mnArmR 3.9s ease-in-out infinite; animation-delay:var(--dl); }
+.pk-stage.out .mn-al.wave { animation:mnWaveL 7s ease-in-out infinite; animation-delay:var(--dl); }
+.pk-stage.out .mn-ar.wave { animation:mnWaveR 7s ease-in-out infinite; animation-delay:var(--dl); }
+.mn-hum { transform-box:fill-box; transform-origin:50% 50%; }
+.pk-stage.out .mn-hum { animation:mnHum 1.7s ease-in-out infinite; }
+@keyframes pkRing { 0% { transform:scale(1); opacity:.7; } 100% { transform:scale(1.4); opacity:0; } }
+@keyframes pkPop { 0% { transform:translate(-50%,-50%) scale(.3) rotate(0); opacity:1; } 100% { transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.1) rotate(160deg); opacity:0; } }
+@keyframes mnPeek { 0%,15% { transform:translateY(5px); } 38%,68% { transform:translateY(-2px); } 90%,100% { transform:translateY(5px); } }
+@keyframes mnHop { 0%,76% { transform:none; } 81% { transform:translateY(1px) scale(1.06,.92); } 87% { transform:translateY(-11px) scale(.95,1.07); } 93% { transform:translateY(0) scale(1.07,.93); } 96.5% { transform:translateY(-2px) scale(.99,1.01); } 100% { transform:none; } }
+@keyframes mnCheer { 0% { transform:none; } 40% { transform:translateY(-15px) scale(.94,1.1); } 72% { transform:translateY(0) scale(1.08,.9); } 100% { transform:none; } }
+@keyframes mnSway { 0%,100% { transform:rotate(-2.2deg); } 50% { transform:rotate(2.2deg); } }
+@keyframes mnBreath { 0%,100% { transform:scale(1,1); } 50% { transform:scale(1.018,1.03); } }
+@keyframes mnLook { 0%,12% { transform:translate(0,0); } 20%,32% { transform:translate(-1.4px,.5px); } 42%,54% { transform:translate(1.4px,.4px); } 64%,74% { transform:translate(.4px,-1.2px); } 84%,100% { transform:translate(0,0); } }
+@keyframes mnBlink { 0%,91%,100% { transform:scaleY(0); } 94% { transform:scaleY(1); } 97% { transform:scaleY(0); } }
+@keyframes mnArmL { 0%,100% { transform:rotate(0); } 50% { transform:rotate(7deg); } }
+@keyframes mnArmR { 0%,100% { transform:rotate(0); } 50% { transform:rotate(-7deg); } }
+@keyframes mnWaveL { 0%,68%,100% { transform:rotate(0); } 74% { transform:rotate(138deg); } 79% { transform:rotate(112deg); } 84% { transform:rotate(140deg); } 89% { transform:rotate(112deg); } 94% { transform:rotate(130deg); } }
+@keyframes mnWaveR { 0%,68%,100% { transform:rotate(0); } 74% { transform:rotate(-138deg); } 79% { transform:rotate(-112deg); } 84% { transform:rotate(-140deg); } 89% { transform:rotate(-112deg); } 94% { transform:rotate(-130deg); } }
+@keyframes mnHum { 0%,100% { transform:scale(1,1); } 50% { transform:scale(1.25,.8); } }
+/* animasi minion memberi karangan bunga ke layar */
+.pk-stage.giving .mn:nth-child(2) { opacity:0; transition:transform .75s cubic-bezier(.34,1.56,.64,1) var(--d),opacity .12s ease; }
+.pk-give { position:absolute; left:50%; bottom:66px; width:97px; height:154px; margin-left:-48px; z-index:1; pointer-events:none; transform-origin:50% 100%; --look:5s; --blink:2.4s; --dl:-.6s; opacity:0; will-change:transform; }
+.pk-gm { position:absolute; inset:0; filter:drop-shadow(0 5px 7px rgba(0,0,0,.28)); }
+.pk-gm .mn-svg { width:100%; height:100%; }
+.pk-give .mn-pupil { animation:none; }
+.pk-bq { position:absolute; left:20%; top:61%; width:60%; height:45%; transform-origin:50% 90%; opacity:0; }
+.pk-bq svg { display:block; width:100%; height:100%; overflow:visible; }
+.pk-bub { position:absolute; left:50%; top:-36px; margin-left:-54px; width:108px; padding:6px 0 8px; text-align:center; white-space:nowrap; border-radius:18px; background:#fff; color:#c2255c; font-family:"Fredoka","Baloo 2","Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif; font-size:21px; font-weight:700; line-height:1.1; letter-spacing:.6px; box-shadow:0 3px 10px rgba(0,0,0,.28); opacity:0; transform-origin:50% 100%; }
+.pk-bub::after { content:""; position:absolute; left:50%; bottom:-5px; width:10px; height:10px; margin-left:-5px; background:#fff; transform:rotate(45deg); border-radius:2px; }
+.pk-fx { position:absolute; left:50%; top:30px; z-index:3; font-style:normal; font-size:20px; line-height:1; opacity:0; pointer-events:none; will-change:transform; }
+.pk-fly { position:absolute; z-index:5; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 6px 8px rgba(0,0,0,.3)); }
+.pk-fly svg { display:block; width:100%; height:100%; overflow:visible; }
+.pk-flash { position:absolute; z-index:6; width:60px; height:60px; margin:-30px 0 0 -30px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(circle,rgba(255,255,255,.95) 0,rgba(var(--fc,255,182,213),.55) 45%,rgba(var(--fc,255,182,213),0) 70%); }
+/* bulan + minion penunggang yang menabrak 3 minion */
+.pk-moon { position:absolute; left:0; top:68px; width:0; height:0; z-index:3; pointer-events:none; will-change:transform; }
+.pk-moon-d { position:absolute; left:-30px; top:-30px; width:60px; height:60px; border-radius:50%; background:radial-gradient(circle at 34% 30%,#fffdf0 0,#f6efc9 45%,#d9cf9c 100%); box-shadow:inset -7px -8px 14px rgba(150,130,70,.45),0 0 18px 4px rgba(255,248,200,.55),0 8px 10px rgba(0,0,0,.25); }
+.pk-moon-d i { position:absolute; border-radius:50%; background:radial-gradient(circle at 40% 35%,rgba(170,150,95,.55),rgba(190,170,115,.3)); box-shadow:inset 1px 1px 2px rgba(120,100,50,.4); }
+.pk-rider { position:absolute; left:-14px; top:-71px; width:28px; height:44px; transform-origin:50% 100%; }
+.pk-rider .mn-svg { width:28px; height:44px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+.pk-stage.out .pk-rider .mn-svg { animation:none; }
+.pk-stage.out .pk-rider.laugh .mn-al { animation:rdArmL .42s ease-in-out infinite; }
+.pk-stage.out .pk-rider.laugh .mn-ar { animation:rdArmR .42s ease-in-out infinite; }
+.pk-stage.out .pk-rider.oh .mn-al { animation:none; transform:rotate(-150deg); }
+.pk-stage.out .pk-rider.oh .mn-ar { animation:none; transform:rotate(150deg); }
+@keyframes rdArmL { 0%,100%{transform:rotate(-25deg)} 50%{transform:rotate(-70deg)} }
+@keyframes rdArmR { 0%,100%{transform:rotate(25deg)} 50%{transform:rotate(70deg)} }
+@media (prefers-reduced-motion:reduce) { .mn-in,.mn-svg,.mn-all,.mn-pupil,.mn-lid,.mn-al,.mn-ar,.mn-hum,.bubu-peek::after,.pk-pop { animation:none!important; } .mn { transition-duration:.01s; } }
+/* amplop: menutup / membuka dengan halus */
+.bubu-home { transition:height .5s cubic-bezier(.32,.72,0,1),opacity .32s ease,transform .5s cubic-bezier(.32,.72,0,1),padding .5s cubic-bezier(.32,.72,0,1),visibility 0s linear 0s; }
+.bubu-home.tucked { height:0; padding-top:0!important; padding-bottom:0!important; overflow:hidden; opacity:0; transform:translateY(-14px) scale(.96); visibility:hidden; transition:height .5s cubic-bezier(.32,.72,0,1),opacity .32s ease,transform .5s cubic-bezier(.32,.72,0,1),padding .5s cubic-bezier(.32,.72,0,1),visibility 0s linear .5s; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1917,10 +2221,10 @@ body.head-compact .head-settings-compact{display:grid}
   </div>
   </div>
 
-  <section id="bubuPage" hidden aria-label="For Bubu">
+  <section id="bubuPage" hidden aria-label="Beranda">
     <div class="bubu-head">
       <div class="bubu-head-left">
-        <button class="bubu-back" id="bubuBack" type="button" aria-label="Kembali ke profil">
+        <button class="bubu-back" id="bubuBack" type="button" aria-label="Kembali ke Beranda">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
         </button>
         <h2 class="bubu-title" id="bubuTitle">Hai, bubu</h2>
@@ -1929,9 +2233,16 @@ body.head-compact .head-settings-compact{display:grid}
         <button class="bubu-add" id="bubuNewVid" type="button" aria-label="Tambah video">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <button class="bubu-add" id="bubuEditorBtn" type="button" aria-label="Buka editor">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-        </button>
+        <div class="bubu-pen-wrap">
+          <button class="bubu-add" id="hvEdit" type="button" aria-label="Menu edit" aria-haspopup="menu" aria-expanded="false" aria-controls="hvPenMenu">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+          </button>
+          <div class="menu hv-pen-menu hidden" id="hvPenMenu" role="menu">
+            <button type="button" id="hvPenAdd" role="menuitem">Tambah video</button>
+            <button type="button" id="hvPenVideo" role="menuitem">Edit video</button>
+            <button type="button" id="hvPenBubu" role="menuitem">For Bubu</button>
+          </div>
+        </div>
         <div class="bubu-add-wrap">
           <button class="bubu-add" id="bubuAdd" type="button" aria-label="Tambah" aria-haspopup="menu" aria-expanded="false">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
@@ -1944,6 +2255,39 @@ body.head-compact .head-settings-compact{display:grid}
         </div>
       </div>
       <div class="bubu-tabs" id="bubuTabs" role="tablist" aria-label="Pilih video"></div>
+    </div>
+    <section class="hv-card" id="hvCard" aria-label="Putar video">
+      <div class="hv-head">
+        <h3 class="hv-title" id="hvTitle">Video</h3>
+      </div>
+      <div class="hv-tools" id="hvTools" inert>
+        <div class="hv-tools-in">
+          <button class="hv-tool" id="hvRename" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            <span>Ganti judul</span>
+          </button>
+          <button class="hv-tool danger" id="hvDelete" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6.5 7l.8 12h9.4l.8-12"/></svg>
+            <span>Hapus video</span>
+          </button>
+        </div>
+      </div>
+      <div id="hvStageWrap"></div>
+      <div class="hv-up" id="hvUp" hidden>
+        <div class="hv-up-top">
+          <span class="hv-up-pct" id="hvUpPct">0%</span>
+          <span class="hv-up-txt" id="hvUpTxt">Mengunggah...</span>
+          <button class="hv-up-cancel" id="hvUpCancel" type="button">Batalkan</button>
+        </div>
+        <div class="hv-up-bar" id="hvUpBar" role="progressbar" aria-label="Progres upload video" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="hvUpFill"></i></div>
+        <div class="hv-up-info" id="hvUpInfo" role="status"></div>
+      </div>
+      <p class="hv-note" id="hvNote" role="status"></p>
+      <div class="hv-chips" id="hvChips" role="tablist" aria-label="Daftar video" hidden></div>
+    </section>
+    <div class="pk-stage" id="bubuPeekStage" hidden>
+      <div class="pk-minions" id="pkMinions" aria-hidden="true"></div>
+      <button class="bubu-peek" id="bubuPeek" type="button" aria-label="Tampilkan amplop"><span class="pk-text">tap!!</span></button>
     </div>
     <div class="bubu-home" id="bubuHome"></div>
     <div class="bubu-list" id="bubuList"></div>
@@ -2018,9 +2362,9 @@ body.head-compact .head-settings-compact{display:grid}
         <span>Statistik</span>
       </button>
 
-      <button type="button" class="profile-action" id="bubuBtn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/></svg>
-        <span>For Bubu</span>
+      <button type="button" class="profile-action" id="historyBtn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+        <span>Riwayat</span>
       </button>
 
       <p id="profileMessage" role="status"></p>
@@ -2398,13 +2742,85 @@ body.head-compact .head-settings-compact{display:grid}
 
 <div class="ptr" id="ptr" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.4 5.7"/><path d="M20 4v7h-7"/></svg></div>
 
-<nav class="bottom-nav glass nav-pos-0" id="bottomNav" aria-label="Navigasi utama">
+<div class="modal-backdrop" id="hvAddBackdrop" aria-hidden="true">
+  <section class="edit-modal dialog-modal" role="dialog" aria-modal="true" aria-labelledby="hvAddTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="hvAddTitle">Tambah video</div>
+      <button class="modal-close" id="hvAddClose" type="button" aria-label="Tutup">×</button>
+    </div>
+    <form id="hvAddForm" novalidate>
+      <div class="hv-seg">
+        <button type="button" id="hvModeFile" class="on">Unggah file</button>
+        <button type="button" id="hvModeUrl">Tempel link</button>
+      </div>
+      <div id="hvFileRow">
+        <label class="field-label" for="hvFilePick">File video</label>
+        <button type="button" class="hv-pick" id="hvFilePick">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="13" height="14" rx="3"/><path d="m16 10 5-3v10l-5-3"/></svg>
+          <span id="hvFileName">Pilih file video</span>
+        </button>
+      </div>
+      <div id="hvUrlRow" hidden>
+        <label class="field-label" for="hvUrlInput">Link video</label>
+        <input class="hv-input" id="hvUrlInput" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="Link YouTube atau link langsung .mp4">
+      </div>
+      <label class="field-label" for="hvTitleInput">Judul (opsional)</label>
+      <input class="hv-input" id="hvTitleInput" type="text" maxlength="60" autocomplete="off" placeholder="Judul video">
+      <p class="hv-msg" id="hvAddMsg" role="status"></p>
+      <div class="modal-actions">
+        <button class="cancel-btn" id="hvAddCancel" type="button">Batal</button>
+        <button class="save-btn" id="hvAddSave" type="submit">Simpan</button>
+      </div>
+    </form>
+  </section>
+</div>
+<div class="modal-backdrop" id="hvRenameBackdrop" aria-hidden="true">
+  <section class="edit-modal dialog-modal" role="dialog" aria-modal="true" aria-labelledby="hvRenameTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="hvRenameTitle">Ganti judul video</div>
+      <button class="modal-close" id="hvRenameClose" type="button" aria-label="Tutup">×</button>
+    </div>
+    <form id="hvRenameForm" novalidate>
+      <label class="field-label" for="hvRenameInput">Judul video</label>
+      <input class="hv-input" id="hvRenameInput" type="text" maxlength="60" autocomplete="off" spellcheck="false" placeholder="Judul video">
+      <p class="hv-msg" id="hvRenameMsg" role="status"></p>
+      <div class="modal-actions">
+        <button class="cancel-btn" id="hvRenameCancel" type="button">Batal</button>
+        <button class="save-btn" id="hvRenameSave" type="submit">Simpan</button>
+      </div>
+    </form>
+  </section>
+</div>
+<input id="hvFileInput" type="file" accept="video/*" hidden>
+
+<section id="historyPage" role="dialog" aria-modal="true" aria-label="Riwayat" aria-hidden="true" inert>
+  <div class="hist-top">
+    <button class="hist-back" id="histBack" type="button" aria-label="Kembali ke profil">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    </button>
+    <h2 class="hist-title">Riwayat</h2>
+    <button class="hist-clear" id="histClear" type="button" aria-label="Hapus semua riwayat" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6.5 7l.8 12h9.4l.8-12"/></svg>
+      <span>Hapus semua</span>
+    </button>
+  </div>
+  <p class="hist-sub">Setiap kali kamu berhenti menonton, bagian yang ditonton (dari detik berapa sampai berapa) tersimpan di sini.</p>
+  <div class="hist-list" id="histList"></div>
+</section>
+
+<nav class="bottom-nav glass nav-pos-1" id="bottomNav" aria-label="Navigasi utama">
   <span class="nav-indicator" aria-hidden="true"></span>
+  <button class="nav-btn" id="homeNav" type="button">
+    <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 11 12 4l8 7"/><path d="M6 10v9.5h12V10"/><path d="M10 19.5v-5h4v5"/>
+    </svg>
+    <span>Beranda</span>
+  </button>
   <button class="nav-btn active" id="allNav" type="button">
     <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2"/>
+      <path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4.5 3.5V17H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M8 10h8M8 13h5"/>
     </svg>
-    <span>Semua</span>
+    <span>Chat</span>
   </button>
   <button class="nav-btn" id="calendarNav" type="button">
     <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -2949,6 +3365,7 @@ function closeActiveModal() {
   else if (current === $('settingsBackdrop')) closeSettings();
   else if (current === $('nickBackdrop')) closeNickModal();
   else if (current === $('bubuRenameBackdrop')) closeBubuRename();
+  else if (current === $('hvAddBackdrop')) closeHvAdd();
 }
 
 function finishDialog(result) {
@@ -3494,14 +3911,14 @@ $('pinnedBar').addEventListener('click',jumpToNextPinned);
 
 /* Satu fungsi untuk semua status navigasi (tab aktif + posisi indikator) */
 function updateNavigation() {
-  const tab = (showingProfile || showingBubu) ? 2 : (view === 'calendar' ? 1 : 0);
+  const tab = showingBubu ? 0 : (showingProfile ? 3 : (view === 'calendar' ? 2 : 1));
 
-  ['allNav','calendarNav','profileNav'].forEach((id,i) => {
+  ['homeNav','allNav','calendarNav','profileNav'].forEach((id,i) => {
     $(id).classList.toggle('active',i === tab);
   });
 
   const nav = $('bottomNav');
-  nav.classList.remove('nav-pos-0','nav-pos-1','nav-pos-2');
+  nav.classList.remove('nav-pos-0','nav-pos-1','nav-pos-2','nav-pos-3');
   nav.classList.add('nav-pos-'+tab);
   document.body.classList.toggle('view-bubu',showingBubu);
   document.body.classList.toggle('view-calendar',view === 'calendar' && !showingGallery && !showingProfile && !showingBubu);
@@ -5489,6 +5906,7 @@ function bubuEnvSvg(k) {
 }
 
 let bubuHomeSig = '';
+let bubuTabsEdit = false;
 function renderBubuHome() {
   const home = $('bubuHome');
   if (!home) return;
@@ -5522,6 +5940,7 @@ function renderBubuTabs() {
   const bar = $('bubuTabs');
   if (!bar) return;
   bar.replaceChildren();
+  bar.classList.toggle('tabs-edit',bubuTabsEdit);
   bubuVideos.forEach(v => {
     const on = v.id === bubuCurVid;
     const tab = document.createElement('div');
@@ -5562,6 +5981,19 @@ function renderBubuTabs() {
   add.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
   add.addEventListener('click',() => addBubuVideo());
   bar.appendChild(add);
+  const pen = document.createElement('button');
+  pen.type = 'button';
+  pen.className = 'bubu-tab-new bubu-tab-pencil';
+  pen.setAttribute('aria-pressed',String(bubuTabsEdit));
+  pen.setAttribute('aria-label',bubuTabsEdit ? 'Tutup menu edit' : 'Edit video');
+  pen.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
+  pen.addEventListener('click',() => {
+    bubuTabsEdit = !bubuTabsEdit;
+    bar.classList.toggle('tabs-edit',bubuTabsEdit);
+    pen.setAttribute('aria-pressed',String(bubuTabsEdit));
+    pen.setAttribute('aria-label',bubuTabsEdit ? 'Tutup menu edit' : 'Edit video');
+  });
+  bar.appendChild(pen);
   const cur = bar.querySelector('.bubu-tab.on');
   if (cur) cur.scrollIntoView({inline:'nearest',block:'nearest'});
 }
@@ -5915,9 +6347,11 @@ function setBubuEditor(on) {
   if (!on && bubuEditingId && document.activeElement && document.activeElement.blur) document.activeElement.blur();
   bubuEditorOn = on;
   $('bubuPage').classList.toggle('editing',on);
+  document.body.classList.toggle('bubu-editing',on);
+  if (on && typeof hvLeave === 'function') hvLeave();
   if (!on) renderBubuHome();
   $('bubuTitle').textContent = on ? 'Editor' : 'Hai, bubu';
-  $('bubuBack').setAttribute('aria-label',on ? 'Kembali ke For Bubu' : 'Kembali ke profil');
+  $('bubuBack').setAttribute('aria-label','Kembali ke Beranda');
   if (on) {
     window.scrollTo(0,0);
     renderBubu();
@@ -5932,6 +6366,7 @@ function setBubuEditor(on) {
 function setBubuMode(enabled) {
   showingBubu = enabled;
   if (!enabled) closeBubuVideo();
+  if (!enabled && typeof hvLeave === 'function') hvLeave();
 
   $('bubuPage').hidden = !enabled;
   if (enabled) closeSearch(true);
@@ -5950,6 +6385,7 @@ function setBubuMode(enabled) {
     window.scrollTo(0,0);
     setScrollMode(false);
     setBubuEditor(false);
+    if (typeof hvOnShow === 'function') hvOnShow();
   }
 
   updateNavigation();
@@ -6003,7 +6439,7 @@ $('calendarNav').addEventListener('click',() => {
   playPagePop();
 });
 
-/* For Bubu: halaman tersendiri yang dibuka dari tombol di Profil (di bawah Statistik) */
+/* Beranda (tab pertama): isi For Bubu + kotak pemutar video */
 function openBubuPage() {
   if (showingGallery) setGalleryMode(false);
   if (showingProfile) setProfileMode(false);
@@ -6012,9 +6448,16 @@ function openBubuPage() {
   playPagePop();
 }
 
-$('bubuBtn').addEventListener('click',openBubuPage);
-$('bubuBack').addEventListener('click',() => { if (bubuEditorOn) setBubuEditor(false); else $('profileNav').click(); });
-$('bubuEditorBtn').addEventListener('click',() => { if (bubuCanEdit()) setBubuEditor(true); });
+$('homeNav').addEventListener('click',() => {
+  trackTab('home');
+  if (showingBubu) {
+    if (bubuEditorOn) setBubuEditor(false);
+    playPagePop();
+    return;
+  }
+  openBubuPage();
+});
+$('bubuBack').addEventListener('click',() => { if (bubuEditorOn) setBubuEditor(false); });
 
 $('profileNav').addEventListener('click',() => {
   trackTab('profile');
@@ -6337,6 +6780,7 @@ document.addEventListener('keydown',event => {
     else if (activeModal === $('settingsBackdrop')) closeSettings();
     else if (activeModal === $('nickBackdrop')) closeNickModal();
     else if (activeModal === $('bubuRenameBackdrop')) closeBubuRename();
+    else if (activeModal === $('hvRenameBackdrop')) closeHvRename();
     else if (!activeModal && showingContact) closeContact();
     return;
   }
@@ -6837,6 +7281,574 @@ $('wpDim').addEventListener('change',async () => {
 });
 
 
+/* ===== Beranda: tombol bulat "tap!!" + 3 minion =====
+   Default: semua amplop disembunyikan. Statusnya disimpan di database (Supabase user_metadata.env_hidden). */
+let peekHidden = true;
+let peekInit = false, peekSaveTimer = 0, peekSaving = false;
+
+const PK_MINIONS = [
+  {eyes:1,mouth:'grin', hair:5,wave:'r',x:-19,py:8,pr:-26,or:-9, oy:-24,s:.92,d:'.10s',dl:'-1.2s',look:6.3,sway:4.6,hop:6.6,blink:4.4,peek:3.6},
+  {eyes:2,mouth:'smile',hair:3,wave:'', x:0,  py:-17,pr:0,  or:0,  oy:-34,s:1,  d:'0s',  dl:'-3.1s',look:5.4,sway:5.2,hop:7.4,blink:5.1,peek:4.1},
+  {eyes:2,mouth:'hum',  hair:1,wave:'l',x:19, py:9,pr:25, or:10, oy:-26,s:.86,d:'.18s',dl:'-4.4s',look:7.1,sway:4.1,hop:5.8,blink:3.8,peek:3.2}
+];
+
+function pkMinionSvg(k,m) {
+  const eye = (cx,cy,rr,ri) =>
+    `<circle cx="${cx}" cy="${cy}" r="${rr+2}" fill="#aeb4be" stroke="#6c727d" stroke-width="1.2"/>`+
+    `<circle cx="${cx}" cy="${cy}" r="${rr}" fill="#fff"/>`+
+    `<g class="mn-pupil"><circle cx="${cx}" cy="${cy}" r="${ri}" fill="#7a4e27"/><circle cx="${cx}" cy="${cy}" r="${(ri*.5).toFixed(2)}" fill="#1c120a"/><circle cx="${(cx+ri*.35).toFixed(2)}" cy="${(cy-ri*.4).toFixed(2)}" r="${(ri*.28).toFixed(2)}" fill="#fff"/></g>`+
+    `<circle class="mn-lid" cx="${cx}" cy="${cy}" r="${rr}" fill="#f6c91a"/>`;
+  const eyes = m.eyes === 1 ? eye(20,19,6.3,3.1) : eye(13,19,4.6,2.4)+eye(27,19,4.6,2.4);
+  let hair = '';
+  for (let i = 0; i < m.hair; i++) {
+    const t = m.hair === 1 ? 0 : (i/(m.hair-1)-.5);
+    hair += `<path d="M${(20+t*10).toFixed(1)} 6.5q${(t*4.5).toFixed(1)} -4 ${(t*9).toFixed(1)} -6.3" fill="none" stroke="#3a2a14" stroke-width="1" stroke-linecap="round"/>`;
+  }
+  const mouth = m.mouth === 'grin'
+    ? '<path d="M13.5 34.5Q20 45 26.5 34.5Q20 37.5 13.5 34.5Z" fill="#4a1f16" stroke="#4a1f16" stroke-width="1" stroke-linejoin="round"/><path d="M15.5 35.5Q20 37 24.5 35.5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>'
+    : m.mouth === 'smile'
+      ? '<path d="M14 35Q20 40.5 26 35" fill="none" stroke="#4a1f16" stroke-width="1.5" stroke-linecap="round"/>'
+      : '<ellipse class="mn-hum" cx="20" cy="37" rx="2.6" ry="3" fill="#4a1f16"/>';
+  const id = 'pk'+k;
+  return `<svg class="mn-svg" viewBox="0 0 44 70" aria-hidden="true"><defs>`+
+    `<clipPath id="${id}c"><rect x="5" y="6" width="30" height="54" rx="15"/></clipPath>`+
+    `<linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#ffe45c"/><stop offset=".6" stop-color="#ffd324"/><stop offset="1" stop-color="#eebb10"/></linearGradient></defs>`+
+    `<g transform="translate(2 5)"><g class="mn-all">`+
+    `<rect x="12" y="55" width="6" height="7" fill="#3b6cb7"/><rect x="22" y="55" width="6" height="7" fill="#3b6cb7"/>`+
+    `<ellipse cx="14" cy="62.5" rx="5" ry="2.4" fill="#2b2b30"/><ellipse cx="26" cy="62.5" rx="5" ry="2.4" fill="#2b2b30"/>`+
+    `<g class="mn-al${m.wave === 'l' ? ' wave' : ''}"><ellipse cx="3.4" cy="41" rx="3.3" ry="8.6" transform="rotate(8 3.4 41)" fill="url(#${id}g)" stroke="#c8960a" stroke-width=".9"/><circle cx="1.8" cy="48.6" r="3.2" fill="#2b2b30"/></g>`+
+    `<g class="mn-ar${m.wave === 'r' ? ' wave' : ''}"><ellipse cx="36.6" cy="41" rx="3.3" ry="8.6" transform="rotate(-8 36.6 41)" fill="url(#${id}g)" stroke="#c8960a" stroke-width=".9"/><circle cx="38.2" cy="48.6" r="3.2" fill="#2b2b30"/></g>`+
+    `<rect x="5" y="6" width="30" height="54" rx="15" fill="url(#${id}g)" stroke="#c8960a" stroke-width="1"/>`+
+    `<g clip-path="url(#${id}c)"><rect x="4" y="39" width="32" height="24" fill="#3b6cb7"/><rect x="4" y="38" width="32" height="2" fill="#2c5594"/><rect x="14.5" y="43.5" width="11" height="8" rx="2.2" fill="#3562ab" stroke="#27488a" stroke-width=".7"/>`+
+    `<path d="M11.5 40L3.5 28.5M28.5 40L36.5 28.5" stroke="#3b6cb7" stroke-width="3.6" stroke-linecap="round"/><circle cx="11.5" cy="40" r="1.5" fill="#e8c34a" stroke="#b8901c" stroke-width=".5"/><circle cx="28.5" cy="40" r="1.5" fill="#e8c34a" stroke="#b8901c" stroke-width=".5"/><rect x="4" y="16" width="32" height="6" fill="#2a2a2e"/></g>`+
+    hair+eyes+mouth+`</g></g></svg>`;
+}
+
+function pkBuildMinions() {
+  const box = $('pkMinions');
+  if (!box || box.children.length) return;
+  PK_MINIONS.forEach((m,k) => {
+    const el = document.createElement('div');
+    el.className = 'mn';
+    el.style.cssText = `--x:${m.x}px;--py:${m.py}px;--pr:${m.pr}deg;--or:${m.or}deg;--oy:${m.oy}px;--s:${m.s};--d:${m.d};--dl:${m.dl};--look:${m.look}s;--sway:${m.sway}s;--hop:${m.hop}s;--blink:${m.blink}s;--peek:${m.peek}s`;
+    el.innerHTML = '<div class="mn-in">'+pkMinionSvg(k,m)+'</div>';
+    box.appendChild(el);
+  });
+}
+
+function peekLabel() {
+  $('bubuPeek').setAttribute('aria-label',peekHidden ? 'Tampilkan amplop' : 'Sembunyikan amplop');
+  $('bubuPeekStage').classList.toggle('out',!peekHidden);
+}
+
+function peekApply(animate) {
+  const home = $('bubuHome');
+  peekLabel();
+  if (!animate) { home.style.height = ''; home.classList.toggle('tucked',peekHidden); return; }
+  if (peekHidden) {
+    home.style.height = home.offsetHeight+'px';
+    void home.offsetHeight;
+    home.classList.add('tucked');
+    home.style.height = '0px';
+  } else {
+    const saved = home.style.transition;
+    home.style.transition = 'none';
+    home.classList.remove('tucked');
+    home.style.height = 'auto';
+    const h = home.offsetHeight;
+    home.style.height = '0px';
+    home.classList.add('tucked');
+    void home.offsetHeight;
+    home.style.transition = saved;
+    home.classList.remove('tucked');
+    home.style.height = h+'px';
+    const done = e => {
+      if (e.target !== home || e.propertyName !== 'height') return;
+      home.removeEventListener('transitionend',done);
+      if (!peekHidden) home.style.height = '';
+    };
+    home.addEventListener('transitionend',done);
+    setTimeout(() => { if (!peekHidden) home.style.height = ''; },700);
+  }
+}
+
+function peekBurst(btn) {
+  const n = 7, icons = ['🍌','✨','🍌','⭐'];
+  for (let i = 0; i < n; i++) {
+    const el = document.createElement('i');
+    el.className = 'pk-pop';
+    el.textContent = icons[i%icons.length];
+    const a = -Math.PI*(.1+.8*i/(n-1));
+    el.style.setProperty('--dx',Math.round(Math.cos(a)*(42+i%2*14))+'px');
+    el.style.setProperty('--dy',Math.round(Math.sin(a)*(40+i%2*12)-6)+'px');
+    el.style.left = '33px';
+    el.style.top = '30px';
+    btn.appendChild(el);
+    setTimeout(() => el.remove(),900);
+  }
+  const stage = $('bubuPeekStage');
+  stage.classList.remove('cheer');
+  void stage.offsetWidth;
+  stage.classList.add('cheer');
+  setTimeout(() => stage.classList.remove('cheer'),900);
+}
+
+
+/* ===== Animasi: 1 minion memberi karangan bunga ke layar, baru amplop muncul ===== */
+let pkGiveToken = 0, pkGiveEl = null;
+const pkSleep = ms => new Promise(r => setTimeout(r,ms));
+const PK_GIVER = {eyes:2,mouth:'grin',hair:3,wave:''};
+
+function pkBouquetSvg() {
+  const daisy = (cx,cy,r,pc,cc) => {
+    let p = '';
+    for (let i = 0; i < 8; i++) p += `<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.3}" ry="${r*.5}" transform="rotate(${i*45} ${cx} ${cy})" fill="${pc}"/>`;
+    return p+`<circle cx="${cx}" cy="${cy}" r="${r*.3}" fill="${cc}"/>`;
+  };
+  const rose = (cx,cy,r) =>
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#e23b62"/><circle cx="${cx}" cy="${cy}" r="${r*.7}" fill="#f0527a"/><path d="M${cx-r*.4} ${cy}q${r*.4} ${-r*.7} ${r*.8} 0q${-r*.4} ${r*.6} ${-r*.8} 0z" fill="#c42a50"/><circle cx="${cx}" cy="${cy}" r="${r*.22}" fill="#a81f42"/>`;
+  return `<svg viewBox="0 0 80 96" aria-hidden="true">`+
+    `<g stroke="#4f9a5f" stroke-width="2" stroke-linecap="round" fill="none"><path d="M40 90L40 28M40 90L24 34M40 90L56 34M40 90L30 20M40 90L50 20"/></g>`+
+    `<ellipse cx="14" cy="40" rx="9" ry="4" transform="rotate(-30 14 40)" fill="#5fae72"/><ellipse cx="66" cy="40" rx="9" ry="4" transform="rotate(30 66 40)" fill="#5fae72"/>`+
+    `<circle cx="14" cy="22" r="1.6" fill="#fff"/><circle cx="18" cy="17" r="1.4" fill="#fff"/><circle cx="66" cy="22" r="1.6" fill="#fff"/><circle cx="62" cy="17" r="1.4" fill="#fff"/><circle cx="40" cy="8" r="1.5" fill="#fff"/>`+
+    daisy(24,32,9,'#ffd6e8','#ffc928')+daisy(56,32,9,'#fff','#ffc928')+daisy(30,18,7,'#ffd23f','#c9790a')+daisy(50,18,7,'#ff9ec7','#ffd23f')+rose(40,27,11)+
+    `<path d="M10 46L70 46L47 92Q40 96 33 92Z" fill="#ffb3cf" stroke="#e58aae" stroke-width="1.2" stroke-linejoin="round"/>`+
+    `<path d="M18 52L62 52L45 91L35 91Z" fill="#fff0f6" stroke="#f1b7d0" stroke-width="1"/><path d="M30 52L37 90M50 52L43 90" stroke="#f1b7d0" stroke-width=".8" fill="none"/>`+
+    `<path d="M40 64q-13-9-15 0q2 8 15 0zM40 64q13-9 15 0q-2 8-15 0z" fill="#e23b62" stroke="#b02848" stroke-width=".8"/><circle cx="40" cy="64" r="3" fill="#c42a50"/><path d="M38 66l-5 12M42 66l5 12" stroke="#e23b62" stroke-width="2.4" stroke-linecap="round"/>`+
+    `<circle cx="20" cy="58" r="6" fill="#2b2b30"/><circle cx="60" cy="58" r="6" fill="#2b2b30"/><ellipse cx="25" cy="52.5" rx="2.4" ry="3.4" transform="rotate(-25 25 52.5)" fill="#2b2b30"/><ellipse cx="55" cy="52.5" rx="2.4" ry="3.4" transform="rotate(25 55 52.5)" fill="#2b2b30"/>`+
+    `</svg>`;
+}
+
+let pkTemp = [], pkAnims = [];
+const PK_BANANA = '<path d="M7 9C6 25 17 36 33 31C36 30 36.5 27.5 33.5 27.6C21 28 13 20 12.5 8C12.3 5 7.4 5.5 7 9Z" fill="#ffd93b" stroke="#c99a00" stroke-width="1.6" stroke-linejoin="round"/><path d="M11 10C12 21 19 28 31 29" fill="none" stroke="#fff3a6" stroke-width="1.6" stroke-linecap="round" opacity=".85"/><path d="M8 7.5C8 5 11.5 4 12.2 7" fill="#7a5316" stroke="#5a3b0d" stroke-width="1"/><circle cx="34.2" cy="29.2" r="1.9" fill="#5a3b0d"/>';
+
+/* Lintasan lemparan: parabola sungguhan (naik lalu melambat), membesar saat mendekat ke layar, berputar, lalu memudar */
+function pkArcKeys(o) {
+  const N = 30, kf = [];
+  const f = o.fade || .85;
+  for (let i = 0; i <= N; i++) {
+    const t = i/N;
+    const x = o.dx*t+(o.sway || 0)*Math.sin(t*Math.PI*2);
+    const y = -o.a*t+o.b*t*t;
+    const s = 1+(o.s1-1)*Math.pow(t,o.sp || 1.6);
+    const r = (o.r0 || 0)+o.rot*(1-Math.pow(1-t,o.re || 1));
+    const op = t <= f ? 1 : Math.max(0,1-(t-f)/(1-f));
+    kf.push({transform:`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${r.toFixed(1)}deg) scale(${s.toFixed(3)})`,opacity:op.toFixed(3)});
+  }
+  return kf;
+}
+
+function pkCleanup() {
+  pkTemp.forEach(e => e.remove());
+  pkTemp = [];
+  pkAnims.forEach(a => { try { a.cancel(); } catch {} });
+  pkAnims = [];
+  document.querySelectorAll('#pkMinions .mn').forEach(m => { m.style.zIndex = ''; });
+  document.querySelectorAll('#pkMinions .mn-ban').forEach(b => b.remove());
+}
+
+function pkAbortGive() {
+  pkGiveToken++;
+  if (pkGiveEl) { pkGiveEl.remove(); pkGiveEl = null; }
+  pkCleanup();
+  $('bubuPeekStage').classList.remove('giving');
+}
+
+async function pkPlayGive(onReveal) {
+  const token = ++pkGiveToken;
+  const alive = () => token === pkGiveToken;
+  const stage = $('bubuPeekStage');
+  pkCleanup();
+  const ov = document.createElement('div');
+  ov.className = 'pk-give';
+  ov.innerHTML = '<div class="pk-gm">'+pkMinionSvg(9,PK_GIVER)+'</div><div class="pk-bq">'+pkBouquetSvg()+'</div><div class="pk-bub">wupyu</div>';
+  stage.appendChild(ov);
+  pkGiveEl = ov;
+  stage.classList.add('giving');
+
+  const giver = ov, bq = ov.querySelector('.pk-bq'), bub = ov.querySelector('.pk-bub');
+  const armL = ov.querySelector('.mn-al'), armR = ov.querySelector('.mn-ar');
+  const go = (el,kf,o) => {
+    const a = el.animate(kf,Object.assign({fill:'forwards',easing:'ease-out'},o));
+    pkAnims.push(a);
+    return a.finished.catch(() => {});
+  };
+  const free = (el,kf,o) => el.animate(kf,Object.assign({fill:'forwards',easing:'ease-out'},o)).finished.catch(() => {});
+  const fx = (txt,dx,dy,s,rot,dur,delay,px,py) => {
+    const e = document.createElement('i');
+    e.className = 'pk-fx';
+    e.textContent = txt;
+    if (px !== undefined) { e.style.left = px+'px'; e.style.top = py+'px'; }
+    stage.appendChild(e);
+    free(e,[{transform:'translate(-50%,-50%) scale(.3) rotate(0deg)',opacity:0},{opacity:1,offset:.2},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(${s}) rotate(${rot}deg)`,opacity:0}],{duration:dur,delay:delay || 0,easing:'cubic-bezier(.2,.7,.3,1)'}).then(() => e.remove());
+  };
+  const flash = (px,py,sc,rgb) => {
+    const e = document.createElement('i');
+    e.className = 'pk-flash';
+    e.style.cssText = `left:${px}px;top:${py}px;--fc:${rgb || '255,182,213'}`;
+    stage.appendChild(e);
+    free(e,[{opacity:.95,transform:'scale(.3)'},{opacity:.7,transform:`scale(${sc*.55})`,offset:.35},{opacity:0,transform:`scale(${sc})`}],{duration:520}).then(() => e.remove());
+  };
+  const centerOf = el => {
+    const r = el.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+    return {x:r.left+r.width/2-sr.left,y:r.top+r.height/2-sr.top};
+  };
+  const makeFlyer = (c,w,h,inner) => {
+    const el = document.createElement('div');
+    el.className = 'pk-fly';
+    el.style.cssText = `left:${(c.x-w/2).toFixed(1)}px;top:${(c.y-h/2).toFixed(1)}px;width:${w}px;height:${h}px`;
+    el.innerHTML = inner;
+    stage.appendChild(el);
+    pkTemp.push(el);
+    return el;
+  };
+
+  /* Pisang: 3 lemparan dari tiap minion di samping (lengan luar), bergantian kiri-kanan */
+  const BAN_P = [
+    {dx:28,a:165,b:120,s:3.4,rot:540},
+    {dx:58,a:195,b:135,s:4.0,rot:720},
+    {dx:10,a:150,b:105,s:3.1,rot:420}
+  ];
+  const sideThrow = async (idx,dir,delay) => {
+    const m = $('pkMinions').children[idx];
+    if (!m) return;
+    const arm = m.querySelector(dir < 0 ? '.mn-al' : '.mn-ar');
+    const all = m.querySelector('.mn-all');
+    if (!arm || !all) return;
+    const held = document.createElementNS('http://www.w3.org/2000/svg','g');
+    held.setAttribute('class','mn-ban');
+    held.setAttribute('transform',dir < 0
+      ? 'translate(1.8 44) rotate(-25) scale(.42) translate(-20 -22)'
+      : 'translate(38.2 44) rotate(25) scale(-.42 .42) translate(-20 -22)');
+    held.style.opacity = '0';
+    held.innerHTML = PK_BANANA;
+    arm.appendChild(held);
+
+    let lastFlight = Promise.resolve();
+    await pkSleep(delay); if (!alive()) return;
+    for (let k = 0; k < 3; k++) {
+      const A = -dir*155;
+      held.style.opacity = '1';
+      /* ancang-ancang: lengan terangkat, badan condong ke belakang */
+      go(arm,[{transform:'rotate(0deg)'},{transform:`rotate(${A}deg)`}],{duration:240,easing:'cubic-bezier(.2,.8,.3,1)'});
+      go(all,[{transform:'rotate(0deg)'},{transform:`rotate(${dir*7}deg)`}],{duration:240});
+      await pkSleep(260); if (!alive()) return;
+      /* lempar: lengan menyapu ke depan, badan condong ke depan */
+      go(arm,[{transform:`rotate(${A}deg)`},{transform:`rotate(${-dir*18}deg)`}],{duration:150,easing:'cubic-bezier(.5,0,.9,.6)'});
+      go(all,[{transform:`rotate(${dir*7}deg)`},{transform:`rotate(${-dir*6}deg)`}],{duration:150});
+      await pkSleep(105); if (!alive()) return;
+      /* pisang lepas dari tangan */
+      const c = centerOf(held);
+      held.style.opacity = '0';
+      const P = BAN_P[k];
+      const fly = makeFlyer(c,20,20,'<svg viewBox="0 0 40 40" aria-hidden="true">'+PK_BANANA+'</svg>');
+      const dx = -dir*P.dx;
+      const anim = fly.animate(pkArcKeys({dx,a:P.a,b:P.b,s1:P.s,sp:1.5,r0:-dir*20,rot:-dir*P.rot,re:1,fade:.8,sway:2}),{duration:900,easing:'linear',fill:'forwards'});
+      const px = c.x+dx, py = c.y-P.a+P.b;
+      lastFlight = anim.finished.catch(() => {}).then(() => {
+        fly.remove();
+        if (!alive()) return;
+        flash(px,py,2.3,'255,226,90');
+        ['✨','🍌','✨'].forEach((t,i) => fx(t,(i-1)*36,-18-i%2*14,1.15,(i-1)*60,620,0,px,py));
+      });
+      await pkSleep(60); if (!alive()) return;
+      /* tangan turun lagi */
+      go(arm,[{transform:`rotate(${-dir*18}deg)`},{transform:'rotate(0deg)'}],{duration:260});
+      go(all,[{transform:`rotate(${-dir*6}deg)`},{transform:'rotate(0deg)'}],{duration:260});
+      await pkSleep(k < 2 ? 295 : 260); if (!alive()) return;
+    }
+    await lastFlight;
+  };
+
+  /* 1. minion naik pelan dari balik tombol, di dalam halaman */
+  go(giver,[
+    {transform:'translate(0,52px) scale(.4)',opacity:0},
+    {opacity:1,offset:.12},
+    {transform:'translate(0,0) scale(1)',opacity:1}
+  ],{duration:750,easing:'cubic-bezier(.34,1.35,.5,1)'});
+  await pkSleep(780); if (!alive()) return;
+
+  /* 2. lompat kecil kaget senang + gelembung "wupyu" + karangan bunga muncul dari belakang punggung */
+  go(giver,[
+    {transform:'translate(0,0) scale(1,1)',opacity:1},
+    {transform:'translate(0,2px) scale(1.06,.94)',opacity:1,offset:.25},
+    {transform:'translate(0,-9px) scale(.96,1.05)',opacity:1,offset:.6},
+    {transform:'translate(0,0) scale(1.05,.95)',opacity:1,offset:.85},
+    {transform:'translate(0,0) scale(1,1)',opacity:1}
+  ],{duration:450});
+  go(bub,[{opacity:0,transform:'scale(0)'},{opacity:1,transform:'scale(1.15)',offset:.7},{opacity:1,transform:'scale(1)'}],{duration:350,delay:150,easing:'cubic-bezier(.34,1.5,.5,1)'});
+  go(bq,[
+    {opacity:0,transform:'translate(0,34px) scale(.45) rotate(-12deg)'},
+    {opacity:1,transform:'translate(0,0) scale(1.08) rotate(3deg)',offset:.75},
+    {opacity:1,transform:'translate(0,0) scale(1) rotate(0deg)'}
+  ],{duration:500,delay:200,easing:'cubic-bezier(.34,1.4,.5,1)'});
+  go(armL,[{transform:'rotate(0deg)'},{transform:'rotate(-44deg)'}],{duration:450,delay:200});
+  go(armR,[{transform:'rotate(0deg)'},{transform:'rotate(44deg)'}],{duration:450,delay:200});
+  await pkSleep(950); if (!alive()) return;
+
+  /* 3. menimang bunga sambil bergoyang pelan */
+  go(bq,[{transform:'rotate(0deg)'},{transform:'rotate(-3.5deg)'},{transform:'rotate(3.5deg)'},{transform:'rotate(0deg)'}],{duration:600,easing:'ease-in-out'});
+  go(giver,[{transform:'translate(0,0) rotate(0deg)'},{transform:'translate(0,-2px) rotate(-2deg)'},{transform:'translate(0,-2px) rotate(2deg)'},{transform:'translate(0,0) rotate(0deg)'}],{duration:600,easing:'ease-in-out'});
+  await pkSleep(550); if (!alive()) return;
+
+  /* 4. ancang-ancang: jongkok, badan miring ke belakang, bunga ditarik ke bawah-belakang */
+  go(giver,[{transform:'translate(0,0) rotate(0deg) scale(1,1)'},{transform:'translate(0,7px) rotate(-5deg) scale(1.07,.9)'}],{duration:340,easing:'cubic-bezier(.4,0,.3,1)'});
+  go(armL,[{transform:'rotate(-44deg)'},{transform:'rotate(-14deg)'}],{duration:340,easing:'cubic-bezier(.4,0,.3,1)'});
+  go(armR,[{transform:'rotate(44deg)'},{transform:'rotate(14deg)'}],{duration:340,easing:'cubic-bezier(.4,0,.3,1)'});
+  go(bq,[{transform:'translate(0,0) scale(1) rotate(0deg)'},{transform:'translate(-3px,13px) scale(.92) rotate(-9deg)'}],{duration:340,easing:'cubic-bezier(.4,0,.3,1)'});
+  go(bub,[{opacity:1},{opacity:0}],{duration:200});
+  await pkSleep(360); if (!alive()) return;
+
+  /* 5. lemparan: badan melesat naik, kedua lengan menyapu ke atas, bunga dilepas di puncak ayunan */
+  go(giver,[{transform:'translate(0,7px) rotate(-5deg) scale(1.07,.9)'},{transform:'translate(0,-14px) rotate(3deg) scale(.93,1.12)'}],{duration:230,easing:'cubic-bezier(.2,.8,.3,1)'});
+  go(armL,[{transform:'rotate(-14deg)'},{transform:'rotate(150deg)'}],{duration:230,easing:'cubic-bezier(.2,.8,.3,1)'});
+  go(armR,[{transform:'rotate(14deg)'},{transform:'rotate(-150deg)'}],{duration:230,easing:'cubic-bezier(.2,.8,.3,1)'});
+  go(bq,[{transform:'translate(-3px,13px) scale(.92) rotate(-9deg)'},{transform:'translate(2px,-46px) scale(1.08) rotate(8deg)'}],{duration:230,easing:'cubic-bezier(.2,.8,.3,1)'});
+  /* dua minion di samping bergeser keluar supaya kelihatan, siap-siap melempar pisang */
+  [[0,-30],[2,30]].forEach(([i,px]) => {
+    const m = $('pkMinions').children[i];
+    if (!m) return;
+    m.style.zIndex = '2';
+    go(m,[{translate:'0px 0px'},{translate:`${px}px 0px`}],{duration:420,easing:'cubic-bezier(.34,1.4,.5,1)'});
+  });
+  await pkSleep(215); if (!alive()) return;
+
+  /* bunga lepas: terbang sebagai benda sendiri (tidak ikut gerak badan minion) */
+  const bc = centerOf(bq);
+  const flyer = makeFlyer(bc,bq.offsetWidth,bq.offsetHeight,bq.innerHTML);
+  bq.style.visibility = 'hidden';
+  const BQ = {dx:16,a:215,b:135};
+  const flight = flyer.animate(pkArcKeys({dx:BQ.dx,a:BQ.a,b:BQ.b,s1:4.6,sp:1.9,r0:8,rot:230,re:2,fade:.86,sway:3}),{duration:1050,easing:'linear',fill:'forwards'});
+  go(giver,[{transform:'translate(0,-14px) rotate(3deg) scale(.93,1.12)'},{transform:'translate(0,0) rotate(0deg) scale(1.05,.96)',offset:.45},{transform:'translate(0,-2px) rotate(0deg) scale(1,1)'}],{duration:520});
+  await pkSleep(480); if (!alive()) return;
+  go(armL,[{transform:'rotate(150deg)'},{transform:'rotate(112deg)'}],{duration:350,easing:'ease-in-out'});
+  go(armR,[{transform:'rotate(-150deg)'},{transform:'rotate(-112deg)'}],{duration:350,easing:'ease-in-out'});
+  await flight.finished.catch(() => {}); if (!alive()) return;
+
+  /* 6. bunga mengenai layar: kilatan + kelopak berjatuhan, amplop muncul */
+  const px = bc.x+BQ.dx, py = bc.y-BQ.a+BQ.b;
+  flyer.remove();
+  onReveal();
+  flash(px,py,3.4);
+  ['🌸','🌷','🌼','💮','🌸','🌷','♡','🌼','🌸','♡'].forEach((t,i) => {
+    const a = (i/10)*Math.PI*2+.3;
+    fx(t,Math.round(Math.cos(a)*(60+i%3*28)),Math.round(Math.sin(a)*(50+i%2*24)+34),1.5+i%3*.4,(i%2?1:-1)*(120+i*20),1000+i%4*150,0,px,py);
+  });
+  go(armL,[{transform:'rotate(112deg)'},{transform:'rotate(0deg)'}],{duration:320});
+  go(armR,[{transform:'rotate(-112deg)'},{transform:'rotate(0deg)'}],{duration:320});
+
+  /* 7. dua minion di samping melempar pisang 3 kali, minion tengah menyemangati */
+  const sides = Promise.all([sideThrow(0,-1,150),sideThrow(2,1,330)]);
+  for (let k = 0; k < 3; k++) {
+    go(giver,[
+      {transform:'translate(0,0) scale(1,1)'},
+      {transform:'translate(0,2px) scale(1.05,.95)',offset:.2},
+      {transform:'translate(0,-9px) scale(.96,1.05)',offset:.55},
+      {transform:'translate(0,0) scale(1.04,.96)',offset:.85},
+      {transform:'translate(0,0) scale(1,1)'}
+    ],{duration:480});
+    fx('💗',(k-1)*34,-120-k*10,1.1,(k%2?1:-1)*25,1100,0);
+    await pkSleep(720); if (!alive()) return;
+  }
+  await sides; if (!alive()) return;
+
+  /* 8. minion samping kembali ke tempat, minion tengah melambai */
+  [[0,-30],[2,30]].forEach(([i,px2]) => {
+    const m = $('pkMinions').children[i];
+    if (m) go(m,[{translate:`${px2}px 0px`},{translate:'0px 0px'}],{duration:420,easing:'cubic-bezier(.34,1.2,.5,1)'});
+  });
+  go(armR,[0,-138,-112,-140,-112,-136,0].map(d => ({transform:`rotate(${d}deg)`})),{duration:900,easing:'ease-in-out'});
+  ['💗','💗','♡','💗'].forEach((t,i) => fx(t,(i-1.5)*34,-120-i*16,1.1,(i%2?1:-1)*25,1100,i*160));
+  await pkSleep(900); if (!alive()) return;
+
+  /* 9. turun lagi ke balik tombol */
+  go(giver,[
+    {transform:'translate(0,0) scale(1)',opacity:1},
+    {transform:'translate(0,-6px) scale(1.03)',opacity:1,offset:.2},
+    {transform:'translate(0,52px) scale(.4)',opacity:0}
+  ],{duration:520,easing:'cubic-bezier(.5,0,.75,.4)'});
+  await pkSleep(520); if (!alive()) return;
+  pkAbortGive();
+  return true;
+}
+
+/* ---------- Animasi: bulan ditunggangi tokoh orisinal menabrak 3 minion ---------- */
+const pkRiderSvg = () => pkMinionSvg(12,{eyes:2,mouth:'grin',hair:4,wave:''});
+
+async function pkPlayMoon() {
+  const token = ++pkGiveToken;
+  const alive = () => token === pkGiveToken;
+  const stage = $('bubuPeekStage');
+  if (!stage || stage.hidden) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const mins = [...$('pkMinions').children];
+  if (mins.length < 3) return;
+  pkCleanup();
+  const go = (el,kf,o) => {
+    const a = el.animate(kf,Object.assign({fill:'forwards',easing:'linear'},o));
+    pkAnims.push(a);
+    return a.finished.catch(() => {});
+  };
+  const fx = (txt,px,py,dx,dy,dur,s) => {
+    const e = document.createElement('i');
+    e.className = 'pk-fx';
+    e.textContent = txt;
+    e.style.left = px+'px'; e.style.top = py+'px';
+    stage.appendChild(e);
+    e.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:0},{opacity:1,offset:.2},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(${s || 1.2})`,opacity:0}],{duration:dur,easing:'cubic-bezier(.2,.7,.3,1)',fill:'forwards'}).finished.catch(() => {}).then(() => e.remove());
+  };
+
+  /* bulan + penunggang */
+  const moon = document.createElement('div');
+  moon.className = 'pk-moon';
+  moon.style.opacity = '0';
+  moon.innerHTML = '<div class="pk-moon-d"><i style="left:10px;top:12px;width:16px;height:16px"></i><i style="left:34px;top:30px;width:20px;height:20px"></i><i style="left:14px;top:38px;width:9px;height:9px"></i><i style="left:40px;top:10px;width:8px;height:8px"></i></div>'+
+    '<div class="pk-rider">'+pkRiderSvg()+'</div>';
+  stage.appendChild(moon);
+  pkTemp.push(moon);
+  const disc = moon.querySelector('.pk-moon-d'), rider = moon.querySelector('.pk-rider');
+
+  /* 1. minion sadar ada yang datang: kaget */
+  mins.forEach((m,i) => {
+    const hx = 110+[-19,0,19][i];
+    fx('❗',hx,12,0,-10,800,1.3);
+    go(m,[{translate:'0px 0px'},{translate:'0px -9px',offset:.3},{translate:'0px 0px',offset:.6},{translate:'0px -4px',offset:.8},{translate:'0px 0px'}],{duration:520,delay:i*70,easing:'ease-out'});
+  });
+  await pkSleep(620); if (!alive()) return;
+
+  /* 2. bulan melaju dari kiri; berguling sesuai jarak tempuh (r = 30px) */
+  const D = 2100, stops = [[0,-60],[.27,44],[.37,66],[.47,92],[1,290]];
+  const rotOf = x => x*(180/Math.PI/30);
+  moon.style.opacity = '1';
+  go(moon,stops.map(([o,x]) => ({transform:`translate(${x}px,0)`,offset:o})),{duration:D});
+  go(disc,stops.map(([o,x]) => ({transform:`rotate(${rotOf(x).toFixed(1)}deg)`,offset:o})),{duration:D});
+  go(rider,[{rotate:'-5deg',translate:'0 0'},{rotate:'5deg',translate:'0 -1.5px'},{rotate:'-5deg',translate:'0 0'}],{duration:420,iterations:Math.ceil(D/420),easing:'ease-in-out'});
+  rider.classList.add('laugh');
+  [0,.12,.24].forEach((o,i) => setTimeout(() => { if (alive()) fx('💨',20,68+i*6,-26,0,520,1.3); },D*o));
+
+  /* 3. tiga tabrakan beruntun, tiap minion terlempar dengan arah & putaran berbeda */
+  const HX = [91,110,129], DX = [14,58,82], H = [-60,-84,-100], SP = [360,-720,720], HT = [.27,.365,.46];
+  const flights = mins.map((m,i) => (async () => {
+    await pkSleep(D*HT[i]); if (!alive()) return;
+    m.style.zIndex = '4';
+    const dx = DX[i], h = H[i], sp = SP[i], sg = sp < 0 ? -1 : 1;
+    if (i === 0) {
+      rider.classList.remove('laugh'); rider.classList.add('oh');
+    }
+    fx('💥',HX[i]-12,58,-10,-14,520,1.7);
+    ['⭐','✨','⭐'].forEach((t,k) => fx(t,HX[i],54,(k-1)*30,-30-k%2*16,700,1.1));
+    go(stage,[{translate:'0 0'},{translate:`${-3+i}px 2px`,offset:.2},{translate:'3px -2px',offset:.45},{translate:'-2px 1px',offset:.7},{translate:'0 0'}],{duration:300});
+    go(rider,[{transform:'rotate(0deg)'},{transform:'rotate(24deg) translateY(2px)',offset:.3},{transform:'rotate(-10deg)',offset:.65},{transform:'rotate(0deg)'}],{duration:650,easing:'ease-out'});
+    await go(m,[
+      {translate:'0px 0px',rotate:'0deg',scale:'1 1',transformOrigin:'50% 100%',offset:0,easing:'ease-out'},
+      {translate:'2px 0px',rotate:'0deg',scale:'1.32 .68',transformOrigin:'50% 70%',offset:.07,easing:'cubic-bezier(.15,.75,.35,1)'},
+      {translate:`${dx*.55}px ${h}px`,rotate:`${sp*.55}deg`,scale:'.92 1.12',transformOrigin:'50% 55%',offset:.38,easing:'cubic-bezier(.55,0,.9,.55)'},
+      {translate:`${dx}px 0px`,rotate:`${sp}deg`,scale:'1 1',transformOrigin:'50% 55%',offset:.64,easing:'ease-out'},
+      {translate:`${dx}px 0px`,rotate:`${sp}deg`,scale:'1.3 .7',transformOrigin:'50% 70%',offset:.7,easing:'ease-out'},
+      {translate:`${dx+6}px ${(h*.18).toFixed(0)}px`,rotate:`${sp+sg*14}deg`,scale:'.96 1.06',transformOrigin:'50% 55%',offset:.83,easing:'ease-in'},
+      {translate:`${dx+9}px 0px`,rotate:`${sp}deg`,scale:'1.16 .84',transformOrigin:'50% 70%',offset:.93,easing:'ease-out'},
+      {translate:`${dx+9}px 0px`,rotate:`${sp}deg`,scale:'1 1',transformOrigin:'50% 55%',offset:1}
+    ],{duration:1350});
+    if (!alive()) return;
+    /* pusing: bintang berputar di atas kepala + goyang */
+    const lx = HX[i]+dx+9;
+    ['💫','⭐','💫'].forEach((t,k) => fx(t,lx+(k-1)*14,24+k%2*4,(k-1)*8,-12,900,1));
+    go(m,[
+      {translate:`${dx+9}px 0px`,rotate:`${sp}deg`},
+      {translate:`${dx+9}px 0px`,rotate:`${sp+9}deg`,offset:.25},
+      {translate:`${dx+9}px 0px`,rotate:`${sp-9}deg`,offset:.5},
+      {translate:`${dx+9}px 0px`,rotate:`${sp+5}deg`,offset:.75},
+      {translate:`${dx+9}px 0px`,rotate:`${sp}deg`}
+    ],{duration:560,easing:'ease-in-out'});
+    await pkSleep(620 + i*90); if (!alive()) return;
+    /* kembali ke posisi semula dengan loncat-loncat kecil */
+    const e = dx+9;
+    await go(m,[
+      {translate:`${e}px 0px`,rotate:`${sp}deg`,scale:'1 1',transformOrigin:'50% 55%',offset:0,easing:'ease-out'},
+      {translate:`${e*.72}px -20px`,rotate:`${sp}deg`,scale:'.95 1.08',offset:.2,easing:'ease-in'},
+      {translate:`${e*.55}px 0px`,rotate:`${sp}deg`,scale:'1.2 .8',offset:.38,easing:'ease-out'},
+      {translate:`${e*.3}px -14px`,rotate:`${sp}deg`,scale:'.97 1.05',offset:.58,easing:'ease-in'},
+      {translate:`${e*.12}px 0px`,rotate:`${sp}deg`,scale:'1.15 .85',offset:.76,easing:'ease-out'},
+      {translate:'0px -7px',rotate:`${sp}deg`,scale:'1 1',offset:.9,easing:'ease-in'},
+      {translate:'0px 0px',rotate:`${sp}deg`,scale:'1.1 .9',transformOrigin:'50% 100%',offset:1}
+    ],{duration:1000});
+    if (!alive()) return;
+    fx('♡',HX[i],16,0,-22,800,1.1);
+  })());
+
+  /* 4. penunggang minta maaf sambil lewat */
+  await pkSleep(D*.62); if (!alive()) return;
+  rider.classList.remove('oh'); rider.classList.add('laugh');
+  await pkSleep(D*.38+80); if (!alive()) return;
+  moon.remove();
+  await Promise.all(flights); if (!alive()) return;
+  await pkSleep(260); if (!alive()) return;
+  pkAbortGive();
+}
+
+/* Simpan ke database (Supabase user_metadata) */
+function peekSave() {
+  clearTimeout(peekSaveTimer);
+  peekSaveTimer = setTimeout(async () => {
+    peekSaveTimer = 0;
+    let uid = '';
+    try { uid = currentUserId; } catch {}
+    if (!uid) return;
+    peekSaving = true;
+    try {
+      const { error } = await supabaseClient.auth.updateUser({data:{env_hidden:peekHidden}});
+      if (error) throw error;
+      notifyProfileChange();
+    } catch (error) {
+      showToast('Pengaturan amplop belum tersimpan: '+((error && error.message) || 'coba lagi.'),{duration:4000});
+    } finally {
+      peekSaving = false;
+    }
+  },500);
+}
+
+/* Dipanggil saat data akun dimuat / berubah dari perangkat lain */
+function applyPeekMeta(m) {
+  if (peekSaveTimer || peekSaving) return;
+  const value = m && typeof m.env_hidden === 'boolean' ? m.env_hidden : true;
+  if (peekInit && value === peekHidden) return;
+  peekInit = true;
+  peekHidden = value;
+  peekApply(false);
+}
+
+function resetPeek() {
+  clearTimeout(peekSaveTimer);
+  peekSaveTimer = 0;
+  peekInit = false;
+  peekHidden = true;
+  peekApply(false);
+}
+
+$('bubuPeek').addEventListener('click',() => {
+  const wasGiving = !!pkGiveEl;
+  pkAbortGive();
+  peekHidden = !peekHidden;
+  peekInit = true;
+  peekSave();
+  peekBurst($('bubuPeek'));
+  if (peekHidden) { peekApply(true); return; }
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || wasGiving) { peekApply(true); return; }
+  peekLabel();
+  pkPlayGive(() => { if (!peekHidden) peekApply(true); }).then(done => { if (done && !peekHidden) pkPlayMoon(); });
+});
+
+(function peekWatch() {
+  const home = $('bubuHome'), stage = $('bubuPeekStage');
+  pkBuildMinions();
+  try { if (document.fonts && document.fonts.load) document.fonts.load('700 20px "Fredoka"'); } catch {}
+  const sync = () => { stage.hidden = !home.children.length; };
+  new MutationObserver(sync).observe(home,{childList:true});
+  sync();
+  peekApply(false);
+})();
+
 /* Inisialisasi */
 buildHearts();
 loadWallpaperPrefs();
@@ -7305,6 +8317,7 @@ async function startSync(session) {
     subscribeRealtime();
     refreshAfterMutation();
     resolvePhotoUrls();
+    if (typeof hvLoadVideos === 'function') hvLoadVideos();
     setSyncStatus('Tersinkron ✓');
     scheduleSync(150);
   } catch (error) {
@@ -7328,6 +8341,7 @@ function stopSync() {
   unsubscribeRealtime();
   unsubscribeProfileChannel();
   profileFreshUid = '';
+  if (typeof hvReset === 'function') hvReset();
   if (!currentUserId && !notes.length) return;
 
   currentUserId = null;
@@ -7873,6 +8887,9 @@ function applyProfileMeta(meta,uid) {
   if (uid) applyBubuMeta(m,profileFreshUid === uid);
   else resetBubu();
 
+  if (uid) applyPeekMeta(m);
+  else resetPeek();
+
   if (m.theme === 'dark' || m.theme === 'light') {
     if ((m.theme === 'dark') !== document.body.classList.contains('dark-theme')) applyTheme(m.theme,false);
   }
@@ -7930,6 +8947,7 @@ function notifyProfileChange() {
   } catch {}
 }
 
+let homeBooted = false;
 /* Tampilkan / sembunyikan aplikasi sesuai sesi, sekaligus isi email profil */
 function applySession(session,event) {
   if (suppressSession && session) return;
@@ -7961,10 +8979,15 @@ function applySession(session,event) {
   if (session) {
     loginScreen.classList.add('hidden');
     document.body.classList.remove('login-active');
+    if (!homeBooted) {
+      homeBooted = true;
+      if (!showingBubu) { trackTab('home'); openBubuPage(); }
+    }
     setTimeout(() => startSync(session),0);
   } else {
     closeContact();
     tabTrail.splice(0,tabTrail.length,'all');
+    homeBooted = false;
     loginScreen.classList.remove('hidden');
     document.body.classList.add('login-active');
     stopSync();
@@ -8234,6 +9257,1251 @@ signOutButton.addEventListener('click',async () => {
     profileMessage.textContent = 'Gagal keluar: ' + (error.message || 'coba lagi.');
   } finally {
     signOutButton.disabled = false;
+  }
+});
+
+/* ===== Beranda: pemutar video + riwayat tonton (disimpan di Supabase) ===== */
+const HV_TABLE = 'unsent_videos';
+const HV_HIST = 'unsent_video_history';
+const HV_BUCKET = 'user-videos';
+const HV_MAX_MB = 50;
+const HV_URL_TTL = 6*60*60;
+const HV_FLUSH_MS = 10000;
+const HV_RESUME_MS = 30*60*1000;
+
+let hvVideos = [];
+let hvCurId = '';
+let hvMountedId = '';
+let hvMountToken = 0;
+let hvLoaded = false;
+let hvLoading = false;
+let hvLoadedAt = 0;
+let hvWarned = false;
+let hvHistWarned = false;
+let hvSeg = null;
+let hvHistBusy = false;
+let hvHistNoFrom = false;
+let hvHistRetry = 0;
+let hvPseudo = null;
+let hvMode = 'file';
+let hvPickedFile = null;
+let hvBusy = false;
+let hvEl = null;
+let hvYT = null;
+let hvYTPoll = 0;
+let hvYTApi = null;
+let historyOpen = false;
+let hvUpload = null;
+const hvUrlCache = new Map();
+let hvCtlTimer = 0;
+let hvUpTimer = 0;
+let hvRenameId = null;
+
+function hvNewId() { return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+function hvFmt(sec) {
+  sec = Math.max(0,Math.round(Number(sec) || 0));
+  const h = Math.floor(sec/3600);
+  const m = Math.floor(sec%3600/60);
+  const r = sec%60;
+  const two = n => String(n).padStart(2,'0');
+  return h ? `${h}:${two(m)}:${two(r)}` : `${m}:${two(r)}`;
+}
+
+function hvErr(error) {
+  const m = (error && error.message) || 'coba lagi';
+  if (/does not exist|schema cache|could not find the table/i.test(m)) return 'tabel video belum dibuat di Supabase (jalankan file SQL-nya dulu)';
+  if (/bucket not found/i.test(m)) return `bucket "${HV_BUCKET}" belum dibuat di Supabase`;
+  if (/exceeded the maximum allowed size|payload too large/i.test(m)) return 'file terlalu besar untuk batas Supabase kamu';
+  return m;
+}
+
+function hvYouTubeId(raw) {
+  try {
+    const u = new URL(String(raw).trim());
+    const host = u.hostname.replace(/^www\.|^m\./,'');
+    let id = '';
+    if (host === 'youtu.be') id = u.pathname.slice(1).split('/')[0];
+    else if (host === 'youtube.com' || host === 'music.youtube.com' || host === 'youtube-nocookie.com') {
+      if (u.pathname === '/watch') id = u.searchParams.get('v') || '';
+      else {
+        const m = u.pathname.match(/^\/(?:embed|shorts|live|v)\/([\w-]{11})/);
+        if (m) id = m[1];
+      }
+    }
+    return /^[\w-]{11}$/.test(id) ? id : '';
+  } catch { return ''; }
+}
+
+/* ---------- Daftar video ---------- */
+async function hvLoadVideos() {
+  if (!currentUserId || hvLoading) return;
+  hvLoading = true;
+  try {
+    const { data, error } = await supabaseClient.from(HV_TABLE).select('*')
+      .eq('user_id',currentUserId).order('created_at',{ascending:false});
+    if (error) throw error;
+    const pending = hvVideos.filter(v => v._up);
+    hvVideos = [...pending,...(data || []).filter(d => !pending.some(p => p.id === d.id))];
+    hvLoaded = true;
+    hvLoadedAt = Date.now();
+    if (!hvVideos.some(v => v.id === hvCurId)) hvCurId = hvVideos.length ? hvVideos[0].id : '';
+  } catch (error) {
+    hvLoaded = false;
+    if (!hvWarned) {
+      hvWarned = true;
+      showToast('Gagal memuat video: '+hvErr(error),{duration:5000});
+    }
+  } finally {
+    hvLoading = false;
+    hvRender();
+  }
+}
+
+function hvShowEmpty() {
+  const wrap = $('hvStageWrap');
+  wrap.replaceChildren();
+  const box = document.createElement('div');
+  box.className = 'hv-empty';
+  if (hvLoading) {
+    box.textContent = 'Memuat video...';
+  } else if (hvLoaded || !currentUserId) {
+    box.classList.add('act');
+    box.setAttribute('role','button');
+    box.tabIndex = 0;
+    box.setAttribute('aria-label','Tambah video');
+    box.innerHTML = '<span class="hv-empty-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><b>Belum ada video</b><small>Ketuk untuk menambah dari file atau link</small>';
+    box.addEventListener('click',openHvAdd);
+    box.addEventListener('keydown',e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openHvAdd(); } });
+  } else {
+    box.textContent = 'Video belum bisa dimuat. Pastikan tabel Supabase sudah dibuat, lalu buka Beranda lagi.';
+  }
+  wrap.appendChild(box);
+  $('hvNote').textContent = '';
+}
+
+function hvRender() {
+  const cur = hvVideos.find(v => v.id === hvCurId) || null;
+  $('hvTitle').textContent = cur ? cur.title : 'Video';
+  $('hvPenVideo').disabled = !cur;
+  if (!cur) hvSetTools(false);
+
+  const chips = $('hvChips');
+  chips.replaceChildren();
+  chips.hidden = hvVideos.length < 2;
+  hvVideos.forEach(v => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'hv-chip'+(v.id === hvCurId ? ' on' : '');
+    b.dataset.id = v.id;
+    b.textContent = v.title;
+    b.title = v.title;
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected',String(v.id === hvCurId));
+    chips.appendChild(b);
+  });
+
+  if (!cur) {
+    hvTeardown();
+    hvMountedId = '';
+    hvShowEmpty();
+  } else if (showingBubu && cur.id !== hvMountedId) {
+    hvMount(cur);
+  }
+}
+
+function hvOnShow() {
+  if (!currentUserId) { hvRender(); return; }
+  hvHistFlush();
+  if (!hvLoaded || Date.now()-hvLoadedAt > 60000) hvLoadVideos();
+  else hvRender();
+}
+
+/* Keluar dari Beranda / buka editor: jeda video dan akhiri sesi tonton */
+function hvLeave() {
+  try { if (hvEl) hvEl.pause(); } catch {}
+  try { if (hvYT && hvYT.pauseVideo) hvYT.pauseVideo(); } catch {}
+  hvYTStopPoll();
+  hvEndSession();
+}
+
+function hvReset() {
+  if (hvUpload) { try { hvUpload.abort(); } catch {} }
+  hvUpHide();
+  hvSetTools(false);
+  hvTeardown();
+  hvVideos = [];
+  hvCurId = '';
+  hvMountedId = '';
+  hvLoaded = false;
+  hvLoading = false;
+  hvWarned = false;
+  hvHistWarned = false;
+  hvUrlCache.clear();
+  if (historyOpen) closeHistory();
+  hvRender();
+}
+
+async function hvSignedUrl(path) {
+  const c = hvUrlCache.get(path);
+  if (c && c.exp > Date.now()+600000) return c.url;
+  const { data, error } = await supabaseClient.storage.from(HV_BUCKET).createSignedUrl(path,HV_URL_TTL);
+  if (error || !data) return '';
+  hvUrlCache.set(path,{url:data.signedUrl,exp:Date.now()+HV_URL_TTL*1000});
+  return data.signedUrl;
+}
+
+/* ---------- Pemutar ---------- */
+function hvReleaseBlob(item) {
+  if (item && item._blob && !item._up) {
+    try { URL.revokeObjectURL(item._blob); } catch {}
+    delete item._blob;
+  }
+}
+
+function hvTeardown() {
+  clearTimeout(hvCtlTimer);
+  hvPseudoOff();
+  try {
+    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fsEl && fsEl.classList.contains('hv-stage')) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  } catch {}
+  hvEndSession();
+  hvYTStopPoll();
+  hvMountToken++;
+  if (hvYT) { try { hvYT.destroy(); } catch {} hvYT = null; }
+  if (hvEl) {
+    try { hvEl.pause(); hvEl.removeAttribute('src'); hvEl.load(); } catch {}
+    hvEl = null;
+  }
+}
+
+async function hvMount(cur) {
+  hvTeardown();
+  const token = hvMountToken;
+  const prevId = hvMountedId;
+  hvMountedId = cur.id;
+  if (prevId && prevId !== cur.id) hvReleaseBlob(hvVideos.find(x => x.id === prevId));
+  const wrap = $('hvStageWrap');
+  wrap.replaceChildren();
+  $('hvNote').textContent = '';
+
+  if (cur.kind === 'youtube') { hvMountYouTube(cur,wrap,token); return; }
+
+  const stage = document.createElement('div');
+  stage.className = 'hv-stage';
+  const v = document.createElement('video');
+  v.controls = false;
+  v.playsInline = true;
+  v.setAttribute('playsinline','');
+  v.preload = 'metadata';
+  stage.appendChild(v);
+  wrap.appendChild(stage);
+  hvEl = v;
+  hvBuildPlayer(stage,v);
+
+  v.addEventListener('loadedmetadata',() => hvGotDuration(cur,v.duration));
+  v.addEventListener('playing',() => hvPlayStart(cur,v.currentTime,v.duration));
+  v.addEventListener('seeked',() => { if (!v.paused && !v.ended && !hvSeg) hvPlayStart(cur,v.currentTime,v.duration); });
+  v.addEventListener('seeking',() => hvSegClose());
+  v.addEventListener('timeupdate',() => { if (!v.seeking) hvSample(v.currentTime,v.duration); });
+  v.addEventListener('pause',() => hvPlayStop(v.currentTime,v.duration));
+  v.addEventListener('ended',() => hvPlayStop(v.duration,v.duration));
+  v.addEventListener('error',() => {
+    if (token === hvMountToken) $('hvNote').textContent = 'Video tidak bisa diputar. Cek link atau format filenya.';
+  });
+
+  let src = cur.src;
+  if (cur._blob) src = cur._blob;
+  else if (cur.kind === 'file') {
+    $('hvNote').textContent = 'Menyiapkan video...';
+    src = await hvSignedUrl(cur.src);
+    if (token !== hvMountToken) return;
+    if (!src) { $('hvNote').textContent = 'Gagal membuka file video. Coba buka Beranda lagi.'; return; }
+    $('hvNote').textContent = '';
+  }
+  v.src = src.includes('#') ? src : src+'#t=0.001';
+}
+
+/* ---------- Kontrol pemutar bertema ---------- */
+const HV_IC = {
+  play:'<svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/></svg>',
+  pause:'<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.4" fill="currentColor" stroke="none"/><rect x="13.5" y="5" width="4" height="14" rx="1.4" fill="currentColor" stroke="none"/></svg>',
+  replay:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.8-6.3"/><path d="M3.5 4v4.8h4.8"/></svg>',
+  expand:'<svg class="ic-expand" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+  shrink:'<svg class="ic-shrink" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>'
+};
+
+/* ---------- Layar penuh (API asli, atau layar penuh semu untuk iPhone) ---------- */
+function hvFsActive(stage) {
+  return (document.fullscreenElement || document.webkitFullscreenElement) === stage || !!(hvPseudo && hvPseudo.stage === stage);
+}
+function hvFsSync() {
+  document.querySelectorAll('.hv-stage').forEach(st => {
+    const on = hvFsActive(st);
+    st.classList.toggle('fs',on);
+    const b = st.querySelector('.hv-fs');
+    if (b) b.setAttribute('aria-label',on ? 'Perkecil layar' : 'Layar penuh');
+  });
+}
+function hvPseudoOn(stage,v) {
+  if (hvPseudo || !stage.parentNode) return;
+  const wasPlaying = v && !v.paused && !v.ended;
+  const holder = document.createComment('hv');
+  stage.parentNode.insertBefore(holder,stage);
+  document.body.appendChild(stage);
+  stage.classList.add('pseudo-fs');
+  document.body.classList.add('hv-pfs');
+  hvPseudo = {stage,holder};
+  if (wasPlaying && v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+  hvFsSync();
+}
+function hvPseudoOff() {
+  if (!hvPseudo) return;
+  const {stage,holder} = hvPseudo;
+  hvPseudo = null;
+  const v = stage.querySelector('video');
+  const wasPlaying = v && !v.paused && !v.ended;
+  if (holder.parentNode) { holder.parentNode.insertBefore(stage,holder); holder.remove(); }
+  stage.classList.remove('pseudo-fs');
+  document.body.classList.remove('hv-pfs');
+  if (wasPlaying && v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+  hvFsSync();
+}
+function hvEnterFs(stage,v) {
+  const req = stage.requestFullscreen || stage.webkitRequestFullscreen;
+  if (req) {
+    try {
+      const r = req.call(stage);
+      if (r && r.catch) r.catch(() => hvPseudoOn(stage,v));
+      return;
+    } catch {}
+  }
+  hvPseudoOn(stage,v);
+}
+function hvExitFs(stage) {
+  if (hvPseudo && hvPseudo.stage === stage) { hvPseudoOff(); return; }
+  const ex = document.exitFullscreen || document.webkitExitFullscreen;
+  if (ex) { try { const r = ex.call(document); if (r && r.catch) r.catch(() => {}); } catch {} }
+}
+document.addEventListener('fullscreenchange',hvFsSync);
+document.addEventListener('webkitfullscreenchange',hvFsSync);
+document.addEventListener('keydown',e => { if (e.key === 'Escape' && hvPseudo) hvPseudoOff(); });
+
+function hvBuildPlayer(stage,v) {
+  stage.classList.add('custom');
+  stage.tabIndex = 0;
+  stage.setAttribute('role','group');
+  stage.setAttribute('aria-label','Pemutar video');
+  stage.insertAdjacentHTML('beforeend',
+    '<div class="hv-spin"></div>'+
+    '<button class="hv-big" type="button" aria-label="Putar video">'+HV_IC.play+HV_IC.pause+'</button>'+
+    '<button class="hv-replay" type="button" aria-label="Putar ulang video">'+HV_IC.replay+'</button>'+
+    '<div class="hv-bar">'+
+      '<div class="hv-seek" role="slider" aria-label="Posisi video" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">'+
+        '<div class="hv-seek-track"><i class="hv-seek-buf"></i><i class="hv-seek-fill"></i></div><b class="hv-seek-thumb"></b>'+
+      '</div>'+
+      '<div class="hv-ctl-row">'+
+        '<span class="hv-time">0:00 / 0:00</span><span class="hv-sp"></span>'+
+        '<button class="hv-cbtn hv-fs" type="button" aria-label="Layar penuh">'+HV_IC.expand+HV_IC.shrink+'</button>'+
+      '</div>'+
+    '</div>');
+  const q = sel => stage.querySelector(sel);
+  const seek = q('.hv-seek'), fill = q('.hv-seek-fill'), buf = q('.hv-seek-buf'), thumb = q('.hv-seek-thumb'), time = q('.hv-time');
+  let dragging = false, dragT = 0, wantPlay = false;
+  const dur = () => (isFinite(v.duration) && v.duration > 0 ? v.duration : 0);
+  const clamp = r => Math.max(0,Math.min(1,r));
+  const hasSrc = () => !!(v.currentSrc || v.getAttribute('src'));
+
+  const paint = () => {
+    const d = dur();
+    const t = dragging ? dragT : (v.currentTime || 0);
+    const r = d ? clamp(t/d) : 0;
+    fill.style.width = (r*100)+'%';
+    thumb.style.left = (r*100)+'%';
+    time.textContent = hvFmt(t)+' / '+hvFmt(d);
+    seek.setAttribute('aria-valuenow',String(Math.round(r*100)));
+    try { if (d && v.buffered.length) buf.style.width = clamp(v.buffered.end(v.buffered.length-1)/d)*100+'%'; } catch {}
+  };
+  const sync = () => {
+    const playing = !v.paused && !v.ended;
+    stage.classList.toggle('playing',playing);
+    q('.hv-big').setAttribute('aria-label',playing ? 'Jeda video' : 'Putar video');
+  };
+  /* kontrol: selalu tampil saat dijeda; saat diputar bisa dimunculkan / disembunyikan dengan ketuk */
+  const showCtl = () => {
+    clearTimeout(hvCtlTimer);
+    stage.classList.remove('idle');
+    if (!v.paused && !v.ended && !dragging) hvCtlTimer = setTimeout(() => stage.classList.add('idle'),3000);
+  };
+  const hideCtl = () => {
+    clearTimeout(hvCtlTimer);
+    if (!v.paused && !v.ended) stage.classList.add('idle');
+  };
+  const tryPlay = () => {
+    const p = v.play();
+    if (p && p.catch) p.catch(err => {
+      stage.classList.remove('loading');
+      if (err && err.name !== 'AbortError') {
+        wantPlay = false;
+        if (err.name === 'NotAllowedError') $('hvNote').textContent = 'Ketuk tombol play sekali lagi.';
+      }
+    });
+  };
+  const toggle = () => {
+    if (!v.paused && !v.ended) { wantPlay = false; v.pause(); return; }
+    wantPlay = true;
+    if (!hasSrc()) { stage.classList.add('loading'); return; }   /* sumber video masih disiapkan: otomatis main begitu siap */
+    if (v.ended) { try { v.currentTime = 0; } catch {} }
+    tryPlay();
+  };
+  const fullscreen = () => { if (hvFsActive(stage)) hvExitFs(stage); else hvEnterFs(stage,v); };
+
+  ['play','playing','pause','ended'].forEach(ev => v.addEventListener(ev,() => { sync(); showCtl(); }));
+  ['loadedmetadata','canplay'].forEach(ev => v.addEventListener(ev,() => { if (wantPlay && v.paused) tryPlay(); }));
+  v.addEventListener('playing',() => { wantPlay = false; $('hvNote').textContent = ''; });
+  v.addEventListener('error',() => { wantPlay = false; });
+  ['timeupdate','durationchange','loadedmetadata','seeked','progress'].forEach(ev => v.addEventListener(ev,paint));
+  v.addEventListener('waiting',() => stage.classList.add('loading'));
+  v.addEventListener('seeking',() => { if (!v.paused) stage.classList.add('loading'); });
+  ['playing','canplay','loadedmetadata','seeked','pause','error'].forEach(ev => v.addEventListener(ev,() => { if (!wantPlay || ev === 'playing' || ev === 'error') stage.classList.remove('loading'); }));
+  stage.addEventListener('pointermove',e => { if (e.pointerType === 'mouse') showCtl(); });
+
+  /* ketuk video = munculkan / hilangkan tombol, BUKAN jeda */
+  stage.addEventListener('click',e => {
+    if (e.target.closest('.hv-bar') || e.target.closest('.hv-big')) return;
+    if (stage.classList.contains('idle') || v.paused || v.ended) showCtl();
+    else hideCtl();
+  });
+  q('.hv-big').addEventListener('click',e => { e.stopPropagation(); toggle(); });
+  q('.hv-fs').addEventListener('click',e => { e.stopPropagation(); fullscreen(); });
+  q('.hv-replay').addEventListener('click',e => {
+    e.stopPropagation();
+    wantPlay = true;
+    if (!hasSrc()) { stage.classList.add('loading'); return; }
+    try { v.currentTime = 0; } catch {}
+    tryPlay();
+    showCtl();
+  });
+
+  const ratioAt = e => { const r = seek.getBoundingClientRect(); return clamp((e.clientX-r.left)/(r.width || 1)); };
+  seek.addEventListener('pointerdown',e => {
+    if (!dur()) return;
+    dragging = true;
+    seek.classList.add('drag');
+    try { seek.setPointerCapture(e.pointerId); } catch {}
+    dragT = ratioAt(e)*dur();
+    clearTimeout(hvCtlTimer);
+    paint();
+    e.preventDefault();
+  });
+  seek.addEventListener('pointermove',e => { if (!dragging) return; dragT = ratioAt(e)*dur(); paint(); });
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    seek.classList.remove('drag');
+    try { v.currentTime = dragT; } catch {}
+    paint();
+    showCtl();
+  };
+  seek.addEventListener('pointerup',endDrag);
+  seek.addEventListener('pointercancel',endDrag);
+  const jump = sec => { const d = dur(); if (!d) return; try { v.currentTime = Math.max(0,Math.min(d,v.currentTime+sec)); } catch {} paint(); showCtl(); };
+  seek.addEventListener('keydown',e => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation(); jump(-5); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); e.stopPropagation(); jump(5); }
+  });
+  stage.addEventListener('keydown',e => {
+    if (e.target !== stage) return;
+    const k = e.key;
+    if (k === ' ' || k === 'Enter' || k === 'k') { e.preventDefault(); showCtl(); toggle(); }
+    else if (k === 'ArrowLeft') { e.preventDefault(); jump(-5); }
+    else if (k === 'ArrowRight') { e.preventDefault(); jump(5); }
+    else if (k === 'f') { fullscreen(); }
+  });
+  sync();
+  paint();
+}
+
+function hvLoadYT() {
+  if (window.YT && window.YT.Player) return Promise.resolve();
+  if (hvYTApi) return hvYTApi;
+  hvYTApi = new Promise((resolve,reject) => {
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { try { if (prev) prev(); } catch {} resolve(); };
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    tag.async = true;
+    tag.onerror = () => { hvYTApi = null; reject(new Error('YouTube tidak bisa dimuat')); };
+    document.head.appendChild(tag);
+  });
+  return hvYTApi;
+}
+
+async function hvMountYouTube(cur,wrap,token) {
+  const stage = document.createElement('div');
+  stage.className = 'hv-stage';
+  const host = document.createElement('div');
+  host.className = 'hv-yt';
+  stage.appendChild(host);
+  wrap.appendChild(stage);
+  $('hvNote').textContent = 'Memuat YouTube...';
+  try { await hvLoadYT(); }
+  catch {
+    if (token === hvMountToken) $('hvNote').textContent = 'Gagal memuat YouTube. Cek koneksi internet.';
+    return;
+  }
+  if (token !== hvMountToken) return;
+  $('hvNote').textContent = '';
+  const player = new window.YT.Player(host,{
+    videoId:cur.src,
+    width:'100%',
+    height:'100%',
+    playerVars:{playsinline:1,rel:0,modestbranding:1},
+    events:{
+      onReady:() => { try { hvGotDuration(cur,player.getDuration()); } catch {} },
+      onStateChange:event => {
+        if (token !== hvMountToken) return;
+        let pos = 0, dur = 0;
+        try { pos = player.getCurrentTime(); dur = player.getDuration(); } catch {}
+        if (event.data === 1) { hvGotDuration(cur,dur); hvPlayStart(cur,pos,dur); hvYTStartPoll(); }
+        else if (event.data === 2) { hvYTStopPoll(); hvPlayStop(pos,dur); }
+        else if (event.data === 0) { hvYTStopPoll(); hvPlayStop(dur,dur); }
+      },
+      onError:() => { if (token === hvMountToken) $('hvNote').textContent = 'Video YouTube ini tidak bisa diputar di sini.'; }
+    }
+  });
+  hvYT = player;
+}
+
+function hvYTStartPoll() {
+  clearInterval(hvYTPoll);
+  hvYTPoll = setInterval(() => {
+    try {
+      const pos = hvYT.getCurrentTime(), dur = hvYT.getDuration();
+      if (hvSeg && Math.abs(pos-hvSeg.last) > 4) hvSegSplit(pos,dur);
+      else hvSample(pos,dur);
+    } catch {}
+  },1000);
+}
+function hvYTStopPoll() { clearInterval(hvYTPoll); hvYTPoll = 0; }
+
+async function hvGotDuration(cur,dur) {
+  if (!isFinite(dur) || dur <= 0 || !currentUserId) return;
+  const r = Math.round(dur);
+  if (Math.round(cur.duration_sec || 0) === r) return;
+  cur.duration_sec = r;
+  try { await supabaseClient.from(HV_TABLE).update({duration_sec:r}).eq('user_id',currentUserId).eq('id',cur.id); } catch {}
+}
+
+/* ---------- Pencatatan riwayat tonton ----------
+   Setiap kali video diputar lalu dijeda / selesai / digeser / ditinggalkan, satu "potongan"
+   (dari detik A sampai detik B) langsung disimpan sebagai baris sendiri. Nonton 0-12 lalu
+   lanjut 12-20 = dua baris. Kalau gagal kirim, disimpan di perangkat dan dicoba lagi. */
+function hvCurrentPos() {
+  try { if (hvEl) return [hvEl.currentTime,hvEl.duration]; } catch {}
+  try { if (hvYT && hvYT.getCurrentTime) return [hvYT.getCurrentTime(),hvYT.getDuration()]; } catch {}
+  return [null,null];
+}
+
+function hvIsPlaying() {
+  try { if (hvEl) return !hvEl.paused && !hvEl.ended; } catch {}
+  try { if (hvYT && hvYT.getPlayerState) return hvYT.getPlayerState() === 1; } catch {}
+  return false;
+}
+
+function hvNewSeg(base,pos,dur) {
+  const p = isFinite(pos) ? Math.max(0,pos) : 0;
+  return {
+    videoId:base.videoId, title:base.title, from:p, last:p,
+    dur:(isFinite(dur) && dur > 0) ? dur : (base.dur || 0),
+    startedAt:new Date().toISOString()
+  };
+}
+
+function hvPlayStart(cur,pos,dur) {
+  if (cur._up || !currentUserId) return;
+  if (hvSeg && hvSeg.videoId === cur.id) {
+    if (isFinite(pos) && Math.abs(pos-hvSeg.last) > 4) hvSegSplit(pos,dur);
+    else if (isFinite(dur) && dur > 0) hvSeg.dur = dur;
+    return;
+  }
+  hvSegClose();
+  hvSeg = hvNewSeg({videoId:cur.id,title:cur.title,dur:Number(cur.duration_sec) || 0},pos,dur);
+}
+
+function hvSample(pos,dur) {
+  const s = hvSeg;
+  if (!s) return;
+  if (isFinite(pos)) s.last = Math.max(0,pos);
+  if (isFinite(dur) && dur > 0) s.dur = dur;
+}
+
+function hvSegSplit(pos,dur) {
+  const old = hvSeg;
+  if (!old) return;
+  hvSegClose();
+  hvSeg = hvNewSeg(old,pos,dur);
+}
+
+function hvPlayStop(pos,dur) {
+  hvSample(pos,dur);
+  hvSegClose();
+}
+
+function hvEndSession() {
+  if (!hvSeg) return;
+  const [pos,dur] = hvCurrentPos();
+  if (pos !== null) hvSample(pos,dur);
+  hvSegClose();
+}
+
+function hvSegClose() {
+  const s = hvSeg;
+  hvSeg = null;
+  if (!s || !currentUserId) return;
+  const from = Math.max(0,s.from);
+  const to = Math.max(from,s.last);
+  if (to-from < 1) return;
+  const row = {
+    id:hvNewId(),
+    user_id:currentUserId,
+    video_id:s.videoId,
+    video_title:s.title,
+    started_at:s.startedAt,
+    last_active_at:new Date().toISOString(),
+    from_sec:Math.round(from),
+    stopped_at_sec:Math.round(to),
+    watched_sec:Math.max(1,Math.round(to-from)),
+    duration_sec:Math.round(s.dur) || null
+  };
+  const q = hvHistQueueGet();
+  q.push(row);
+  hvHistQueueSet(q);
+  hvHistRetry = 0;
+  hvHistFlush();
+}
+
+function hvHistKey() { return 'hv_hist_q_'+(currentUserId || ''); }
+function hvHistQueueGet() {
+  try { const a = JSON.parse(localStorage.getItem(hvHistKey()) || '[]'); return Array.isArray(a) ? a : []; } catch { return []; }
+}
+function hvHistQueueSet(list) {
+  try {
+    if (list.length) localStorage.setItem(hvHistKey(),JSON.stringify(list.slice(-300)));
+    else localStorage.removeItem(hvHistKey());
+  } catch {}
+}
+
+async function hvHistFlush() {
+  if (hvHistBusy || !currentUserId) return;
+  hvHistBusy = true;
+  let failed = false;
+  try {
+    for (let i = 0; i < 100; i++) {
+      const q = hvHistQueueGet();
+      if (!q.length) break;
+      const r = q[0];
+      const row = Object.assign({},r);
+      if (hvHistNoFrom) delete row.from_sec;
+      let { error } = await supabaseClient.from(HV_HIST).insert(row);
+      if (error && !hvHistNoFrom && /from_sec/i.test(error.message || '')) {
+        hvHistNoFrom = true;
+        delete row.from_sec;
+        ({ error } = await supabaseClient.from(HV_HIST).insert(row));
+      }
+      if (error && error.code !== '23505') throw error;
+      hvHistQueueSet(hvHistQueueGet().filter(x => x.id !== r.id));
+    }
+    hvHistWarned = false;
+  } catch (error) {
+    failed = true;
+    if (!hvHistWarned) {
+      hvHistWarned = true;
+      showToast('Gagal menyimpan riwayat: '+hvErr(error),{duration:5000});
+    }
+  } finally {
+    hvHistBusy = false;
+  }
+  if (failed && hvHistRetry++ < 5) setTimeout(hvHistFlush,15000);
+}
+
+function hvSnapshot() {
+  if (!hvSeg) return;
+  const [pos,dur] = hvCurrentPos();
+  if (pos !== null) hvSample(pos,dur);
+  hvSegClose();
+}
+document.addEventListener('visibilitychange',() => {
+  if (document.hidden) { hvSnapshot(); return; }
+  const cur = hvVideos.find(v => v.id === hvMountedId);
+  if (cur && !hvSeg && hvIsPlaying()) { const [pos,dur] = hvCurrentPos(); hvPlayStart(cur,pos,dur); }
+  hvHistFlush();
+});
+window.addEventListener('pagehide',hvSnapshot);
+
+/* ---------- Tambah / hapus video ---------- */
+function hvSetMode(mode) {
+  hvMode = mode;
+  $('hvModeFile').classList.toggle('on',mode === 'file');
+  $('hvModeUrl').classList.toggle('on',mode === 'url');
+  $('hvFileRow').hidden = mode !== 'file';
+  $('hvUrlRow').hidden = mode !== 'url';
+  $('hvAddMsg').textContent = '';
+}
+
+function hvSetBusy(on) {
+  ['hvModeFile','hvModeUrl','hvFilePick','hvUrlInput','hvTitleInput','hvAddSave','hvAddClose'].forEach(id => { $(id).disabled = on; });
+}
+
+function hvMB(bytes) { return (bytes/1048576).toFixed(1); }
+
+/* Progress upload di kartu video (tampil sambil video tetap bisa ditonton) */
+function hvUpShow(pct,detail,wait,title) {
+  clearTimeout(hvUpTimer);
+  const box = $('hvUp');
+  box.hidden = false;
+  box.classList.remove('done');
+  box.classList.toggle('wait',Boolean(wait));
+  const v = Math.max(0,Math.min(100,pct));
+  $('hvUpFill').style.width = v+'%';
+  $('hvUpBar').setAttribute('aria-valuenow',String(Math.round(v)));
+  $('hvUpPct').textContent = Math.floor(v)+'%';
+  if (title) $('hvUpTxt').textContent = 'Mengunggah: '+title;
+  $('hvUpInfo').textContent = detail || '';
+  $('hvUpCancel').hidden = false;
+}
+
+function hvUpDone() {
+  clearTimeout(hvUpTimer);
+  const box = $('hvUp');
+  box.hidden = false;
+  box.classList.remove('wait');
+  box.classList.add('done');
+  $('hvUpFill').style.width = '100%';
+  $('hvUpBar').setAttribute('aria-valuenow','100');
+  $('hvUpPct').textContent = '100%';
+  $('hvUpTxt').textContent = 'Tersimpan di penyimpanan ♡';
+  $('hvUpInfo').textContent = '';
+  $('hvUpCancel').hidden = true;
+  hvUpTimer = setTimeout(hvUpHide,1800);
+}
+
+function hvUpHide() {
+  clearTimeout(hvUpTimer);
+  const box = $('hvUp');
+  box.hidden = true;
+  box.classList.remove('wait','done');
+  $('hvUpFill').style.width = '0%';
+}
+
+/* Upload ke Supabase Storage lewat XHR supaya progress (persen, kecepatan, sisa waktu) bisa ditampilkan.
+   ctl = {cancelled, xhr, abort()} dipakai untuk membatalkan dari tombol "Batalkan". */
+async function hvUploadFile(path,file,ctl,onProgress) {
+  const { data } = await supabaseClient.auth.getSession();
+  const token = data && data.session ? data.session.access_token : '';
+  if (!token) throw new Error('Sesi login habis, masuk lagi.');
+  if (ctl.cancelled) { const e = new Error('Upload dibatalkan'); e.aborted = true; throw e; }
+  return new Promise((resolve,reject) => {
+    const xhr = new XMLHttpRequest();
+    const started = Date.now();
+    let lastUi = 0;
+    ctl.xhr = xhr;
+    xhr.open('POST',`${SUPABASE_URL}/storage/v1/object/${HV_BUCKET}/${path}`);
+    xhr.setRequestHeader('apikey',SUPABASE_PUBLISHABLE_KEY);
+    xhr.setRequestHeader('Authorization','Bearer '+token);
+    xhr.setRequestHeader('x-upsert','false');
+    xhr.upload.onprogress = event => {
+      if (!event.lengthComputable) return;
+      const now = Date.now();
+      if (now-lastUi < 150 && event.loaded < event.total) return;
+      lastUi = now;
+      const pct = event.loaded/event.total*100;
+      const sec = Math.max(0.5,(now-started)/1000);
+      const speed = event.loaded/sec;
+      const left = speed > 0 ? Math.ceil((event.total-event.loaded)/speed) : 0;
+      const eta = left > 60 ? `sisa ~${Math.ceil(left/60)} mnt` : `sisa ~${left} dtk`;
+      onProgress(pct,`${hvMB(event.loaded)} / ${hvMB(event.total)} MB · ${hvMB(speed)} MB/dtk · ${eta}`,false);
+    };
+    xhr.upload.onload = () => onProgress(100,'Menyimpan di server...',true);
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) { resolve(); return; }
+      let message = 'Upload gagal ('+xhr.status+')';
+      try { const j = JSON.parse(xhr.responseText); message = j.message || j.error || message; } catch {}
+      reject(new Error(message));
+    };
+    xhr.onerror = () => reject(new Error('Koneksi terputus saat upload'));
+    xhr.ontimeout = () => reject(new Error('Upload terlalu lama'));
+    xhr.onabort = () => { const e = new Error('Upload dibatalkan'); e.aborted = true; reject(e); };
+    const form = new FormData();
+    form.append('cacheControl','3600');
+    form.append('',file);
+    onProgress(0,'Memulai upload...',false);
+    xhr.send(form);
+  });
+}
+
+window.addEventListener('beforeunload',event => {
+  if (hvUpload) { event.preventDefault(); event.returnValue = ''; }
+});
+
+function openHvAdd() {
+  if (!currentUserId || !syncReady) { showToast('Akun masih dimuat, coba lagi sebentar...'); return; }
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  const backdrop = $('hvAddBackdrop');
+  focusReturnElement = document.activeElement;
+  activeModal = backdrop;
+  hvPickedFile = null;
+  $('hvFileName').textContent = 'Pilih file video';
+  $('hvTitleInput').value = '';
+  $('hvUrlInput').value = '';
+  hvSetMode('file');
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden','false');
+}
+
+function closeHvAdd() {
+  if (hvBusy) return;
+  const backdrop = $('hvAddBackdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden','true');
+  if (activeModal === backdrop) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) focusReturnElement.focus({preventScroll:true});
+  focusReturnElement = null;
+}
+
+function hvTitleFromUrl(u) {
+  let name = u.pathname.split('/').pop() || '';
+  try { name = decodeURIComponent(name); } catch {}
+  return (name.replace(/\.[^.]+$/,'') || u.hostname).slice(0,60);
+}
+
+async function saveHvAdd() {
+  if (hvBusy) return;
+  const msg = $('hvAddMsg');
+  msg.className = 'hv-msg';
+  msg.textContent = '';
+  const title = $('hvTitleInput').value.trim().slice(0,60);
+  const row = {
+    user_id:currentUserId, id:hvNewId(), title:'', kind:'', src:'',
+    duration_sec:null, created_at:new Date().toISOString()
+  };
+
+  if (hvMode === 'file') {
+    const file = hvPickedFile;
+    if (!file) { msg.textContent = 'Pilih file video dulu.'; return; }
+    if (file.size > HV_MAX_MB*1024*1024) {
+      msg.textContent = `File terlalu besar (maks ${HV_MAX_MB} MB). Untuk video besar, upload ke YouTube lalu tempel linknya.`;
+      return;
+    }
+    if (hvUpload) { msg.textContent = 'Masih ada video yang sedang diunggah. Tunggu selesai dulu, atau tempel link.'; return; }
+    const ext = ((file.name.match(/\.([a-z0-9]{2,5})$/i) || [])[1] || 'mp4').toLowerCase();
+    row.kind = 'file';
+    row.src = `${currentUserId}/${row.id}.${ext}`;
+    row.title = title || file.name.replace(/\.[^.]+$/,'').slice(0,60) || 'Video';
+
+    /* Video langsung dipasang & bisa diputar dari file lokal; upload jalan di latar belakang */
+    const ctl = {
+      cancelled:false, xhr:null,
+      abort() { this.cancelled = true; if (this.xhr) { try { this.xhr.abort(); } catch {} } }
+    };
+    const item = Object.assign({},row,{_blob:URL.createObjectURL(file),_up:ctl});
+    hvUpload = ctl;
+    hvVideos.unshift(item);
+    hvCurId = item.id;
+    closeHvAdd();
+    hvRender();
+    hvBackgroundUpload(item,file,ctl);
+    return;
+  }
+
+  const raw = $('hvUrlInput').value.trim();
+  if (!raw) { msg.textContent = 'Tempel link videonya dulu.'; return; }
+  const yt = hvYouTubeId(raw);
+  if (yt) {
+    row.kind = 'youtube';
+    row.src = yt;
+    row.title = title || 'Video YouTube';
+  } else {
+    let u = null;
+    try { u = new URL(raw); } catch {}
+    if (!u || !/^https?:$/.test(u.protocol)) { msg.textContent = 'Link tidak valid. Mulai dengan https://'; return; }
+    if (location.protocol === 'https:' && u.protocol === 'http:') { msg.textContent = 'Link harus diawali https:// supaya bisa diputar.'; return; }
+    row.kind = 'url';
+    row.src = u.href;
+    row.title = title || hvTitleFromUrl(u);
+  }
+
+  hvBusy = true;
+  hvSetBusy(true);
+  let ok = false;
+  try {
+    const { error } = await supabaseClient.from(HV_TABLE).insert(row);
+    if (error) throw error;
+    hvVideos.unshift(row);
+    hvCurId = row.id;
+    ok = true;
+  } catch (error) {
+    msg.className = 'hv-msg';
+    msg.textContent = 'Gagal menambah video: '+hvErr(error);
+  } finally {
+    hvBusy = false;
+    hvSetBusy(false);
+  }
+  if (ok) {
+    closeHvAdd();
+    hvRender();
+    showToast('Video ditambahkan ♡');
+  }
+}
+
+async function hvBackgroundUpload(item,file,ctl) {
+  hvUpShow(0,'Memulai upload...',false,item.title);
+  let ok = false, err = null;
+  try {
+    await hvUploadFile(item.src,file,ctl,(pct,detail,wait) => hvUpShow(pct,detail,wait,item.title));
+    if (ctl.cancelled) { const e = new Error('Upload dibatalkan'); e.aborted = true; throw e; }
+    const row = {
+      user_id:item.user_id, id:item.id, title:item.title, kind:item.kind, src:item.src,
+      duration_sec:item.duration_sec == null ? null : item.duration_sec, created_at:item.created_at
+    };
+    const { error } = await supabaseClient.from(HV_TABLE).insert(row);
+    if (error) throw error;
+    ok = true;
+  } catch (error) {
+    err = error;
+  }
+  if (hvUpload === ctl) hvUpload = null;
+  delete item._up;
+
+  if (ok) {
+    hvUpDone();
+    /* Kalau video masih diputar dari file lokal, biarkan jalan terus tanpa terputus */
+    if (hvMountedId !== item.id) hvReleaseBlob(item);
+    showToast('Video tersimpan ♡');
+    return;
+  }
+
+  try { supabaseClient.storage.from(HV_BUCKET).remove([item.src]); } catch {}
+  hvUpHide();
+  const i = hvVideos.indexOf(item);
+  if (i >= 0) {
+    hvVideos.splice(i,1);
+    if (hvCurId === item.id) hvCurId = hvVideos.length ? hvVideos[0].id : '';
+  }
+  if (hvMountedId === item.id) { hvTeardown(); hvMountedId = ''; }
+  hvReleaseBlob(item);
+  hvRender();
+  showToast(err && err.aborted ? 'Upload dibatalkan' : 'Gagal mengunggah video: '+hvErr(err),{duration:5000});
+}
+
+async function hvDeleteCurrent() {
+  const v = hvVideos.find(x => x.id === hvCurId);
+  if (!v) return;
+  const ok = await showConfirm(
+    v._up ? `Batalkan unggahan dan hapus video "${v.title}"?` : `Hapus video "${v.title}"? Riwayat tontonnya tetap tersimpan.`,
+    {okLabel:'Hapus',danger:true});
+  if (!ok) return;
+  if (v._up) { v._up.abort(); return; }
+  hvTeardown();
+  hvMountedId = '';
+  const { error } = await supabaseClient.from(HV_TABLE).delete().eq('user_id',currentUserId).eq('id',v.id);
+  if (error) {
+    showToast('Gagal menghapus video: '+hvErr(error),{duration:4500});
+    hvRender();
+    return;
+  }
+  if (v.kind === 'file') { try { supabaseClient.storage.from(HV_BUCKET).remove([v.src]); } catch {} }
+  hvReleaseBlob(v);
+  hvVideos = hvVideos.filter(x => x.id !== v.id);
+  hvCurId = hvVideos.length ? hvVideos[0].id : '';
+  hvRender();
+  showToast('Video dihapus');
+}
+
+/* ---------- Ganti judul + menu pensil ---------- */
+function hvSetTools(on) {
+  const tools = $('hvTools'), btn = $('hvEdit');
+  if (!tools || !btn) return;
+  tools.classList.toggle('open',on);
+  if (!on) { const pm = $('hvPenMenu'); if (pm) pm.classList.add('hidden'); }
+  if (on) tools.removeAttribute('inert'); else tools.setAttribute('inert','');
+  btn.setAttribute('aria-pressed',String(on));
+}
+
+function openHvRename() {
+  const v = hvVideos.find(x => x.id === hvCurId);
+  if (!v) return;
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  const backdrop = $('hvRenameBackdrop');
+  const input = $('hvRenameInput');
+  hvRenameId = v.id;
+  focusReturnElement = $('hvEdit');
+  activeModal = backdrop;
+  input.value = v.title;
+  $('hvRenameMsg').textContent = '';
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden','false');
+  requestAnimationFrame(() => { input.focus({preventScroll:true}); input.select(); });
+}
+
+function closeHvRename() {
+  const backdrop = $('hvRenameBackdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden','true');
+  if (activeModal === backdrop) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) focusReturnElement.focus({preventScroll:true});
+  focusReturnElement = null;
+  hvRenameId = null;
+}
+
+async function saveHvRename() {
+  const v = hvVideos.find(x => x.id === hvRenameId);
+  if (!v) { closeHvRename(); return; }
+  const clean = $('hvRenameInput').value.trim().slice(0,60);
+  const msg = $('hvRenameMsg');
+  if (!clean) { msg.textContent = 'Judul tidak boleh kosong.'; return; }
+  if (clean !== v.title) {
+    $('hvRenameSave').disabled = true;
+    try {
+      if (!v._up) {
+        const { error } = await supabaseClient.from(HV_TABLE).update({title:clean}).eq('user_id',currentUserId).eq('id',v.id);
+        if (error) throw error;
+      }
+      v.title = clean;
+      if (hvSeg && hvSeg.videoId === v.id) hvSeg.title = clean;
+      hvRender();
+      showToast('Judul video diganti ♡');
+    } catch (error) {
+      msg.textContent = 'Gagal mengganti judul: '+hvErr(error);
+      return;
+    } finally {
+      $('hvRenameSave').disabled = false;
+    }
+  }
+  closeHvRename();
+}
+
+$('hvDelete').addEventListener('click',hvDeleteCurrent);
+function hvPenMenu(open) {
+  const menu = $('hvPenMenu');
+  menu.classList.toggle('hidden',!open);
+  $('hvEdit').setAttribute('aria-expanded',String(open));
+  if (open) $('hvPenVideo').textContent = $('hvTools').classList.contains('open') ? 'Tutup edit video' : 'Edit video';
+}
+$('hvEdit').addEventListener('click',e => { e.stopPropagation(); hvPenMenu($('hvPenMenu').classList.contains('hidden')); });
+$('hvPenVideo').addEventListener('click',() => {
+  hvPenMenu(false);
+  if (!hvVideos.length) { showToast('Belum ada video untuk diedit'); return; }
+  hvSetTools(!$('hvTools').classList.contains('open'));
+});
+$('hvPenAdd').addEventListener('click',() => { hvPenMenu(false); openHvAdd(); });
+$('hvPenBubu').addEventListener('click',() => {
+  hvPenMenu(false);
+  if (typeof bubuCanEdit === 'function' && bubuCanEdit()) setBubuEditor(true);
+});
+document.addEventListener('click',e => {
+  if (!$('hvPenMenu').classList.contains('hidden') && !e.target.closest('.bubu-pen-wrap')) hvPenMenu(false);
+});
+$('hvRename').addEventListener('click',openHvRename);
+$('hvRenameInput').addEventListener('input',() => { $('hvRenameMsg').textContent = ''; });
+$('hvRenameForm').addEventListener('submit',e => { e.preventDefault(); saveHvRename(); });
+$('hvRenameCancel').addEventListener('click',closeHvRename);
+$('hvRenameClose').addEventListener('click',closeHvRename);
+$('hvRenameBackdrop').addEventListener('click',e => { if (e.target === $('hvRenameBackdrop')) closeHvRename(); });
+$('hvUpCancel').addEventListener('click',async () => {
+  if (!hvUpload) return;
+  const ctl = hvUpload;
+  const ok = await showConfirm('Batalkan unggahan video ini? Video akan dihapus dari daftar.',{okLabel:'Batalkan',danger:true});
+  if (ok && hvUpload === ctl) ctl.abort();
+});
+$('hvChips').addEventListener('click',event => {
+  const chip = event.target.closest('.hv-chip');
+  if (!chip || chip.dataset.id === hvCurId) return;
+  hvCurId = chip.dataset.id;
+  hvRender();
+});
+$('hvModeFile').addEventListener('click',() => hvSetMode('file'));
+$('hvModeUrl').addEventListener('click',() => hvSetMode('url'));
+$('hvFilePick').addEventListener('click',() => $('hvFileInput').click());
+$('hvFileInput').addEventListener('change',() => {
+  const f = $('hvFileInput').files && $('hvFileInput').files[0];
+  $('hvFileInput').value = '';
+  if (!f) return;
+  const msg = $('hvAddMsg');
+  msg.className = 'hv-msg';
+  if (f.size > HV_MAX_MB*1024*1024) {
+    hvPickedFile = null;
+    $('hvFileName').textContent = 'Pilih file video';
+    msg.textContent = `File terlalu besar (maks ${HV_MAX_MB} MB). Untuk video besar, upload ke YouTube lalu tempel linknya.`;
+    return;
+  }
+  msg.className = 'hv-msg ok';
+  msg.textContent = 'Setelah disimpan, video langsung bisa ditonton sementara diunggah di latar belakang.';
+  hvPickedFile = f;
+  $('hvFileName').textContent = `${f.name} (${(f.size/1048576).toFixed(1)} MB)`;
+});
+$('hvAddForm').addEventListener('submit',event => { event.preventDefault(); saveHvAdd(); });
+$('hvAddCancel').addEventListener('click',closeHvAdd);
+$('hvAddClose').addEventListener('click',closeHvAdd);
+$('hvAddBackdrop').addEventListener('click',event => { if (event.target === $('hvAddBackdrop')) closeHvAdd(); });
+
+/* ---------- Halaman Riwayat (dibuka dari Profil) ---------- */
+function openHistory() {
+  const page = $('historyPage');
+  historyOpen = true;
+  page.removeAttribute('inert');
+  page.setAttribute('aria-hidden','false');
+  page.classList.add('open');
+  document.body.classList.add('history-open');
+  histLoad();
+  requestAnimationFrame(() => $('histBack').focus({preventScroll:true}));
+}
+
+function closeHistory() {
+  if (!historyOpen) return;
+  historyOpen = false;
+  const page = $('historyPage');
+  page.classList.remove('open');
+  page.setAttribute('aria-hidden','true');
+  page.setAttribute('inert','');
+  document.body.classList.remove('history-open');
+  const btn = $('historyBtn');
+  if (btn && document.contains(btn)) btn.focus({preventScroll:true});
+}
+
+function histMessage(text,retry) {
+  const list = $('histList');
+  list.replaceChildren();
+  const p = document.createElement('p');
+  p.className = 'hist-empty';
+  p.textContent = text;
+  list.appendChild(p);
+  if (retry) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'hist-retry';
+    b.textContent = 'Coba lagi';
+    b.addEventListener('click',histLoad);
+    list.appendChild(b);
+  }
+}
+
+let histRows = [];
+
+async function histLoad() {
+  if (!currentUserId) { histMessage('Masuk dulu untuk melihat riwayat.'); $('histClear').hidden = true; return; }
+  histMessage('Memuat riwayat...');
+  $('histClear').hidden = true;
+  try {
+    await hvHistFlush();
+    const { data, error } = await supabaseClient.from(HV_HIST).select('*')
+      .eq('user_id',currentUserId).order('started_at',{ascending:false}).limit(300);
+    if (error) throw error;
+    histRows = data || [];
+    histRender(histRows);
+  } catch (error) {
+    histMessage('Gagal memuat riwayat: '+hvErr(error),true);
+  }
+}
+
+function histRender(rows) {
+  const list = $('histList');
+  list.replaceChildren();
+  $('histClear').hidden = !rows.length;
+  if (!rows.length) {
+    histMessage('Belum ada riwayat.\nPutar video di Beranda, bagian yang kamu tonton akan muncul di sini.');
+    $('histList').firstChild.style.whiteSpace = 'pre-line';
+    return;
+  }
+  rows.forEach(r => {
+    const d = new Date(r.started_at);
+    const dur = Number(r.duration_sec) || 0;
+    const to = Math.max(0,Number(r.stopped_at_sec) || 0);
+    const w = Math.max(0,Number(r.watched_sec) || 0);
+    const from = r.from_sec !== null && r.from_sec !== undefined ? Math.max(0,Number(r.from_sec) || 0) : Math.max(0,to-w);
+
+    const item = document.createElement('article');
+    item.className = 'hist-item';
+
+    const top = document.createElement('div');
+    top.className = 'hist-row';
+    const name = document.createElement('div');
+    name.className = 'hist-name';
+    name.textContent = r.video_title || 'Video';
+    name.title = r.video_title || '';
+    const clock = document.createElement('div');
+    clock.className = 'hist-clock';
+    clock.textContent = d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}).replace(':','.');
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'hist-del';
+    del.setAttribute('aria-label','Hapus riwayat ini');
+    del.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4.5h6V7"/><path d="M6.5 7l.8 12h9.4l.8-12"/></svg>';
+    del.addEventListener('click',() => histDeleteOne(r.id));
+    top.append(name,clock,del);
+
+    const date = document.createElement('div');
+    date.className = 'hist-date';
+    date.textContent = d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+    const bar = document.createElement('div');
+    bar.className = 'hist-bar';
+    const fill = document.createElement('i');
+    fill.className = 'seg';
+    if (dur) {
+      fill.style.left = Math.min(100,from/dur*100)+'%';
+      fill.style.width = Math.max(0,Math.min(100-from/dur*100,(to-from)/dur*100))+'%';
+    } else {
+      fill.style.left = '0';
+      fill.style.width = '0';
+    }
+    bar.appendChild(fill);
+
+    const info = document.createElement('div');
+    info.className = 'hist-info';
+    const a = document.createElement('span');
+    a.textContent = dur
+      ? `Ditonton ${hvFmt(from)} – ${hvFmt(to)} dari ${hvFmt(dur)}`
+      : `Ditonton ${hvFmt(from)} – ${hvFmt(to)}`;
+    const b = document.createElement('span');
+    b.textContent = `Lama ${hvFmt(w)}`;
+    info.append(a,b);
+
+    item.append(top,date,bar,info);
+    list.appendChild(item);
+  });
+}
+
+async function histDeleteOne(id) {
+  if (!currentUserId) return;
+  const { error } = await supabaseClient.from(HV_HIST).delete().eq('user_id',currentUserId).eq('id',id);
+  if (error) { showToast('Gagal menghapus riwayat: '+hvErr(error),{duration:5000}); return; }
+  hvHistQueueSet(hvHistQueueGet().filter(x => x.id !== id));
+  histRows = histRows.filter(r => r.id !== id);
+  histRender(histRows);
+  showToast('Riwayat dihapus');
+}
+
+async function histClearAll() {
+  if (!currentUserId || !histRows.length) return;
+  const ok = await showConfirm('Hapus semua riwayat tontonan video? Ini tidak bisa dibatalkan.',{okLabel:'Hapus semua',danger:true});
+  if (!ok) return;
+  const { error } = await supabaseClient.from(HV_HIST).delete().eq('user_id',currentUserId);
+  if (error) { showToast('Gagal menghapus riwayat: '+hvErr(error),{duration:5000}); return; }
+  hvHistQueueSet([]);
+  histRows = [];
+  histRender(histRows);
+  showToast('Semua riwayat dihapus');
+}
+
+$('historyBtn').addEventListener('click',openHistory);
+$('histBack').addEventListener('click',closeHistory);
+$('histClear').addEventListener('click',histClearAll);
+document.addEventListener('keydown',event => {
+  if (event.key === 'Escape' && historyOpen && !activeModal && !dialogResolver) {
+    event.preventDefault();
+    closeHistory();
   }
 });
 
@@ -8526,8 +10794,15 @@ document.addEventListener('keydown',event => {
 function handleAppBack() {
   if (dialogResolver) { finishDialog(false); return true; }
   if (callState !== 'idle') { confirmEndCall(); return true; }
+  const fsSt = document.querySelector('.hv-stage.fs, .hv-stage.pseudo-fs');
+  if (fsSt) {
+    hvExitFs(fsSt);
+    requestAnimationFrame(() => { try { fsSt.scrollIntoView({block:'center'}); } catch {} });
+    return true;
+  }
   if (bubuVideoOpen) { closeBubuVideo(); return true; }
   if (activeModal) { closeActiveModal(); return true; }
+  if (typeof historyOpen !== 'undefined' && historyOpen) { closeHistory(); return true; }
   if (headMenuOpen) { setHeadMenu(false); return true; }
 
   if (document.body.classList.contains('login-active')) {
@@ -8545,13 +10820,12 @@ function handleAppBack() {
   if (showingContact) { closeContact(); return true; }
   if (showingGallery) { setGalleryMode(false); playPagePop(); return true; }
   if (showingBubu && bubuEditorOn) { setBubuEditor(false); return true; }
-  if (showingBubu) { $('profileNav').click(); return true; }
 
   if (tabTrail.length > 1) {
     tabTrail.pop();
     const target = tabTrail[tabTrail.length-1];
     poppingTab = true;
-    try { $({all:'allNav',calendar:'calendarNav',profile:'profileNav'}[target]).click(); }
+    try { $({home:'homeNav',all:'allNav',calendar:'calendarNav',profile:'profileNav'}[target]).click(); }
     finally { poppingTab = false; }
     return true;
   }
