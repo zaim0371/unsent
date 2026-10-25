@@ -1973,6 +1973,10 @@ body.hv-pfs { overflow:hidden; }
 .pk-say::after { content:""; position:absolute; left:50%; bottom:-5px; width:11px; height:11px; margin-left:-5.5px; background:#fff; transform:rotate(45deg); border-radius:2px; }
 .pk-say .w { display:inline-block; opacity:0; transform-origin:50% 90%; }
 .pk-say .w.hot { color:#e0245e; font-size:17px; }
+/* bisikan samar minion selama tombol belum di-tap */
+.pk-whisper { position:absolute; left:50%; bottom:calc(100% - 20px); z-index:7; translate:-50% 0; padding:4px 11px 5px; border-radius:14px; background:rgba(255,255,255,.3); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); color:rgba(194,37,92,.78); white-space:nowrap; pointer-events:none; opacity:0; font-family:"Fredoka","Baloo 2","Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif; font-size:11.5px; font-weight:600; line-height:1.2; letter-spacing:.5px; text-shadow:0 0 6px rgba(255,255,255,.7); }
+.pk-whisper::after { content:""; position:absolute; left:50%; bottom:-3px; width:7px; height:7px; margin-left:-3.5px; background:rgba(255,255,255,.3); transform:rotate(45deg); border-radius:1px; }
+.mn.whispering .mn-talkmouth { animation-duration:.55s; }
 
 /* minion: --x posisi, --pr/--or sudut (ngintip / keluar), --oy tinggi saat keluar */
 .mn { position:absolute; left:calc(50% + var(--x) - 22px); bottom:17px; width:44px; height:70px; z-index:1; transform-origin:50% 100%; transform:translateY(var(--py)) rotate(var(--pr)) scale(var(--s)); transition:transform .75s cubic-bezier(.34,1.56,.64,1) var(--d),opacity .35s ease; }
@@ -2027,6 +2031,13 @@ body.hv-pfs { overflow:hidden; }
 .wk-prop { position:absolute; left:24px; top:56px; width:34px; height:34px; margin:-17px 0 0 -17px; opacity:0; transform-origin:50% 60%; will-change:transform; }
 .wk-prop svg { display:block; width:100%; height:100%; overflow:visible; }
 .wk-fx { position:absolute; z-index:3; font-style:normal; font-size:16px; line-height:1; opacity:0; pointer-events:none; will-change:transform; }
+.wk-sh { position:absolute; left:0; top:0; width:38px; height:9px; border-radius:50%; background:radial-gradient(ellipse at center,rgba(20,5,20,.5),rgba(20,5,20,0) 70%); opacity:0; pointer-events:none; will-change:transform,opacity; }
+.wk-moon { position:absolute; left:0; top:0; width:0; height:0; pointer-events:none; will-change:transform,opacity; }
+.wk-bike { position:absolute; left:-16px; top:42px; width:80px; height:36px; pointer-events:none; transform-origin:50% 100%; will-change:transform,opacity; }
+.wk-bike svg { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 3px 3px rgba(0,0,0,.25)); }
+.wk-peel { position:absolute; left:0; top:0; font-style:normal; font-size:22px; line-height:1; opacity:0; pointer-events:none; will-change:transform,opacity; }
+.wk-pf { position:absolute; border-radius:50%; pointer-events:none; background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.95),rgba(236,226,242,.7) 55%,rgba(214,200,226,0) 72%); will-change:transform,opacity; }
+.wk.running.walking .wk-in,.wk.running.walking .mn-leg.l,.wk.running.walking .mn-leg.r,.wk.running.walking .mn-al,.wk.running.walking .mn-ar { animation-duration:.27s; }
 @keyframes wkBob { 0% { transform:translateY(0) rotate(-3deg); } 25% { transform:translateY(-3px) rotate(0); } 50% { transform:translateY(0) rotate(3deg); } 75% { transform:translateY(-3px) rotate(0); } 100% { transform:translateY(0) rotate(-3deg); } }
 @keyframes wkLeg { 0%,100% { transform:rotate(24deg); } 50% { transform:rotate(-24deg); } }
 @keyframes wkArm { 0%,100% { transform:rotate(-18deg); } 50% { transform:rotate(18deg); } }
@@ -2127,6 +2138,21 @@ body.dark-theme .ld-card { background:rgba(32,32,38,.9); border-color:rgba(255,2
 .ld-bar.done .ld-fill { background:#3aa76d; }
 @keyframes ldSpin { to { transform:rotate(360deg); } }
 @media (prefers-reduced-motion:reduce) { .ld-ic { animation-duration:2s; } .ld-bar,.ld-fill { transition-duration:.01s; } }
+
+/* ===== Performa beranda: tanpa filter / blur berat pada elemen yang bergerak ===== */
+.bubu-env { filter:none!important; position:relative; isolation:isolate; }
+.bubu-env::before { content:""; position:absolute; left:6%; right:6%; bottom:-4px; height:24px; z-index:-1; border-radius:50%; pointer-events:none; background:radial-gradient(ellipse at center,rgba(124,88,112,.34),rgba(124,88,112,0) 70%); }
+.bubu-peek,.bubu-peek:active { filter:none!important; box-shadow:0 8px 10px rgba(0,0,0,.24); will-change:transform; }
+.bubu-peek:active { box-shadow:0 2px 4px rgba(0,0,0,.3); }
+.wk .mn-svg,.wk-bike svg,.pk-gm,.pk-fly,.pk-sign-m,.pk-rider .mn-svg { filter:none!important; }
+.pk-sign-m .mn-svg { filter:none!important; }
+#bubuPage,#bubuPage * { -webkit-backdrop-filter:none!important; backdrop-filter:none!important; }
+.pk-whisper { -webkit-backdrop-filter:none!important; backdrop-filter:none!important; background:rgba(255,255,255,.42); }
+/* minion: hanya animasi ringan yang jalan terus (hop, goyang, kedip); napas / ayun lengan / lirik / dengung dibuang */
+.pk-stage.out .mn-all,.mn-pupil,.pk-stage.out .mn-hum,.pk-stage.out .mn-al:not(.wave),.pk-stage.out .mn-ar:not(.wave) { animation:none!important; }
+/* selama animasi pembuka (papan pesan + konser) kilau & bunga di amplop dijeda */
+body.pk-busy .env-shine,body.pk-busy .env-flowers { opacity:0; }
+body.pk-busy .env-shine-bar,body.pk-busy .env-flower { animation-play-state:paused!important; }
 
 </style>
 
@@ -2391,22 +2417,21 @@ body.dark-theme .ld-card { background:rgba(32,32,38,.9); border-color:rgba(255,2
 <radialGradient id="ckBody" cx="38%" cy="32%" r="78%"><stop offset="0" stop-color="#f1c27c"/><stop offset=".5" stop-color="#d79a52"/><stop offset=".85" stop-color="#b57432"/><stop offset="1" stop-color="#8f5524"/></radialGradient>
 <radialGradient id="ckEdge" cx="50%" cy="50%" r="50%"><stop offset=".7" stop-color="#5a300f" stop-opacity="0"/><stop offset="1" stop-color="#5a300f" stop-opacity=".55"/></radialGradient>
 <radialGradient id="ckChip" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#6a3a22"/><stop offset=".55" stop-color="#3b1f12"/><stop offset="1" stop-color="#1f0f08"/></radialGradient>
-<filter id="ckBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.1"/></filter>
-<filter id="ckNoise" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .35  0 0 0 0 .18  0 0 0 0 .05  0 0 0 1.6 -.55"/></filter>
+<pattern id="ckSpeck" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".6" fill="#5a300f" opacity=".5"/><circle cx="6.5" cy="5.5" r=".5" fill="#f8d9a0" opacity=".45"/><circle cx="4" cy="8" r=".4" fill="#5a300f" opacity=".4"/></pattern>
 <clipPath id="ckClip"><path d="M94.9 50.0C94.7 53.3 93.8 56.6 92.9 59.8C92.0 62.9 90.8 66.0 89.4 69.0C88.0 71.9 86.5 75.0 84.5 77.5C82.5 80.1 80.1 82.5 77.4 84.4C74.8 86.3 71.7 87.7 68.7 88.9C65.8 90.2 62.7 91.1 59.6 91.9C56.4 92.7 53.2 93.4 50.0 93.7C46.8 94.0 43.3 94.0 40.1 93.5C36.8 92.9 33.5 91.8 30.5 90.5C27.5 89.1 24.6 87.2 22.0 85.1C19.4 83.0 17.0 80.5 15.2 77.8C13.3 75.1 11.8 72.0 10.6 69.0C9.5 65.9 8.8 62.7 8.2 59.5C7.6 56.4 7.1 53.2 6.9 50.0C6.7 46.8 6.5 43.4 7.1 40.2C7.6 37.0 8.7 33.7 10.1 30.8C11.6 27.9 13.6 25.2 15.7 22.7C17.8 20.1 20.1 17.8 22.6 15.6C25.1 13.4 27.7 11.2 30.6 9.6C33.5 8.1 36.7 6.7 40.0 6.1C43.2 5.4 46.7 5.4 50.0 5.7C53.3 6.0 56.5 6.8 59.7 7.7C62.8 8.6 65.8 9.7 68.7 11.2C71.6 12.6 74.3 14.3 76.9 16.3C79.4 18.3 81.8 20.5 84.0 22.9C86.1 25.3 88.3 27.9 89.9 30.8C91.6 33.6 93.2 36.8 94.0 40.0C94.8 43.2 95.1 46.7 94.9 50.0Z"/></clipPath>
 </defs>
-<ellipse cx="52" cy="92" rx="36" ry="5" fill="#000" opacity=".28" filter="url(#ckBlur)"/>
+<ellipse cx="52" cy="92" rx="36" ry="5" fill="#000" opacity=".28"/>
 <path d="M94.9 50.0C94.7 53.3 93.8 56.6 92.9 59.8C92.0 62.9 90.8 66.0 89.4 69.0C88.0 71.9 86.5 75.0 84.5 77.5C82.5 80.1 80.1 82.5 77.4 84.4C74.8 86.3 71.7 87.7 68.7 88.9C65.8 90.2 62.7 91.1 59.6 91.9C56.4 92.7 53.2 93.4 50.0 93.7C46.8 94.0 43.3 94.0 40.1 93.5C36.8 92.9 33.5 91.8 30.5 90.5C27.5 89.1 24.6 87.2 22.0 85.1C19.4 83.0 17.0 80.5 15.2 77.8C13.3 75.1 11.8 72.0 10.6 69.0C9.5 65.9 8.8 62.7 8.2 59.5C7.6 56.4 7.1 53.2 6.9 50.0C6.7 46.8 6.5 43.4 7.1 40.2C7.6 37.0 8.7 33.7 10.1 30.8C11.6 27.9 13.6 25.2 15.7 22.7C17.8 20.1 20.1 17.8 22.6 15.6C25.1 13.4 27.7 11.2 30.6 9.6C33.5 8.1 36.7 6.7 40.0 6.1C43.2 5.4 46.7 5.4 50.0 5.7C53.3 6.0 56.5 6.8 59.7 7.7C62.8 8.6 65.8 9.7 68.7 11.2C71.6 12.6 74.3 14.3 76.9 16.3C79.4 18.3 81.8 20.5 84.0 22.9C86.1 25.3 88.3 27.9 89.9 30.8C91.6 33.6 93.2 36.8 94.0 40.0C94.8 43.2 95.1 46.7 94.9 50.0Z" fill="#7a4519" transform="translate(0 2.2)"/>
 <path d="M94.9 50.0C94.7 53.3 93.8 56.6 92.9 59.8C92.0 62.9 90.8 66.0 89.4 69.0C88.0 71.9 86.5 75.0 84.5 77.5C82.5 80.1 80.1 82.5 77.4 84.4C74.8 86.3 71.7 87.7 68.7 88.9C65.8 90.2 62.7 91.1 59.6 91.9C56.4 92.7 53.2 93.4 50.0 93.7C46.8 94.0 43.3 94.0 40.1 93.5C36.8 92.9 33.5 91.8 30.5 90.5C27.5 89.1 24.6 87.2 22.0 85.1C19.4 83.0 17.0 80.5 15.2 77.8C13.3 75.1 11.8 72.0 10.6 69.0C9.5 65.9 8.8 62.7 8.2 59.5C7.6 56.4 7.1 53.2 6.9 50.0C6.7 46.8 6.5 43.4 7.1 40.2C7.6 37.0 8.7 33.7 10.1 30.8C11.6 27.9 13.6 25.2 15.7 22.7C17.8 20.1 20.1 17.8 22.6 15.6C25.1 13.4 27.7 11.2 30.6 9.6C33.5 8.1 36.7 6.7 40.0 6.1C43.2 5.4 46.7 5.4 50.0 5.7C53.3 6.0 56.5 6.8 59.7 7.7C62.8 8.6 65.8 9.7 68.7 11.2C71.6 12.6 74.3 14.3 76.9 16.3C79.4 18.3 81.8 20.5 84.0 22.9C86.1 25.3 88.3 27.9 89.9 30.8C91.6 33.6 93.2 36.8 94.0 40.0C94.8 43.2 95.1 46.7 94.9 50.0Z" fill="url(#ckBody)"/>
 <g clip-path="url(#ckClip)">
-<rect width="100" height="100" filter="url(#ckNoise)" opacity=".75"/>
+<rect width="100" height="100" fill="url(#ckSpeck)" opacity=".55"/>
 <path d="M94.9 50.0C94.7 53.3 93.8 56.6 92.9 59.8C92.0 62.9 90.8 66.0 89.4 69.0C88.0 71.9 86.5 75.0 84.5 77.5C82.5 80.1 80.1 82.5 77.4 84.4C74.8 86.3 71.7 87.7 68.7 88.9C65.8 90.2 62.7 91.1 59.6 91.9C56.4 92.7 53.2 93.4 50.0 93.7C46.8 94.0 43.3 94.0 40.1 93.5C36.8 92.9 33.5 91.8 30.5 90.5C27.5 89.1 24.6 87.2 22.0 85.1C19.4 83.0 17.0 80.5 15.2 77.8C13.3 75.1 11.8 72.0 10.6 69.0C9.5 65.9 8.8 62.7 8.2 59.5C7.6 56.4 7.1 53.2 6.9 50.0C6.7 46.8 6.5 43.4 7.1 40.2C7.6 37.0 8.7 33.7 10.1 30.8C11.6 27.9 13.6 25.2 15.7 22.7C17.8 20.1 20.1 17.8 22.6 15.6C25.1 13.4 27.7 11.2 30.6 9.6C33.5 8.1 36.7 6.7 40.0 6.1C43.2 5.4 46.7 5.4 50.0 5.7C53.3 6.0 56.5 6.8 59.7 7.7C62.8 8.6 65.8 9.7 68.7 11.2C71.6 12.6 74.3 14.3 76.9 16.3C79.4 18.3 81.8 20.5 84.0 22.9C86.1 25.3 88.3 27.9 89.9 30.8C91.6 33.6 93.2 36.8 94.0 40.0C94.8 43.2 95.1 46.7 94.9 50.0Z" fill="url(#ckEdge)"/>
 <path d="M88.7 50.0C88.6 52.8 87.7 55.7 86.8 58.4C85.8 61.0 84.3 63.5 83.0 65.9C81.7 68.3 80.3 70.7 78.8 73.0C77.2 75.3 75.7 77.7 73.7 79.7C71.7 81.7 69.3 83.5 66.8 84.8C64.2 86.1 61.3 86.9 58.5 87.4C55.7 88.0 52.9 88.2 50.0 88.2C47.1 88.2 44.2 88.1 41.4 87.5C38.7 86.9 35.8 86.0 33.3 84.7C30.8 83.4 28.4 81.6 26.3 79.7C24.2 77.8 22.3 75.7 20.6 73.4C18.9 71.2 17.4 68.8 16.3 66.2C15.1 63.7 14.4 61.0 13.8 58.3C13.2 55.6 12.9 52.8 12.7 50.0C12.6 47.2 12.4 44.3 12.7 41.5C13.0 38.6 13.4 35.6 14.5 32.9C15.6 30.3 17.4 27.7 19.4 25.6C21.3 23.5 23.9 21.8 26.3 20.3C28.7 18.7 31.2 17.5 33.8 16.3C36.3 15.2 38.9 14.0 41.6 13.3C44.3 12.6 47.2 12.2 50.0 12.2C52.8 12.2 55.6 12.8 58.3 13.4C61.1 14.1 63.7 15.0 66.3 16.2C68.8 17.3 71.4 18.6 73.7 20.3C76.0 21.9 78.2 23.9 80.0 26.1C81.9 28.2 83.4 30.7 84.8 33.3C86.1 35.8 87.2 38.6 87.9 41.4C88.5 44.1 88.9 47.2 88.7 50.0Z" fill="none" stroke="#f8d9a0" stroke-width="1.4" opacity=".22" transform="translate(-.8 -.8)"/>
 <circle cx="46.1" cy="45.4" r="0.7" fill="#8a5224" opacity="0.61"/><circle cx="34.0" cy="17.9" r="0.9" fill="#8a5224" opacity="0.36"/><circle cx="55.3" cy="76.5" r="0.7" fill="#8a5224" opacity="0.58"/><circle cx="32.9" cy="45.1" r="1.2" fill="#f4cf90" opacity="0.35"/><circle cx="60.8" cy="20.2" r="0.6" fill="#8a5224" opacity="0.69"/><circle cx="44.0" cy="59.9" r="1.3" fill="#8a5224" opacity="0.56"/><circle cx="61.3" cy="19.6" r="1.4" fill="#f4cf90" opacity="0.48"/><circle cx="17.2" cy="38.9" r="1.3" fill="#f4cf90" opacity="0.55"/><circle cx="47.7" cy="42.2" r="0.8" fill="#8a5224" opacity="0.38"/><circle cx="51.3" cy="62.0" r="1.1" fill="#8a5224" opacity="0.48"/><circle cx="38.1" cy="62.7" r="1.3" fill="#8a5224" opacity="0.58"/><circle cx="37.8" cy="40.1" r="0.6" fill="#f4cf90" opacity="0.48"/><circle cx="80.3" cy="47.9" r="1.1" fill="#f4cf90" opacity="0.64"/><circle cx="52.9" cy="32.0" r="0.8" fill="#8a5224" opacity="0.44"/><circle cx="59.0" cy="85.8" r="0.8" fill="#f4cf90" opacity="0.58"/><circle cx="21.2" cy="72.2" r="0.7" fill="#8a5224" opacity="0.44"/><circle cx="31.9" cy="42.7" r="1.3" fill="#f4cf90" opacity="0.49"/><circle cx="57.3" cy="87.2" r="0.6" fill="#f4cf90" opacity="0.37"/><circle cx="73.2" cy="69.1" r="0.9" fill="#f4cf90" opacity="0.37"/><circle cx="22.1" cy="75.7" r="1.4" fill="#f4cf90" opacity="0.65"/><circle cx="82.2" cy="52.3" r="1.0" fill="#f4cf90" opacity="0.44"/><circle cx="41.9" cy="40.2" r="0.9" fill="#8a5224" opacity="0.68"/><circle cx="63.8" cy="36.2" r="0.7" fill="#f4cf90" opacity="0.67"/><circle cx="64.2" cy="34.9" r="1.0" fill="#f4cf90" opacity="0.40"/><circle cx="52.1" cy="22.2" r="1.0" fill="#f4cf90" opacity="0.35"/><circle cx="47.6" cy="54.7" r="1.3" fill="#f4cf90" opacity="0.64"/><circle cx="46.8" cy="58.6" r="1.4" fill="#f4cf90" opacity="0.38"/><circle cx="40.0" cy="50.9" r="1.2" fill="#f4cf90" opacity="0.39"/><circle cx="22.2" cy="54.4" r="1.3" fill="#8a5224" opacity="0.50"/><circle cx="56.7" cy="77.1" r="0.7" fill="#f4cf90" opacity="0.46"/><circle cx="80.6" cy="49.0" r="1.0" fill="#8a5224" opacity="0.39"/><circle cx="53.5" cy="71.8" r="0.7" fill="#f4cf90" opacity="0.43"/><circle cx="77.2" cy="63.0" r="1.3" fill="#8a5224" opacity="0.65"/><circle cx="66.7" cy="58.0" r="0.7" fill="#f4cf90" opacity="0.40"/><path d="M44 38C47 42 46 46 50 48" fill="none" stroke="#7a4519" stroke-width=".7" stroke-linecap="round" opacity=".45"/><path d="M60 40C63 43 66 43 68 47" fill="none" stroke="#7a4519" stroke-width=".7" stroke-linecap="round" opacity=".45"/><path d="M36 64C40 62 42 65 45 63" fill="none" stroke="#7a4519" stroke-width=".7" stroke-linecap="round" opacity=".45"/><path d="M55 78C57 74 60 74 62 71" fill="none" stroke="#7a4519" stroke-width=".7" stroke-linecap="round" opacity=".45"/><path d="M20 52C24 52 26 50 28 48" fill="none" stroke="#7a4519" stroke-width=".7" stroke-linecap="round" opacity=".45"/><path d="M70 30C68 34 70 36 69 39" fill="none" stroke="#7a4519" stroke-width=".7" stroke-linecap="round" opacity=".45"/>
 <ellipse cx="34" cy="26" rx="22" ry="12" fill="#fff" opacity=".16" transform="rotate(-28 34 26)"/>
 </g>
 <path d="M94.9 50.0C94.7 53.3 93.8 56.6 92.9 59.8C92.0 62.9 90.8 66.0 89.4 69.0C88.0 71.9 86.5 75.0 84.5 77.5C82.5 80.1 80.1 82.5 77.4 84.4C74.8 86.3 71.7 87.7 68.7 88.9C65.8 90.2 62.7 91.1 59.6 91.9C56.4 92.7 53.2 93.4 50.0 93.7C46.8 94.0 43.3 94.0 40.1 93.5C36.8 92.9 33.5 91.8 30.5 90.5C27.5 89.1 24.6 87.2 22.0 85.1C19.4 83.0 17.0 80.5 15.2 77.8C13.3 75.1 11.8 72.0 10.6 69.0C9.5 65.9 8.8 62.7 8.2 59.5C7.6 56.4 7.1 53.2 6.9 50.0C6.7 46.8 6.5 43.4 7.1 40.2C7.6 37.0 8.7 33.7 10.1 30.8C11.6 27.9 13.6 25.2 15.7 22.7C17.8 20.1 20.1 17.8 22.6 15.6C25.1 13.4 27.7 11.2 30.6 9.6C33.5 8.1 36.7 6.7 40.0 6.1C43.2 5.4 46.7 5.4 50.0 5.7C53.3 6.0 56.5 6.8 59.7 7.7C62.8 8.6 65.8 9.7 68.7 11.2C71.6 12.6 74.3 14.3 76.9 16.3C79.4 18.3 81.8 20.5 84.0 22.9C86.1 25.3 88.3 27.9 89.9 30.8C91.6 33.6 93.2 36.8 94.0 40.0C94.8 43.2 95.1 46.7 94.9 50.0Z" fill="none" stroke="#6b3a14" stroke-width="1" opacity=".55"/>
-<path d="M39.7 31.4C39.3 33.4 39.4 37.1 37.8 37.9C36.1 38.6 31.8 36.9 29.9 35.8C28.0 34.6 26.5 32.6 26.3 30.9C26.1 29.3 27.3 27.3 28.7 26.0C30.1 24.6 32.7 22.9 34.7 22.9C36.6 23.0 39.6 25.0 40.4 26.4C41.2 27.8 40.1 29.5 39.7 31.4Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M39.7 31.4C39.3 33.4 39.4 37.1 37.8 37.9C36.1 38.6 31.8 36.9 29.9 35.8C28.0 34.6 26.5 32.6 26.3 30.9C26.1 29.3 27.3 27.3 28.7 26.0C30.1 24.6 32.7 22.9 34.7 22.9C36.6 23.0 39.6 25.0 40.4 26.4C41.2 27.8 40.1 29.5 39.7 31.4Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="31.9" cy="27.3" rx="2.9" ry="1.4" fill="#fff" opacity=".28" transform="rotate(-25 34.0 30.0)"/><path d="M65.7 30.3C64.3 31.1 61.2 32.3 59.8 31.8C58.3 31.3 57.0 28.8 56.8 27.3C56.5 25.8 57.2 23.8 58.2 23.0C59.2 22.2 61.2 22.4 62.9 22.3C64.6 22.2 67.4 21.6 68.3 22.4C69.1 23.2 68.6 25.6 68.2 26.9C67.8 28.2 67.1 29.5 65.7 30.3Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M65.7 30.3C64.3 31.1 61.2 32.3 59.8 31.8C58.3 31.3 57.0 28.8 56.8 27.3C56.5 25.8 57.2 23.8 58.2 23.0C59.2 22.2 61.2 22.4 62.9 22.3C64.6 22.2 67.4 21.6 68.3 22.4C69.1 23.2 68.6 25.6 68.2 26.9C67.8 28.2 67.1 29.5 65.7 30.3Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="61.2" cy="23.8" rx="2.4" ry="1.2" fill="#fff" opacity=".28" transform="rotate(-25 63.0 26.0)"/><path d="M78.3 54.3C77.1 55.9 73.8 58.3 71.7 58.3C69.6 58.2 66.6 55.6 65.6 54.0C64.5 52.4 65.0 50.2 65.5 48.6C66.1 47.1 67.4 45.4 69.1 44.7C70.8 43.9 74.1 43.5 75.7 44.2C77.3 44.9 78.3 47.2 78.8 48.9C79.2 50.6 79.4 52.8 78.3 54.3Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M78.3 54.3C77.1 55.9 73.8 58.3 71.7 58.3C69.6 58.2 66.6 55.6 65.6 54.0C64.5 52.4 65.0 50.2 65.5 48.6C66.1 47.1 67.4 45.4 69.1 44.7C70.8 43.9 74.1 43.5 75.7 44.2C77.3 44.9 78.3 47.2 78.8 48.9C79.2 50.6 79.4 52.8 78.3 54.3Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="70.0" cy="47.4" rx="2.7" ry="1.4" fill="#fff" opacity=".28" transform="rotate(-25 72.0 50.0)"/><path d="M48.8 53.8C46.5 53.0 43.2 51.6 42.6 49.9C41.9 48.2 43.4 45.4 44.9 43.6C46.5 41.7 49.4 38.9 51.8 38.9C54.1 38.8 57.5 41.5 59.0 43.3C60.4 45.0 61.0 47.5 60.6 49.5C60.1 51.4 58.2 54.1 56.2 54.8C54.2 55.5 51.0 54.6 48.8 53.8Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M48.8 53.8C46.5 53.0 43.2 51.6 42.6 49.9C41.9 48.2 43.4 45.4 44.9 43.6C46.5 41.7 49.4 38.9 51.8 38.9C54.1 38.8 57.5 41.5 59.0 43.3C60.4 45.0 61.0 47.5 60.6 49.5C60.1 51.4 58.2 54.1 56.2 54.8C54.2 55.5 51.0 54.6 48.8 53.8Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="49.8" cy="45.1" rx="3.1" ry="1.5" fill="#fff" opacity=".28" transform="rotate(-25 52.0 48.0)"/><path d="M29.8 60.7C28.1 60.8 24.6 60.8 23.8 59.8C23.0 58.9 24.5 56.5 25.1 54.9C25.6 53.4 25.9 51.1 27.1 50.6C28.3 50.2 30.9 51.6 32.3 52.3C33.8 53.0 35.5 53.9 35.9 55.0C36.2 56.2 35.4 58.1 34.4 59.0C33.4 60.0 31.6 60.5 29.8 60.7Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M29.8 60.7C28.1 60.8 24.6 60.8 23.8 59.8C23.0 58.9 24.5 56.5 25.1 54.9C25.6 53.4 25.9 51.1 27.1 50.6C28.3 50.2 30.9 51.6 32.3 52.3C33.8 53.0 35.5 53.9 35.9 55.0C36.2 56.2 35.4 58.1 34.4 59.0C33.4 60.0 31.6 60.5 29.8 60.7Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="28.1" cy="53.6" rx="2.6" ry="1.3" fill="#fff" opacity=".28" transform="rotate(-25 30.0 56.0)"/><path d="M54.1 74.4C54.0 76.0 51.7 78.6 49.9 79.2C48.1 79.9 45.2 78.8 43.2 78.0C41.2 77.3 38.4 76.2 37.9 74.7C37.3 73.2 38.6 70.9 39.9 69.2C41.2 67.5 43.9 64.5 45.7 64.6C47.6 64.7 49.6 67.9 51.0 69.6C52.4 71.2 54.3 72.7 54.1 74.4Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M54.1 74.4C54.0 76.0 51.7 78.6 49.9 79.2C48.1 79.9 45.2 78.8 43.2 78.0C41.2 77.3 38.4 76.2 37.9 74.7C37.3 73.2 38.6 70.9 39.9 69.2C41.2 67.5 43.9 64.5 45.7 64.6C47.6 64.7 49.6 67.9 51.0 69.6C52.4 71.2 54.3 72.7 54.1 74.4Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="44.0" cy="70.4" rx="2.7" ry="1.4" fill="#fff" opacity=".28" transform="rotate(-25 46.0 73.0)"/><path d="M64.2 71.9C63.2 70.7 60.6 69.0 60.9 67.8C61.1 66.6 64.1 65.1 65.9 64.7C67.7 64.3 70.1 64.8 71.6 65.6C73.0 66.3 74.5 68.1 74.7 69.5C74.8 70.9 73.8 73.0 72.5 73.9C71.3 74.7 68.6 75.1 67.2 74.8C65.8 74.4 65.3 73.0 64.2 71.9Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M64.2 71.9C63.2 70.7 60.6 69.0 60.9 67.8C61.1 66.6 64.1 65.1 65.9 64.7C67.7 64.3 70.1 64.8 71.6 65.6C73.0 66.3 74.5 68.1 74.7 69.5C74.8 70.9 73.8 73.0 72.5 73.9C71.3 74.7 68.6 75.1 67.2 74.8C65.8 74.4 65.3 73.0 64.2 71.9Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="66.4" cy="67.9" rx="2.2" ry="1.1" fill="#fff" opacity=".28" transform="rotate(-25 68.0 70.0)"/><path d="M27.0 44.1C26.3 44.7 24.3 44.6 23.1 44.4C21.8 44.1 20.1 43.7 19.4 42.8C18.7 41.9 18.2 39.7 18.8 38.9C19.4 38.1 21.8 38.2 23.2 38.0C24.6 37.8 26.4 37.3 27.1 37.8C27.8 38.3 27.3 39.9 27.3 41.0C27.3 42.1 27.7 43.6 27.0 44.1Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M27.0 44.1C26.3 44.7 24.3 44.6 23.1 44.4C21.8 44.1 20.1 43.7 19.4 42.8C18.7 41.9 18.2 39.7 18.8 38.9C19.4 38.1 21.8 38.2 23.2 38.0C24.6 37.8 26.4 37.3 27.1 37.8C27.8 38.3 27.3 39.9 27.3 41.0C27.3 42.1 27.7 43.6 27.0 44.1Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="22.8" cy="39.4" rx="1.7" ry="0.9" fill="#fff" opacity=".28" transform="rotate(-25 24.0 41.0)"/><path d="M56.9 62.6C55.7 62.4 53.4 62.3 52.9 61.5C52.3 60.7 52.8 58.6 53.5 57.7C54.3 56.9 56.2 56.6 57.5 56.5C58.8 56.4 60.7 56.5 61.5 57.1C62.3 57.7 62.5 59.4 62.3 60.4C62.1 61.3 61.1 62.4 60.2 62.8C59.3 63.2 58.1 62.9 56.9 62.6Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M56.9 62.6C55.7 62.4 53.4 62.3 52.9 61.5C52.3 60.7 52.8 58.6 53.5 57.7C54.3 56.9 56.2 56.6 57.5 56.5C58.8 56.4 60.7 56.5 61.5 57.1C62.3 57.7 62.5 59.4 62.3 60.4C62.1 61.3 61.1 62.4 60.2 62.8C59.3 63.2 58.1 62.9 56.9 62.6Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="56.8" cy="58.4" rx="1.7" ry="0.9" fill="#fff" opacity=".28" transform="rotate(-25 58.0 60.0)"/><path d="M38.9 20.3C37.9 19.7 36.1 19.1 35.9 18.2C35.7 17.3 36.8 15.8 37.8 15.0C38.9 14.2 40.8 13.2 42.0 13.4C43.2 13.6 44.6 15.1 45.2 16.2C45.8 17.2 46.1 18.7 45.6 19.6C45.1 20.6 43.4 21.7 42.3 21.8C41.2 22.0 40.0 21.0 38.9 20.3Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)" filter="url(#ckBlur)"/><path d="M38.9 20.3C37.9 19.7 36.1 19.1 35.9 18.2C35.7 17.3 36.8 15.8 37.8 15.0C38.9 14.2 40.8 13.2 42.0 13.4C43.2 13.6 44.6 15.1 45.2 16.2C45.8 17.2 46.1 18.7 45.6 19.6C45.1 20.6 43.4 21.7 42.3 21.8C41.2 22.0 40.0 21.0 38.9 20.3Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="39.8" cy="16.4" rx="1.7" ry="0.9" fill="#fff" opacity=".28" transform="rotate(-25 41.0 18.0)"/>
+<path d="M39.7 31.4C39.3 33.4 39.4 37.1 37.8 37.9C36.1 38.6 31.8 36.9 29.9 35.8C28.0 34.6 26.5 32.6 26.3 30.9C26.1 29.3 27.3 27.3 28.7 26.0C30.1 24.6 32.7 22.9 34.7 22.9C36.6 23.0 39.6 25.0 40.4 26.4C41.2 27.8 40.1 29.5 39.7 31.4Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M39.7 31.4C39.3 33.4 39.4 37.1 37.8 37.9C36.1 38.6 31.8 36.9 29.9 35.8C28.0 34.6 26.5 32.6 26.3 30.9C26.1 29.3 27.3 27.3 28.7 26.0C30.1 24.6 32.7 22.9 34.7 22.9C36.6 23.0 39.6 25.0 40.4 26.4C41.2 27.8 40.1 29.5 39.7 31.4Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="31.9" cy="27.3" rx="2.9" ry="1.4" fill="#fff" opacity=".28" transform="rotate(-25 34.0 30.0)"/><path d="M65.7 30.3C64.3 31.1 61.2 32.3 59.8 31.8C58.3 31.3 57.0 28.8 56.8 27.3C56.5 25.8 57.2 23.8 58.2 23.0C59.2 22.2 61.2 22.4 62.9 22.3C64.6 22.2 67.4 21.6 68.3 22.4C69.1 23.2 68.6 25.6 68.2 26.9C67.8 28.2 67.1 29.5 65.7 30.3Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M65.7 30.3C64.3 31.1 61.2 32.3 59.8 31.8C58.3 31.3 57.0 28.8 56.8 27.3C56.5 25.8 57.2 23.8 58.2 23.0C59.2 22.2 61.2 22.4 62.9 22.3C64.6 22.2 67.4 21.6 68.3 22.4C69.1 23.2 68.6 25.6 68.2 26.9C67.8 28.2 67.1 29.5 65.7 30.3Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="61.2" cy="23.8" rx="2.4" ry="1.2" fill="#fff" opacity=".28" transform="rotate(-25 63.0 26.0)"/><path d="M78.3 54.3C77.1 55.9 73.8 58.3 71.7 58.3C69.6 58.2 66.6 55.6 65.6 54.0C64.5 52.4 65.0 50.2 65.5 48.6C66.1 47.1 67.4 45.4 69.1 44.7C70.8 43.9 74.1 43.5 75.7 44.2C77.3 44.9 78.3 47.2 78.8 48.9C79.2 50.6 79.4 52.8 78.3 54.3Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M78.3 54.3C77.1 55.9 73.8 58.3 71.7 58.3C69.6 58.2 66.6 55.6 65.6 54.0C64.5 52.4 65.0 50.2 65.5 48.6C66.1 47.1 67.4 45.4 69.1 44.7C70.8 43.9 74.1 43.5 75.7 44.2C77.3 44.9 78.3 47.2 78.8 48.9C79.2 50.6 79.4 52.8 78.3 54.3Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="70.0" cy="47.4" rx="2.7" ry="1.4" fill="#fff" opacity=".28" transform="rotate(-25 72.0 50.0)"/><path d="M48.8 53.8C46.5 53.0 43.2 51.6 42.6 49.9C41.9 48.2 43.4 45.4 44.9 43.6C46.5 41.7 49.4 38.9 51.8 38.9C54.1 38.8 57.5 41.5 59.0 43.3C60.4 45.0 61.0 47.5 60.6 49.5C60.1 51.4 58.2 54.1 56.2 54.8C54.2 55.5 51.0 54.6 48.8 53.8Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M48.8 53.8C46.5 53.0 43.2 51.6 42.6 49.9C41.9 48.2 43.4 45.4 44.9 43.6C46.5 41.7 49.4 38.9 51.8 38.9C54.1 38.8 57.5 41.5 59.0 43.3C60.4 45.0 61.0 47.5 60.6 49.5C60.1 51.4 58.2 54.1 56.2 54.8C54.2 55.5 51.0 54.6 48.8 53.8Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="49.8" cy="45.1" rx="3.1" ry="1.5" fill="#fff" opacity=".28" transform="rotate(-25 52.0 48.0)"/><path d="M29.8 60.7C28.1 60.8 24.6 60.8 23.8 59.8C23.0 58.9 24.5 56.5 25.1 54.9C25.6 53.4 25.9 51.1 27.1 50.6C28.3 50.2 30.9 51.6 32.3 52.3C33.8 53.0 35.5 53.9 35.9 55.0C36.2 56.2 35.4 58.1 34.4 59.0C33.4 60.0 31.6 60.5 29.8 60.7Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M29.8 60.7C28.1 60.8 24.6 60.8 23.8 59.8C23.0 58.9 24.5 56.5 25.1 54.9C25.6 53.4 25.9 51.1 27.1 50.6C28.3 50.2 30.9 51.6 32.3 52.3C33.8 53.0 35.5 53.9 35.9 55.0C36.2 56.2 35.4 58.1 34.4 59.0C33.4 60.0 31.6 60.5 29.8 60.7Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="28.1" cy="53.6" rx="2.6" ry="1.3" fill="#fff" opacity=".28" transform="rotate(-25 30.0 56.0)"/><path d="M54.1 74.4C54.0 76.0 51.7 78.6 49.9 79.2C48.1 79.9 45.2 78.8 43.2 78.0C41.2 77.3 38.4 76.2 37.9 74.7C37.3 73.2 38.6 70.9 39.9 69.2C41.2 67.5 43.9 64.5 45.7 64.6C47.6 64.7 49.6 67.9 51.0 69.6C52.4 71.2 54.3 72.7 54.1 74.4Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M54.1 74.4C54.0 76.0 51.7 78.6 49.9 79.2C48.1 79.9 45.2 78.8 43.2 78.0C41.2 77.3 38.4 76.2 37.9 74.7C37.3 73.2 38.6 70.9 39.9 69.2C41.2 67.5 43.9 64.5 45.7 64.6C47.6 64.7 49.6 67.9 51.0 69.6C52.4 71.2 54.3 72.7 54.1 74.4Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="44.0" cy="70.4" rx="2.7" ry="1.4" fill="#fff" opacity=".28" transform="rotate(-25 46.0 73.0)"/><path d="M64.2 71.9C63.2 70.7 60.6 69.0 60.9 67.8C61.1 66.6 64.1 65.1 65.9 64.7C67.7 64.3 70.1 64.8 71.6 65.6C73.0 66.3 74.5 68.1 74.7 69.5C74.8 70.9 73.8 73.0 72.5 73.9C71.3 74.7 68.6 75.1 67.2 74.8C65.8 74.4 65.3 73.0 64.2 71.9Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M64.2 71.9C63.2 70.7 60.6 69.0 60.9 67.8C61.1 66.6 64.1 65.1 65.9 64.7C67.7 64.3 70.1 64.8 71.6 65.6C73.0 66.3 74.5 68.1 74.7 69.5C74.8 70.9 73.8 73.0 72.5 73.9C71.3 74.7 68.6 75.1 67.2 74.8C65.8 74.4 65.3 73.0 64.2 71.9Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="66.4" cy="67.9" rx="2.2" ry="1.1" fill="#fff" opacity=".28" transform="rotate(-25 68.0 70.0)"/><path d="M27.0 44.1C26.3 44.7 24.3 44.6 23.1 44.4C21.8 44.1 20.1 43.7 19.4 42.8C18.7 41.9 18.2 39.7 18.8 38.9C19.4 38.1 21.8 38.2 23.2 38.0C24.6 37.8 26.4 37.3 27.1 37.8C27.8 38.3 27.3 39.9 27.3 41.0C27.3 42.1 27.7 43.6 27.0 44.1Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M27.0 44.1C26.3 44.7 24.3 44.6 23.1 44.4C21.8 44.1 20.1 43.7 19.4 42.8C18.7 41.9 18.2 39.7 18.8 38.9C19.4 38.1 21.8 38.2 23.2 38.0C24.6 37.8 26.4 37.3 27.1 37.8C27.8 38.3 27.3 39.9 27.3 41.0C27.3 42.1 27.7 43.6 27.0 44.1Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="22.8" cy="39.4" rx="1.7" ry="0.9" fill="#fff" opacity=".28" transform="rotate(-25 24.0 41.0)"/><path d="M56.9 62.6C55.7 62.4 53.4 62.3 52.9 61.5C52.3 60.7 52.8 58.6 53.5 57.7C54.3 56.9 56.2 56.6 57.5 56.5C58.8 56.4 60.7 56.5 61.5 57.1C62.3 57.7 62.5 59.4 62.3 60.4C62.1 61.3 61.1 62.4 60.2 62.8C59.3 63.2 58.1 62.9 56.9 62.6Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M56.9 62.6C55.7 62.4 53.4 62.3 52.9 61.5C52.3 60.7 52.8 58.6 53.5 57.7C54.3 56.9 56.2 56.6 57.5 56.5C58.8 56.4 60.7 56.5 61.5 57.1C62.3 57.7 62.5 59.4 62.3 60.4C62.1 61.3 61.1 62.4 60.2 62.8C59.3 63.2 58.1 62.9 56.9 62.6Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="56.8" cy="58.4" rx="1.7" ry="0.9" fill="#fff" opacity=".28" transform="rotate(-25 58.0 60.0)"/><path d="M38.9 20.3C37.9 19.7 36.1 19.1 35.9 18.2C35.7 17.3 36.8 15.8 37.8 15.0C38.9 14.2 40.8 13.2 42.0 13.4C43.2 13.6 44.6 15.1 45.2 16.2C45.8 17.2 46.1 18.7 45.6 19.6C45.1 20.6 43.4 21.7 42.3 21.8C41.2 22.0 40.0 21.0 38.9 20.3Z" fill="#1c0d07" opacity=".35" transform="translate(.9 1.6)"/><path d="M38.9 20.3C37.9 19.7 36.1 19.1 35.9 18.2C35.7 17.3 36.8 15.8 37.8 15.0C38.9 14.2 40.8 13.2 42.0 13.4C43.2 13.6 44.6 15.1 45.2 16.2C45.8 17.2 46.1 18.7 45.6 19.6C45.1 20.6 43.4 21.7 42.3 21.8C41.2 22.0 40.0 21.0 38.9 20.3Z" fill="url(#ckChip)" stroke="#2a150b" stroke-width=".5"/><ellipse cx="39.8" cy="16.4" rx="1.7" ry="0.9" fill="#fff" opacity=".28" transform="rotate(-25 41.0 18.0)"/>
 </svg></button>
     </div>
     <div class="bubu-home" id="bubuHome"></div>
@@ -7575,6 +7600,8 @@ function peekBurst(btn) {
 
 /* ===== Animasi: 1 minion memberi karangan bunga ke layar, baru amplop muncul ===== */
 let pkGiveToken = 0, pkGiveEl = null;
+let pkIdleIntro = false;   /* true = konser 3 minion pembuka sedang berjalan bersamaan dengan papan pesan */
+let pkBandDone = false;    /* true = konser pembuka sudah selesai */
 const pkSleep = ms => new Promise(r => setTimeout(r,ms));
 /* ===== Progres pemuatan data: memastikan semua data tampil, dan memberi tahu pengguna kalau jaringan lambat / gagal ===== */
 const ld = (() => {
@@ -7679,9 +7706,11 @@ const ld = (() => {
   return api;
 })();
 
-/* ===== Efek suara animasi (disintesis dengan Web Audio, tanpa file audio): tiap adegan punya karakter suara sendiri ===== */
+/* ===== Efek suara animasi (Web Audio, tanpa file audio) — identitas: "dunia mainan minion"
+   suara minion (gumaman berformant: bello / wupyu / aaah), marimba mainan, slide whistle, boing karet, kotak musik & harpa ajaib ===== */
 const pkSfx = (() => {
   let ctx = null, master = null, verbIn = null, nbuf = null, ir = null;
+  const LD = 1.55;   /* pengali volume semua suara (lebih nyaring) */
   const rnd = (a,b) => a+Math.random()*(b-a);
   const get = () => {
     try {
@@ -7689,11 +7718,10 @@ const pkSfx = (() => {
       if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; ctx = new AC(); }
       if (ctx.state === 'suspended') ctx.resume().catch(() => {});
       if (!master) {
-        master = ctx.createGain(); master.gain.value = .9;
+        master = ctx.createGain(); master.gain.value = 1.7;
         const comp = ctx.createDynamicsCompressor();
-        comp.threshold.value = -16; comp.ratio.value = 4;
+        comp.threshold.value = -11; comp.knee.value = 8; comp.ratio.value = 7; comp.attack.value = .003; comp.release.value = .18;
         master.connect(comp); comp.connect(ctx.destination);
-        /* gema ruangan lembut (dipakai bunga, lonceng, ledakan) */
         if (!ir) {
           const len = Math.floor(ctx.sampleRate*1.7);
           ir = ctx.createBuffer(2,len,ctx.sampleRate);
@@ -7701,7 +7729,7 @@ const pkSfx = (() => {
         }
         verbIn = ctx.createGain();
         const conv = ctx.createConvolver(); conv.buffer = ir;
-        const wet = ctx.createGain(); wet.gain.value = .55;
+        const wet = ctx.createGain(); wet.gain.value = .5;
         verbIn.connect(conv); conv.connect(wet); wet.connect(master);
       }
       return ctx;
@@ -7719,14 +7747,13 @@ const pkSfx = (() => {
     os.type = o.type || 'sine';
     os.frequency.setValueAtTime(o.f0,t);
     if (o.f1 && o.f1 !== o.f0) os.frequency.exponentialRampToValueAtTime(o.f1,t+dur);
-    if (o.det) os.detune.value = o.det;
     if (o.vib) {
       const l = c.createOscillator(), lg = c.createGain();
       l.frequency.value = o.vib[0]; lg.gain.value = o.vib[1];
       l.connect(lg); lg.connect(os.frequency); l.start(t); l.stop(t+dur+.05);
     }
     g.gain.setValueAtTime(.0001,t);
-    g.gain.linearRampToValueAtTime(o.vol,t+a);
+    g.gain.linearRampToValueAtTime(o.vol*LD,t+a);
     g.gain.exponentialRampToValueAtTime(.0001,t+dur);
     let tail = os;
     if (o.lp) { const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = o.lp; os.connect(f); tail = f; }
@@ -7734,7 +7761,7 @@ const pkSfx = (() => {
     toBus(g,c,t,o.rev);
     os.start(t); os.stop(t+dur+.05);
   };
-  /* derau tersaring: angin, desir, benturan, kerikil */
+  /* derau tersaring */
   const H = o => {
     const c = get(); if (!c) return;
     if (!nbuf) { nbuf = c.createBuffer(1,c.sampleRate*2|0,c.sampleRate); const a = nbuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random()*2-1; }
@@ -7745,13 +7772,13 @@ const pkSfx = (() => {
     if (o.f1 && o.f1 !== o.f0) f.frequency.exponentialRampToValueAtTime(o.f1,t+dur);
     const g = c.createGain();
     g.gain.setValueAtTime(.0001,t);
-    g.gain.linearRampToValueAtTime(o.vol,t+Math.min(o.att === undefined ? .01 : o.att,dur*.6));
+    g.gain.linearRampToValueAtTime(o.vol*LD,t+Math.min(o.att === undefined ? .01 : o.att,dur*.6));
     g.gain.exponentialRampToValueAtTime(.0001,t+dur);
     s.connect(f); f.connect(g);
     toBus(g,c,t,o.rev);
     s.start(t,Math.random()); s.stop(t+dur+.05);
   };
-  /* lonceng / glockenspiel: sintesis FM */
+  /* lonceng / glockenspiel (FM) */
   const bell = (f,d,vol,rev,dur) => {
     const c = get(); if (!c) return;
     const t = c.currentTime+d, L = dur || 1.1;
@@ -7759,11 +7786,11 @@ const pkSfx = (() => {
     car.frequency.value = f; mod.frequency.value = f*3.51;
     mg.gain.setValueAtTime(f*1.4,t); mg.gain.exponentialRampToValueAtTime(.01,t+L*.5);
     mod.connect(mg); mg.connect(car.frequency);
-    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+L);
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+L);
     car.connect(g); toBus(g,c,t,rev === undefined ? .4 : rev);
     car.start(t); mod.start(t); car.stop(t+L+.05); mod.stop(t+L+.05);
   };
-  /* petikan harpa: segitiga + filter yang menutup cepat */
+  /* petikan harpa */
   const pluck = (f,d,vol,rev) => {
     const c = get(); if (!c) return;
     const t = c.currentTime+d;
@@ -7771,23 +7798,81 @@ const pkSfx = (() => {
     o1.type = 'triangle'; o1.frequency.value = f;
     o2.type = 'sine'; o2.frequency.value = f*2; g2.gain.value = .35;
     fl.type = 'lowpass'; fl.frequency.setValueAtTime(f*7,t); fl.frequency.exponentialRampToValueAtTime(f*1.4,t+.45);
-    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+.9);
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+.9);
     o1.connect(fl); o2.connect(g2); g2.connect(fl); fl.connect(g);
     toBus(g,c,t,rev === undefined ? .35 : rev);
     o1.start(t); o2.start(t); o1.stop(t+1); o2.stop(t+1);
   };
-  /* hamparan nada panjang (swell - tahan - lepas) */
+  /* hamparan nada panjang */
   const pad = (f,d,swell,hold,rel,vol) => {
     const c = get(); if (!c) return;
     const t = c.currentTime+d, end = t+swell+hold+rel;
     const fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.setValueAtTime(500,t); fl.frequency.linearRampToValueAtTime(1900,t+swell);
     const g = c.createGain();
-    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol,t+swell); g.gain.setValueAtTime(vol,t+swell+hold); g.gain.exponentialRampToValueAtTime(.0001,end);
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+swell); g.gain.setValueAtTime(vol*LD,t+swell+hold); g.gain.exponentialRampToValueAtTime(.0001,end);
     fl.connect(g); toBus(g,c,t,.45);
     [-9,9].forEach(dt => { const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = dt; o.connect(fl); o.start(t); o.stop(end+.05); });
   };
   const ticks = (n,d,span,f0,f1,vol,type) => {
     for (let i = 0; i < n; i++) H({type:type || 'highpass',f0:rnd(f0,f1),d:d+rnd(0,span),dur:rnd(.02,.05),vol:vol*rnd(.5,1),q:.6,att:.002});
+  };
+  /* marimba mainan: nada bulat + "tok" kayu */
+  const mar = (f,d,vol,rev) => {
+    T({type:'sine',f0:f,d,dur:.42,vol,att:.003,rev:rev === undefined ? .25 : rev});
+    T({type:'sine',f0:f*4.02,d,dur:.09,vol:vol*.4,att:.002});
+    H({type:'bandpass',f0:f*2.5,d,dur:.02,vol:vol*.25,q:2,att:.001});
+  };
+  /* slide whistle (suling geser) */
+  const slide = (f0,f1,d,dur,vol) => T({type:'sine',f0,f1,d:d || 0,dur,vol,att:.02,vib:[9,f0*.035],rev:.2});
+  /* boing karet */
+  const boing = (f,d,vol) => T({type:'triangle',f0:f*.55,f1:f*1.5,d:d || 0,dur:.38,vol,att:.006,vib:[19,f*.1],lp:2400,rev:.15});
+  /* SUARA MINION: sawtooth + dua formant vokal; gumaman khas */
+  const VW = {a:[800,1250],e:[520,1900],i:[320,2350],o:[480,880],u:[340,780]};
+  const voc = (v,d,f0,f1,dur,vol,rev) => {
+    const c = get(); if (!c) return;
+    const t = c.currentTime+d, F = VW[v] || VW.a;
+    const os = c.createOscillator(), l = c.createOscillator(), lg = c.createGain(), g = c.createGain();
+    os.type = 'sawtooth';
+    os.frequency.setValueAtTime(f0,t); os.frequency.exponentialRampToValueAtTime(f1 || f0,t+dur);
+    l.frequency.value = 6.5; lg.gain.value = f0*.025; l.connect(lg); lg.connect(os.frequency);
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+Math.min(.02,dur*.3));
+    g.gain.setValueAtTime(vol*LD,t+dur*.6); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    F.forEach((fr,k) => {
+      const b = c.createBiquadFilter(); b.type = 'bandpass'; b.frequency.value = fr; b.Q.value = k ? 7 : 5;
+      const bg = c.createGain(); bg.gain.value = k ? 3 : 4.5; os.connect(b); b.connect(bg); bg.connect(g);
+    });
+    toBus(g,c,t,rev === undefined ? .12 : rev);
+    os.start(t); l.start(t); os.stop(t+dur+.05); l.stop(t+dur+.05);
+    H({type:'bandpass',f0:3200,d,dur:.025,vol:vol*.5,q:1.5,att:.002});
+  };
+  /* rangkaian suku kata: [vokal,f0,f1,dur,jeda] */
+  const say = (arr,d,vol,rev) => { let t = d || 0; arr.forEach(([v,a,b,du,gap]) => { voc(v,t,a,b,du,vol,rev); t += du+(gap === undefined ? .03 : gap); }); };
+  const laugh = (d,n,f,vol) => { for (let i = 0; i < n; i++) voc('a',d+i*.17,f*(1+(i%2)*.12),f*.9,.11,vol); };
+  /* trompet: dua sawtooth + square, filter "wah" khas kuningan, vibrato yang tumbuh, sedikit gema */
+  const trum = (f,d,dur,vol) => {
+    const c = get(); if (!c) return;
+    const t = c.currentTime+d, end = t+dur;
+    const o1 = c.createOscillator(), o2 = c.createOscillator(), l = c.createOscillator(), lg = c.createGain();
+    const fl = c.createBiquadFilter(), pk = c.createBiquadFilter(), g = c.createGain(), m = c.createGain();
+    o1.type = 'sawtooth'; o2.type = 'square'; o1.detune.value = -5; o2.detune.value = 7;
+    [o1,o2].forEach(o => { o.frequency.setValueAtTime(f*.96,t); o.frequency.exponentialRampToValueAtTime(f,t+.035); });
+    l.frequency.value = 5.6; lg.gain.setValueAtTime(0,t); lg.gain.linearRampToValueAtTime(f*.006,t+Math.min(.3,dur*.6));
+    l.connect(lg); lg.connect(o1.frequency); lg.connect(o2.frequency);
+    fl.type = 'lowpass'; fl.Q.value = 1.2;
+    fl.frequency.setValueAtTime(f*1.6,t); fl.frequency.linearRampToValueAtTime(Math.min(f*6.5,7000),t+.06); fl.frequency.linearRampToValueAtTime(f*4.2,t+dur);
+    pk.type = 'peaking'; pk.frequency.value = 1300; pk.gain.value = 5; pk.Q.value = .9;
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+.025);
+    g.gain.setValueAtTime(vol*LD*.85,t+Math.max(.05,dur-.09)); g.gain.exponentialRampToValueAtTime(.0001,end);
+    m.gain.value = .5; o1.connect(m); o2.connect(m); m.connect(fl); fl.connect(pk); pk.connect(g);
+    toBus(g,c,t,.3);
+    o1.start(t); o2.start(t); l.start(t); o1.stop(end+.05); o2.stop(end+.05); l.stop(end+.05);
+  };
+  /* snare drum: derau berkawat + badan kulit */
+  const snr = (d,vol,len) => {
+    const L = len || .12;
+    H({type:'bandpass',f0:2400,f1:1800,d,dur:L,vol:vol*.9,q:.6,att:.001,rev:.08});
+    H({type:'highpass',f0:6000,d,dur:L*.8,vol:vol*.5,q:.5,att:.001});
+    T({type:'triangle',f0:230,f1:160,d,dur:.08,vol:vol*.9,att:.001});
   };
   const SCALE = [196,220,246.9,293.7,329.6];
   const scaleNote = i => SCALE[i%5]*Math.pow(2,Math.floor(i/5));
@@ -7798,168 +7883,206 @@ const pkSfx = (() => {
       try { old.gain.cancelScheduledValues(ctx.currentTime); old.gain.setTargetAtTime(0,ctx.currentTime,.03); } catch {}
       setTimeout(() => { try { old.disconnect(); } catch {} },600);
     },
-    /* tekan cookie (saat jari menyentuh): tekanan lembut + "tek" kecil */
+    /* jari menyentuh cookie */
     cookiePress() {
-      T({type:'sine',f0:150,f1:96,dur:.07,vol:.17,att:.002,lp:700});
-      H({type:'bandpass',f0:1100,f1:700,dur:.035,vol:.06,q:1.1,att:.001});
+      T({type:'sine',f0:150,f1:96,dur:.07,vol:.2,att:.002,lp:700});
+      H({type:'bandpass',f0:1100,f1:700,dur:.035,vol:.07,q:1.1,att:.001});
     },
-    /* tap cookie: gigitan renyah realistis. open=true -> amplop muncul (nada naik), false -> sembunyi (nada turun) */
+    /* gigitan cookie renyah + sapaan minion kecil: naik (amplop muncul) / turun (sembunyi) */
     cookie(open) {
       const up = open !== false, v = rnd(.94,1.06);
-      /* 1) retakan awal: klik tajam saat permukaan cookie pecah */
       H({type:'highpass',f0:3800*v,dur:.012,vol:.2,q:.7,att:.0005});
       H({type:'bandpass',f0:2600*v,f1:1500,dur:.03,vol:.26,q:2.2,att:.001});
-      /* 2) badan renyah: butiran remah, kuat di awal lalu menipis, tiap butir beda frekuensi + posisi stereo */
-      const n = 9;
-      for (let i = 0; i < n; i++) {
-        const k = i/(n-1), d = .006+Math.pow(k,1.25)*.085+rnd(0,.008);
+      for (let i = 0; i < 9; i++) {
+        const k = i/8, d = .006+Math.pow(k,1.25)*.085+rnd(0,.008);
         H({type:'bandpass',f0:rnd(1500,4600),f1:rnd(900,2400),d,dur:rnd(.014,.034),vol:(.2-.13*k)*rnd(.7,1),q:rnd(1.6,3.4),att:.0008});
       }
-      /* 3) "kres" rendah di dalam rahang: derau tersaring turun cepat */
       H({type:'lowpass',f0:1500*v,f1:260,dur:.11,vol:.2,q:.8,att:.003});
-      /* 4) benturan empuk (tubuh cookie) */
       T({type:'sine',f0:175*v,f1:62,dur:.12,vol:.3,att:.002,lp:520});
-      T({type:'triangle',f0:420*v,f1:190,d:.004,dur:.05,vol:.07,att:.001,lp:1400});
-      /* 5) remah berjatuhan: ketukan kecil renyah yang jarang di ujung */
       for (let i = 0; i < 6; i++) H({type:'bandpass',f0:rnd(3200,7200),d:.14+i*.045+rnd(0,.05),dur:.012,vol:rnd(.018,.045),q:2.8,att:.0006});
-      /* 6) kilau halus penutup, naik saat dibuka dan turun saat disembunyikan */
-      const a = up ? [1318.5,1760,2349] : [1760,1318.5,987.8];
-      a.forEach((f,i) => bell(f,.1+i*.07,.045-i*.008,.45,.7));
+      (up ? [1046.5,1318.5,1568] : [1568,1175,880]).forEach((f,i) => mar(f,.1+i*.075,.075-i*.012,.3));
+      if (up) say([['u',420,520,.07,.01],['i',560,780,.13]],.12,.07);
+      else say([['u',520,330,.14]],.12,.06);
     },
-    /* minion naik: suara per mantul + gesekan kain */
+    /* minion naik dari balik tombol: "be-LLO?" + suling geser + kain */
     rise() {
-      T({type:'sine',f0:200,f1:560,dur:.5,vol:.15,att:.02,vib:[17,34]});
-      H({type:'bandpass',f0:500,f1:1400,dur:.3,vol:.035,q:1,att:.1});
-      T({type:'sine',f0:520,f1:1150,d:.47,dur:.09,vol:.2,att:.004});
+      slide(260,720,0,.5,.09);
+      H({type:'bandpass',f0:500,f1:1400,dur:.3,vol:.04,q:1,att:.1});
+      say([['e',330,400,.12,.02],['o',420,360,.24]],.36,.15);
+      mar(1046.5,.62,.1);
     },
-    /* karangan bunga muncul: kertas kado berkerisik + pop */
+    /* buket muncul: "wup-yu!" + pop + kerisik kertas + marimba naik */
     bouquet() {
-      T({type:'sine',f0:300,f1:760,d:.05,dur:.11,vol:.22,att:.004});
+      say([['u',380,520,.08,.01],['i',560,820,.07,.01],['u',820,640,.16]],.04,.16);
+      T({type:'sine',f0:300,f1:760,d:.05,dur:.11,vol:.24,att:.004});
       ticks(9,.1,.38,3200,6500,.11);
-      H({type:'bandpass',f0:1200,f1:2800,d:.15,dur:.25,vol:.04,q:.8,att:.1});
-      bell(1318.5,.25,.05,.5,.8);
+      [784,988,1175,1568].forEach((f,i) => mar(f,.2+i*.06,.09));
     },
-    /* ancang-ancang: derit sendi + kain */
+    /* ancang-ancang: karet meregang + "hmmm" menahan napas */
     windup() {
-      T({type:'sawtooth',f0:390,f1:240,dur:.32,vol:.055,att:.05,lp:1500,vib:[21,14]});
+      boing(300,0,.06);
+      T({type:'sawtooth',f0:390,f1:240,dur:.32,vol:.05,att:.05,lp:1500,vib:[21,14]});
+      voc('o',.04,170,240,.3,.09,.05);
       H({type:'bandpass',f0:700,f1:380,dur:.3,vol:.05,q:1,att:.1});
     },
-    /* lemparan besar: desing dengan efek doppler */
+    /* lemparan besar: "HIYAAA!" + desing doppler + suling naik */
     throwBig() {
+      say([['i',300,420,.07,.0],['a',420,640,.2]],0,.2);
       H({type:'bandpass',f0:380,f1:2900,dur:.15,vol:.24,q:1.4,att:.08});
       H({type:'bandpass',f0:2900,f1:850,d:.14,dur:.34,vol:.2,q:1.2,att:.01});
-      T({type:'sine',f0:230,f1:720,dur:.26,vol:.05,att:.05});
+      slide(300,1100,0,.26,.07);
     },
-    /* bunga mendarat di layar: "pfump" empuk + kelopak berhamburan */
+    /* buket mendarat di layar: "pfump" + petik harpa + "yaaay!" */
     softHit() {
-      T({type:'sine',f0:150,f1:58,dur:.24,vol:.36,att:.004});
-      H({type:'lowpass',f0:1300,f1:180,dur:.22,vol:.22,q:.7,att:.004});
+      T({type:'sine',f0:150,f1:58,dur:.24,vol:.4,att:.004});
+      H({type:'lowpass',f0:1300,f1:180,dur:.22,vol:.24,q:.7,att:.004});
       ticks(10,.05,.5,4200,7600,.05);
-      bell(1568,.1,.05,.5,.7); bell(2093,.2,.04,.5,.7);
+      [0,2,4,6,8].forEach((n,i) => pluck(scaleNote(n+5),.06+i*.05,.07,.4));
+      bell(1568,.12,.07,.5,.8); bell(2093,.26,.06,.5,.8);
+      say([['a',520,640,.1,.0],['e',640,780,.18]],.18,.12);
     },
+    /* minion samping melempar pisang: "ba!" + desing kecil */
     bananaThrow() {
-      H({type:'bandpass',f0:1500,f1:3900,dur:.13,vol:.13,q:2,att:.04});
-      T({type:'sine',f0:620,f1:1550,dur:.16,vol:.045,att:.02,vib:[11,22]});
+      voc('a',0,rnd(520,640),rnd(700,820),.09,.11);
+      H({type:'bandpass',f0:1500,f1:3900,dur:.13,vol:.14,q:2,att:.04});
+      slide(620,1550,0,.16,.05);
     },
-    /* pisang jatuh: "splat" kenyal */
+    /* pisang jatuh: splat kenyal + "na!" */
     plop() {
       const k = rnd(.9,1.15);
-      H({type:'lowpass',f0:1500*k,f1:300,dur:.1,vol:.24,q:.9,att:.004});
-      T({type:'sine',f0:480*k,f1:1350*k,d:.02,dur:.07,vol:.17,att:.004});
-      T({type:'sine',f0:950*k,f1:420*k,d:.1,dur:.07,vol:.07,att:.004});
+      H({type:'lowpass',f0:1500*k,f1:300,dur:.1,vol:.26,q:.9,att:.004});
+      T({type:'sine',f0:480*k,f1:1350*k,d:.02,dur:.07,vol:.19,att:.004});
+      T({type:'sine',f0:950*k,f1:420*k,d:.1,dur:.07,vol:.08,att:.004});
+      voc('a',.06,rnd(560,720),rnd(480,560),.1,.09);
     },
-    /* mantul kecil (loncat senang) */
+    /* loncat senang: marimba + "hee!" */
     blip(d,f) {
-      T({type:'sine',f0:f*.9,f1:f*1.7,d:d || 0,dur:.13,vol:.1,att:.006,vib:[24,16]});
-      H({type:'bandpass',f0:2400,d:d || 0,dur:.02,vol:.05,q:1,att:.002});
+      mar(f*1.5,d || 0,.12);
+      voc('i',(d || 0)+.02,f*.8,f*1.3,.12,.07);
     },
-    /* kaget: tarikan napas + sentakan nada */
+    /* kaget: "OOOH!" + dua sentakan stinger */
     alert() {
-      H({type:'bandpass',f0:900,f1:2500,dur:.15,vol:.13,q:1.2,att:.06});
-      T({type:'sawtooth',f0:988,dur:.1,vol:.075,att:.005,lp:2600,rev:.15});
-      T({type:'sawtooth',f0:1319,d:.09,dur:.17,vol:.085,att:.005,lp:2600,rev:.15});
+      say([['o',420,620,.1,.0],['a',640,760,.22]],0,.2);
+      H({type:'bandpass',f0:900,f1:2500,dur:.15,vol:.12,q:1.2,att:.06});
+      T({type:'sawtooth',f0:988,d:.02,dur:.1,vol:.07,att:.005,lp:2600,rev:.15});
+      T({type:'sawtooth',f0:1319,d:.11,dur:.17,vol:.08,att:.005,lp:2600,rev:.15});
     },
-    /* menghilang: peluit meluncur turun */
+    /* kabur ke balik tombol: "poo-pa-ye~" turun + suling geser */
     sink(d) {
-      T({type:'sine',f0:950,f1:210,d:d || 0,dur:.42,vol:.075,att:.02,vib:[13,26]});
-      H({type:'bandpass',f0:1600,f1:320,d:d || 0,dur:.36,vol:.045,q:.9,att:.05});
+      say([['u',620,520,.1],['a',520,440,.1],['e',460,300,.2]],d || 0,.12);
+      slide(950,210,d || 0,.42,.07);
     },
     paperSwish() {
-      H({type:'bandpass',f0:3200,f1:800,dur:.26,vol:.1,q:.7,att:.05});
+      H({type:'bandpass',f0:3200,f1:800,dur:.26,vol:.11,q:.7,att:.05});
       ticks(4,.02,.2,4200,6800,.05);
+      mar(880,.18,.06);
     },
-    /* bulan jatuh: peluit turun, dengung rendah makin keras, percikan api */
+    /* bulan jatuh: penunggang tertawa "ha-ha-ha", peluit bom turun, gemuruh naik, percikan api */
     moonFall(dur) {
-      T({type:'sine',f0:2500,f1:700,dur,vol:.05,att:.2,vib:[6,45]});
-      T({type:'sawtooth',f0:55,f1:135,dur,vol:.1,att:dur*.7,lp:320});
-      H({type:'bandpass',f0:200,f1:1800,dur,vol:.2,q:1,att:dur*.85});
-      H({type:'lowpass',f0:160,f1:260,dur,vol:.16,q:.7,att:dur*.8});
+      laugh(.05,Math.max(3,Math.floor(dur/.17)-1),620,.07);
+      T({type:'sine',f0:2500,f1:700,dur,vol:.07,att:.2,vib:[6,45]});
+      T({type:'sawtooth',f0:55,f1:135,dur,vol:.12,att:dur*.7,lp:320});
+      H({type:'bandpass',f0:200,f1:1800,dur,vol:.22,q:1,att:dur*.85});
+      H({type:'lowpass',f0:160,f1:260,dur,vol:.18,q:.7,att:dur*.8});
       for (let i = 0; i < 22; i++) { const f = Math.pow(i/21,.6); H({type:'bandpass',f0:rnd(2500,5200),d:f*dur*.95,dur:.03,vol:.03+f*.05,q:2,att:.002}); }
     },
-    /* minion terhantam: "bonk" kayu + boing kartun (nada berbeda tiap minion) */
+    /* minion terhantam: "BONK" + yelp "AAAH!" + boing (nada tiap minion beda) */
     hit(i) {
       const b = [620,500,760][i%3];
-      T({type:'sine',f0:b*1.15,f1:b*.42,dur:.13,vol:.3,att:.003});
-      H({type:'bandpass',f0:2300,f1:800,dur:.06,vol:.2,q:1.2,att:.002});
-      T({type:'sine',f0:b*.5,f1:b*1.55,d:.05,dur:.42,vol:.09,att:.01,vib:[15,38]});
-      bell(2093+i*160,.16,.04,.4,.6);
+      T({type:'sine',f0:b*1.15,f1:b*.42,dur:.13,vol:.34,att:.003});
+      H({type:'bandpass',f0:2300,f1:800,dur:.06,vol:.22,q:1.2,att:.002});
+      voc('a',.03,b*.95,b*.45,.5,.16,.2);
+      boing(b,.06,.07);
+      mar(2093+i*160,.2,.07);
     },
-    /* mendarat: debuman tubuh + debu */
     thud(v) {
       const k = v || .3;
       T({type:'sine',f0:112,f1:44,dur:.2,vol:k,att:.004});
       H({type:'lowpass',f0:720,f1:110,dur:.16,vol:k*.6,q:.7,att:.004});
       H({type:'highpass',f0:3000,d:.02,dur:.06,vol:k*.15,q:.6,att:.004});
     },
-    /* pusing: peluit "wuu-wuu" + xilofon menurun */
+    /* pusing: "wuuu-wuuu~" bergoyang + marimba menurun */
     dizzy() {
-      T({type:'sine',f0:720,f1:880,dur:.75,vol:.06,att:.1,vib:[7,130],rev:.2});
-      [1760,1568,1397,1175,988].forEach((f,i) => bell(f,.05+i*.1,.04,.3,.45));
+      voc('u',0,420,300,.4,.1,.2); voc('o',.4,360,260,.4,.09,.2);
+      [1760,1568,1397,1175,988].forEach((f,i) => mar(f,.05+i*.1,.07,.3));
     },
-    /* bangkit: tiga mantulan pegas yang makin kecil */
+    /* bangkit: tiap loncatan "hup!" + boing pegas yang makin kecil */
     hops() {
-      [[.2,420,.09],[.4,360,.075],[.6,310,.06],[.78,270,.05]].forEach(([t,f,v]) => T({type:'sine',f0:f,f1:f*1.55,d:t*.95,dur:.17,vol:v,att:.008,vib:[22,20]}));
+      [[.2,420,.09],[.4,360,.075],[.6,310,.06],[.78,270,.05]].forEach(([t,f,v],i) => {
+        boing(f*1.2,t*.95,v*1.1);
+        voc('u',t*.95,f*.9,f*1.2,.08,.07-i*.01);
+      });
       api.thud(.12);
     },
-    /* DUAR: sub-bass, retakan, serpihan, dengung panjang bergema */
+    /* DUAR: sub-bass, retakan, serpihan, simbal kartun, penunggang melayang "AAAAH~" */
     boom() {
-      T({type:'sine',f0:125,f1:27,dur:1.05,vol:.9,att:.003,rev:.12});
-      H({type:'lowpass',f0:3600,f1:80,dur:.9,vol:.62,q:.8,att:.003});
-      H({type:'highpass',f0:1800,f1:6000,dur:.11,vol:.36,q:.6,att:.002});
+      T({type:'sine',f0:125,f1:27,dur:1.05,vol:.95,att:.003,rev:.12});
+      H({type:'lowpass',f0:3600,f1:80,dur:.9,vol:.65,q:.8,att:.003});
+      H({type:'highpass',f0:1800,f1:6000,dur:.11,vol:.38,q:.6,att:.002});
       T({type:'sawtooth',f0:82,f1:30,dur:.65,vol:.16,att:.004,lp:420});
       H({type:'lowpass',f0:240,f1:90,d:.2,dur:1.4,vol:.22,q:.7,att:.1,rev:.7});
+      H({type:'highpass',f0:5200,d:.04,dur:.9,vol:.1,q:.5,att:.004,rev:.3});
       for (let i = 0; i < 14; i++) H({type:'bandpass',f0:rnd(2000,6200),d:.1+Math.pow(i/13,1.4)*.8,dur:.035,vol:.07*(1-i/18),q:2.2,att:.002});
-      bell(1568,.3,.04,.6,1.2); bell(2093,.42,.035,.6,1.2);
+      voc('a',.12,520,880,.55,.14,.3);
+      voc('a',.67,880,330,.5,.1,.3);
+      bell(1568,.3,.05,.6,1.2); bell(2093,.42,.04,.6,1.2);
     },
-    /* layar penuh bunga: petikan harpa makin rapat naik, angin lembut, hamparan paduan nada, lonceng saat penuh */
+    /* layar penuh bunga: harpa menanjak, angin, paduan nada, kilau, lonceng saat penuh */
     bloom(full,hold) {
       const n = 36;
       for (let i = 0; i < n; i++) {
         const f = Math.pow(i/(n-1),1.3);
         pluck(scaleNote(Math.min(14,Math.floor(f*12)+Math.floor(rnd(0,3)))),f*full*.96,.026+f*.045);
       }
-      H({type:'bandpass',f0:300,f1:2300,dur:full,vol:.075,q:.9,att:full*.85,rev:.3});
+      H({type:'bandpass',f0:300,f1:2300,dur:full,vol:.08,q:.9,att:full*.85,rev:.3});
       ticks(16,0,full,5000,8000,.03);
+      for (let i = 0; i < 14; i++) { const f = Math.pow(i/13,.9); bell(rnd(1568,3136),f*full*.95,.025+f*.025,.6,.7); }
       [196,246.9,293.7,392].forEach((fr,k) => pad(fr,k*.04,full,(hold || .5),.7,.017));
-      bell(523.3,full-.06,.075,.55,1.6); bell(784,full-.03,.06,.55,1.6); bell(1046.5,full,.05,.55,1.6);
+      bell(523.3,full-.06,.08,.55,1.6); bell(784,full-.03,.065,.55,1.6); bell(1046.5,full,.055,.55,1.6);
     },
-    /* kelopak gugur: angin turun, harpa menurun, rintik kelopak */
+    /* kelopak gugur */
     petalFall(d,dur) {
       H({type:'bandpass',f0:2700,f1:520,d,dur,vol:.12,q:.8,att:.12});
       for (let i = 0; i < 10; i++) pluck(scaleNote(14-i),d+i*dur*.06,.04-i*.002,.3);
       for (let i = 0; i < 30; i++) { const f = i/29; H({type:'highpass',f0:rnd(4500,7500),d:d+f*dur*.9,dur:.04,vol:.035*(1-f*.6),q:.6,att:.003}); }
     },
-    /* amplop muncul: kotak musik / glockenspiel bergema */
+    /* amplop muncul: kotak musik + "yaaay!" minion */
     reveal() {
-      [784,988,1175,1568].forEach((f,i) => bell(f,i*.09,.1,.55,1.4));
-      bell(2349,.4,.045,.6,1.4);
+      [784,988,1175,1568].forEach((f,i) => bell(f,i*.09,.11,.55,1.4));
+      bell(2349,.4,.05,.6,1.4);
+      say([['a',460,600,.12,.0],['e',620,760,.24]],.34,.12);
       T({type:'sine',f0:300,f1:640,dur:.16,vol:.05,att:.01});
     },
-    /* papan pesan: "tok" kayu + denting lonceng */
+    /* "Fanfare Minion": intro snare, tema mars C mayor dua trompet harmoni terts + bass + pad, roll snare, akhir megah (±8 detik, 132 bpm) */
+    band() {
+      const c = get(); if (!c) return 0;
+      const bt = 60/132, mf = m => 440*Math.pow(2,(m-69)/12);
+      const SC = [55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84];
+      const MEL = [[3,67,.5],[3.5,72,.5],[4,76,1],[5,79,1],[6,76,.5],[6.5,74,.5],[7,72,1],[8,74,1],[9,77,1],[10,76,.5],[10.5,74,.5],[11,71,1],[12,72,.5],[12.5,76,.5],[13,79,1],[14,84,1],[15,79,.5],[15.5,76,.5],[16,76,1.5]];
+      MEL.forEach(([b,m,l]) => {
+        const fin = b === 16, dur = fin ? 1.5*bt : l*bt*(l < 1 ? .88 : .94);
+        trum(mf(m),b*bt,dur,fin ? .17 : .15);
+        trum(mf(fin ? 72 : SC[Math.max(0,SC.indexOf(m)-2)]),b*bt,dur,fin ? .13 : .1);
+      });
+      [[4,48],[6,48],[8,43],[10,43],[12,48],[14,41],[16,48]].forEach(([b,m]) => T({type:'triangle',f0:mf(m),d:b*bt,dur:(b === 16 ? 1.5 : 1.6)*bt,vol:.17,att:.01,lp:420,rev:.1}));
+      [[4,[130.8,164.8,196]],[8,[98,123.5,146.8]],[12,[130.8,164.8,196]],[16,[130.8,164.8,196,261.6]]].forEach(([b,fs]) =>
+        fs.forEach((f,k) => pad(f,b*bt+k*.01,.4,Math.max(.2,(b === 16 ? 1.4 : 3.8)*bt-.8),.4,.012)));
+      const sn = (b,v,len) => snr(b*bt,v,len);
+      for (let i = 0; i < 6; i++) sn(i*.5,.1+i*.035,.1);
+      sn(2.75,.22,.08);
+      for (let b = 4; b < 15; b++) { sn(b,b%2 ? .17 : .24,.14); sn(b+.5,.08,.07); if (b%2) sn(b+.75,.07,.05); }
+      for (let i = 0; i < 12; i++) sn(15+i/12,.08+i*.022,.05);
+      sn(16,.36,.22);
+      H({type:'highpass',f0:6500,d:16*bt,dur:1.8,vol:.12,q:.5,att:.002,rev:.5});
+      bell(2093,16*bt,.05,.5,1.4); bell(2637,16*bt+.08,.04,.5,1.4);
+      return 17.5*bt;
+    },
+    /* papan pesan: "tok" kayu + denting + kikik */
     signPop() {
-      T({type:'triangle',f0:720,f1:340,dur:.07,vol:.22,att:.003});
-      H({type:'bandpass',f0:2500,f1:1200,dur:.05,vol:.12,q:1.4,att:.002});
-      bell(1318.5,.07,.085,.35,.9); bell(1760,.15,.05,.35,.9);
+      T({type:'triangle',f0:720,f1:340,dur:.07,vol:.24,att:.003});
+      H({type:'bandpass',f0:2500,f1:1200,dur:.05,vol:.13,q:1.4,att:.002});
+      bell(1318.5,.07,.09,.35,.9); bell(1760,.15,.055,.35,.9);
+      laugh(.22,3,820,.05);
     }
   };
   return api;
@@ -8019,6 +8142,7 @@ function pkCleanup() {
 
 function pkAbortGive() {
   pkGiveToken++;
+  pkIdleIntro = false;
   pkSfx.stop();
   if (typeof pkBloomStop === 'function') pkBloomStop();
   if (pkGiveEl) { pkGiveEl.remove(); pkGiveEl = null; }
@@ -8524,14 +8648,26 @@ async function pkPlayMoon(opts) {
   if (!alive()) return;
   [[22,72],[198,70],[34,150],[186,152],[110,16],[68,26],[152,26]].forEach(([x,y],k) => setTimeout(() => { if (alive()) fx('✨',x,y,(x<110?-1:1)*8,-10,900,1.15); },k*70));
   go(sign.querySelector('.pk-sign-m'),[{translate:'0 0'},{translate:'0 -3px'}],{duration:650,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});
-  [900,2300,3700,5100,6500].forEach((ms,k) => setTimeout(() => { if (alive()) fx(k%2 ? '♡' : '💗',50+((k*37)%120),64,(k%2 ? 10 : -10),-34,1300,1.1); },ms));
+  let hk = 0;
+  const heartIv = setInterval(() => { if (!alive()) { clearInterval(heartIv); return; } fx(hk%2 ? '♡' : '💗',50+((hk*37)%120),64,(hk%2 ? 10 : -10),-34,1300,1.1); hk++; },1400);
+  /* papan sudah tampil penuh: 3 minion di tombol turun & main musik SELAMA papan masih ada (musik + sfx hanya di sini) */
+  const bandOn = $('pkMinions').children.length >= 3 && !pkIdleRunning;
+  pkBandDone = false;
+  if (bandOn) { pkIdleSingles = 3; pkBandMusic = true; pkIdleIntro = true; pkIdleRun(); }
   go(sign,[{transform:'rotate(-1.4deg)',opacity:1},{transform:'rotate(1.4deg)',opacity:1}],{duration:1300,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});
-  await pkSleep(7500); if (!alive()) return;
+  if (bandOn) {   /* papan tetap tampil sampai konser selesai */
+    const t0 = Date.now();
+    while (alive() && !pkBandDone && Date.now()-t0 < 18000) await pkSleep(100);
+    if (!alive()) return;
+    await pkSleep(500); if (!alive()) return;
+  } else { await pkSleep(7500); if (!alive()) return; }
+  clearInterval(heartIv);
   pkSfx.paperSwish();
   await go(sign,[{transform:'scale(1)',opacity:1},{transform:'scale(.25) translateY(40px)',opacity:0}],{duration:380,easing:'ease-in'});
   if (!alive()) return;
   stage.classList.remove('msg');
   await pkSleep(520); if (!alive()) return;
+  /* papan sudah turun: 3 minion turun & main musik (pertama kali, pakai suara), lalu 3x idle 1 minion, lalu konser tanpa suara */
   pkAbortGive();
 }
 
@@ -8577,6 +8713,7 @@ $('bubuPeek').addEventListener('pointerdown',() => { try { pkSfx.cookiePress(); 
 
 $('bubuPeek').addEventListener('click',() => {
   pkIdleStop();
+  pkIdleSingles = 3; pkBandMusic = false; pkIdleSkipWait = false;
   pkHelloStop();
   const wasGiving = !!pkGiveEl;
   pkAbortGive();
@@ -8594,8 +8731,7 @@ $('bubuPeek').addEventListener('click',() => {
 });
 
 
-/* ===== Idle: saat amplop & video tampil, minion berjalan kiri → kanan, memberi gestur ke layar, lalu lanjut sampai hilang =====
-   Gestur bergantian: love (tangan hati) → bunga → lambaian → cookies → ... Jeda antar minion = PK_IDLE_GAP. */
+/* ===== Idle: saat amplop & video tampil, minion muncul dari tombol cookie, lompat ke bawah, memberi gestur acak ke layar, lalu jalan ke kanan. Tiap 3x idle 1 minion, disusul idle 3 minion sekaligus. ===== */
 const PK_IDLE_GAP = 3000;                 /* jeda sebelum minion berikutnya muncul (ms) */
 const PK_IDLE_GESTURES = ['heart','flower','wave','cookie'];
 let pkIdleToken = 0, pkIdleEl = null, pkIdleAnims = [], pkIdleRunning = false;
@@ -8607,9 +8743,10 @@ const PK_COOKIE_SVG = '<svg viewBox="0 0 40 40" aria-hidden="true"><defs><radial
 function pkIdleOk() {
   const stage = $('bubuPeekStage'), bp = $('bubuPage');
   if (!stage || !bp || bp.hidden || stage.hidden) return false;
-  if (!showingBubu || peekHidden || pkGiveEl || stage.classList.contains('giving')) return false;
+  if (!showingBubu || peekHidden) return false;
+  if (!pkIdleIntro && (pkGiveEl || stage.classList.contains('giving'))) return false;   /* konser pembuka boleh jalan saat papan pesan tampil */
   const home = $('bubuHome');
-  if (home && home.classList.contains('tucked')) return false;   /* amplop & video belum / sedang disembunyikan */
+  if (!pkIdleIntro && home && home.classList.contains('tucked')) return false;   /* amplop & video belum / sedang disembunyikan */
   const b = document.body.classList;
   if (b.contains('bubu-editing') || b.contains('bubu-video-open') || bp.classList.contains('editing')) return false;
   if (document.hidden || document.fullscreenElement || document.webkitFullscreenElement) return false;
@@ -8617,155 +8754,456 @@ function pkIdleOk() {
   return true;
 }
 
-function pkIdleStop() {
-  pkIdleToken++;
-  const el = pkIdleEl;
-  pkIdleEl = null; pkIdleAnims = []; pkIdleRunning = false;
-  pkIdleNextAt = Date.now()+PK_IDLE_GAP;
-  if (el) { el.style.transition = 'opacity .2s ease'; el.style.opacity = '0'; setTimeout(() => el.remove(),240); }
+let pkIdleLanes = [], pkIdleSingles = 3, pkIdleSerial = 0;   /* mulai dari 3 = idle pertama selalu 3 minion di tombol, tidak pernah 1 minion duluan */
+let pkBandMusic = false;     /* true = konser 3 minion berikutnya pakai musik + sfx (hanya yang pertama, tepat setelah papan pesan turun) */
+let pkIdleSkipWait = false;  /* true = idle berikutnya langsung mulai tanpa menunggu jeda */
+let pkIdleLastStyle = '';    /* cara keluar terakhir, supaya tidak berulang 2x berturut-turut */
+const PK_BIKE_SVG = '<svg viewBox="0 0 80 36" aria-hidden="true"><g fill="none" stroke="#2b2b30" stroke-width="3.6"><circle cx="16" cy="26" r="8.6"/><circle cx="66" cy="26" r="8.6"/></g><g stroke="#c9ced6" stroke-width="1.5" stroke-linecap="round"><g><path d="M16 19V33M9 26H23"/><animateTransform attributeName="transform" type="rotate" from="0 16 26" to="360 16 26" dur=".26s" repeatCount="indefinite"/></g><g><path d="M66 19V33M59 26H73"/><animateTransform attributeName="transform" type="rotate" from="0 66 26" to="360 66 26" dur=".26s" repeatCount="indefinite"/></g></g><rect x="3" y="25" width="17" height="3.4" rx="1.7" fill="#b0b5bf" stroke="#7b818c" stroke-width=".8"/><path d="M60 11L67 25" stroke="#8a8f99" stroke-width="3" stroke-linecap="round"/><path d="M19 25L25 15H45L51 21H59L61 26L54 28H26Z" fill="#e8445f" stroke="#8e1f33" stroke-width="1.2" stroke-linejoin="round"/><path d="M28 18H43" stroke="#ffb3c0" stroke-width="1.6" stroke-linecap="round"/><rect x="22" y="11" width="23" height="5" rx="2.5" fill="#2b2b30"/><path d="M55 10L64 10" stroke="#2b2b30" stroke-width="3.2" stroke-linecap="round"/><circle cx="67" cy="17" r="3" fill="#fff6a8" stroke="#c9a400" stroke-width="1"/></svg>';
+const PK_MOON_HTML = '<div class="pk-moon-d"><i style="left:10px;top:12px;width:16px;height:16px"></i><i style="left:34px;top:30px;width:20px;height:20px"></i><i style="left:14px;top:38px;width:9px;height:9px"></i><i style="left:40px;top:10px;width:8px;height:8px"></i></div>';
+let pkIdleBand = false;
+const PK_SNARE_SVG = '<svg viewBox="0 0 50 30" aria-hidden="true"><ellipse cx="25" cy="23" rx="21" ry="6" fill="#a82f40"/><rect x="4" y="9" width="42" height="14" fill="#d94a5a"/><path d="M9 11V24M17 11V25M25 11V25.5M33 11V25M41 11V24" stroke="#f1b2ba" stroke-width="1.3"/><path d="M4 23A21 6 0 0 0 46 23" fill="none" stroke="#c9ced6" stroke-width="2"/><ellipse cx="25" cy="9" rx="21" ry="6.5" fill="#fdfdfd" stroke="#c9ced6" stroke-width="2"/><ellipse cx="25" cy="9" rx="17" ry="4.2" fill="none" stroke="#e1e4ea" stroke-width="1"/></svg>';
+function pkTrumpetSvg(flip) {
+  return '<svg viewBox="0 0 60 30" aria-hidden="true"'+(flip ? ' style="transform:scaleX(-1)"' : '')+'><g stroke="#8a5a0a" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"><path d="M2 14.5h7" stroke="#c8960a" stroke-width="3.2"/><path d="M12 17Q12 25 20 25H33Q38 25 38 16" fill="none" stroke="#e8b020" stroke-width="2.6"/><rect x="8" y="12.8" width="31" height="3.6" rx="1.8" fill="#ffd24a"/><path d="M38 14.6L57 3.6V25.6L38 14.6Z" fill="#ffc933"/><ellipse cx="57" cy="14.6" rx="2.6" ry="11" fill="#ffe48a"/><rect x="15" y="6.5" width="3" height="6.5" rx="1.2" fill="#ffd24a"/><rect x="21" y="6.5" width="3" height="6.5" rx="1.2" fill="#ffd24a"/><rect x="27" y="6.5" width="3" height="6.5" rx="1.2" fill="#ffd24a"/><circle cx="16.5" cy="5.5" r="2" fill="#c8960a"/><circle cx="22.5" cy="5.5" r="2" fill="#c8960a"/><circle cx="28.5" cy="5.5" r="2" fill="#c8960a"/></g></svg>';
 }
 
+const PK_IDLE_KINDS = ['flower','love','wave','saranghae','angry'];
+const PK_FINGER_SVG = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M13 31L22 11M27 31L18 11" stroke="#2b2b30" stroke-width="9.5" stroke-linecap="round"/><path d="M13 31L22 11" stroke="#ffd324" stroke-width="6.5" stroke-linecap="round"/><path d="M27 31L18 11" stroke="#ffcc10" stroke-width="6.5" stroke-linecap="round"/><path d="M20 22C15 18 14 14.5 16 12.8C17.6 11.4 19.4 12.4 20 14C20.6 12.4 22.4 11.4 24 12.8C26 14.5 25 18 20 22Z" fill="#ff4d7d" stroke="#b02048" stroke-width="1"/></svg>';
+
+/* munculkan lagi 3 minion asli di tombol (pop = animasi muncul dari balik tombol) */
+function pkIdleShowReal(pop) {
+  [...$('pkMinions').children].forEach((m,i) => {
+    if (!m.dataset.wkHid) return;
+    delete m.dataset.wkHid;
+    m.style.opacity = ''; m.style.transition = '';
+    if (pop) m.animate([{translate:'0px 34px',opacity:0},{translate:'0px -6px',opacity:1,offset:.7},{translate:'0px 0px',opacity:1}],{duration:520,delay:i*130,easing:'cubic-bezier(.34,1.5,.5,1)',fill:'backwards'});
+  });
+}
+
+function pkIdleStop() {
+  pkIdleToken++;
+  const lanes = pkIdleLanes;
+  pkIdleLanes = []; pkIdleEl = null; pkIdleAnims = []; pkIdleRunning = false;
+  pkIdleNextAt = Date.now()+PK_IDLE_GAP;
+  lanes.forEach(el => { el.style.transition = 'opacity .2s ease'; el.style.opacity = '0'; setTimeout(() => el.remove(),240); });
+  pkIdleShowReal(false);
+  if (pkIdleBand) { pkIdleBand = false; try { pkSfx.stop(); } catch {} }
+}
+
+/* Idle: tiap PK_IDLE_GAP, 1 minion BARU muncul dari balik tombol cookie → lompat ke bawah → gestur acak ke layar (tanpa teks) → jalan ke kanan.
+   Setelah 3x idle 1 minion, giliran idle 3 minion: ketiga minion turun, main band (2 trompet + snare drum) dengan musik, lalu masing-masing gestur berbeda. Lalu siklus mulai lagi. */
 async function pkIdleRun() {
   pkIdleRunning = true;
+  pkIdleSkipWait = false;
   const token = ++pkIdleToken;
   const alive = () => token === pkIdleToken;
-  const n = pkIdleN++;
-  const kind = PK_IDLE_GESTURES[n%PK_IDLE_GESTURES.length];
+  const stage = $('bubuPeekStage'), real = [...$('pkMinions').children];
+  if (!stage) { pkIdleRunning = false; return; }
   const W = window.innerWidth || document.documentElement.clientWidth || 360;
-  const speed = Math.max(64,W/7);                    /* px per detik */
-  const startX = -64, stopX = W-92-24, endX = W+20; /* stopX = posisi kiri minion saat memberi gestur (tengah ≈ 92px dari tepi kanan) */
+  const sr = stage.getBoundingClientRect();
+  const cx = sr.left+sr.width/2, SH = stage.offsetHeight || 128;
+  const GROUND = SH+2;
+  const speed = Math.max(84,W/5);
+  const triple = pkIdleSingles >= 3 && real.length >= 3;
+  const kinds = PK_IDLE_KINDS.slice().sort(() => Math.random()-.5);
+  const clampX = x => Math.min(W-52,Math.max(4,x));
+  const pick = a => a[Math.floor(Math.random()*a.length)];
+  const side = Math.random() < .5 ? -1 : 1;
+  let ready = 0;
+  const withMusic = triple && pkBandMusic;   /* musik + sfx hanya di konser pertama */
+  const plans = triple
+    ? [0,1,2].map(i => ({P:PK_MINIONS[i],real:real[i],kind:kinds[i],role:['trumpetL','snare','trumpetR'][i],music:withMusic,X1:clampX(cx+(i-1)*76-24),delay:[320,160,0][i]}))
+    : [{P:{eyes:pick([1,2]),mouth:pick(['grin','smile','hum']),hair:pick([1,3,4,5]),wave:''},real:null,kind:kinds[0],X1:clampX(cx+side*54-24),delay:0,side}];
 
-  const wk = document.createElement('div');
-  wk.className = 'wk';
-  wk.style.transform = `translateX(${startX}px)`;
-  wk.innerHTML = '<div class="wk-in">'+pkMinionSvg(20+n%3,PK_MINIONS[n%3])+'</div><div class="wk-prop"></div>';
-  /* jalur dipasang DI DALAM wadah tombol cookie, tepat di bawahnya: ikut tergulung bersama tombol sehingga selalu di bawah tombol tap.
-     Lebar jalur = lebar layar (digeser ke kiri sebesar posisi wadah), kelebihan horizontal dipotong supaya tidak muncul scroll samping. */
-  const stage = $('bubuPeekStage');
-  const lane = document.createElement('div');
-  lane.className = 'wk-lane';
-  lane.style.left = (-stage.getBoundingClientRect().left)+'px';
-  lane.style.width = W+'px';
-  lane.appendChild(wk);
-  stage.appendChild(lane);
-  pkIdleEl = lane;
-  const wkIn = wk.querySelector('.wk-in'), prop = wk.querySelector('.wk-prop');
-  const armR = wk.querySelector('.mn-ar'), armL = wk.querySelector('.mn-al');
-
-  const gl = [];   /* animasi gestur: dibatalkan sebelum jalan lagi supaya ayunan jalan tidak tertimpa */
-  const an = (el,kf,o,keep) => {
-    const a = el.animate(kf,Object.assign({fill:'forwards',easing:'ease-out'},o));
-    pkIdleAnims.push(a); if (!keep) gl.push(a);
-    return a.finished.then(() => true,() => false);
-  };
+  const tf = (x,y,r,sx,sy) => `translate(${x}px,${y}px) rotate(${r}deg) scale(${sx},${sy})`;
+  const fin = a => a.finished.then(() => true,() => false);
   const sleep = async ms => { await pkSleep(ms); return alive(); };
-  const slide = (from,to) => {
-    const a = wk.animate([{transform:`translateX(${from}px)`},{transform:`translateX(${to}px)`}],{duration:Math.abs(to-from)/speed*1000,easing:'linear',fill:'forwards'});
-    pkIdleAnims.push(a);
-    return a;
+  const an = (a,el,kf,o,keep) => {
+    const x = el.animate(kf,Object.assign({fill:'forwards',easing:'ease-out'},o));
+    pkIdleAnims.push(x); if (!keep) a.gl.push(x);
+    return fin(x);
   };
-  const startWalk = () => {
-    wk.classList.add('walking');
-  };
-  const stopWalk = () => { wk.classList.remove('walking'); };
-  const fx = (txt,dx,dy,sc,dur,px,py) => {
+  const fx = (a,txt,dx,dy,sc,dur,px,py) => {
     const e = document.createElement('i');
     e.className = 'wk-fx'; e.textContent = txt;
     e.style.left = (px === undefined ? 24 : px)+'px'; e.style.top = (py === undefined ? 24 : py)+'px';
-    wk.appendChild(e);
-    e.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:0},{opacity:1,offset:.2},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(${sc})`,opacity:0}],{duration:dur,easing:'cubic-bezier(.2,.7,.3,1)',fill:'forwards'}).finished.then(() => e.remove(),() => e.remove());
+    a.wk.appendChild(e);
+    e.animate([{transform:'translate(-50%,-50%) scale(.3)',opacity:0},{opacity:1,offset:.2},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(${sc})`,opacity:0}],{duration:dur,easing:'cubic-bezier(.2,.7,.3,1)',fill:'forwards'}).finished.then(() => e.remove(),() => {});
   };
   const BASE = 'translateY(0) scale(1.6)';
-  const showProp = async (svg,h) => {
-    prop.innerHTML = svg;
-    prop.style.height = h+'px'; prop.style.marginTop = (-h*.5)+'px';
-    await an(prop,[{transform:'translateY(8px) scale(.2)',opacity:0},{transform:'translateY(0) scale(1)',opacity:1}],{duration:200,easing:'cubic-bezier(.3,1.6,.5,1)'});
+  const showProp = async (a,svg,h,left,top) => {
+    a.prop.innerHTML = svg;
+    a.prop.style.left = (left === undefined ? 24 : left)+'px'; a.prop.style.top = (top === undefined ? 56 : top)+'px';
+    a.prop.style.height = h+'px'; a.prop.style.marginTop = (-h*.5)+'px';
+    await an(a,a.prop,[{transform:'translateY(8px) scale(.2)',opacity:0},{transform:'translateY(0) scale(1)',opacity:1}],{duration:200,easing:'cubic-bezier(.3,1.6,.5,1)'});
     if (!alive()) return false;
-    /* disodorkan ke layar: membesar + naik sedikit seolah mendekat */
-    an(prop,[{transform:'translateY(0) scale(1)'},{transform:BASE}],{duration:480,easing:'cubic-bezier(.2,1.4,.4,1)'});
+    an(a,a.prop,[{transform:'translateY(0) scale(1)'},{transform:BASE}],{duration:480,easing:'cubic-bezier(.2,1.4,.4,1)'});
     return true;
   };
-  const hideProp = () => an(prop,[{transform:BASE,opacity:1},{transform:'translateY(-8px) scale(.4)',opacity:0}],{duration:240});
+  const hideProp = a => an(a,a.prop,[{transform:BASE,opacity:1},{transform:'translateY(-8px) scale(.4)',opacity:0}],{duration:240});
+  const armsDown = a => { an(a,a.armL,[{transform:'rotate(0deg)'},{transform:'rotate(0deg)'}],{duration:240}); an(a,a.armR,[{transform:'rotate(0deg)'},{transform:'rotate(0deg)'}],{duration:240}); return sleep(260); };
+  const pulse = (a,sc) => an(a,a.prop,[{transform:BASE},{transform:`translateY(0) scale(${sc})`},{transform:BASE}],{duration:380,easing:'ease-in-out'});
 
+  /* gestur ke layar, tanpa teks */
   const G = {
-    async heart() {
-            if (!await showProp(PK_HEART_SVG,34)) return;
+    async flower(a) {
+      if (!await showProp(a,pkBouquetSvg(),40)) return;
+      await sleep(420); if (!alive()) return;
+      an(a,a.prop,[{transform:BASE},{transform:'translateY(0) scale(1.6) rotate(-9deg)'},{transform:'translateY(0) scale(1.6) rotate(9deg)'},{transform:'translateY(0) scale(1.6) rotate(-6deg)'},{transform:BASE}],{duration:1100,easing:'ease-in-out'});
+      fx(a,'🌸',-34,-60,1.3,1100,18,10); fx(a,'✨',30,-56,1.2,1000,32,8);
+      setTimeout(() => { if (alive()) { fx(a,'🌸',22,-66,1.2,1000,26,10); fx(a,'🌷',-26,-52,1.1,900,20,12); } },520);
+      await sleep(1250); if (!alive()) return;
+      await hideProp(a);
+    },
+    async love(a) {   /* kedua tangan terangkat, hati besar berdenyut di atas kepala */
+      an(a,a.armL,[{transform:'rotate(0deg)'},{transform:'rotate(150deg)'}],{duration:280,easing:'cubic-bezier(.3,1.4,.5,1)'});
+      an(a,a.armR,[{transform:'rotate(0deg)'},{transform:'rotate(-150deg)'}],{duration:280,easing:'cubic-bezier(.3,1.4,.5,1)'});
+      if (!await showProp(a,PK_HEART_SVG,30,24,-6)) return;
       for (let i = 0; i < 3; i++) {
-        await sleep(i ? 400 : 500); if (!alive()) return;
-        an(prop,[{transform:BASE},{transform:'translateY(0) scale(1.9)'},{transform:BASE}],{duration:380,easing:'ease-in-out'});
-        fx(['❤️','💖','💕'][i],[-44,46,-34][i],-52-i*6,1.5+i*.15,1000,24,14);
-        fx('💗',[40,-40,38][i],-36,1.2,900,24,20);
+        await sleep(i ? 420 : 380); if (!alive()) return;
+        pulse(a,1.95);
+        fx(a,['❤️','💖','💕'][i],[-40,42,-30][i],-46-i*6,1.4,1000,24,-6);
       }
-      await sleep(450); if (!alive()) return;
-      await hideProp();
-    },
-    async flower() {
-            if (!await showProp(pkBouquetSvg(),40)) return;
       await sleep(420); if (!alive()) return;
-      an(prop,[{transform:BASE},{transform:'translateY(0) scale(1.6) rotate(-9deg)'},{transform:'translateY(0) scale(1.6) rotate(9deg)'},{transform:'translateY(0) scale(1.6) rotate(-6deg)'},{transform:BASE}],{duration:1100,easing:'ease-in-out'});
-      fx('🌸',-34,-60,1.3,1100,18,10); fx('✨',30,-56,1.2,1000,32,8);
-      setTimeout(() => { if (alive()) { fx('🌸',22,-66,1.2,1000,26,10); fx('✨',-26,-52,1.1,900,20,12); } },520);
-      await sleep(1250); if (!alive()) return;
-      await hideProp();
+      await hideProp(a); if (!alive()) return;
+      await armsDown(a);
     },
-    async wave() {
-            an(armR,[{transform:'rotate(0deg)'},{transform:'rotate(-142deg)'}],{duration:260,easing:'cubic-bezier(.3,1.4,.5,1)'});
-      an(armL,[{transform:'rotate(0deg)'},{transform:'rotate(14deg)'}],{duration:260});
-      an(wkIn,[{transform:'rotate(0deg)'},{transform:'rotate(-3deg)'},{transform:'rotate(3deg)'},{transform:'rotate(-3deg)'},{transform:'rotate(0deg)'}],{duration:1500,easing:'ease-in-out'});
+    async saranghae(a) {   /* jari hati (finger heart) + kepala miring manis */
+      an(a,a.armR,[{transform:'rotate(0deg)'},{transform:'rotate(-122deg)'}],{duration:300,easing:'cubic-bezier(.3,1.4,.5,1)'});
+      an(a,a.wkIn,[{transform:'rotate(0deg)'},{transform:'rotate(-5deg)'},{transform:'rotate(4deg)'},{transform:'rotate(-4deg)'},{transform:'rotate(0deg)'}],{duration:1900,easing:'ease-in-out'});
+      if (!await showProp(a,PK_FINGER_SVG,24,58,26)) return;
+      for (let i = 0; i < 3; i++) {
+        await sleep(i ? 480 : 420); if (!alive()) return;
+        pulse(a,1.9);
+        fx(a,['💕','💗','💓'][i],[34,-30,40][i],-40-i*8,1.3,1000,56,20);
+      }
+      await sleep(380); if (!alive()) return;
+      await hideProp(a); if (!alive()) return;
+      await armsDown(a);
+    },
+    async wave(a) {
+      an(a,a.armR,[{transform:'rotate(0deg)'},{transform:'rotate(-142deg)'}],{duration:260,easing:'cubic-bezier(.3,1.4,.5,1)'});
+      an(a,a.armL,[{transform:'rotate(0deg)'},{transform:'rotate(14deg)'}],{duration:260});
+      an(a,a.wkIn,[{transform:'rotate(0deg)'},{transform:'rotate(-3deg)'},{transform:'rotate(3deg)'},{transform:'rotate(-3deg)'},{transform:'rotate(0deg)'}],{duration:1500,easing:'ease-in-out'});
       await sleep(260); if (!alive()) return;
-      /* lambaian: lengan bergoyang kiri-kanan di atas kepala */
       const W1 = 'rotate(-142deg)', W2 = 'rotate(-104deg)';
-      an(armR,[{transform:W1},{transform:W2},{transform:W1},{transform:W2},{transform:W1},{transform:W2},{transform:W1}],{duration:1250,easing:'ease-in-out'});
-      setTimeout(() => { if (alive()) fx('✨',34,-44,1.1,800,38,6); },500);
+      an(a,a.armR,[{transform:W1},{transform:W2},{transform:W1},{transform:W2},{transform:W1},{transform:W2},{transform:W1}],{duration:1250,easing:'ease-in-out'});
+      setTimeout(() => { if (alive()) fx(a,'✨',34,-44,1.1,800,38,6); },500);
       await sleep(1300); if (!alive()) return;
-      an(armR,[{transform:W1},{transform:'rotate(0deg)'}],{duration:260});
-      an(armL,[{transform:'rotate(14deg)'},{transform:'rotate(0deg)'}],{duration:260});
-      await sleep(280);
+      await armsDown(a);
     },
-    async cookie() {
-            if (!await showProp(PK_COOKIE_SVG,34)) return;
-      await sleep(420); if (!alive()) return;
-      an(prop,[{transform:BASE},{transform:'translateY(0) scale(1.75) rotate(-12deg)'},{transform:'translateY(0) scale(1.75) rotate(12deg)'},{transform:'translateY(0) scale(1.75) rotate(-8deg)'},{transform:BASE}],{duration:1100,easing:'ease-in-out'});
-      fx('✨',-32,-58,1.2,1000,16,12); fx('✨',34,-52,1.1,900,34,10);
-      setTimeout(() => { if (alive()) { fx('🍪',-18,-66,.9,900,24,14); fx('✨',22,-62,1.2,900,28,8); } },560);
-      await sleep(1250); if (!alive()) return;
-      await hideProp();
+    async angry(a) {   /* badan merah menyala, tangan mengepal bergetar, hentak kaki, 💢 */
+      a.gl.push(a.wkIn.animate([{filter:'none'},{filter:'drop-shadow(0 0 7px rgba(255,50,50,.95)) saturate(1.7) hue-rotate(-14deg)'}],{duration:260,fill:'forwards'}));
+      an(a,a.armL,[{transform:'rotate(0deg)'},{transform:'rotate(40deg)'},{transform:'rotate(20deg)'},{transform:'rotate(40deg)'},{transform:'rotate(20deg)'},{transform:'rotate(40deg)'},{transform:'rotate(20deg)'}],{duration:1300,easing:'ease-in-out'});
+      an(a,a.armR,[{transform:'rotate(0deg)'},{transform:'rotate(-40deg)'},{transform:'rotate(-20deg)'},{transform:'rotate(-40deg)'},{transform:'rotate(-20deg)'},{transform:'rotate(-40deg)'},{transform:'rotate(-20deg)'}],{duration:1300,easing:'ease-in-out'});
+      an(a,a.wkIn,[{transform:'translate(0,0)'},{transform:'translate(-2px,-5px)'},{transform:'translate(2px,0)'},{transform:'translate(-2px,-5px)'},{transform:'translate(2px,0)'},{transform:'translate(0,0)'}],{duration:260,iterations:5,easing:'linear'});
+      fx(a,'💢',-4,-12,1.6,800,36,4);
+      setTimeout(() => { if (alive()) fx(a,'💢',6,-14,1.5,800,10,8); },420);
+      setTimeout(() => { if (alive()) fx(a,'💢',-2,-14,1.7,800,32,2); },860);
+      await sleep(1350); if (!alive()) return;
+      a.gl.forEach(x => { try { x.cancel(); } catch {} }); a.gl.length = 0;
     }
   };
 
+  const mkActor = plan => {
+    const lane = document.createElement('div');
+    lane.className = 'wk-lane';
+    lane.style.cssText = `left:${-sr.left}px;width:${W}px;top:calc(100% - ${SH}px);height:${GROUND+80}px;z-index:1`;   /* z 1 = di belakang tombol */
+    const sh = document.createElement('i'); sh.className = 'wk-sh';
+    const wk = document.createElement('div');
+    wk.className = 'wk'; wk.style.transformOrigin = '50% 100%';
+    wk.innerHTML = '<div class="wk-in">'+pkMinionSvg(20+(pkIdleSerial++%30),plan.P)+'</div><div class="wk-prop"></div>';
+    lane.appendChild(sh); lane.appendChild(wk); stage.appendChild(lane); pkIdleLanes.push(lane);
+    return {plan,lane,wk,sh,so:0,wkIn:wk.querySelector('.wk-in'),prop:wk.querySelector('.wk-prop'),armL:wk.querySelector('.mn-al'),armR:wk.querySelector('.mn-ar'),gl:[]};
+  };
+  /* gerak badan + bayangan di tanah sekaligus. frame: x,y,r (derajat),sx,sy (skala), op (opasitas badan), sh (skala bayangan), so (opasitas bayangan), o (offset), e (easing) */
+  const mv = (a,frames,dur,ease) => {
+    const n = frames.length, E = ease || 'ease-in-out';
+    const wkKF = [], shKF = [];
+    frames.forEach((f,i) => {
+      const o = f.o !== undefined ? f.o : i/(n-1), e = f.e || E;
+      const k = {transform:tf(f.x,f.y,f.r || 0,f.sx === undefined ? 1 : f.sx,f.sy === undefined ? 1 : f.sy),offset:o,easing:e};
+      if (f.op !== undefined) k.opacity = f.op;
+      wkKF.push(k);
+      if (f.so !== undefined) a.so = f.so;
+      shKF.push({transform:`translate(${f.x+5}px,${GROUND+68}px) scale(${f.sh === undefined ? 1 : f.sh},1)`,opacity:a.so,offset:o,easing:e});
+    });
+    const w = a.wk.animate(wkKF,{duration:dur,easing:'linear',fill:'forwards'});
+    const s = a.sh.animate(shKF,{duration:dur,easing:'linear',fill:'forwards'});
+    pkIdleAnims.push(w,s);
+    return fin(w);
+  };
+  const dust = (a,x,y,sz,dx,dur) => {
+    const p = document.createElement('i'); p.className = 'wk-pf';
+    p.style.cssText = `left:${x-sz/2}px;top:${y-sz/2}px;width:${sz}px;height:${sz}px`;
+    a.lane.appendChild(p);
+    p.animate([{transform:'translate(0,0) scale(.3)',opacity:.9},{transform:`translate(${dx}px,-8px) scale(1.1)`,opacity:.55,offset:.5},{transform:`translate(${dx*1.5}px,-14px) scale(1.5)`,opacity:0}],{duration:dur,easing:'ease-out',fill:'forwards'}).finished.then(() => p.remove(),() => {});
+  };
+  const eachArm = (a,f) => { f(a.armL,1); f(a.armR,-1); };
+
+  /* ===== band mini: 2 trompet + 1 snare drum (idle 3 minion) ===== */
+  const BEAT = 60000/132, BAND_BEATS = 17.5;
+  const NOTE_BEATS = [3,3.5,4,5,6,6.5,7,8,9,10,10.5,11,12,12.5,13,14,15,15.5,16];
+  const setProp = (a,svg,w,h,left,top) => {
+    a.prop.innerHTML = svg;
+    Object.assign(a.prop.style,{width:w+'px',height:h+'px',left:left+'px',top:top+'px',margin:`${-h/2}px 0 0 ${-w/2}px`});
+  };
+  const perform = async (a,plan) => {
+    const role = plan.role, snare = role === 'snare', dir = role === 'trumpetL' ? -1 : 1, X1 = plan.X1;
+    const at = (b,fn) => setTimeout(() => { if (alive()) fn(); },b*BEAT);
+    if (snare) { if (plan.music) { pkIdleBand = true; pkBandMusic = false; try { pkSfx.band(); } catch {} } setProp(a,PK_SNARE_SVG,46,26,24,67); }
+    else setProp(a,pkTrumpetSvg(dir < 0),46,23,24+dir*21,43);
+    an(a,a.prop,[{transform:'scale(.2)',opacity:0},{transform:'scale(1.15)',opacity:1,offset:.7},{transform:'scale(1)',opacity:1}],{duration:300,easing:'ease-out'});
+    /* seluruh badan bergoyang mengikuti ketukan */
+    an(a,a.wkIn,[{transform:'translateY(0) rotate(-2deg)'},{transform:'translateY(-3px) rotate(0deg)',offset:.25},{transform:'translateY(0) rotate(2deg)',offset:.5},{transform:'translateY(-3px) rotate(0deg)',offset:.75},{transform:'translateY(0) rotate(-2deg)'}],{duration:2*BEAT,iterations:Math.ceil(BAND_BEATS/2)+1,easing:'ease-in-out'});
+    if (snare) {
+      const hit = s => [{transform:`rotate(${s*24}deg)`},{transform:`rotate(${s*46}deg)`,offset:.45},{transform:`rotate(${s*46}deg)`,offset:.8},{transform:`rotate(${s*24}deg)`}];
+      an(a,a.armL,hit(-1),{duration:BEAT,iterations:Math.ceil(BAND_BEATS),easing:'ease-out'});
+      an(a,a.armR,hit(1),{duration:BEAT,delay:BEAT/2,fill:'both',iterations:Math.ceil(BAND_BEATS),easing:'ease-out'});
+      at(.7,() => an(a,a.prop,[{transform:'scale(1.05)'},{transform:'scale(1)'}],{duration:BEAT/2,iterations:Math.ceil(BAND_BEATS*2)-2,easing:'ease-out'}));
+      at(15,() => {   /* roll snare: tangan menabuh cepat */
+        const r = s => [{transform:`rotate(${s*24}deg)`},{transform:`rotate(${s*46}deg)`},{transform:`rotate(${s*24}deg)`}];
+        an(a,a.armL,r(-1),{duration:BEAT/3,iterations:4,easing:'linear'});
+        an(a,a.armR,r(1),{duration:BEAT/3,delay:BEAT/6,fill:'both',iterations:4,easing:'linear'});
+      });
+    } else {
+      const arm = dir > 0 ? a.armR : a.armL;
+      an(a,arm,[{transform:'rotate(0deg)'},{transform:`rotate(${dir*-88}deg)`}],{duration:260,easing:'cubic-bezier(.3,1.4,.5,1)'});
+      at(3,() => an(a,a.prop,[{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(-2px) rotate(${dir*-6}deg)`,offset:.5},{transform:'translateY(0) rotate(0deg)'}],{duration:BEAT,iterations:13,easing:'ease-in-out'}));
+      NOTE_BEATS.forEach((b,k) => { if (k%2 === (dir > 0 ? 1 : 0)) at(b,() => fx(a,['♪','♫','🎵','🎶'][k%4],dir*20,-48,1.35,950,24+dir*36,28)); });
+      at(16,() => an(a,a.prop,[{transform:'rotate(0deg)'},{transform:`translateY(-3px) rotate(${dir*-26}deg)`}],{duration:200}));
+    }
+    /* akhir megah: melompat gembira + konfeti */
+    at(16,() => {
+      mv(a,[{x:X1,y:GROUND+3,sx:1.22,sy:1.2,sh:1.25},{x:X1,y:GROUND-12,sx:1.12,sy:1.34,sh:.9,e:'ease-out'},{x:X1,y:GROUND+3,sx:1.3,sy:1.1,sh:1.25,e:'ease-in'},{x:X1,y:GROUND+3,sx:1.22,sy:1.2,sh:1.25}],620);
+      ['🎉','🎊','✨'].forEach((t,k) => fx(a,t,(k-1)*34,-58-k*6,1.4,1100,24+(k-1)*10,8));
+    });
+    if (!await sleep(BAND_BEATS*BEAT+150)) return;
+    if (snare) { pkIdleBand = false; pkBandDone = true; }
+    a.gl.forEach(x => { try { x.cancel(); } catch {} }); a.gl.length = 0;
+    a.prop.innerHTML = ''; a.prop.removeAttribute('style');
+  };
+
+  /* tahap 1: muncul di tombol → lompat ke bawah → mendarat → gestur */
+  const stageOne = async plan => {
+    if (plan.delay) { if (!await sleep(plan.delay)) return null; }
+    const a = mkActor(plan), P = plan.P;
+    let X0, Y0, sc, rot;
+    if (plan.real) {   /* 3 minion asli diganti tiruannya di posisi yang sama */
+      sc = P.s*.92; X0 = cx+P.x-24; Y0 = (SH-17+P.oy)-76; rot = P.or;
+      a.wk.style.transform = tf(X0,Y0,rot,sc,sc);
+      plan.real.dataset.wkHid = '1'; plan.real.style.transition = 'none'; plan.real.style.opacity = '0';
+      if (!await sleep(80)) return null;
+    } else {           /* minion baru: intip dari balik tombol → celingak-celinguk → muncul → lompat senang */
+      sc = 1; rot = 0; X0 = cx+plan.side*30-24; Y0 = 2;
+      a.wk.style.opacity = '0'; a.wk.style.transform = tf(X0,28,0,.55,.55);
+      const h = 24, hs = .8;
+      if (!await mv(a,[{x:X0,y:28,sx:.55,sy:.55,op:0},{x:X0,y:h,sx:hs,sy:hs,op:1,e:'cubic-bezier(.2,.9,.3,1.2)'}],380)) return null;
+      if (!alive()) return null;
+      if (!await mv(a,[{x:X0,y:h,sx:hs,sy:hs},{x:X0-5,y:h,r:-10,sx:hs,sy:hs},{x:X0-5,y:h,r:-10,sx:hs,sy:hs,o:.4},{x:X0+5,y:h,r:10,sx:hs,sy:hs,o:.75},{x:X0,y:h,r:0,sx:hs,sy:hs}],1000)) return null;
+      if (!alive()) return null;
+      eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*-48}deg)`},{transform:`rotate(${d*-14}deg)`},{transform:`rotate(${d*-48}deg)`},{transform:'rotate(0deg)'}],{duration:620,easing:'ease-in-out'}));
+      if (!await mv(a,[{x:X0,y:h,sx:hs,sy:hs},{x:X0,y:-9,sx:.93,sy:1.15,e:'ease-out'},{x:X0,y:Y0+2,sx:1.08,sy:.9},{x:X0,y:Y0-4,sx:.98,sy:1.04},{x:X0,y:Y0,sx:1,sy:1}],620)) return null;
+      if (!alive()) return null;
+      if (!await sleep(220)) return null;
+    }
+    /* ancang-ancang: jongkok dalam, lengan ditarik ke belakang */
+    eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*14}deg)`}],{duration:230}));
+    if (!await mv(a,[{x:X0,y:Y0,r:rot,sx:sc,sy:sc},{x:X0,y:Y0+7,r:0,sx:sc*1.12,sy:sc*.8}],230,'ease-out')) return null;
+    /* lompat: lengan terangkat, melambung, jatuh di depan tombol */
+    a.lane.style.zIndex = '6';
+    const X1 = plan.X1;
+    eachArm(a,(el,d) => an(a,el,[{transform:`rotate(${d*14}deg)`},{transform:`rotate(${d*-150}deg)`}],{duration:240,easing:'cubic-bezier(.2,.9,.3,1.2)'}));
+    if (!await mv(a,[
+      {x:X0,y:Y0+7,sx:sc*1.12,sy:sc*.8,so:0,sh:.2},
+      {x:X0+(X1-X0)*.38,y:Y0-34,r:-7,sx:.94,sy:1.14,so:0,sh:.3,o:.32,e:'cubic-bezier(.5,0,.85,.55)'},
+      {x:X1,y:GROUND,r:3,sx:1.02,sy:1.05,so:.8,sh:.95,o:.86},
+      {x:X1,y:GROUND,r:0,sx:1.3,sy:.76,so:.9,sh:1.25}
+    ],680,'cubic-bezier(.2,.8,.4,1)')) return null;
+    /* mendarat: debu, lengan turun mengayun, memantul kecil */
+    dust(a,X1+4,GROUND+72,16,-16,520); dust(a,X1+44,GROUND+72,16,16,520); dust(a,X1+24,GROUND+74,12,0,420);
+    eachArm(a,(el,d) => an(a,el,[{transform:`rotate(${d*-150}deg)`},{transform:`rotate(${d*22}deg)`,offset:.5},{transform:`rotate(${d*-6}deg)`,offset:.8},{transform:'rotate(0deg)'}],{duration:420,easing:'ease-out'}));
+    if (!await mv(a,[{x:X1,y:GROUND,sx:1.3,sy:.76,sh:1.25},{x:X1,y:GROUND-9,sx:.95,sy:1.08,sh:.9,o:.4,e:'ease-out'},{x:X1,y:GROUND,sx:1.1,sy:.92,sh:1.1,o:.7,e:'ease-in'},{x:X1,y:GROUND,sx:1,sy:1,sh:1}],420)) return null;
+    /* "melangkah mendekat ke layar" (membesar) lalu gestur */
+    if (!await mv(a,[{x:X1,y:GROUND,sx:1,sy:1},{x:X1,y:GROUND+3,sx:1.22,sy:1.2,sh:1.25,e:'cubic-bezier(.3,1.5,.5,1)'}],300)) return null;
+    if (plan.role) {   /* idle 3 minion: tunggu semua siap, lalu konser trompet + snare drum */
+      ready++;
+      while (alive() && ready < plans.length) await pkSleep(40);
+      if (!alive()) return null;
+      await perform(a,plan);
+      if (!alive()) return null;
+    }
+    await G[plan.kind](a);
+    if (!alive()) return null;
+    a.gl.forEach(x => { try { x.cancel(); } catch {} }); a.gl.length = 0;
+    a.prop.innerHTML = '';
+    if (!await mv(a,[{x:X1,y:GROUND+3,sx:1.22,sy:1.2,sh:1.25},{x:X1,y:GROUND,sx:1,sy:1,sh:1}],240)) return null;
+    return a;
+  };
+
+  /* tahap 2: pergi ke kanan dengan gaya acak (jalan / lari / loncat-loncat / terpeleset kulit pisang) */
+  const WALK_LEAN = 5;
+  const walkTo = async (a,x0,x1,spd,lean) => {
+    a.wk.classList.add('walking');
+    const acc = Math.min(40,(x1-x0)*.4);
+    if (!await mv(a,[{x:x0,y:GROUND,r:lean},{x:x0+acc,y:GROUND,r:lean}],2*acc/spd*1000,'cubic-bezier(.4,0,1,1)')) return false;
+    return mv(a,[{x:x0+acc,y:GROUND,r:lean},{x:x1,y:GROUND,r:lean}],Math.max(200,(x1-x0-acc)/spd*1000),'linear');
+  };
+  const exitOne = async (a,style) => {
+    const X1 = a.plan.X1, END = W+20;
+    if (style === 'moon' && X1+140 > W) style = 'run';   /* tidak cukup ruang untuk bulan */
+    /* menoleh ke arah pergi: loncat kecil lalu miring ke depan */
+    if (style !== 'moon' && style !== 'motor') {
+      if (!await mv(a,[{x:X1,y:GROUND,sx:1,sy:1},{x:X1,y:GROUND-10,r:6,sx:.96,sy:1.08,e:'ease-out'},{x:X1,y:GROUND,r:5,sx:1.08,sy:.94}],260)) return;
+    }
+    if (style === 'scoot') {   /* ngesot: duduk, lalu menggeser pantat sedikit-sedikit ke kanan */
+      const SIT = {y:GROUND+10,r:-7,sx:1.1,sy:.78,sh:1.15};
+      eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*-38}deg)`}],{duration:240}));
+      if (!await mv(a,[{x:X1,y:GROUND,r:5,sx:1.08,sy:.94},Object.assign({x:X1,y:GROUND-8,sx:.95,sy:1.08,e:'ease-out'}),Object.assign({x:X1},SIT)],360)) return;
+      dust(a,X1+4,GROUND+74,14,-14,420); dust(a,X1+44,GROUND+74,14,14,420);
+      fx(a,'😅',8,-30,1.3,1100,36,2);
+      const SW = 20, STEP = 300, n = Math.ceil((END-X1)/SW), fr = [];
+      for (let i = 0; i < n; i++) {
+        const x = X1+i*SW;
+        fr.push(Object.assign({x},SIT));
+        fr.push({x:x+SW*.55,y:GROUND+3,r:-1,sx:1.04,sy:.9,sh:1,e:'ease-out'});
+        if (i%2 === 0) setTimeout(() => { if (alive()) dust(a,x+2,GROUND+74,12,-14,400); },i*STEP+STEP*.6);
+      }
+      fr.push(Object.assign({x:END},SIT));
+      eachArm(a,(el,d) => an(a,el,[{transform:`rotate(${d*-38}deg)`},{transform:`rotate(${d*-10}deg)`},{transform:`rotate(${d*-38}deg)`}],{duration:STEP,iterations:n+1,easing:'ease-in-out'}));
+      if (!await mv(a,fr,n*STEP,'ease-in-out')) return;
+    } else if (style === 'motor') {   /* naik motor mini, gas, wheelie, ngebut keluar layar */
+      const bike = document.createElement('div');
+      bike.className = 'wk-bike'; bike.innerHTML = PK_BIKE_SVG; bike.style.opacity = '0';
+      a.wk.appendChild(bike);
+      an(a,bike,[{transform:'translateY(16px) scale(.3)',opacity:0},{transform:'translateY(-3px) scale(1.06)',opacity:1,offset:.7},{transform:'translateY(0) scale(1)',opacity:1}],{duration:360,easing:'ease-out'},true);
+      if (!await sleep(220)) return;
+      /* minion melompat naik ke jok */
+      eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*-140}deg)`}],{duration:200},true));
+      if (!await mv(a,[{x:X1,y:GROUND,sx:1,sy:1},{x:X1,y:GROUND-24,sx:.94,sy:1.12,sh:.6,e:'ease-out'},{x:X1,y:GROUND,sx:1.08,sy:.92,sh:1.7,e:'ease-in'},{x:X1,y:GROUND,sx:1,sy:1,sh:1.7}],440)) return;
+      an(a,a.wkIn,[{translate:'0 0'},{translate:'0 -13px'}],{duration:160},true);
+      eachArm(a,(el,d) => an(a,el,[{transform:`rotate(${d*-140}deg)`},{transform:`rotate(${d*-26}deg)`}],{duration:240,easing:'ease-in-out'},true));
+      /* gas pol: getar + asap knalpot */
+      fx(a,'💨',-34,-6,1.5,700,-12,64); fx(a,'💨',-30,-14,1.2,800,-8,58);
+      setTimeout(() => { if (alive()) fx(a,'💨',-34,-10,1.5,700,-12,64); },350);
+      if (!await mv(a,[{x:X1,y:GROUND,sh:1.7},{x:X1-2,y:GROUND,sh:1.7},{x:X1+1,y:GROUND,sh:1.7},{x:X1-2,y:GROUND,sh:1.7},{x:X1+1,y:GROUND,sh:1.7},{x:X1,y:GROUND,sh:1.7}],650,'linear')) return;
+      /* wheelie lalu ngebut */
+      dust(a,X1-4,GROUND+74,16,-22,520); dust(a,X1+10,GROUND+74,12,-16,420);
+      if (!await mv(a,[
+        {x:X1,y:GROUND,r:0,sh:1.7},
+        {x:X1-10,y:GROUND,r:7,sh:1.7,o:.22},
+        {x:X1+30,y:GROUND-2,r:-16,sh:1.5,o:.5},
+        {x:X1+95,y:GROUND-2,r:-14,sh:1.5,o:.75},
+        {x:X1+175,y:GROUND,r:0,sh:1.7,o:1}
+      ],1100,'linear')) return;
+      a.wk.classList.add('riding');
+      an(a,a.wkIn,[{transform:'translateY(0)'},{transform:'translateY(-1.5px)'}],{duration:110,iterations:60,direction:'alternate'},true);
+      if (X1+175 < END) { if (!await mv(a,[{x:X1+175,y:GROUND,sh:1.7},{x:END,y:GROUND,sh:1.7}],Math.max(200,(END-X1-175)/(speed*3.4)*1000),'linear')) return; }
+    } else if (style === 'moon') {   /* bulan jatuh, minion melompat naik, lalu menggelinding ke kanan */
+      const Xm = X1+84, MY = GROUND+46;
+      const mo = document.createElement('div');
+      mo.className = 'wk-moon'; mo.style.opacity = '0'; mo.innerHTML = PK_MOON_HTML;
+      a.lane.insertBefore(mo,a.wk);
+      const disc = mo.firstChild;
+      pkIdleAnims.push(mo.animate([
+        {transform:`translate(${Xm}px,${GROUND-120}px) scale(.5)`,opacity:0},
+        {transform:`translate(${Xm}px,${MY}px) scale(1)`,opacity:1,offset:.6,easing:'ease-out'},
+        {transform:`translate(${Xm}px,${MY-14}px) scale(1)`,opacity:1,offset:.8,easing:'ease-in'},
+        {transform:`translate(${Xm}px,${MY}px) scale(1)`,opacity:1}
+      ],{duration:640,easing:'ease-in',fill:'forwards'}));
+      eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*-150}deg)`}],{duration:240}));
+      fx(a,'❗',0,-30,1.4,800,24,-6);
+      if (!await sleep(380)) return;
+      /* lompat ke atas bulan */
+      if (!await mv(a,[
+        {x:X1,y:GROUND,sx:1.1,sy:.88},
+        {x:X1+(Xm-24-X1)*.5,y:GROUND-92,r:-8,sx:.94,sy:1.12,o:.5,e:'ease-out'},
+        {x:Xm-24,y:GROUND-56,r:0,sx:1.1,sy:.9,e:'ease-in'}
+      ],560,'linear')) return;
+      disc.animate([{scale:'1 1'},{scale:'1.1 .88'},{scale:'.96 1.05'},{scale:'1 1'}],{duration:380,easing:'ease-out'});
+      dust(a,Xm-14,GROUND+74,16,-18,480); dust(a,Xm+30,GROUND+74,16,18,480);
+      a.gl.forEach(x => { try { x.cancel(); } catch {} }); a.gl.length = 0;
+      /* seimbang di atas bulan: tangan terentang, lalu bulan menggelinding */
+      eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*-62}deg)`},{transform:`rotate(${d*-44}deg)`},{transform:`rotate(${d*-62}deg)`}],{duration:520,iterations:60,easing:'ease-in-out'},true));
+      if (!await mv(a,[{x:Xm-24,y:GROUND-56,sx:1.1,sy:.9},{x:Xm-24,y:GROUND-56,sx:1,sy:1,o:1}],260)) return;
+      a.wk.classList.add('walking','running');
+      const x0 = Xm-24, x1 = END+30, dist = x1-x0, dur = Math.max(600,dist/(speed*1.7)*1000);
+      fx(a,'✨',-26,-34,1.2,900,6,10);
+      an(a,a.wkIn,[{transform:'rotate(-6deg)'},{transform:'rotate(6deg)'}],{duration:380,iterations:Math.ceil(dur/380)+1,direction:'alternate',easing:'ease-in-out'},true);
+      mo.animate([{transform:`translate(${Xm}px,${MY}px)`,opacity:1},{transform:`translate(${x1+24}px,${MY}px)`,opacity:1}],{duration:dur,easing:'ease-in',fill:'forwards'});
+      disc.animate([{rotate:'0deg'},{rotate:`${(dist*1.9).toFixed(0)}deg`}],{duration:dur,easing:'ease-in',fill:'forwards'});
+      if (!await mv(a,[{x:x0,y:GROUND-56,sh:1.4},{x:x1,y:GROUND-56,sh:1.4}],dur,'ease-in')) return;
+    } else if (style === 'hop') {
+      const n = Math.ceil((END-X1)/48), step = (END-X1)/n, fr = [];
+      for (let i = 0; i < n; i++) {
+        const x = X1+i*step;
+        fr.push({x,y:GROUND,r:5,sx:1.14,sy:.86,sh:1.1,o:i/n});
+        fr.push({x:x+step/2,y:GROUND-26,r:-3,sx:.93,sy:1.12,sh:.7,o:(i+.5)/n,e:'ease-out'});
+      }
+      fr.push({x:END,y:GROUND,r:5,sx:1.14,sy:.86,sh:1.1,o:1});
+      eachArm(a,(el,d) => an(a,el,[{transform:`rotate(${d*-20}deg)`},{transform:`rotate(${d*-70}deg)`},{transform:`rotate(${d*-20}deg)`}],{duration:420,iterations:n+1,easing:'ease-in-out'}));
+      if (!await mv(a,fr,n*430,'cubic-bezier(.45,0,.55,1)')) return;
+    } else if (style === 'slip') {
+      const xb = X1+(END-X1)*.4;
+      const peel = document.createElement('i'); peel.className = 'wk-peel'; peel.textContent = '🍌';
+      a.lane.appendChild(peel);
+      const py = GROUND+54;
+      peel.animate([{transform:`translate(${xb+14}px,${py-40}px) scale(.3) rotate(-60deg)`,opacity:0},{transform:`translate(${xb+14}px,${py}px) scale(1.15) rotate(10deg)`,opacity:1,offset:.6},{transform:`translate(${xb+14}px,${py}px) scale(1) rotate(0deg)`,opacity:1}],{duration:520,easing:'ease-out',fill:'forwards'});
+      if (!await walkTo(a,X1,xb-10,speed,WALK_LEAN)) return;
+      a.wk.classList.remove('walking');
+      eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*-125}deg)`}],{duration:180}));
+      peel.animate([{transform:`translate(${xb+14}px,${py}px) rotate(0deg)`,opacity:1},{transform:`translate(${xb-50}px,${py-90}px) rotate(-420deg)`,opacity:1,offset:.7},{transform:`translate(${xb-90}px,${py-20}px) rotate(-560deg)`,opacity:0}],{duration:900,easing:'ease-out',fill:'forwards'});
+      if (!await mv(a,[
+        {x:xb-10,y:GROUND,r:WALK_LEAN,sx:1,sy:1},
+        {x:xb+4,y:GROUND-6,r:-18,o:.12,e:'ease-out'},
+        {x:xb+30,y:GROUND-58,r:-190,sx:.96,sy:1.06,sh:.5,so:.4,o:.5,e:'ease-in-out'},
+        {x:xb+58,y:GROUND,r:-352,sx:1.02,sy:1.03,sh:1,so:.9,o:.88,e:'ease-in'},
+        {x:xb+60,y:GROUND,r:-360,sx:1.32,sy:.72,sh:1.3}
+      ],900,'ease-out')) return;
+      dust(a,xb+58,GROUND+72,18,-18,520); dust(a,xb+98,GROUND+72,18,18,520);
+      a.gl.forEach(x => { try { x.cancel(); } catch {} }); a.gl.length = 0;
+      ['💫','⭐','💫'].forEach((t,k) => fx(a,t,(k-1)*16,-16,1.2,1100,24+(k-1)*14,6));
+      an(a,a.wkIn,[{transform:'rotate(0deg)'},{transform:'rotate(7deg)'},{transform:'rotate(-7deg)'},{transform:'rotate(5deg)'},{transform:'rotate(-4deg)'},{transform:'rotate(0deg)'}],{duration:900,easing:'ease-in-out'},true);
+      if (!await mv(a,[{x:xb+60,y:GROUND,sx:1.32,sy:.72,sh:1.3},{x:xb+60,y:GROUND,sx:.98,sy:1.05,o:.35},{x:xb+60,y:GROUND,sx:1.04,sy:.96,o:.65},{x:xb+60,y:GROUND,sx:1,sy:1}],900)) return;
+      /* bangun dengan loncat, lalu lanjut jalan sambil menggeleng */
+      if (!await mv(a,[{x:xb+60,y:GROUND,sx:1,sy:1},{x:xb+60,y:GROUND-14,sx:.94,sy:1.1,e:'ease-out'},{x:xb+60,y:GROUND,r:WALK_LEAN,sx:1.1,sy:.92}],300)) return;
+      if (!await walkTo(a,xb+60,END,speed,WALK_LEAN)) return;
+    } else {
+      const run = style === 'run';
+      if (run) a.wk.classList.add('running');
+      if (!await walkTo(a,X1,END,run ? speed*1.9 : speed,run ? 11 : WALK_LEAN)) return;
+    }
+    a.wk.classList.remove('walking','running','riding'); a.lane.remove();
+  };
+
   try {
-    /* 1) masuk dari kiri layar, jalan ke dekat ujung kanan */
-    startWalk();
-    const a1 = slide(startX,stopX);
-    if (!await a1.finished.then(() => true,() => false) || !alive()) return;
-    /* 2) berhenti, loncat kecil, lalu gestur */
-    stopWalk();
-    an(wkIn,[{transform:'translateY(0)'},{transform:'translateY(-8px) scale(.96,1.06)'},{transform:'translateY(0) scale(1.05,.94)'},{transform:'none'}],{duration:340});
-    if (!await sleep(360)) return;
-    await G[kind]();
+    const actors = (await Promise.all(plans.map(stageOne))).filter(Boolean);
     if (!alive()) return;
-    gl.forEach(a => { try { a.cancel(); } catch {} }); gl.length = 0;
-    prop.innerHTML = '';
-    /* 3) lanjut jalan sampai keluar layar di kanan */
-    startWalk();
-    const a2 = slide(stopX,endX);
-    try { a1.cancel(); } catch {}
-    if (!await a2.finished.then(() => true,() => false) || !alive()) return;
-    stopWalk();
-    lane.remove();
-    pkIdleEl = null; pkIdleAnims = []; pkIdleRunning = false;
+    actors.sort((p,q) => q.plan.X1-p.plan.X1);   /* yang paling kanan berangkat duluan */
+    /* 1 minion: lompat / lari / kepeleset / ngesot / naik motor / naik bulan (acak, tidak sama 2x berturut-turut). 3 minion: jalan / lari / loncat */
+    const styles = triple ? ['walk','run','hop'] : ['hop','run','slip','scoot','motor','moon'];
+    let single = pick(styles);
+    if (!triple) { while (single === pkIdleLastStyle) single = pick(styles); pkIdleLastStyle = single; }
+    await Promise.all(actors.map(async (a,k) => {
+      if (k) { if (!await sleep(k*260)) return; }
+      await exitOne(a,triple ? pick(styles) : single);
+    }));
+    if (!alive()) return;
+    pkIdleLanes = []; pkIdleEl = null; pkIdleAnims = [];
+    if (triple) { pkIdleShowReal(true); pkIdleSingles = 0; } else pkIdleSingles++;
+    pkIdleRunning = false;
     pkIdleNextAt = Date.now()+PK_IDLE_GAP;
   } catch { if (alive()) pkIdleStop(); }
 }
 
 /* pengawas: mulai tiap PK_IDLE_GAP selama kondisi cocok, berhenti seketika kalau amplop disembunyikan / pindah halaman / video dibuka */
 setInterval(() => {
+  document.body.classList.toggle('pk-busy',!!pkGiveEl);
   const ok = pkIdleOk();
   if (!ok) { if (pkIdleRunning) pkIdleStop(); pkIdleOkSince = 0; return; }
   if (!pkIdleOkSince) pkIdleOkSince = Date.now();
   if (pkIdleRunning) return;
   const now = Date.now();
-  if (now-pkIdleOkSince >= PK_IDLE_GAP && now >= pkIdleNextAt) pkIdleRun();
+  if (pkIdleSkipWait || (now-pkIdleOkSince >= PK_IDLE_GAP && now >= pkIdleNextAt)) pkIdleRun();
 },400);
 
 
@@ -8897,7 +9335,7 @@ function pkFlowerBloom() {
     pkBloomResolve = resolve;
 
     const W = innerWidth, H = innerHeight, cx = W/2, cy = H/2;
-    const dpr = Math.min(devicePixelRatio || 1,2);
+    const dpr = 1;   /* 1x: bunga lembut, tidak perlu resolusi retina */
     const cv = document.createElement('canvas');
     cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
     cv.setAttribute('aria-hidden','true');
@@ -9004,7 +9442,62 @@ function pkHelloStop() {
   pkHelloAnims = [];
   if (pkHelloEl) { pkHelloEl.remove(); pkHelloEl = null; }
   document.querySelectorAll('#pkMinions .mn.talking').forEach(m => m.classList.remove('talking'));
+  if (typeof pkWhisperStop === 'function') pkWhisperStop();
 }
+
+/* ===== Bisikan: selama tombol cookie belum di-tap, salah satu minion sesekali berbisik samar-samar ===== */
+let pkWhisperEl = null, pkWhisperBusy = false, pkWhisperNextAt = 0, pkWhisperLast = -1;
+function pkWhisperStop() {
+  pkWhisperBusy = false;
+  if (pkWhisperEl) { try { pkWhisperEl.getAnimations().forEach(a => a.cancel()); } catch {} pkWhisperEl.remove(); pkWhisperEl = null; }
+  document.querySelectorAll('#pkMinions .mn.whispering').forEach(m => m.classList.remove('talking','whispering'));
+}
+function pkWhisperOk() {
+  const stage = $('bubuPeekStage'), bp = $('bubuPage');
+  if (!stage || stage.hidden || !bp || bp.hidden) return false;
+  if (!showingBubu || !peekHidden || pkGiveEl || stage.classList.contains('giving')) return false;
+  if (!pkHelloDone || pkHelloEl) return false;   /* tunggu sapaan awal selesai */
+  const b = document.body.classList;
+  if (b.contains('bubu-editing') || b.contains('bubu-video-open') || bp.classList.contains('editing')) return false;
+  return !document.hidden;
+}
+function pkWhisperShow() {
+  const stage = $('bubuPeekStage'), mins = [...$('pkMinions').children];
+  if (!stage || !mins.length) return;
+  let i = Math.floor(Math.random()*mins.length);
+  if (mins.length > 1 && i === pkWhisperLast) i = (i+1+Math.floor(Math.random()*(mins.length-1)))%mins.length;
+  pkWhisperLast = i;
+  const m = mins[i], mr = m.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+  const W = window.innerWidth || document.documentElement.clientWidth || 360;
+  const cx = Math.min(W-78,Math.max(78,mr.left+mr.width/2));
+  const el = document.createElement('div');
+  el.className = 'pk-whisper';
+  el.setAttribute('aria-hidden','true');
+  el.textContent = 'pencet tombolna bu!!';
+  el.style.left = (cx-sr.left)+'px';
+  stage.appendChild(el);
+  pkWhisperEl = el; pkWhisperBusy = true;
+  m.classList.add('talking','whispering');
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const kf = reduce
+    ? [{opacity:0},{opacity:.6,offset:.2},{opacity:.6,offset:.8},{opacity:0}]
+    : [{opacity:0,transform:'translateY(7px) scale(.92)'},{opacity:.62,transform:'translateY(0) scale(1)',offset:.25},{opacity:.5,transform:'translateY(-2px) scale(1)',offset:.8},{opacity:0,transform:'translateY(-7px) scale(.97)'}];
+  const a = el.animate(kf,{duration:3600,easing:'ease-in-out',fill:'forwards'});
+  setTimeout(() => { if (pkWhisperEl === el) m.classList.remove('talking','whispering'); },2300);
+  a.finished.then(() => {
+    if (pkWhisperEl !== el) return;
+    el.remove(); pkWhisperEl = null; pkWhisperBusy = false;
+    m.classList.remove('talking','whispering');
+    pkWhisperNextAt = Date.now()+6500+Math.random()*4500;
+  },() => {});
+}
+setInterval(() => {
+  if (!pkWhisperOk()) { if (pkWhisperBusy || pkWhisperEl) pkWhisperStop(); pkWhisperNextAt = 0; return; }
+  if (pkWhisperBusy) return;
+  const now = Date.now();
+  if (!pkWhisperNextAt) { pkWhisperNextAt = now+5000; return; }
+  if (now >= pkWhisperNextAt) pkWhisperShow();
+},800);
 
 async function pkSayHello() {
   if (pkHelloDone) return;
