@@ -1920,6 +1920,17 @@ body.history-open { overflow:hidden; }
 .hv-stage.loading .hv-replay { opacity:.5; }
 /* layar penuh: blur (backdrop-filter) di atas video bisa membuat video jadi hitam saat overlay muncul / hilang, jadi dimatikan */
 .hv-big,.hv-replay { backdrop-filter:none!important; -webkit-backdrop-filter:none!important; background:linear-gradient(145deg,rgba(70,24,52,.66),rgba(160,44,108,.6))!important; }
+/* minion penahan tombol play: muncul kalau animasi minion di Beranda belum selesai tapi video mau diputar */
+.hv-mn { position:fixed; z-index:900; width:44px; height:70px; margin-left:-22px; pointer-events:none; --look:5s; --blink:3.4s; --dl:-1s; }
+.hv-mn-in { width:100%; height:100%; transform-origin:50% 100%; transform:scale(.8); }
+.hv-mn.talking .mn-mouth { opacity:0; }
+.hv-mn.talking .mn-talkmouth { opacity:1; animation:mnYap .24s ease-in-out infinite alternate; }
+.hv-mn-say { position:absolute; left:50%; bottom:calc(100% - 6px); translate:-50% 0; width:max-content; max-width:230px; padding:6px 12px 8px; border-radius:16px; background:#fff; color:#c2255c; text-align:center; font-family:"Fredoka","Baloo 2","Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif; font-size:12.5px; font-weight:700; line-height:1.25; box-shadow:0 4px 12px rgba(0,0,0,.3),inset 0 -2px 0 rgba(194,37,92,.1); transform-origin:50% 108%; }
+.hv-mn-say.go { padding:9px 18px 11px; border-radius:20px; background:linear-gradient(145deg,#ff5c9a,#e0245e); color:#fff; font-size:18px; letter-spacing:.4px; white-space:nowrap; text-shadow:0 1px 2px rgba(120,0,50,.45); box-shadow:0 0 0 3px #fff,0 0 22px 4px rgba(255,77,141,.85),0 6px 16px rgba(0,0,0,.4); animation:hvMnGo .7s ease-in-out infinite alternate; }
+.hv-mn-say.go::after { background:#e0245e; box-shadow:2px 2px 0 0 #fff; }
+@keyframes hvMnGo { from { transform:scale(1); } to { transform:scale(1.08); } }
+@media (prefers-reduced-motion:reduce) { .hv-mn-say.go { animation:none; } }
+.hv-mn-say::after { content:""; position:absolute; left:50%; bottom:-5px; width:11px; height:11px; margin-left:-5.5px; background:#fff; transform:rotate(45deg); border-radius:2px; }
 .hv-stage { isolation:isolate; }
 .hv-stage video { z-index:0; background:#000; }
 .hv-stage.fs,.hv-stage:fullscreen,.hv-stage:-webkit-full-screen { background:#000; }
@@ -2037,6 +2048,21 @@ body.hv-pfs { overflow:hidden; }
 .wk-bike svg { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 3px 3px rgba(0,0,0,.25)); }
 .wk-peel { position:absolute; left:0; top:0; font-style:normal; font-size:22px; line-height:1; opacity:0; pointer-events:none; will-change:transform,opacity; }
 .wk-pf { position:absolute; border-radius:50%; pointer-events:none; background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.95),rgba(236,226,242,.7) 55%,rgba(214,200,226,0) 72%); will-change:transform,opacity; }
+/* popup volume naik (2,5 detik): gelembung ucapan minion di atas barisan band, sebelum musik konser dimulai */
+.pk-vol { position:fixed; z-index:9000; translate:-50% -100%; padding:9px 18px 11px; display:flex; flex-direction:column; align-items:center; gap:7px; border-radius:22px; background:#fff; color:#c2255c; white-space:nowrap; pointer-events:none; opacity:0; transform-origin:50% 112%; font-family:"Fredoka","Baloo 2","Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif; font-size:19px; font-weight:700; line-height:1.1; letter-spacing:.4px; box-shadow:0 5px 16px rgba(0,0,0,.32),inset 0 -2px 0 rgba(194,37,92,.1); animation:pkVolCard 2.5s cubic-bezier(.2,.9,.3,1) forwards; }
+.pk-vol::after { content:""; position:absolute; left:50%; bottom:-6px; width:13px; height:13px; margin-left:-6.5px; background:#fff; transform:rotate(45deg); border-radius:2px; }
+.pk-vol-row { display:flex; align-items:center; gap:9px; }
+.pk-vol svg { display:block; width:38px; height:32px; overflow:visible; }
+.pk-vol .sp { fill:#c2255c; stroke:#c2255c; stroke-width:3; stroke-linejoin:round; transform-box:fill-box; transform-origin:50% 50%; animation:pkVolSp .36s ease-in-out infinite alternate; }
+.pk-vol .w { fill:none; stroke:#e0245e; stroke-width:4; stroke-linecap:round; opacity:.2; animation:pkVolWave .6s ease-in-out infinite alternate; }
+.pk-vol .w2 { animation-delay:.12s; }
+.pk-vol .w3 { animation-delay:.24s; }
+.pk-vol-bar { display:flex; gap:3px; }
+.pk-vol-bar i { width:10px; height:6px; border-radius:3px; background:rgba(194,37,92,.18); animation:pkVolSeg .14s ease-out forwards; animation-delay:calc(.35s + var(--i)*.15s); }
+@keyframes pkVolCard { 0% { opacity:0; transform:scale(.3) rotate(-5deg); } 8% { opacity:1; transform:scale(1.1) rotate(1deg); } 14% { opacity:1; transform:scale(1) rotate(0); } 88% { opacity:1; transform:scale(1); } 100% { opacity:0; transform:scale(.9) translateY(4px); } }
+@keyframes pkVolSp { from { transform:scale(1); } to { transform:scale(1.14); } }
+@keyframes pkVolWave { from { opacity:.2; transform:translateX(-3px); } to { opacity:1; transform:none; } }
+@keyframes pkVolSeg { to { background:#c2255c; transform:scaleY(1.4); } }
 .wk.running.walking .wk-in,.wk.running.walking .mn-leg.l,.wk.running.walking .mn-leg.r,.wk.running.walking .mn-al,.wk.running.walking .mn-ar { animation-duration:.27s; }
 @keyframes wkBob { 0% { transform:translateY(0) rotate(-3deg); } 25% { transform:translateY(-3px) rotate(0); } 50% { transform:translateY(0) rotate(3deg); } 75% { transform:translateY(-3px) rotate(0); } 100% { transform:translateY(0) rotate(-3deg); } }
 @keyframes wkLeg { 0%,100% { transform:rotate(24deg); } 50% { transform:rotate(-24deg); } }
@@ -2153,6 +2179,15 @@ body.dark-theme .ld-card { background:rgba(32,32,38,.9); border-color:rgba(255,2
 /* selama animasi pembuka (papan pesan + konser) kilau & bunga di amplop dijeda */
 body.pk-busy .env-shine,body.pk-busy .env-flowers { opacity:0; }
 body.pk-busy .env-shine-bar,body.pk-busy .env-flower { animation-play-state:paused!important; }
+
+/* ===== Perbaikan: layar penuh tidak hitam + animasi lebih mulus ===== */
+.hv-stage.fs,.hv-stage.pseudo-fs,.hv-stage:fullscreen,.hv-stage:-webkit-full-screen { overflow:visible!important; isolation:auto!important; border-radius:0!important; box-shadow:none!important; background:#000!important; }
+.hv-stage.fs video,.hv-stage.pseudo-fs video,.hv-stage:fullscreen video,.hv-stage:-webkit-full-screen video { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000; transform:translateZ(0); backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+body.hv-fsing .bg-layer { visibility:hidden; }
+body.hv-fsing .pk-stage,body.hv-fsing .pk-stage *,body.hv-fsing .env-shine-bar,body.hv-fsing .env-flower { animation-play-state:paused!important; }
+.pk-stage.pk-off,.pk-stage.pk-off * { animation-play-state:paused!important; }
+.mn,.mn-in,.mn-svg { will-change:transform; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+.wk { backface-visibility:hidden; -webkit-backface-visibility:hidden; }
 
 </style>
 
@@ -7708,10 +7743,59 @@ const ld = (() => {
 
 /* ===== Efek suara animasi (Web Audio, tanpa file audio) — identitas: "dunia mainan minion"
    suara minion (gumaman berformant: bello / wupyu / aaah), marimba mainan, slide whistle, boing karet, kotak musik & harpa ajaib ===== */
-/* ===== Lagu 3 minion: balada pop sedih (A minor, 72 bpm). Satu sumber data untuk suara (pkSfx.band) dan animasi (perform) supaya selalu sinkron.
-   not: [ketukan mulai, MIDI melodi trompet 1, MIDI harmoni trompet 2, panjang (ketukan)] ===== */
-const PK_BAND_BPM = 72;
-const PK_BAND_NOTES = [[2,76,72,1],[3,72,69,1],[4,72,69,1.5],[5.5,69,65,.5],[6,72,69,1],[7,74,69,1],[8,79,76,1.5],[9.5,76,72,.5],[10,74,71,1],[11,72,67,1],[12,71,68,1.5],[13.5,68,64,.5],[14,71,68,1],[15,68,64,1],[16,69,64,1.5]];
+/* ===== Lagu konser minion: fanfare ala drum corps (DCI), 152 bpm, D minor → ditutup D mayor. Satu sumber data untuk suara (pkSfx.band) dan animasi (perform) supaya selalu sinkron.
+   Struktur: intro (impact + roll snare) → tema A (fanfare) → tema B (lirik, harmoni tiga) → klimaks (lari nada + roll crescendo) → akor penutup.
+   not: [ketukan mulai, MIDI, panjang (ketukan)] ===== */
+const PK_BAND_BPM = 152;
+const PK_BAND_END = 52;   /* ketukan akor penutup (13 birama 4/4) */
+/* akor tiap birama (pitch class): Dm Dm | Dm Bb Gm A7 | F C Bb A7 | Gm A7 A7 | D */
+const PK_BAND_CH = [[2,5,9],[2,5,9],[2,5,9],[10,2,5],[7,10,2],[9,1,4,7],[5,9,0],[0,4,7],[10,2,5],[9,1,4,7],[7,10,2],[9,1,4,7],[9,1,4,7],[2,6,9]];
+const PK_BAND_ROOT = [38,38,38,46,43,45,41,48,46,45,43,45,45,38];   /* nada dasar tuba tiap birama */
+const pkNear = (pc,base) => base+(((pc-base)%12)+12)%12;
+const pkHarm = (m,b) => {   /* harmoni terts di bawah melodi, dipilih dari nada akor birama itu */
+  const pcs = PK_BAND_CH[Math.min(13,Math.floor(b/4))];
+  for (const k of [3,4,5]) if (pcs.includes(((m-k)%12+12)%12)) return m-k;
+  return m-3;
+};
+/* Satu sumber data untuk suara (pkSfx.band) dan animasi (perform): tiap pemain → [ketukan, MIDI, panjang] */
+const PK_BAND_PARTS = (() => {
+  const run = (b,arr) => arr.map((m,i) => [b+i*.5,m,.5]);
+  const lead = [
+    [0,81,1],[1,81,.5],[1.5,81,.5],[2,86,2],
+    [4,86,.5],[4.5,84,.5],[5,81,.5],[5.5,79,.5],[6,77,1],[7,81,1],
+    [8,74,1.5],[9.5,77,.5],[10,81,1],[11,79,.5],[11.5,77,.5],
+    [12,82,1.5],[13.5,81,.5],[14,77,1],[15,79,.5],[15.5,81,.5],
+    [16,82,1.5],[17.5,79,.5],[18,86,2],
+    [20,85,1.5],[21.5,88,.5],[22,85,.5],[22.5,81,.5],[23,81,1],
+    [24,81,2],[26,84,1],[27,81,1],
+    [28,84,2],[30,88,1],[31,84,1],
+    [32,86,1.5],[33.5,84,.5],[34,82,1],[35,86,1],
+    [36,85,1],[37,88,1],[38,91,2]
+  ].concat(run(40,[79,82,86,82,79,82,86,91]),run(44,[81,85,88,85,81,85,88,93]),[[48,93,3],[51,91,.5],[51.5,93,.5],[PK_BAND_END,93,1.5]]);
+  const climax = lead.filter(n => n[0] >= 40 && n[0] < PK_BAND_END);
+  /* saksofon / mellophone: tahanan intro, pukulan offbeat (A), nada panjang pendamping (B), mengikuti melodi satu oktaf di bawah (klimaks) */
+  const sax = [[0,pkNear(2,57),1.5],[4,pkNear(9,57),3.5]];
+  [8,12,16,20].forEach(b => { const c = PK_BAND_CH[b/4]; sax.push([b+1.5,pkNear(c[1],62),.4],[b+3.5,pkNear(c[2],62),.4]); });
+  [24,28,32,36].forEach(b => { const c = PK_BAND_CH[b/4]; sax.push([b,pkNear(c[1],64),2],[b+2,pkNear(c[2],64),2]); });
+  climax.forEach(n => sax.push([n[0],n[1]-12,n[2]]));
+  sax.push([PK_BAND_END,74,1.5]);
+  /* klarinet: kilatan nada tinggi (intro), arpeggio akhir birama (A), arpeggio delapanan (B), menggandakan melodi (klimaks) */
+  const clar = [[6,93,.25],[6.25,91,.25],[6.5,93,.25],[6.75,91,.25],[7,93,1]];
+  [8,12,16,20].forEach(b => { const x = PK_BAND_CH[b/4].slice(0,3).map(p => pkNear(p,79)).sort((p,q) => p-q); clar.push([b+3,x[0],.25],[b+3.25,x[1],.25],[b+3.5,x[2],.5]); });
+  [24,28,32,36].forEach(b => { const x = PK_BAND_CH[b/4].slice(0,3).map(p => pkNear(p,74)).sort((p,q) => p-q); [0,1,2,1,0,1,2,1].forEach((j,i) => clar.push([b+i*.5,x[j],.5])); });
+  climax.forEach(n => clar.push([n[0],n[1],n[2]]));
+  clar.push([PK_BAND_END,90,1.5]);
+  /* tuba: pedal intro, "oom-pah" mars (A), jalan lirik (B), delapanan menggebu (klimaks) */
+  const tuba = [[0,38,3.5]];
+  for (let i = 1; i <= 12; i++) {
+    const b = i*4, r = PK_BAND_ROOT[i];
+    if (i < 6) tuba.push([b,r,.9],[b+1,r+7,.9],[b+2,r,.9],[b+3,r+7,.9]);
+    else if (i < 10) tuba.push([b,r,.95],[b+1,r+7,.95],[b+2,r+12,.95],[b+3,r+7,.95]);
+    else for (let k = 0; k < 8; k++) tuba.push([b+k*.5,k%2 ? r+12 : r,.45]);
+  }
+  tuba.push([PK_BAND_END,38,1.5]);
+  return {trumpetL:lead,trumpetR:lead.map(n => [n[0],pkHarm(n[1],n[0]),n[2]]),sax,clar,tuba};
+})();
 
 const pkSfx = (() => {
   let ctx = null, master = null, verbIn = null, nbuf = null, ir = null;
@@ -7720,7 +7804,7 @@ const pkSfx = (() => {
   const get = () => {
     try {
       if (document.hidden) return null;
-      if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; ctx = new AC(); }
+      if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; try { ctx = new AC({latencyHint:'balanced'}); } catch { ctx = new AC(); } }
       if (ctx.state === 'suspended') ctx.resume().catch(() => {});
       if (!master) {
         master = ctx.createGain(); master.gain.value = 1.7;
@@ -7728,9 +7812,9 @@ const pkSfx = (() => {
         comp.threshold.value = -11; comp.knee.value = 8; comp.ratio.value = 7; comp.attack.value = .003; comp.release.value = .18;
         master.connect(comp); comp.connect(ctx.destination);
         if (!ir) {
-          const len = Math.floor(ctx.sampleRate*1.7);
+          const len = Math.floor(ctx.sampleRate*1.05);
           ir = ctx.createBuffer(2,len,ctx.sampleRate);
-          for (let ch = 0; ch < 2; ch++) { const a = ir.getChannelData(ch); for (let i = 0; i < len; i++) a[i] = (Math.random()*2-1)*Math.pow(1-i/len,2.6); }
+          for (let ch = 0; ch < 2; ch++) { const a = ir.getChannelData(ch); for (let i = 0; i < len; i++) { const q = 1-i/len; a[i] = (Math.random()*2-1)*q*q*Math.sqrt(q); } }
         }
         verbIn = ctx.createGain();
         const conv = ctx.createConvolver(); conv.buffer = ir;
@@ -7917,10 +8001,93 @@ const pkSfx = (() => {
     H({type:'highpass',f0:7000,d,dur:len*.7,vol:vol*.45,q:.5,att:.008});
     if (acc) T({type:'triangle',f0:210,f1:150,d,dur:.09,vol:vol*.6,att:.002});
   };
+  /* klarinet: gelombang kotak (harmonik ganjil) disaring hangat, vibrato halus, hembusan napas */
+  const clar = (f,d,dur,vol) => {
+    const c = get(); if (!c) return;
+    const t = c.currentTime+d, end = t+dur;
+    const o1 = c.createOscillator(), o2 = c.createOscillator(), l = c.createOscillator(), lg = c.createGain();
+    const fl = c.createBiquadFilter(), g = c.createGain(), m = c.createGain();
+    o1.type = 'square'; o2.type = 'triangle'; o2.detune.value = 4;
+    [o1,o2].forEach(o => { o.frequency.setValueAtTime(f*.985,t); o.frequency.exponentialRampToValueAtTime(f,t+.03); });
+    l.frequency.value = 5; lg.gain.setValueAtTime(0,t); lg.gain.linearRampToValueAtTime(f*.0032,t+Math.max(.2,dur*.8));
+    l.connect(lg); lg.connect(o1.frequency); lg.connect(o2.frequency);
+    fl.type = 'lowpass'; fl.Q.value = .9;
+    fl.frequency.setValueAtTime(f*2.2,t); fl.frequency.linearRampToValueAtTime(Math.min(f*5,4200),t+.04); fl.frequency.linearRampToValueAtTime(f*3.2,end);
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+Math.min(.025,dur*.4));
+    g.gain.setValueAtTime(vol*LD*.88,t+Math.max(.04,dur-.07)); g.gain.exponentialRampToValueAtTime(.0001,end);
+    m.gain.value = .5; o1.connect(m); o2.connect(m); m.connect(fl); fl.connect(g);
+    toBus(g,c,t,.3);
+    o1.start(t); o2.start(t); l.start(t); o1.stop(end+.05); o2.stop(end+.05); l.stop(end+.05);
+    H({type:'bandpass',f0:f*3,d,dur:.04,vol:vol*.16,q:1,att:.006});
+  };
+  /* saxophone: saw + kotak berformant, "scoop" kecil ke nada, vibrato yang tumbuh */
+  const sax = (f,d,dur,vol) => {
+    const c = get(); if (!c) return;
+    const t = c.currentTime+d, end = t+dur;
+    const o1 = c.createOscillator(), o2 = c.createOscillator(), l = c.createOscillator(), lg = c.createGain();
+    const fl = c.createBiquadFilter(), pk = c.createBiquadFilter(), g = c.createGain(), m = c.createGain();
+    o1.type = 'sawtooth'; o2.type = 'square'; o1.detune.value = -4; o2.detune.value = 5;
+    [o1,o2].forEach(o => { o.frequency.setValueAtTime(f*.95,t); o.frequency.exponentialRampToValueAtTime(f,t+.08); });
+    l.frequency.value = 5.6; lg.gain.setValueAtTime(0,t); lg.gain.setValueAtTime(0,t+.12); lg.gain.linearRampToValueAtTime(f*.008,t+Math.max(.3,dur*.7));
+    l.connect(lg); lg.connect(o1.frequency); lg.connect(o2.frequency);
+    fl.type = 'lowpass'; fl.Q.value = 2.2;
+    fl.frequency.setValueAtTime(f*1.8,t); fl.frequency.linearRampToValueAtTime(Math.min(f*4.2,3800),t+.1); fl.frequency.linearRampToValueAtTime(f*2.8,end);
+    pk.type = 'peaking'; pk.frequency.value = 950; pk.gain.value = 5; pk.Q.value = .9;
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+Math.min(.05,dur*.4));
+    g.gain.setValueAtTime(vol*LD*.88,t+Math.max(.06,dur-.1)); g.gain.exponentialRampToValueAtTime(.0001,end);
+    m.gain.value = .5; o1.connect(m); o2.connect(m); m.connect(fl); fl.connect(pk); pk.connect(g);
+    toBus(g,c,t,.35);
+    o1.start(t); o2.start(t); l.start(t); o1.stop(end+.05); o2.stop(end+.05); l.stop(end+.05);
+    H({type:'bandpass',f0:f*2.6,d,dur:.07,vol:vol*.2,q:1,att:.012});
+  };
+  /* tuba: saw + kotak + sinus berfilter rendah, serangan "oom" bulat, sedikit hembusan napas */
+  const tuba = (f,d,dur,vol) => {
+    const c = get(); if (!c) return;
+    const t = c.currentTime+d, end = t+dur;
+    const o1 = c.createOscillator(), o2 = c.createOscillator(), o3 = c.createOscillator();
+    const fl = c.createBiquadFilter(), g = c.createGain(), m = c.createGain(), sg = c.createGain();
+    o1.type = 'sawtooth'; o2.type = 'square'; o3.type = 'sine';
+    o1.detune.value = -6; o2.detune.value = 6;
+    o3.frequency.value = f;
+    [o1,o2].forEach(o => { o.frequency.setValueAtTime(f*.97,t); o.frequency.exponentialRampToValueAtTime(f,t+.03); });
+    fl.type = 'lowpass'; fl.Q.value = 1.1;
+    fl.frequency.setValueAtTime(f*2.2,t); fl.frequency.linearRampToValueAtTime(Math.min(f*5.5,1500),t+.05); fl.frequency.linearRampToValueAtTime(f*3,end);
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(vol*LD,t+.03);
+    g.gain.setValueAtTime(vol*LD*.85,t+Math.max(.04,dur-.07)); g.gain.exponentialRampToValueAtTime(.0001,end);
+    m.gain.value = .5; sg.gain.value = .6;
+    o1.connect(m); o2.connect(m); m.connect(fl); fl.connect(g); o3.connect(sg); sg.connect(g);
+    toBus(g,c,t,.2);
+    o1.start(t); o2.start(t); o3.start(t); o1.stop(end+.05); o2.stop(end+.05); o3.stop(end+.05);
+    H({type:'bandpass',f0:f*3,d,dur:.05,vol:vol*.14,q:1,att:.01});
+  };
+  /* Penjadwal bertahap: node audio dibuat sedikit demi sedikit (±1 detik ke depan), bukan ratusan sekaligus, supaya animasi tidak patah-patah */
+  const pumps = new Set();
+  const pump = evs => {
+    const c = get(); if (!c) return;
+    evs.sort((a,b) => a[0]-b[0]);
+    const job = {dead:false,timer:0}, t0 = c.currentTime;
+    let i = 0;
+    pumps.add(job);
+    const step = () => {
+      if (job.dead || !ctx) { pumps.delete(job); return; }
+      const el = ctx.currentTime-t0;
+      let n = 0;
+      while (i < evs.length && evs[i][0]-el < 1.1 && n < 14) { try { evs[i][1](Math.max(0,evs[i][0]-el)); } catch {} i++; n++; }
+      if (i < evs.length) job.timer = setTimeout(step,n >= 14 ? 30 : 160); else pumps.delete(job);
+    };
+    step();
+  };
   const SCALE = [196,220,246.9,293.7,329.6];
   const scaleNote = i => SCALE[i%5]*Math.pow(2,Math.floor(i/5));
   const api = {
+    /* dipanggil saat sentuhan pertama: membuat AudioContext + derau + gema lebih dulu (tidak ada hentakan saat SFX pertama) */
+    warm() {
+      const c = get(); if (!c) return;
+      if (!nbuf) { nbuf = c.createBuffer(1,c.sampleRate*2|0,c.sampleRate); const a = nbuf.getChannelData(0); for (let i = 0; i < a.length; i++) a[i] = Math.random()*2-1; }
+    },
     stop() {
+      pumps.forEach(j => { j.dead = true; clearTimeout(j.timer); });
+      pumps.clear();
       if (!master) return;
       const old = master; master = null; verbIn = null;
       try { old.gain.cancelScheduledValues(ctx.currentTime); old.gain.setTargetAtTime(0,ctx.currentTime,.03); } catch {}
@@ -7933,18 +8100,23 @@ const pkSfx = (() => {
       const env = k => k < .3 ? k/.3 : k > .7 ? Math.max(0,(1-k)/.3) : 1;
       H({type:'lowpass',f0:180,f1:340,dur:D,vol:.2,q:.7,att:D*.35});
       H({type:'bandpass',f0:1300,f1:700,dur:D*.9,vol:.04,q:.45,att:D*.4});
-      const step = .1, n = Math.floor(D/step);
+      const step = .12, n = Math.floor(D/step), ev = [];
       for (let i = 0; i < n; i++) {
-        const e = env(i/n), d = i*step+rnd(0,.04);
+        const e = env(i/n), tt = i*step+rnd(0,.04);
         if (e < .05) continue;
-        T({type:'sine',f0:rnd(90,128),f1:52,d,dur:.12,vol:.1*e,att:.002,lp:320});
-        if (i%2) H({type:'bandpass',f0:rnd(380,820),f1:260,d,dur:.06,vol:.06*e,q:1,att:.001});
+        ev.push([tt,d => {
+          T({type:'sine',f0:rnd(90,128),f1:52,d,dur:.12,vol:.1*e,att:.002,lp:320});
+          if (i%2) H({type:'bandpass',f0:rnd(380,820),f1:260,d,dur:.06,vol:.06*e,q:1,att:.001});
+        }]);
       }
-      for (let j = 0; j < 7; j++) {
-        const d = D*rnd(.2,.8);
-        if (j%3 === 2) laugh(d,3,rnd(560,720),.035);
-        else say([['a',rnd(520,680),rnd(700,900),.1,.02],['e',rnd(640,820),rnd(520,700),.16]],d,.045,.25);
+      for (let j = 0; j < 6; j++) {
+        const tt = D*rnd(.2,.8);
+        ev.push([tt,d => {
+          if (j%3 === 2) laugh(d,3,rnd(560,720),.035);
+          else say([['a',rnd(520,680),rnd(700,900),.1,.02],['e',rnd(640,820),rnd(520,700),.16]],d,.045,.25);
+        }]);
       }
+      pump(ev);
     },
     /* jari menyentuh cookie */
     cookiePress() {
@@ -8116,44 +8288,68 @@ const pkSfx = (() => {
       say([['a',460,600,.12,.0],['e',620,760,.24]],.34,.12);
       T({type:'sine',f0:300,f1:640,dur:.16,vol:.05,att:.01});
     },
-    /* "Balada Minion": lagu cinta sedih ala pop, A minor, 72 bpm (±14 detik). Trompet 1 melodi + trompet 2 harmoni (lembut),
-       piano elektrik arpeggio, bass hangat, pad senar, snare disapu pelan. Akor: Am – F – C – E → Am. */
+    /* 8 blip menanjak, selaras dengan 8 segmen volume yang terisi di gelembung */
+    volUp() { for (let i = 0; i < 8; i++) T({type:'sine',f0:520*Math.pow(1.09,i),d:.35+i*.15,dur:.08,vol:.045+i*.004,att:.004,rev:.1}); },
+    /* "Minion Corps Fanfare": ala drum corps internasional, D minor 152 bpm (±21 detik). Barisan brass (2 trompet, mellophone, klarinet piccolo) + 3 tuba,
+       battery (snare cadence + roll crescendo, quad tom fill, bass drum, simbal crash & swell). Dinamika: impact → fanfare → lirik → crescendo besar → akor mayor penutup. */
     band() {
       const c = get(); if (!c) return 0;
-      const bt = 60/PK_BAND_BPM, mf = m => 440*Math.pow(2,(m-69)/12);
-      PK_BAND_NOTES.forEach(([b,lead,harm,l]) => {
-        const fin = b === 16, dur = fin ? 1.5*bt : l*bt*.96;
-        flug(mf(lead),b*bt,dur,fin ? .19 : .17);
-        flug(mf(harm),b*bt,dur,fin ? .1 : .085);
+      const bt = 60/PK_BAND_BPM, mf = m => 440*Math.pow(2,(m-69)/12), END = PK_BAND_END;
+      const ev = [], at = (t,fn) => ev.push([t,fn]);   /* t = detik sejak lagu mulai; fn(d) dipanggil sesaat sebelum waktunya */
+      const A = (b,fn) => at(b*bt,fn);                 /* A: waktu dalam ketukan */
+      const dyn = b => b < 8 ? 1 : b < 24 ? .92 : b < 40 ? .84 : b < END ? .95+(b-40)/12*.4 : 1.45;
+      /* ---- melodi, harmoni, tuba ---- */
+      const part = (list,fn) => list.forEach(n => A(n[0],d => fn(mf(n[1]),d,Math.max(.1,n[2]*bt*.94),n)));
+      part(PK_BAND_PARTS.trumpetL,(f,d,du,n) => trum(f,d,du,(n[2] < .3 ? .1 : n[0] === END ? .15 : .115)*dyn(n[0])));
+      part(PK_BAND_PARTS.trumpetR,(f,d,du,n) => trum(f,d,du,(n[0] === END ? .11 : .075)*dyn(n[0])));
+      part(PK_BAND_PARTS.sax,(f,d,du,n) => sax(f,d,du,(n[0] === END ? .17 : n[2] >= 2 ? .1 : .14)*dyn(n[0])));
+      part(PK_BAND_PARTS.clar,(f,d,du,n) => clar(f,d,du,(n[0] === END ? .15 : .095)*dyn(n[0])));
+      part(PK_BAND_PARTS.tuba,(f,d,du,n) => tuba(f,d,du,(n[0] === END ? .26 : .2)*dyn(n[0])));
+      /* ---- pukulan akor brass (impact & hit) ---- */
+      const voic = bar => { const t = PK_BAND_CH[bar].slice(0,3).map(p => pkNear(p,57)); return t.concat([t[0]+12,t[2]+12]); };
+      const stab = (b,len,vol) => voic(Math.min(13,Math.floor(b/4))).forEach((m,j) => A(b,d => trum(mf(m),d+j*.006,Math.max(.12,len*bt),vol*dyn(b))));
+      [[0,1.6,.062],[8,.5,.055],[12,.5,.05],[16,.5,.055],[20,.5,.05],[24,.5,.045],[40,.4,.06],[42,.4,.06],[44,.4,.065],[46,.4,.065],[END,1.6,.085]].forEach(x => stab(x[0],x[1],x[2]));
+      voic(12).forEach((m,j) => A(48,d => pad(mf(m),d+j*.01,3.2*bt,.3*bt,.4,.03)));   /* swell akor menuju klimaks */
+      voic(13).forEach((m,j) => A(END,d => pad(mf(m),d+j*.01,.05,1.4*bt,.8,.024)));
+      /* ---- battery: snare, tom, bass drum, simbal ---- */
+      const kick = (d,v) => { T({type:'sine',f0:135,f1:42,d,dur:.3,vol:v,att:.002,rev:.06}); T({type:'triangle',f0:90,f1:55,d,dur:.18,vol:v*.45,att:.002}); H({type:'bandpass',f0:2200,d,dur:.012,vol:v*.18,q:1,att:.0005}); };
+      const tom = (d,f,v) => { T({type:'sine',f0:f*1.3,f1:f,d,dur:.2,vol:v,att:.002,rev:.12}); H({type:'bandpass',f0:f*4,d,dur:.025,vol:v*.4,q:1.5,att:.001}); };
+      const crash = (d,v,L) => { H({type:'highpass',f0:4200,d,dur:L,vol:v,q:.5,att:.002,rev:.4}); H({type:'bandpass',f0:8800,d,dur:L*.7,vol:v*.55,q:.7,att:.002}); H({type:'bandpass',f0:6200,d,dur:L*.85,vol:v*.4,q:.9,att:.003,rev:.3}); };
+      const swell = (d,L,v) => H({type:'highpass',f0:2800,f1:9500,d,dur:L,vol:v,q:.5,att:L*.6,rev:.3});
+      const S = (b,v) => A(b,d => snr(d,v*dyn(b),.09));
+      const rollS = (b0,b1,v0,v1) => { for (let t = b0; t < b1-1e-6; t += .25) S(t,v0+(v1-v0)*(t-b0)/(b1-b0)); };
+      const PA = [[0,1],[.5,0],[.75,0],[1,1],[1.5,0],[1.75,0],[2,1],[2.5,0],[2.75,0],[3,1],[3.5,0],[3.75,0]];   /* cadence mars */
+      const PB = [[0,1],[1,0],[1.5,0],[2,1],[3,0],[3.5,0]];                                                    /* lebih ringan (lirik) */
+      const pat = (b,p,v,upTo) => p.forEach(x => { if (x[0] < upTo) S(b+x[0],v*(x[1] ? 1.35 : 1)); });
+      rollS(2,4,.035,.12);                                       /* roll crescendo intro */
+      pat(4,PA,.08,2); rollS(6,7,.06,.1);
+      for (let i = 2; i < 6; i++) pat(i*4,PA,.085,i === 5 ? 2 : 4);
+      rollS(22,23,.07,.12);
+      for (let i = 6; i < 10; i++) pat(i*4,PB,.075,i === 9 ? 2 : 4);
+      rollS(38,39,.07,.13);
+      for (let t = 40; t < 48; t += .25) S(t,t%1 === 0 ? .13 : .085);   /* klimaks: 16-an penuh, aksen tiap ketukan */
+      rollS(48,END,.08,.17);                                    /* roll besar menuju akor penutup */
+      A(END,d => { snr(d,.2,.2); snr(d+.045,.14,.2); });
+      rollS(END+.25,END+1,.11,.03);
+      [7,23,39].forEach(b => [300,255,215,175].forEach((f,i) => A(b+i*.25,d => tom(d,f,.16))));   /* quad tom fill menurun */
+      const K = (b,v) => A(b,d => kick(d,v*Math.min(1.2,dyn(b))));
+      K(0,.36); [4,5,6,7].forEach((b,i) => K(b,.18+i*.04));
+      for (let i = 2; i < 6; i++) [0,2,3.5].forEach(x => K(i*4+x,.26));
+      for (let i = 6; i < 10; i++) [0,2].forEach(x => K(i*4+x,.22));
+      for (let b = 40; b < END; b++) { K(b,.26+(b-40)*.008); if (b >= 48) K(b+.5,.2); }
+      K(END,.42);
+      A(0,d => crash(d,.07,2)); A(8,d => crash(d,.045,1.1)); A(16,d => crash(d,.035,.7)); A(24,d => crash(d,.06,1.6));
+      A(32,d => crash(d,.04,.8)); A(40,d => crash(d,.06,1.5)); A(44,d => crash(d,.045,.8)); A(END,d => crash(d,.1,2.4));
+      A(22,d => swell(d,2*bt,.04)); A(38,d => swell(d,2*bt,.045)); A(46,d => swell(d,6*bt,.05));
+      /* ---- hiasan: glockenspiel di klimaks, akhir megah + sorak minion ---- */
+      [8,24,40].forEach(b => A(b,d => { bell(mf(88),d,.03,.5,1.2); bell(mf(95),d+.1,.024,.5,1); }));
+      A(END,d => {
+        bell(1318.5,d+.05,.04,.55,2); bell(1760,d+.14,.03,.55,1.8); bell(2093,d+.24,.022,.55,1.6);
+        H({type:'bandpass',f0:1400,f1:900,d:d+.1,dur:1.6,vol:.05,q:.5,att:.25,rev:.3});
+        say([['a',460,600,.12,0],['e',620,760,.3]],d+.2,.1);
       });
-      const CH = [
-        {b:0, bass:45, arp:[57,60,64,69], pad:[220,261.6,329.6]},    /* Am */
-        {b:4, bass:41, arp:[53,57,60,65], pad:[174.6,220,261.6]},    /* F */
-        {b:8, bass:48, arp:[48,52,55,60], pad:[196,261.6,329.6]},    /* C */
-        {b:12,bass:40, arp:[52,56,59,64], pad:[207.7,246.9,329.6]}   /* E */
-      ];
-      const PAT = [0,2,3,2,1,2,3,2];
-      CH.forEach(ch => {
-        PAT.forEach((p,i) => ep(mf(ch.arp[p]),(ch.b+i*.5)*bt,i%4 === 0 ? .085 : .06));
-        T({type:'triangle',f0:mf(ch.bass),d:ch.b*bt,dur:2.4*bt,vol:.16,att:.02,lp:380,rev:.08});
-        T({type:'triangle',f0:mf(ch.bass),d:(ch.b+2.5)*bt,dur:1.4*bt,vol:.11,att:.02,lp:380,rev:.08});
-        ch.pad.forEach((f,k) => pad(f,ch.b*bt+k*.01,.8,Math.max(.2,4*bt-1.2),.9,.011));
-      });
-      /* akor penutup Am, dipetik pelan dari bawah ke atas */
-      [57,64,69,72].forEach((m,k) => ep(mf(m),16*bt+k*.07,.09,3));
-      T({type:'triangle',f0:mf(45),d:16*bt,dur:1.5*bt,vol:.16,att:.02,lp:380,rev:.1});
-      [220,261.6,329.6,440].forEach((f,k) => pad(f,16*bt+k*.01,.3,Math.max(.2,1.5*bt-.6),.8,.011));
-      /* brush: tiap ketukan, backbeat (ketukan ganjil) lebih berisi, offbeat sangat halus */
-      for (let b = 0; b < 15; b++) {
-        const k = b < 2 ? .6 : 1;
-        brush(b*bt,(b%2 ? .075 : .04)*k,b%2 ? .2 : .14,b%2);
-        brush((b+.5)*bt,.025*k,.1);
-      }
-      for (let i = 0; i < 8; i++) brush((15+i/8)*bt,.03+i*.01,.08);   /* roll halus menuju akhir */
-      brush(16*bt,.1,.45,true);
-      H({type:'highpass',f0:6500,d:16*bt,dur:1.8,vol:.05,q:.5,att:.08,rev:.5});
-      bell(1318.5,16*bt+.1,.035,.55,2);
-      return 17.5*bt;
+      pump(ev);
+      return (END+1.5)*bt;
     },
     /* papan pesan: "tok" kayu + denting + kikik */
     signPop() {
@@ -8165,6 +8361,8 @@ const pkSfx = (() => {
   };
   return api;
 })();
+/* siapkan audio pada sentuhan pertama (iOS/Android butuh gestur) supaya SFX pertama tidak telat / patah */
+(() => { const go = () => { try { pkSfx.warm(); } catch {} }; ['pointerdown','touchend','keydown'].forEach(ev => document.addEventListener(ev,go,{capture:true,passive:true,once:true})); })();
 
 const PK_GIVER = {eyes:2,mouth:'grin',hair:3,wave:''};
 
@@ -8221,6 +8419,7 @@ function pkCleanup() {
 function pkAbortGive() {
   pkGiveToken++;
   pkIdleIntro = false;
+  pkForcedPlay = false;
   pkSfx.stop();
   if (typeof pkBloomStop === 'function') pkBloomStop();
   if (pkGiveEl) { pkGiveEl.remove(); pkGiveEl = null; }
@@ -8739,7 +8938,7 @@ async function pkPlayMoon(opts) {
   go(sign,[{transform:'rotate(-1.4deg)',opacity:1},{transform:'rotate(1.4deg)',opacity:1}],{duration:1300,iterations:Infinity,direction:'alternate',easing:'ease-in-out'});
   if (bandOn) {   /* papan tetap tampil sampai konser selesai */
     const t0 = Date.now();
-    while (alive() && !pkBandDone && Date.now()-t0 < 24000) await pkSleep(100);
+    while (alive() && !pkBandDone && Date.now()-t0 < 50000) await pkSleep(100);
     if (!alive()) return;
     await pkSleep(500); if (!alive()) return;
   } else { await pkSleep(7500); if (!alive()) return; }
@@ -8831,7 +9030,7 @@ function pkIdleOk() {
   if (!pkIdleIntro && home && home.classList.contains('tucked')) return false;   /* amplop & video belum / sedang disembunyikan */
   const b = document.body.classList;
   if (b.contains('bubu-editing') || b.contains('bubu-video-open') || bp.classList.contains('editing')) return false;
-  if (document.hidden || document.fullscreenElement || document.webkitFullscreenElement) return false;
+  if (document.hidden || document.fullscreenElement || document.webkitFullscreenElement || b.contains('hv-fsing')) return false;
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   return true;
 }
@@ -8848,6 +9047,81 @@ function pkTrumpetSvg(flip) {
   return '<svg viewBox="0 0 60 30" aria-hidden="true"'+(flip ? ' style="transform:scaleX(-1)"' : '')+'><g stroke="#8a5a0a" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"><path d="M2 14.5h7" stroke="#c8960a" stroke-width="3.2"/><path d="M12 17Q12 25 20 25H33Q38 25 38 16" fill="none" stroke="#e8b020" stroke-width="2.6"/><rect x="8" y="12.8" width="31" height="3.6" rx="1.8" fill="#ffd24a"/><path d="M38 14.6L57 3.6V25.6L38 14.6Z" fill="#ffc933"/><ellipse cx="57" cy="14.6" rx="2.6" ry="11" fill="#ffe48a"/><rect x="15" y="6.5" width="3" height="6.5" rx="1.2" fill="#ffd24a"/><rect x="21" y="6.5" width="3" height="6.5" rx="1.2" fill="#ffd24a"/><rect x="27" y="6.5" width="3" height="6.5" rx="1.2" fill="#ffd24a"/><circle cx="16.5" cy="5.5" r="2" fill="#c8960a"/><circle cx="22.5" cy="5.5" r="2" fill="#c8960a"/><circle cx="28.5" cy="5.5" r="2" fill="#c8960a"/></g></svg>';
 }
 
+function pkClarSvg(flip) {
+  return '<svg viewBox="0 0 60 30" aria-hidden="true"'+(flip ? ' style="transform:scaleX(-1)"' : '')+'><g stroke="#111114" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"><path d="M2 12.4h9" stroke="#2b2b30" stroke-width="3.6"/><path d="M3 14.6h8" stroke="#e0c58a" stroke-width="1.3"/><rect x="10" y="11" width="37" height="4.8" rx="2.3" fill="#34343c"/><path d="M45 10.6L57.5 6.4V20.2L45 16.2Z" fill="#34343c"/><ellipse cx="57.5" cy="13.3" rx="2.4" ry="7" fill="#1c1c22"/></g><g fill="#d9dee6" stroke="#7b818c" stroke-width=".6"><rect x="19" y="10.4" width="1.8" height="6.2" rx=".6"/><rect x="33" y="10.4" width="1.8" height="6.2" rx=".6"/><circle cx="14" cy="13.4" r="1.5"/><circle cx="24" cy="13.4" r="1.7"/><circle cx="29" cy="13.4" r="1.7"/><circle cx="38.5" cy="13.4" r="1.7"/><circle cx="43" cy="13.4" r="1.5"/></g><path d="M16 8.6h7M27 8.6h8" stroke="#b8bec9" stroke-width="1.5" stroke-linecap="round"/></svg>';
+}
+function pkSaxSvg(flip) {
+  const body = 'M10 8Q20 3 24 13V31Q24 40 34 40Q44 40 46 30L49 17';
+  return '<svg viewBox="0 0 60 44" aria-hidden="true"'+(flip ? ' style="transform:scaleX(-1)"' : '')+'><path d="'+body+'" fill="none" stroke="#8a5a0a" stroke-width="8.6" stroke-linecap="round" stroke-linejoin="round"/><path d="'+body+'" fill="none" stroke="#f0bd2c" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M26.5 16V31" stroke="#fff3a6" stroke-width="1.6" stroke-linecap="round" opacity=".8"/><ellipse cx="51" cy="12.5" rx="7.4" ry="3.4" transform="rotate(-62 51 12.5)" fill="#ffe48a" stroke="#8a5a0a" stroke-width="1.2"/><ellipse cx="51" cy="12.5" rx="4.8" ry="1.8" transform="rotate(-62 51 12.5)" fill="#8a5a0a" opacity=".45"/><path d="M1 7L11 8.2" stroke="#2b2b30" stroke-width="4.2" stroke-linecap="round"/><path d="M5 9.6L12 10" stroke="#d6bd86" stroke-width="1.2" stroke-linecap="round"/><g fill="#c8960a" stroke="#6e4608" stroke-width=".8"><circle cx="24" cy="19" r="2.3"/><circle cx="24" cy="25" r="2.3"/><circle cx="24" cy="31" r="2.3"/><circle cx="38" cy="38" r="2"/></g></svg>';
+}
+
+function pkTubaSvg(flip) {   /* tuba emas: corong tinggi di sisi, lilitan besar di depan perut, 3 katup */
+  const pist = [18,24.5,31].map(x => '<rect x="'+(x-1.7)+'" y="53.5" width="3.4" height="10" rx="1.4" fill="#ffd24a" stroke="#8a5a0a" stroke-width=".9"/><circle cx="'+x+'" cy="52" r="2.2" fill="#d6dbe3" stroke="#7a808c" stroke-width=".8"/>').join('');
+  const loop = 'M7 56L11 63C0 73 6 91 22 92C40 95 54 86 52 74C51 68 47 64 42 62';
+  const coil = 'M18 74C17 82 26 85 34 83C42 81 44 75 40 71';
+  return '<svg viewBox="0 0 56 96" aria-hidden="true"'+(flip ? ' style="transform:scaleX(-1)"' : '')+'>'+
+    '<g stroke-linejoin="round" stroke-linecap="round" fill="none">'+
+    '<path d="'+loop+'" stroke="#8a5a0a" stroke-width="10.6"/><path d="'+loop+'" stroke="#f0bd2c" stroke-width="7.4"/>'+
+    '<path d="M11 70C8 80 14 87 24 88" stroke="#fff3a6" stroke-width="1.8" opacity=".7"/>'+
+    '<path d="'+coil+'" stroke="#8a5a0a" stroke-width="7"/><path d="'+coil+'" stroke="#e8b020" stroke-width="4.4"/>'+
+    '<path d="M10 63L38 64" stroke="#8a5a0a" stroke-width="8.2"/><path d="M10 63L38 64" stroke="#ffd24a" stroke-width="5.4"/>'+
+    '</g>'+pist+
+    '<path d="M37 64L31 16Q43 6 56 14L46 64Z" fill="#ffc933" stroke="#8a5a0a" stroke-width="1.3" stroke-linejoin="round"/>'+
+    '<path d="M35 60L32.5 24" stroke="#fff3a6" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>'+
+    '<ellipse cx="43.5" cy="11.5" rx="12.5" ry="4.4" fill="#ffe48a" stroke="#8a5a0a" stroke-width="1.3"/>'+
+    '<ellipse cx="43.5" cy="12" rx="9.2" ry="2.8" fill="#8a5410"/>'+
+    '<circle cx="6" cy="52" r="3.2" fill="#d6dbe3" stroke="#6c727d" stroke-width="1"/>'+
+    '</svg>';
+}
+
+/* popup volume naik (2,5 detik) berupa gelembung ucapan minion tepat di atas barisan band; dipanggil sebelum musik konser dimulai. */
+function pkVolumePopup() {
+  return new Promise(resolve => {
+    const el = document.createElement('div');
+    el.className = 'pk-vol'; el.setAttribute('aria-hidden','true');
+    el.innerHTML = '<div class="pk-vol-row"><svg viewBox="0 0 72 64"><path class="sp" d="M6 24h12l17-14v44L18 40H6z"/>'+
+      '<path class="w w1" d="M43 24a10 10 0 0 1 0 16"/><path class="w w2" d="M50 17a20 20 0 0 1 0 30"/><path class="w w3" d="M57 10a29 29 0 0 1 0 44"/></svg><span>volume up!</span></div>'+
+      '<div class="pk-vol-bar">'+Array.from({length:8},(_,i) => '<i style="--i:'+i+'"></i>').join('')+'</div>';
+    const st = $('bubuPeekStage'), W = window.innerWidth || 360;
+    if (st) {
+      const r = st.getBoundingClientRect();
+      el.style.left = Math.max(90,Math.min(W-90,r.left+r.width/2))+'px';
+      el.style.top = Math.max(96,r.bottom-72)+'px';   /* ujung ekor gelembung tepat di atas kepala / corong tuba */
+    } else { el.style.left = '50%'; el.style.top = '40%'; }
+    document.body.appendChild(el);
+    try { pkSfx.volUp(); } catch {}
+    setTimeout(() => { el.remove(); resolve(); },2500);
+  });
+}
+
+/* ===== Video dipaksa diputar saat animasi minion Beranda belum selesai: layar digulir sedikit ke bawah begitu konser minion mulai supaya tidak kepotong, lalu dikembalikan ===== */
+let pkForcedPlay = false, pkBandOn = false, pkOpenRun = false, pkScrollFrom = null, pkScrollTo = 0;
+function pkOpeningBusy() { return !!pkGiveEl || !!pkIdleIntro || pkOpenRun; }   /* animasi pembuka: papan pesan + konser pembuka sampai semua minion pergi (idle biasa tidak dihitung) */
+function pkScrollY() { return window.pageYOffset || document.documentElement.scrollTop || 0; }
+function pkBandScrollDown() {
+  if (!pkForcedPlay || pkScrollFrom !== null) return;
+  const stage = $('bubuPeekStage');
+  if (!stage || stage.hidden) return;
+  const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight || document.documentElement.clientHeight || 640;
+  const nav = document.querySelector('.bottom-nav');
+  let bottom = vh;
+  if (nav && nav.offsetParent !== null) { const nt = nav.getBoundingClientRect().top; if (nt > 0 && nt < bottom) bottom = nt; }   /* menu bawah menutupi layar */
+  const sy = pkScrollY();
+  const need = stage.getBoundingClientRect().bottom+96-bottom;   /* barisan band berdiri ±90px di bawah dasar stage */
+  const room = Math.max(0,document.documentElement.scrollHeight-vh-sy);
+  const d = Math.min(Math.ceil(need),room);
+  if (d < 6) return;
+  pkScrollFrom = sy; pkScrollTo = sy+d;
+  try { window.scrollTo({top:pkScrollTo,behavior:'smooth'}); } catch { window.scrollTo(0,pkScrollTo); }
+}
+function pkBandScrollBack() {
+  if (pkScrollFrom === null) return;
+  const from = pkScrollFrom, to = pkScrollTo, sy = pkScrollY();
+  pkScrollFrom = null;
+  if (sy < from-60 || sy > to+60) return;   /* pengguna sudah menggulir sendiri: jangan ditarik balik */
+  try { window.scrollTo({top:from,behavior:'smooth'}); } catch { window.scrollTo(0,from); }
+}
+
 /* ===== Kawanan minion: puluhan minion ikut pergi ke kanan BERSAMAAN dengan 3 minion konser, di garis jalan yang sama, dengan logika gerak yang sama
    (jalan = speed, lari = speed*1.9 miring 11°, atau kepeleset kulit pisang lalu bangun & lanjut jalan). Digambar di canvas (badan = sprite pra-render). ===== */
 function pkStampede(o) {
@@ -8859,7 +9133,7 @@ function pkStampede(o) {
     const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
     const ease = k => k*k*(3-2*k);
     const sr = stage.getBoundingClientRect();
-    const dpr = Math.min(2,window.devicePixelRatio || 1);
+    const dpr = Math.min(1.5,window.devicePixelRatio || 1);
     /* Jalur 3 minion asli (.wk-lane) menempel ke BAWAH stage: top = calc(100% - SH). Tinggi stage berubah (papan pesan 222px → 128px saat turun),
        jadi kanvas kawanan juga harus menempel ke bawah stage (bukan ke atas) supaya garis kaki selalu sama persis.
        Kaki minion asli = lane-top + SH + 78 (GROUND = SH+2, tinggi 76px); kanvas mulai di lane-top + SH - 60 = bawah-stage - 60 → BASE = 138 */
@@ -8867,10 +9141,10 @@ function pkStampede(o) {
     const cv = document.createElement('canvas');
     cv.width = Math.round(W*dpr); cv.height = Math.round(CH*dpr);
     cv.setAttribute('aria-hidden','true');
-    cv.style.cssText = `position:absolute;left:${-sr.left}px;top:calc(100% - 60px);width:${W}px;height:${CH}px;z-index:5;pointer-events:none`;   /* z 5: 3 minion asli (z 6) tetap di depan kawanan */
+    cv.style.cssText = `position:absolute;left:${-sr.left}px;top:calc(100% - 60px);width:${W}px;height:${CH}px;z-index:5;pointer-events:none;will-change:transform`;   /* z 5: 3 minion asli (z 6) tetap di depan kawanan */
     stage.appendChild(cv);
     if (o.onLane) o.onLane(cv);
-    const x = cv.getContext('2d');
+    const x = cv.getContext('2d',{desynchronized:true});
     const dark = document.body.classList.contains('dark-theme') || document.body.classList.contains('has-wallpaper');
     const DUST = dark ? [190,176,204] : [214,194,164];
     const GRIT = dark ? '210,196,220' : '120,98,78';
@@ -8956,20 +9230,28 @@ function pkStampede(o) {
         st:'go',tt:0,xb:rnd(W*.2,W*.45),lift:0,rot:0,sx:1,sy:1,vv:0,pa:0
       };
     });
+    /* satu minion KETINGGALAN: ikut lari paling belakang, kehabisan tenaga, sempoyongan lalu pingsan di tengah jalan */
+    const fm = {
+      kind:'run',faint:true,dy:0,y:BASE,u:SC,x:-48-rnd(0,10),t0:rnd(1.7,2.2),on:false,gone:false,
+      v:speed*1.9*rnd(.97,1.03),w:TAU/.27,lean:11*D2R,ph:rnd(0,TAU),p:rnd(0,TAU),step:0,spr:sprites[3],
+      st:'go',tt:0,xb:W*rnd(.5,.56),lift:0,rot:0,sx:1,sy:1,vv:0,pa:0,dir:1,ov:null,lying:false,wake:false
+    };
+    ms.push(fm);
     const tEnd = Math.max.apply(null,ms.map(m => m.t0+(W+90-m.x)/m.v+(m.kind === 'slip' ? 2.1 : 0)));
     if (o.sfx) { try { o.sfx(tEnd); } catch {} }
 
     /* --- partikel --- */
     const P = [], Gr = [];
+    let lowQ = false, slow = 0;   /* kualitas otomatis turun bila perangkat mulai berat */
     const puff = (px,py,u,q) => {
-      if (P.length > 480) return;
-      const size = (q.huge ? rnd(100,160) : q.big ? rnd(46,70) : rnd(22,40))*u;
+      if (P.length > (lowQ ? 70 : 170) || (lowQ && !q.big && Math.random() < .6)) return;
+      const size = (q.huge ? rnd(80,125) : q.big ? rnd(46,70) : rnd(22,40))*u;
       P.push({x:px,y:py,z:rnd(1,5)*u,vx:q.vx,vz:rnd(10,30)*u*(q.big ? .7 : 1),s0:size*.32,s1:size,
         life:rnd(.7,1.3)*(q.huge ? 1.6 : q.big ? 1.2 : 1),age:0,a:q.a*rnd(.75,1),spr:puffSprites[Math.floor(Math.random()*4)],
         rot:rnd(0,TAU),vr:rnd(-1,1),zo:q.huge ? -4 : q.big ? -1 : 2});
     };
     const grit = (px,py,m) => {
-      if (Gr.length > 140) return;
+      if (Gr.length > (lowQ ? 24 : 55)) return;
       Gr.push({x:px+rnd(-5,5),y:py,z:rnd(1,4),vx:-m.vv*rnd(.05,.4)+rnd(-30,30),vz:rnd(60,150),age:0,life:rnd(.45,.85),s:rnd(.8,1.9)*(.8+m.u*.4)});
     };
     const foot = m => {
@@ -9007,21 +9289,153 @@ function pkStampede(o) {
     const DAZE = [[0,1.32,.72,0],[.35,.98,1.05,7],[.65,1.04,.96,-7],[1,1,1,0]];
     const PEEL = [[0,14,0,0,1],[.7,-50,-90,-420,1],[1,-90,-20,-560,0]];
     const ARMUP = 125*D2R;
+    const FALL = [[0,8,0],[.5,-70,6],[.7,-102,15],[.85,-90,12],[1,-96,15]];   /* [offset, sudut°, tinggi×u] jatuh telentang */
+    const WAKE = [[0,-96,15],[.35,-70,12],[.7,10,0],[.85,-4,0],[1,0,0]];     /* bangun sambil linglung */
+
+    /* --- efek emoji kecil (💥 ✨ 😆) --- */
+    const FXL = [];
+    const popFx = (txt,px,py,vx,vy,life,sz) => { if (FXL.length < 28) FXL.push({txt,x:px,y:py,vx,vy,life,age:0,sz}); };
+    const updateFx = dt => {
+      for (let i = FXL.length-1; i >= 0; i--) {
+        const f = FXL[i]; f.age += dt;
+        if (f.age >= f.life) { FXL.splice(i,1); continue; }
+        f.x += f.vx*dt; f.y += f.vy*dt; f.vy += 40*dt;
+      }
+    };
+    const drawFx = f => {
+      const k = f.age/f.life;
+      x.save(); x.globalAlpha = Math.min(1,(1-k)*2.2);
+      x.font = `${Math.round(f.sz*(.7+.5*Math.min(1,k*3)))}px sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle';
+      x.fillText(f.txt,f.x,f.y); x.restore();
+    };
+
+    /* --- epilog: setelah SEMUA minion hilang, satu minion masuk dari kanan, melempar pisang ke minion yang pingsan, lalu lari ke kiri layar --- */
+    const tm = {
+      kind:'walk',gait:false,dy:0,y:BASE,u:SC,x:W+70,t0:0,on:false,gone:false,v:speed,w:TAU/.5,lean:5*D2R,ph:rnd(0,TAU),p:rnd(0,TAU),step:0,
+      spr:sprites[2],st:'idle',tt:0,lift:0,rot:0,sx:1,sy:1,vv:0,dir:-1,ov:null,stopX:0,thrown:false
+    };
+    const ban = {on:false,st:'fly',tt:0,x:0,y:0,sx:0,sy:0,tx:0,ty:0,rot:0,a:1,vx:0,vy:0,dur:.72};
+    let ep = 0, epWait = 0, clearDone = false, clearHooked = false;   /* ep: 0 = menunggu semua pergi, 1 = pelempar beraksi, 2 = selesai */
+
+    const releaseBanana = () => {
+      const u = tm.u;
+      ban.on = true; ban.st = 'fly'; ban.tt = 0; ban.a = 1;
+      ban.sx = tm.x+tm.dir*31*u; ban.sy = tm.y-37*u;
+      ban.tx = fm.x-38*fm.u; ban.ty = fm.y-31*fm.u;   /* perut minion yang sedang telentang */
+      ban.x = ban.sx; ban.y = ban.sy;
+      try { pkSfx.bananaThrow(); } catch {}
+    };
+    const hitBanana = () => {
+      ban.st = 'stuck'; ban.tt = 0; ban.x = ban.tx; ban.y = ban.ty; ban.rot = .5;
+      fm.hitT = 0;
+      try { pkSfx.plop(); } catch {}
+      for (let k = 0; k < 4; k++) puff(ban.tx+rnd(-18,18),fm.y,fm.u,{vx:rnd(-40,40),a:.5,big:k%2 === 0});
+      popFx('💥',ban.tx,ban.ty-12,0,-26,.7,26);
+      ['✨','⭐','✨'].forEach((tx,i) => popFx(tx,ban.tx+(i-1)*20,ban.ty-8,(i-1)*50,-70,.9,15));
+    };
+    const updateEp = dt => {
+      if (!clearHooked) {   /* tunggu 8 pemain band selesai pergi (lazy: promise-nya baru dibuat tepat setelah kawanan dimulai) */
+        clearHooked = true;
+        try { Promise.resolve(o.clear ? o.clear() : null).then(() => { clearDone = true; },() => { clearDone = true; }); } catch { clearDone = true; }
+      }
+      /* pisang */
+      if (ban.on) {
+        ban.tt += dt;
+        if (ban.st === 'fly') {
+          const p = Math.min(1,ban.tt/ban.dur);
+          ban.x = ban.sx+(ban.tx-ban.sx)*p;
+          ban.y = ban.sy+(ban.ty-ban.sy)*p-4*58*p*(1-p);
+          ban.rot = -p*TAU*3.5;
+          if (p >= 1) hitBanana();
+        } else if (ban.st === 'stuck') {
+          if (fm.st !== 'out') { ban.st = 'drop'; ban.tt = 0; ban.vx = 46; ban.vy = -190; }
+        } else if (ban.st === 'drop') {
+          ban.x += ban.vx*dt; ban.y += ban.vy*dt; ban.vy += 560*dt; ban.rot += 7*dt; ban.a = Math.max(0,ban.a-dt*1.5);
+          if (ban.a <= 0) ban.on = false;
+        }
+      }
+      if (ep === 0) {
+        if (fm.st === 'out' && clearDone && ms.every(m => m.gone || m === fm)) {
+          epWait += dt;
+          if (epWait > .9) {
+            ep = 1; tm.on = true; tm.st = 'in'; tm.tt = 0; tm.gait = true; tm.kind = 'walk';
+            tm.stopX = Math.min(W-60,fm.x+112*fm.u);
+          }
+        }
+        return;
+      }
+      if (ep !== 1) return;
+      if (fm.st === 'out' && !fm.wake && (tm.gone || (tm.st === 'flee' && tm.x < fm.x-150*fm.u))) fm.wake = true;
+      if (tm.gone) return;
+      tm.tt += dt;
+      if (tm.st === 'in') {   /* berjalan masuk dari kanan (menghadap kiri) */
+        tm.x -= tm.v*dt; tm.ph += tm.w*dt; tm.vv = -tm.v;
+        const sn = Math.sin(tm.ph);
+        tm.lift = Math.abs(sn)*3; tm.rot = tm.lean+sn*.052; tm.sx = tm.sy = 1; tm.ov = null;
+        const k = Math.floor(tm.ph/Math.PI);
+        if (k !== tm.step) { tm.step = k; if (tm.x < W+10 && Math.random() < .34) foot(tm); }
+        if (tm.x <= tm.stopX) { tm.st = 'aim'; tm.tt = 0; tm.gait = false; tm.lift = 0; tm.rot = 0; }
+      } else if (tm.st === 'aim') {   /* ancang-ancang: lengan depan ditarik ke belakang, badan condong */
+        const f = ease(Math.min(1,tm.tt/.32));
+        tm.ov = [0,150*D2R*f,0,0]; tm.rot = -.12*f; tm.sx = 1+.06*f; tm.sy = 1-.05*f; tm.lift = 0;
+        if (tm.tt >= .32) { tm.st = 'throw'; tm.tt = 0; tm.thrown = false; }
+      } else if (tm.st === 'throw') {   /* lempar! */
+        const p = Math.min(1,tm.tt/.16), f = ease(p);
+        tm.ov = [-.4*f,(150-250*f)*D2R,0,0]; tm.rot = -.12+.3*f; tm.sx = 1.05-.1*f; tm.sy = .95+.1*f;
+        if (!tm.thrown && p >= .8) { tm.thrown = true; releaseBanana(); }
+        if (p >= 1) { tm.st = 'after'; tm.tt = 0; popFx('😆',tm.x+tm.dir*6,tm.y-86*tm.u,tm.dir*14,-34,.9,22); }
+      } else if (tm.st === 'after') {   /* puas sebentar, lalu kabur */
+        const f = ease(Math.min(1,tm.tt/.3));
+        tm.ov = [0,(-100+100*f)*D2R,0,0]; tm.rot = .3*(1-f); tm.sx = tm.sy = 1;
+        if (tm.tt >= .55) {
+          tm.st = 'flee'; tm.tt = 0; tm.gait = true; tm.kind = 'run'; tm.v = speed*1.9; tm.w = TAU/.27; tm.lean = 11*D2R; tm.ov = null; tm.ph = 0; tm.step = 0;
+          dust1(tm);
+        }
+      } else if (tm.st === 'flee') {   /* lari ke kiri layar, melompati badan minion yang pingsan */
+        tm.x -= tm.v*dt; tm.ph += tm.w*dt; tm.vv = -tm.v;
+        const sn = Math.sin(tm.ph);
+        tm.lift = Math.abs(sn)*3; tm.rot = tm.lean+sn*.052;
+        const hx = (tm.x-(fm.x-96*fm.u))/(132*fm.u);
+        if (hx > 0 && hx < 1) tm.lift += 30*Math.sin(hx*Math.PI);
+        const k = Math.floor(tm.ph/Math.PI);
+        if (k !== tm.step) { tm.step = k; if (tm.x > -30 && tm.x < W+30 && Math.random() < .62) foot(tm); }
+        if (tm.x < -70) { tm.gone = true; ep = 2; }
+      }
+    };
+    const dust1 = m => { for (let k = 0; k < 3; k++) puff(m.x+rnd(0,16),m.y,m.u,{vx:rnd(10,60),a:.5,big:k === 1}); };
+    const drawBan = () => {
+      if (!ban.on) return;
+      x.save(); x.globalAlpha = ban.a; x.translate(ban.x,ban.y); x.rotate(ban.rot);
+      x.font = '24px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('🍌',0,0);
+      x.restore();
+    };
+    const drawZzz = m => {   /* bintang berputar + 💤 di atas kepala minion yang pingsan */
+      const u = m.u, hx = m.x-62*u, hy = m.y-24*u;
+      x.save(); x.textAlign = 'center'; x.textBaseline = 'middle';
+      x.font = `${Math.round(12*u)}px sans-serif`;
+      for (let k = 0; k < 3; k++) { const a = m.tt*4+k*TAU/3; x.fillText(k === 1 ? '⭐' : '💫',hx+Math.cos(a)*16*u,hy-18*u+Math.sin(a)*4.5*u); }
+      const z = (m.tt*.9)%1;
+      x.globalAlpha = 1-z; x.font = `${Math.round((12+z*6)*u)}px sans-serif`;
+      x.fillText('💤',hx+12*u+z*8*u,hy-30*u-z*22*u);
+      x.restore();
+    };
 
     const drawMinion = m => {
       const u = m.u, s = Math.sin(m.ph);
       x.save();
       x.translate(m.x,m.y-m.lift);
+      if (m.dir < 0) x.scale(-1,1);   /* menghadap kiri */
       x.rotate(m.rot);
       x.scale(u*m.sx,u*m.sy);
       let la = 0, ra = 0, ll = 0, rl = 0, aL = 0, aR = 0;
-      if (m.st === 'go') {
+      if (m.st === 'go' || m.gait) {
         const run = m.kind === 'run', A = run ? .55 : .42, B = run ? .55 : .31;
         la = s*A; ra = -s*A; ll = Math.max(0,Math.cos(m.ph))*(run ? 3 : 2); rl = Math.max(0,-Math.cos(m.ph))*(run ? 3 : 2);
         aL = -s*B; aR = s*B;
       } else if (m.st === 'arm') { aL = ARMUP; aR = -ARMUP; }
       else if (m.st === 'flip') { la = .5; ra = -.4; ll = 3; rl = 2; aL = ARMUP; aR = -ARMUP; }
       else if (m.st === 'up') { aL = ARMUP; aR = -ARMUP; la = .3; ra = -.3; }
+      if (m.ov) { aL = m.ov[0]; aR = m.ov[1]; la = m.ov[2]; ra = m.ov[3]; }
       leg(-6,la,ll); leg(6,ra,rl);
       arm(-16,-1,aL); arm(16,1,aR);
       x.drawImage(m.spr,-22,-70,44,70);
@@ -9058,8 +9472,44 @@ function pkStampede(o) {
           const k = Math.floor(m.ph/Math.PI);
           if (k !== m.step) { m.step = k; if (m.x > -30 && m.x < W+30 && Math.random() < (m.kind === 'run' ? .62 : .34)) foot(m); }
           if (m.kind === 'slip' && m.x >= m.xb-10) { m.st = 'arm'; m.tt = 0; m.x = m.xb-10; m.lift = 0; m.rot = 5*D2R; }
+          if (m.faint && m.x >= m.xb) { m.st = 'stag'; m.tt = 0; m.lift = 0; }
+          if (fm.lying && m !== fm) {   /* minion lain melompati badan yang tergeletak */
+            const hx = (m.x-(fm.x-96*fm.u))/(132*fm.u);
+            if (hx > 0 && hx < 1) m.lift += 30*Math.sin(hx*Math.PI);
+          }
         } else {
           m.tt += dt;
+          if (m.st === 'stag') {   /* kehabisan tenaga: melambat, sempoyongan */
+            const p = Math.min(1,m.tt/.9);
+            m.x += m.v*.35*(1-p)*dt; m.lift = 0;
+            m.rot = (.1+.2*p)*Math.sin(m.tt*11)+p*.12; m.sx = 1+.03*Math.sin(m.tt*11); m.sy = 1-.07*p;
+            m.ov = [Math.sin(m.tt*9)*1.2+.4,-Math.sin(m.tt*9+1)*1.2-.4,Math.sin(m.tt*11)*.5,-Math.sin(m.tt*11)*.5];
+            if (m.tt >= .9) { m.st = 'fall'; m.tt = 0; }
+          } else if (m.st === 'fall') {   /* tumbang ke belakang */
+            const f = kf(FALL,Math.min(1,m.tt/.62));
+            m.rot = f[1]*D2R; m.lift = f[2]*m.u; m.sx = m.sy = 1; m.ov = [1.9,-1.5,.3,-.25];
+            if (m.tt >= .62) {
+              m.st = 'out'; m.tt = 0; m.lying = true; m.hitT = 99;
+              for (let k = 0; k < 5; k++) puff(m.x-k*15*m.u,m.y,m.u,{vx:(k-2)*26+rnd(-8,8),a:.6,big:k%2 === 0});
+              for (let i = 0; i < 8; i++) grit(m.x-rnd(0,60),m.y,m);
+              popFx('💫',m.x-60*m.u,m.y-70*m.u,0,-24,1,18);
+              try { pkSfx.thud(.32); pkSfx.dizzy(); } catch {}
+            }
+          } else if (m.st === 'out') {   /* tergeletak pingsan (bergetar sebentar kalau kena pisang) */
+            m.hitT += dt;
+            const j = Math.exp(-m.hitT*5)*Math.sin(m.hitT*34);
+            m.rot = -96*D2R+j*.16; m.lift = 15*m.u+Math.max(0,j)*5; m.sx = 1; m.sy = 1-.08*Math.exp(-m.hitT*7);
+            m.ov = [1.8+j*.4,-1.4-j*.4,.25,-.2];
+            if (m.wake) { m.st = 'wake'; m.tt = 0; }
+          } else if (m.st === 'wake') {   /* siuman linglung, lalu berjalan pergi ke kanan */
+            const f = kf(WAKE,Math.min(1,m.tt/.8));
+            m.rot = f[1]*D2R; m.lift = f[2]*m.u; m.sx = m.sy = 1; m.ov = [1.2,-1.0,.15,-.1];
+            if (m.tt > .12) m.lying = false;
+            if (m.tt >= .8) {
+              m.st = 'go'; m.kind = 'walk'; m.faint = false; m.lying = false; m.ov = null;
+              m.v = speed; m.w = TAU/.5; m.lean = 5*D2R; m.ph = 0; m.step = 0; m.tt = 0; m.rot = 0; m.lift = 0;
+            }
+          }
           if (m.st === 'arm') { if (m.tt >= .18) { m.st = 'flip'; m.tt = 0; } }
           if (m.st === 'flip') {
             const f = kf(FLIP,Math.min(1,m.tt/.9));
@@ -9076,9 +9526,10 @@ function pkStampede(o) {
           }
         }
       }
+      updateEp(dt); updateFx(dt);
       hz -= dt;
       if (hz <= 0) {   /* kabut debu besar di belakang kawanan */
-        hz = rnd(.05,.09);
+        hz = rnd(.09,.15);
         const vis = ms.filter(m => m.on && !m.gone && m.x > 10 && m.x < W-10);
         if (vis.length) { const m = vis[Math.floor(Math.random()*vis.length)]; puff(m.x-26*m.u+rnd(-14,14),m.y+rnd(-4,4),m.u,{vx:rnd(-30,-6),a:.2,big:true,huge:true}); }
       }
@@ -9106,15 +9557,29 @@ function pkStampede(o) {
         if (!m.on || m.gone) continue;
         if (m.kind === 'slip' && m.st !== 'daze' && m.st !== 'up' && !(m.st === 'go' && m.xb < m.x)) items.push({k:m.y-5,pe:m});
         if (m.x < -60) continue;
-        x.fillStyle = `rgba(40,16,40,${(.26*(1-Math.min(1,m.lift/40))).toFixed(3)})`;
-        x.beginPath(); x.ellipse(m.x+3*m.u,m.y-3,Math.max(4,15-m.lift*.1)*m.u*m.sx,4*m.u,0,0,TAU); x.fill();
+        if (m.lying) {
+          x.fillStyle = 'rgba(40,16,40,.26)';
+          x.beginPath(); x.ellipse(m.x-36*m.u,m.y-3,38*m.u,5*m.u,0,0,TAU); x.fill();
+        } else {
+          x.fillStyle = `rgba(40,16,40,${(.26*(1-Math.min(1,m.lift/40))).toFixed(3)})`;
+          x.beginPath(); x.ellipse(m.x+3*m.u,m.y-3,Math.max(4,15-m.lift*.1)*m.u*m.sx,4*m.u,0,0,TAU); x.fill();
+        }
         items.push({k:m.y,m});
       }
+      if (tm.on && !tm.gone) {
+        x.fillStyle = `rgba(40,16,40,${(.26*(1-Math.min(1,tm.lift/40))).toFixed(3)})`;
+        x.beginPath(); x.ellipse(tm.x-3*tm.u,tm.y-3,Math.max(4,15-tm.lift*.1)*tm.u,4*tm.u,0,0,TAU); x.fill();
+        items.push({k:tm.y,m:tm});
+      }
+      if (ban.on) items.push({k:ban.st === 'fly' ? 9998 : fm.y+2,ba:1});
+      for (const f of FXL) items.push({k:9999,fx:f});
       for (const p of P) items.push({k:p.y+p.zo,p});
       for (const g of Gr) items.push({k:g.y+1,g});
       items.sort((a,b) => a.k-b.k);
       for (const it of items) {
-        if (it.m) { drawMinion(it.m); continue; }
+        if (it.m) { drawMinion(it.m); if (it.m.lying) drawZzz(it.m); continue; }
+        if (it.ba) { drawBan(); continue; }
+        if (it.fx) { drawFx(it.fx); continue; }
         if (it.pe) { drawPeel(it.pe); continue; }
         if (it.p) {
           const p = it.p, f = p.age/p.life;
@@ -9135,8 +9600,10 @@ function pkStampede(o) {
     const frame = now => {
       if (!alive()) { finish(); return; }
       const dt = Math.min(.05,Math.max(0,(now-last)/1000)); last = now;
+      slow = Math.max(0,Math.min(12,slow+(dt > .025 ? 1 : -.5)));
+      if (slow > 5) lowQ = true; else if (slow < 1) lowQ = false;
       update(dt); draw();
-      if ((ms.every(m => m.gone) && !P.length && !Gr.length) || t > tEnd+3) { finish(); return; }
+      if ((ms.every(m => m.gone) && ep === 2 && !ban.on && !FXL.length && !P.length && !Gr.length) || t > tEnd+75) { finish(); return; }
       requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
@@ -9160,6 +9627,7 @@ function pkIdleStop() {
   pkIdleToken++;
   const lanes = pkIdleLanes;
   pkIdleLanes = []; pkIdleEl = null; pkIdleAnims = []; pkIdleRunning = false;
+  pkBandOn = false; pkOpenRun = false; pkBandScrollBack();
   pkIdleNextAt = Date.now()+PK_IDLE_GAP;
   lanes.forEach(el => { el.style.transition = 'opacity .2s ease'; el.style.opacity = '0'; setTimeout(() => el.remove(),240); });
   pkIdleShowReal(false);
@@ -9167,7 +9635,7 @@ function pkIdleStop() {
 }
 
 /* Idle: tiap PK_IDLE_GAP, 1 minion BARU muncul dari balik tombol cookie → lompat ke bawah → gestur acak ke layar (tanpa teks) → jalan ke kanan.
-   Setelah 3x idle 1 minion, giliran idle 3 minion: ketiga minion turun, main band (2 trompet + snare drum) dengan musik, lalu masing-masing gestur berbeda. Lalu siklus mulai lagi. */
+   Setelah 3x idle 1 minion, giliran idle 3 minion: ketiga minion turun, main band (2 trompet + snare drum + saksofon + klarinet, dengan 3 tuba di barisan belakang), lalu masing-masing gestur berbeda. Konser pertama: setelah semua berbaris → popup volume 2,5 detik → musik. Lalu siklus mulai lagi. */
 async function pkIdleRun() {
   pkIdleRunning = true;
   pkIdleSkipWait = false;
@@ -9187,8 +9655,20 @@ async function pkIdleRun() {
   const side = Math.random() < .5 ? -1 : 1;
   let ready = 0;
   const withMusic = triple && pkBandMusic;   /* musik + sfx hanya di konser pertama */
+  pkOpenRun = withMusic;
+  let goP = null;   /* popup volume 2,5 detik dipakai bersama semua pemain; musik baru mulai setelah popup selesai */
+  const bandGo = () => goP || (goP = pkVolumePopup());
+  const SP = Math.max(58,Math.min(68,(W-60)/4.3));   /* jarak antar pemain band */
+  const BACK = 26;   /* barisan belakang (3 tuba) berdiri lebih tinggi & di belakang barisan depan */
+  const mkP = () => ({eyes:pick([1,2]),mouth:pick(['grin','smile','hum']),hair:pick([1,3,4,5]),wave:''});
   const plans = triple
-    ? [0,1,2].map(i => ({P:PK_MINIONS[i],real:real[i],kind:kinds[i],role:['trumpetL','snare','trumpetR'][i],music:withMusic,X1:clampX(cx+(i-1)*76-24),delay:[320,160,0][i]}))
+    ? [
+        {P:mkP(),real:null,side:-1,quick:true,kind:kinds[3],role:'sax',music:withMusic,X1:clampX(cx-2*SP-24),delay:200},
+        {P:PK_MINIONS[0],real:real[0],kind:kinds[0],role:'trumpetL',music:withMusic,X1:clampX(cx-SP-24),delay:320},
+        {P:PK_MINIONS[1],real:real[1],kind:kinds[1],role:'snare',music:withMusic,X1:clampX(cx-24),delay:160},
+        {P:PK_MINIONS[2],real:real[2],kind:kinds[2],role:'trumpetR',music:withMusic,X1:clampX(cx+SP-24),delay:0},
+        {P:mkP(),real:null,side:1,quick:true,kind:kinds[4],role:'clar',music:withMusic,X1:clampX(cx+2*SP-24),delay:100}
+      ].concat([-1.5,0,1.5].map((o,i) => ({P:mkP(),real:null,side:[-1,1,-1][i],quick:true,back:true,dir:i === 0 ? -1 : 1,kind:pick(kinds),role:'tuba',music:withMusic,X1:clampX(cx+o*SP-24),delay:[60,240,400][i]})))
     : [{P:{eyes:pick([1,2]),mouth:pick(['grin','smile','hum']),hair:pick([1,3,4,5]),wave:''},real:null,kind:kinds[0],X1:clampX(cx+side*54-24),delay:0,side}];
 
   const tf = (x,y,r,sx,sy) => `translate(${x}px,${y}px) rotate(${r}deg) scale(${sx},${sy})`;
@@ -9284,7 +9764,7 @@ async function pkIdleRun() {
   const mkActor = plan => {
     const lane = document.createElement('div');
     lane.className = 'wk-lane';
-    lane.style.cssText = `left:${-sr.left}px;width:${W}px;top:calc(100% - ${SH}px);height:${GROUND+80}px;z-index:1`;   /* z 1 = di belakang tombol */
+    lane.style.cssText = `left:${-sr.left}px;width:${W}px;top:calc(100% - ${SH+(plan.back ? BACK : 0)}px);height:${GROUND+80}px;z-index:1`;   /* z 1 = di belakang tombol; barisan belakang (tuba) digeser naik BACK px */
     const sh = document.createElement('i'); sh.className = 'wk-sh';
     const wk = document.createElement('div');
     wk.className = 'wk'; wk.style.transformOrigin = '50% 100%';
@@ -9317,17 +9797,19 @@ async function pkIdleRun() {
   };
   const eachArm = (a,f) => { f(a.armL,1); f(a.armR,-1); };
 
-  /* ===== band mini: 2 trompet + 1 snare drum (idle 3 minion) ===== */
-  const BEAT = 60000/PK_BAND_BPM, BAND_BEATS = 17.5;
-  const NOTE_BEATS = PK_BAND_NOTES.map(n => n[0]);
+  /* ===== band mini: saxophone, 2 trompet, snare drum, klarinet (idle 5 minion) ===== */
+  const BEAT = 60000/PK_BAND_BPM, BAND_BEATS = PK_BAND_END+1.5;
   const setProp = (a,svg,w,h,left,top) => {
     a.prop.innerHTML = svg;
     Object.assign(a.prop.style,{width:w+'px',height:h+'px',left:left+'px',top:top+'px',margin:`${-h/2}px 0 0 ${-w/2}px`});
   };
   const perform = async (a,plan) => {
-    const role = plan.role, snare = role === 'snare', dir = role === 'trumpetL' ? -1 : 1, X1 = plan.X1;
+    const role = plan.role, snare = role === 'snare', tuba = role === 'tuba', dir = plan.dir || ((role === 'trumpetL' || role === 'sax') ? -1 : 1), X1 = plan.X1;
     const at = (b,fn) => setTimeout(() => { if (alive()) fn(); },b*BEAT);
-    if (snare) { if (plan.music) { pkIdleBand = true; pkBandMusic = false; try { pkSfx.band(); } catch {} } setProp(a,PK_SNARE_SVG,46,26,24,67); }
+    if (snare) { pkBandOn = true; pkBandScrollDown(); if (plan.music) { pkIdleBand = true; pkBandMusic = false; try { pkSfx.band(); } catch {} } setProp(a,PK_SNARE_SVG,46,26,24,67); }
+    else if (tuba) setProp(a,pkTubaSvg(dir < 0),44,75,24+dir*14,37);
+    else if (role === 'sax') setProp(a,pkSaxSvg(dir < 0),40,29,24+dir*19,47);
+    else if (role === 'clar') setProp(a,pkClarSvg(dir < 0),48,24,24+dir*22,44);
     else setProp(a,pkTrumpetSvg(dir < 0),46,23,24+dir*21,43);
     an(a,a.prop,[{transform:'scale(.2)',opacity:0},{transform:'scale(1.15)',opacity:1,offset:.7},{transform:'scale(1)',opacity:1}],{duration:300,easing:'ease-out'});
     /* seluruh badan bergoyang mengikuti ketukan */
@@ -9337,20 +9819,26 @@ async function pkIdleRun() {
       an(a,a.armL,hit(-1),{duration:BEAT,iterations:Math.ceil(BAND_BEATS),easing:'ease-out'});
       an(a,a.armR,hit(1),{duration:BEAT,delay:BEAT/2,fill:'both',iterations:Math.ceil(BAND_BEATS),easing:'ease-out'});
       at(.7,() => an(a,a.prop,[{transform:'scale(1.05)'},{transform:'scale(1)'}],{duration:BEAT/2,iterations:Math.ceil(BAND_BEATS*2)-2,easing:'ease-out'}));
-      at(15,() => {   /* roll snare: tangan menabuh cepat */
+      at(PK_BAND_END-1,() => {   /* roll snare: tangan menabuh cepat */
         const r = s => [{transform:`rotate(${s*24}deg)`},{transform:`rotate(${s*46}deg)`},{transform:`rotate(${s*24}deg)`}];
         an(a,a.armL,r(-1),{duration:BEAT/3,iterations:4,easing:'linear'});
         an(a,a.armR,r(1),{duration:BEAT/3,delay:BEAT/6,fill:'both',iterations:4,easing:'linear'});
       });
+    } else if (tuba) {   /* tuba dipeluk dua tangan, badan tuba mengangguk tiap ketukan, corong diangkat di akhir */
+      an(a,a.armL,[{transform:'rotate(0deg)'},{transform:'rotate(38deg)'}],{duration:260,easing:'cubic-bezier(.3,1.4,.5,1)'});
+      an(a,a.armR,[{transform:'rotate(0deg)'},{transform:'rotate(-38deg)'}],{duration:260,easing:'cubic-bezier(.3,1.4,.5,1)'});
+      at(1,() => an(a,a.prop,[{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(-3px) rotate(${dir*-5}deg)`,offset:.5},{transform:'translateY(0) rotate(0deg)'}],{duration:BEAT,iterations:PK_BAND_END-2,easing:'ease-in-out'}));
+      PK_BAND_PARTS.tuba.forEach((n,k) => { if (k%6 === 0) at(n[0],() => fx(a,['♩','♪','🎵'][(k/6)%3|0],dir*18,-52,1.3,950,24+dir*30,6)); });
+      at(PK_BAND_END,() => an(a,a.prop,[{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(-6px) rotate(${dir*-14}deg)`}],{duration:200}));
     } else {
       const arm = dir > 0 ? a.armR : a.armL;
       an(a,arm,[{transform:'rotate(0deg)'},{transform:`rotate(${dir*-88}deg)`}],{duration:260,easing:'cubic-bezier(.3,1.4,.5,1)'});
-      at(2,() => an(a,a.prop,[{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(-2px) rotate(${dir*-6}deg)`,offset:.5},{transform:'translateY(0) rotate(0deg)'}],{duration:BEAT,iterations:14,easing:'ease-in-out'}));
-      NOTE_BEATS.forEach((b,k) => { if (k%2 === (dir > 0 ? 1 : 0)) at(b,() => fx(a,['♪','♫','🎵','🎶'][k%4],dir*20,-48,1.35,950,24+dir*36,28)); });
-      at(16,() => an(a,a.prop,[{transform:'rotate(0deg)'},{transform:`translateY(-3px) rotate(${dir*-26}deg)`}],{duration:200}));
+      at(2,() => an(a,a.prop,[{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(-2px) rotate(${dir*-6}deg)`,offset:.5},{transform:'translateY(0) rotate(0deg)'}],{duration:BEAT,iterations:PK_BAND_END-3,easing:'ease-in-out'}));
+      (PK_BAND_PARTS[role] || []).forEach((n,k) => { if (n[2] >= .5 ? k%2 === 0 : k%3 === 0) at(n[0],() => fx(a,['♪','♫','🎵','🎶'][k%4],dir*20,-48,1.35,950,24+dir*36,28)); });
+      at(PK_BAND_END,() => an(a,a.prop,[{transform:'rotate(0deg)'},{transform:`translateY(-3px) rotate(${dir*-26}deg)`}],{duration:200}));
     }
     /* akhir megah: melompat gembira + konfeti */
-    at(16,() => {
+    at(PK_BAND_END,() => {
       mv(a,[{x:X1,y:GROUND+3,sx:1.22,sy:1.2,sh:1.25},{x:X1,y:GROUND-12,sx:1.12,sy:1.34,sh:.9,e:'ease-out'},{x:X1,y:GROUND+3,sx:1.3,sy:1.1,sh:1.25,e:'ease-in'},{x:X1,y:GROUND+3,sx:1.22,sy:1.2,sh:1.25}],620);
       ['🎉','🎊','✨'].forEach((t,k) => fx(a,t,(k-1)*34,-58-k*6,1.4,1100,24+(k-1)*10,8));
     });
@@ -9363,7 +9851,7 @@ async function pkIdleRun() {
   /* tahap 1: muncul di tombol → lompat ke bawah → mendarat → gestur */
   const stageOne = async plan => {
     if (plan.delay) { if (!await sleep(plan.delay)) return null; }
-    const a = mkActor(plan), P = plan.P;
+    const a = mkActor(plan), P = plan.P, yo = plan.back ? BACK : 0;   /* yo: barisan belakang berdiri lebih tinggi, jalur intip & lompat ikut digeser */
     let X0, Y0, sc, rot;
     if (plan.real) {   /* 3 minion asli diganti tiruannya di posisi yang sama */
       sc = P.s*.92; X0 = cx+P.x-24; Y0 = (SH-17+P.oy)-76; rot = P.or;
@@ -9371,15 +9859,15 @@ async function pkIdleRun() {
       plan.real.dataset.wkHid = '1'; plan.real.style.transition = 'none'; plan.real.style.opacity = '0';
       if (!await sleep(80)) return null;
     } else {           /* minion baru: intip dari balik tombol → celingak-celinguk → muncul → lompat senang */
-      sc = 1; rot = 0; X0 = cx+plan.side*30-24; Y0 = 2;
-      a.wk.style.opacity = '0'; a.wk.style.transform = tf(X0,28,0,.55,.55);
-      const h = 24, hs = .8;
-      if (!await mv(a,[{x:X0,y:28,sx:.55,sy:.55,op:0},{x:X0,y:h,sx:hs,sy:hs,op:1,e:'cubic-bezier(.2,.9,.3,1.2)'}],380)) return null;
+      sc = 1; rot = 0; X0 = cx+plan.side*30-24; Y0 = 2+yo;
+      a.wk.style.opacity = '0'; a.wk.style.transform = tf(X0,28+yo,0,.55,.55);
+      const h = 24+yo, hs = .8;
+      if (!await mv(a,[{x:X0,y:28+yo,sx:.55,sy:.55,op:0},{x:X0,y:h,sx:hs,sy:hs,op:1,e:'cubic-bezier(.2,.9,.3,1.2)'}],380)) return null;
       if (!alive()) return null;
-      if (!await mv(a,[{x:X0,y:h,sx:hs,sy:hs},{x:X0-5,y:h,r:-10,sx:hs,sy:hs},{x:X0-5,y:h,r:-10,sx:hs,sy:hs,o:.4},{x:X0+5,y:h,r:10,sx:hs,sy:hs,o:.75},{x:X0,y:h,r:0,sx:hs,sy:hs}],1000)) return null;
+      if (!await mv(a,[{x:X0,y:h,sx:hs,sy:hs},{x:X0-5,y:h,r:-10,sx:hs,sy:hs},{x:X0-5,y:h,r:-10,sx:hs,sy:hs,o:.4},{x:X0+5,y:h,r:10,sx:hs,sy:hs,o:.75},{x:X0,y:h,r:0,sx:hs,sy:hs}],plan.quick ? 420 : 1000)) return null;
       if (!alive()) return null;
       eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*-48}deg)`},{transform:`rotate(${d*-14}deg)`},{transform:`rotate(${d*-48}deg)`},{transform:'rotate(0deg)'}],{duration:620,easing:'ease-in-out'}));
-      if (!await mv(a,[{x:X0,y:h,sx:hs,sy:hs},{x:X0,y:-9,sx:.93,sy:1.15,e:'ease-out'},{x:X0,y:Y0+2,sx:1.08,sy:.9},{x:X0,y:Y0-4,sx:.98,sy:1.04},{x:X0,y:Y0,sx:1,sy:1}],620)) return null;
+      if (!await mv(a,[{x:X0,y:h,sx:hs,sy:hs},{x:X0,y:-9+yo,sx:.93,sy:1.15,e:'ease-out'},{x:X0,y:Y0+2,sx:1.08,sy:.9},{x:X0,y:Y0-4,sx:.98,sy:1.04},{x:X0,y:Y0,sx:1,sy:1}],620)) return null;
       if (!alive()) return null;
       if (!await sleep(220)) return null;
     }
@@ -9387,7 +9875,7 @@ async function pkIdleRun() {
     eachArm(a,(el,d) => an(a,el,[{transform:'rotate(0deg)'},{transform:`rotate(${d*14}deg)`}],{duration:230}));
     if (!await mv(a,[{x:X0,y:Y0,r:rot,sx:sc,sy:sc},{x:X0,y:Y0+7,r:0,sx:sc*1.12,sy:sc*.8}],230,'ease-out')) return null;
     /* lompat: lengan terangkat, melambung, jatuh di depan tombol */
-    a.lane.style.zIndex = '6';
+    a.lane.style.zIndex = plan.back ? '6' : '7';   /* barisan belakang (6) di bawah barisan depan (7) */
     const X1 = plan.X1;
     eachArm(a,(el,d) => an(a,el,[{transform:`rotate(${d*14}deg)`},{transform:`rotate(${d*-150}deg)`}],{duration:240,easing:'cubic-bezier(.2,.9,.3,1.2)'}));
     if (!await mv(a,[
@@ -9406,6 +9894,7 @@ async function pkIdleRun() {
       ready++;
       while (alive() && ready < plans.length) await pkSleep(40);
       if (!alive()) return null;
+      if (withMusic) { await bandGo(); if (!alive()) return null; }   /* semua sudah berbaris rapi → popup volume 2,5 detik → musik mulai */
       await perform(a,plan);
       if (!alive()) return null;
     }
@@ -9561,20 +10050,23 @@ async function pkIdleRun() {
     let single = pick(styles);
     if (!triple) { while (single === pkIdleLastStyle) single = pick(styles); pkIdleLastStyle = single; }
     /* konser pembuka: puluhan minion ikut berangkat ke kanan BERSAMAAN dengan 3 minion, di garis jalan yang sama */
-    let herd = null;
+    let herd = null, exitsP = null;
     if (withMusic) {
       pkIdleBand = true;   /* supaya suara kawanan ikut berhenti bila idle dihentikan */
-      herd = pkStampede({stage,W,SH,alive,speed,onLane:el => pkIdleLanes.push(el),sfx:d => pkSfx.stampede(d)});
+      herd = pkStampede({stage,W,SH,alive,speed,onLane:el => pkIdleLanes.push(el),sfx:d => pkSfx.stampede(d),clear:() => exitsP});
     }
-    await Promise.all(actors.map(async (a,k) => {
+    exitsP = Promise.all(actors.map(async (a,k) => {
       if (k) { if (!await sleep(k*260)) return; }
       await exitOne(a,triple ? pick(styles) : single);
-    }).concat(herd ? [herd] : []));
+    }));
+    await Promise.all([exitsP].concat(herd ? [herd] : []));
     if (withMusic) pkIdleBand = false;
     if (!alive()) return;
     pkIdleLanes = []; pkIdleEl = null; pkIdleAnims = [];
     if (triple) { pkIdleShowReal(true); pkIdleSingles = 0; } else pkIdleSingles++;
     pkIdleRunning = false;
+    pkBandOn = false; pkOpenRun = false; pkBandScrollBack();
+    if (!pkGiveEl && !pkIdleIntro) pkForcedPlay = false;
     pkIdleNextAt = Date.now()+PK_IDLE_GAP;
   } catch { if (alive()) pkIdleStop(); }
 }
@@ -11822,13 +12314,38 @@ const HV_IC = {
 function hvFsActive(stage) {
   return (document.fullscreenElement || document.webkitFullscreenElement) === stage || !!(hvPseudo && hvPseudo.stage === stage);
 }
+/* Memaksa browser melukis ulang lapisan video (bug: layar hitam setelah masuk layar penuh, baru muncul setelah di-tap) */
+function hvKick(stage) {
+  const v = stage.querySelector('video');
+  if (!v) return;
+  const run = () => {
+    if (!v.isConnected) return;
+    v.style.willChange = 'transform,opacity';
+    v.style.opacity = '.995';
+    void v.offsetHeight;
+    requestAnimationFrame(() => {
+      v.style.opacity = '';
+      requestAnimationFrame(() => { v.style.willChange = ''; });
+    });
+  };
+  run();
+  [60,180,420,900].forEach(ms => setTimeout(run,ms));
+}
 function hvFsSync() {
+  let any = false;
   document.querySelectorAll('.hv-stage').forEach(st => {
     const on = hvFsActive(st);
+    const was = st.classList.contains('fs');
     st.classList.toggle('fs',on);
+    if (on) any = true;
     const b = st.querySelector('.hv-fs');
     if (b) b.setAttribute('aria-label',on ? 'Perkecil layar' : 'Layar penuh');
+    if (on !== was) {
+      hvKick(st);
+      try { st.dispatchEvent(new Event('hvfs')); } catch {}
+    }
   });
+  document.body.classList.toggle('hv-fsing',any);
 }
 function hvPseudoOn(stage,v) {
   if (hvPseudo || !stage.parentNode) return;
@@ -11873,6 +12390,84 @@ function hvExitFs(stage) {
 document.addEventListener('fullscreenchange',hvFsSync);
 document.addEventListener('webkitfullscreenchange',hvFsSync);
 document.addEventListener('keydown',e => { if (e.key === 'Escape' && hvPseudo) hvPseudoOff(); });
+(() => {
+  const st = document.getElementById('bubuPeekStage');
+  if (!st || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(es => es.forEach(en => st.classList.toggle('pk-off',!en.isIntersecting)),{threshold:0}).observe(st);
+})();
+
+/* Animasi minion di Beranda belum selesai tapi tombol play ditekan: minion muncul di tombol play dan bertanya dulu.
+   Kalau play ditekan lagi (dipaksa), video tetap diputar dan animasi minion jalan terus. Return true = putar ditahan dulu. */
+function hvMinionHide(stage) {
+  const el = stage && stage._mn;
+  if (!el || el.dataset.leaving) return;
+  el.dataset.leaving = '1';
+  clearInterval(el._iv);
+  el.classList.remove('talking');
+  const kill = () => { el.remove(); if (stage._mn === el) stage._mn = null; };
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { kill(); return; }
+  try { el.animate([{opacity:1,translate:'0 0'},{opacity:0,translate:'0 30px'}],{duration:220,easing:'ease-in',fill:'forwards'}).finished.then(kill,kill); } catch { kill(); }
+  setTimeout(kill,450);
+}
+
+/* semua animasi minion sudah selesai: gelembung berubah jadi kotak mencolok "play videonya", beberapa detik kemudian minion hilang */
+function hvMinionGo(stage) {
+  const el = stage && stage._mn;
+  if (!el || el.dataset.leaving || el.dataset.go) return;
+  el.dataset.go = '1';
+  const say = el.querySelector('.hv-mn-say');
+  say.textContent = 'play videonya';
+  say.classList.add('go');
+  el.classList.add('talking');
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) { try { say.animate([{scale:'.3',opacity:0},{scale:'1.18',opacity:1,offset:.6},{scale:'1',opacity:1}],{duration:380,easing:'cubic-bezier(.34,1.5,.5,1)'}); } catch {} }
+  setTimeout(() => el.classList.remove('talking'),1800);
+  setTimeout(() => { if (stage._mn === el) hvMinionHide(stage); },3000);
+}
+
+function hvMinionAsk(stage,v) {
+  if (!v.paused && !v.ended) return false;                      /* tombol jeda: tidak dicegat */
+  if (!pkOpeningBusy()) { hvMinionHide(stage); pkForcedPlay = false; return false; }  /* tidak ada animasi minion: langsung putar */
+  const old = stage._mn;
+  if ((old && !old.dataset.leaving) || pkForcedPlay) {          /* masih dipaksa: putar saja, animasi minion tetap jalan */
+    hvMinionHide(stage);
+    pkForcedPlay = true;
+    if (pkBandOn) pkBandScrollDown();
+    return false;
+  }
+  const el = document.createElement('div');
+  el.className = 'hv-mn';
+  el.setAttribute('aria-hidden','true');
+  el.innerHTML = '<div class="hv-mn-in">'+pkMinionSvg(61,{eyes:2,mouth:'smile',hair:3,wave:''})+'</div><div class="hv-mn-say">yakin ndamau nonton minion lucu inut ini dulu?</div>';
+  /* posisi FIXED di layar (tidak ikut tergulir): tepat di atas tombol play saat muncul, lalu diam di situ */
+  const bb = (stage.querySelector('.hv-big') || stage).getBoundingClientRect();
+  const vw = window.innerWidth || document.documentElement.clientWidth || 360;
+  el.style.left = Math.max(125,Math.min(vw-125,bb.left+bb.width/2))+'px';
+  el.style.top = Math.max(72,bb.top+bb.height/2-14-70)+'px';
+  el.style.marginLeft = '-22px';
+  (hvFsActive(stage) ? stage : document.body).appendChild(el);
+  stage._mn = el;
+  /* hilang sendiri kalau animasi minion selesai / video diganti / keluar dari Beranda */
+  el._iv = setInterval(() => {
+    if (!stage.isConnected) { clearInterval(el._iv); el.remove(); stage._mn = null; }
+    else if (peekHidden || !showingBubu) hvMinionHide(stage);
+    else if (!pkOpeningBusy()) hvMinionGo(stage);   /* animasi selesai: ajak play dulu, baru hilang */
+  },300);
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return true;
+  const inner = el.querySelector('.hv-mn-in'), say = el.querySelector('.hv-mn-say');
+  try {
+    el.animate([{translate:'0 40px',opacity:0},{translate:'0 -6px',opacity:1,offset:.7},{translate:'0 0',opacity:1}],{duration:420,easing:'cubic-bezier(.34,1.5,.5,1)'});
+    say.animate([{scale:'.2',opacity:0},{scale:'1.1',opacity:1,offset:.65},{scale:'1',opacity:1}],{duration:300,delay:260,easing:'cubic-bezier(.34,1.4,.5,1)',fill:'backwards'});
+    inner.animate([{translate:'0 0'},{translate:'0 -4px'},{translate:'0 0'}],{duration:1300,delay:500,iterations:Infinity,easing:'ease-in-out'});
+    const arm = el.querySelector('.mn-ar');
+    if (arm) arm.animate([{transform:'rotate(0deg)'},{transform:'rotate(-50deg)',offset:.4},{transform:'rotate(-34deg)',offset:.75},{transform:'rotate(-50deg)'}],{duration:1500,delay:300,fill:'forwards',easing:'ease-in-out'});
+  } catch {}
+  setTimeout(() => { if (el.isConnected && !el.dataset.leaving) el.classList.add('talking'); },260);
+  setTimeout(() => el.classList.remove('talking'),2300);
+  return true;
+}
 
 function hvBuildPlayer(stage,v) {
   stage.classList.add('custom');
@@ -11953,6 +12548,7 @@ function hvBuildPlayer(stage,v) {
   v.addEventListener('seeking',() => { if (!v.paused) stage.classList.add('loading'); });
   ['playing','canplay','loadedmetadata','seeked','pause','error'].forEach(ev => v.addEventListener(ev,() => { if (!wantPlay || ev === 'playing' || ev === 'error') stage.classList.remove('loading'); }));
   stage.addEventListener('pointermove',e => { if (e.pointerType === 'mouse') showCtl(); });
+  stage.addEventListener('hvfs',() => { showCtl(); });   /* masuk / keluar layar penuh: tampilkan kontrol + lukis ulang video */
 
   /* ketuk video = munculkan / hilangkan tombol, BUKAN jeda */
   stage.addEventListener('click',e => {
@@ -11960,7 +12556,7 @@ function hvBuildPlayer(stage,v) {
     if (stage.classList.contains('idle') || v.paused || v.ended) showCtl();
     else hideCtl();
   });
-  q('.hv-big').addEventListener('click',e => { e.stopPropagation(); toggle(); });
+  q('.hv-big').addEventListener('click',e => { e.stopPropagation(); if (hvMinionAsk(stage,v)) return; toggle(); });
   q('.hv-fs').addEventListener('click',e => { e.stopPropagation(); fullscreen(); });
   q('.hv-back').addEventListener('click',e => {
     e.stopPropagation();
