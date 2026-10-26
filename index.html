@@ -9144,7 +9144,7 @@ function pkStampede(o) {
     cv.style.cssText = `position:absolute;left:${-sr.left}px;top:calc(100% - 60px);width:${W}px;height:${CH}px;z-index:5;pointer-events:none;will-change:transform`;   /* z 5: 3 minion asli (z 6) tetap di depan kawanan */
     stage.appendChild(cv);
     if (o.onLane) o.onLane(cv);
-    const x = cv.getContext('2d',{desynchronized:true});
+    const x = cv.getContext('2d');
     const dark = document.body.classList.contains('dark-theme') || document.body.classList.contains('has-wallpaper');
     const DUST = dark ? [190,176,204] : [214,194,164];
     const GRIT = dark ? '210,196,220' : '120,98,78';
