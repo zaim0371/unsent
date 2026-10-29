@@ -1861,7 +1861,7 @@ body.hv-fsing .pk-stage,body.hv-fsing .pk-stage * { animation-play-state:paused!
 @media (prefers-reduced-motion:reduce) { .wa-call.ringing .wa-avatar,.wa-call.ringing .wa-b[data-act="accept"] .wa-ico,.wa-hint { animation:none; } }
 
 /* ===== Ikon telepon di kanan layar (muncul setelah telepon ditolak / diakhiri; ketuk = putar animasi telepon lagi) ===== */
-.pk-fab{position:fixed;right:12px;top:38%;z-index:9300;display:block;width:56px;height:56px;margin-top:-28px;padding:0;border:0;border-radius:50%;background:transparent;color:#fff;-webkit-tap-highlight-color:transparent;cursor:pointer;opacity:0;transform:translateX(90px) scale(.6);pointer-events:none;transition:opacity .4s ease,transform .6s cubic-bezier(.34,1.4,.5,1)}
+.pk-fab{position:fixed;right:12px;top:calc(var(--head-h,60px) + 120px);z-index:9300;display:block;width:56px;height:56px;margin-top:0;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;padding:0;border:0;border-radius:50%;background:transparent;color:#fff;-webkit-tap-highlight-color:transparent;cursor:pointer;opacity:0;transform:translateX(90px) scale(.6);pointer-events:none;transition:opacity .4s ease,transform .6s cubic-bezier(.34,1.4,.5,1)}
 .pk-fab.show{opacity:1;transform:none;pointer-events:auto}
 .pk-fab[hidden]{display:none}
 .pk-fab:active{transform:scale(.93);transition-duration:.12s}
@@ -1933,7 +1933,8 @@ body.mode-bubu .hv-empty small, body.mode-bubu .hv-empty-ic { display:none; }
 
 
 /* ===== Kolom dialog: bubble chat memakai desain chat asli ===== */
-.wa-dchat{margin-top:10px;color:var(--ink)}
+.wa-dchat{margin-top:10px;color:var(--ink);max-height:38vh;max-height:38dvh;overflow-y:auto;overscroll-behavior:contain}
+.wa-dchat .entry+.entry{margin-top:8px}
 .wa-dchat:empty{display:none}
 .wa-dchat .entry{margin-bottom:0;animation:messagePop .38s cubic-bezier(.2,.85,.25,1.15) both;transform-origin:right bottom}
 .wa-dchat .entry.has-reaction .entry-avatar{margin-bottom:24px}
@@ -2028,8 +2029,33 @@ body.view-home .cd-fab-pop{top:calc(var(--head-h,60px) + 118px)}
 .cd-fab{touch-action:none;-webkit-user-select:none;user-select:none}
 .cd-fab.drag{transition:opacity .35s ease;cursor:grabbing}
 body.mode-bubu .cd-fab,body.mode-bubu .cd-fab-pop,body.mode-bubu #cdHome{display:none!important}
+.pk-fab.drag{transition:opacity .4s ease;transform:scale(1.06)}
+.cd-fab{-webkit-touch-callout:none}
 @media (prefers-reduced-motion:reduce){.cd-fab,.cd-fab-pop{transition:opacity .2s ease}}
+/* ===== Dialog Edit riwayat: tombol Simpan/Batal tetap di bawah saat di-scroll ===== */
+.modal-head-btns{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.modal-save{display:grid;place-items:center;padding:0;border-color:#e0558f;background:#e0558f;color:#fff}
+.modal-save svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.modal-save:active{transform:scale(.92)}
+#callEditBackdrop .modal-head{position:sticky;top:0;z-index:4;margin:0 0 6px;padding:2px 0 8px;background:var(--modal)}
+#callEditBackdrop .modal-actions{position:sticky;bottom:0;z-index:3;margin-top:12px;padding:12px 0 2px;background:var(--modal);box-shadow:0 -10px 14px -6px var(--modal)}
+#callEditBackdrop .modal-save:disabled{opacity:.4}
+/* ===== Pilih banyak chat ===== */
+.sel-check{display:none;flex:0 0 auto;align-self:center;width:22px;height:22px;margin:0 4px;border:2px solid #d9a3c0;border-radius:50%;background:transparent;place-items:center;transition:background .15s,border-color .15s}
+.sel-check svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .15s}
+body.selecting .sel-check{display:grid}
+.entry.selected .sel-check{background:#e0558f;border-color:#e0558f}
+.entry.selected .sel-check svg{opacity:1}
+body.selecting .entry .message{cursor:pointer}
+.entry.selected .message{box-shadow:0 0 0 2px #e0558f}
+.select-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:var(--modal,#fff);border-top:1px solid var(--edge,#eee);box-shadow:0 -8px 24px rgba(83,57,77,.14);transform:translateY(110%);visibility:hidden;transition:transform .28s ease,visibility .28s}
+body.selecting .select-bar{transform:none;visibility:visible}
+.sel-count{flex:1;min-width:0;text-align:center;font-size:13px;font-weight:650;color:var(--ink,#4a2a3d)}
+.sel-btn{padding:10px 14px;border:1px solid var(--edge,#eee);border-radius:14px;background:var(--soft,#f7eef3);color:var(--ink,#4a2a3d);font-size:12px;font-weight:600}
+.sel-btn.danger{background:#e0558f;border-color:#e0558f;color:#fff}
+.sel-btn.danger:disabled{opacity:.45}
 </style>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2575,6 +2601,13 @@ body.mode-bubu .cd-fab,body.mode-bubu .cd-fab-pop,body.mode-bubu #cdHome{display
   </div>
 </div>
 
+<div class="select-bar" id="selectBar" aria-hidden="true">
+  <button type="button" id="selCancel" class="sel-btn">Batal</button>
+  <span class="sel-count" id="selCount" aria-live="polite">0 dipilih</span>
+  <button type="button" id="selAll" class="sel-btn">Semua</button>
+  <button type="button" id="selDelete" class="sel-btn danger" disabled>Hapus</button>
+</div>
+
 <div class="modal-backdrop" id="editBackdrop" aria-hidden="true">
   <section class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="editTitle" tabindex="-1">
     <div class="modal-head">
@@ -2635,9 +2668,10 @@ body.mode-bubu .cd-fab,body.mode-bubu .cd-fab-pop,body.mode-bubu #cdHome{display
       <div class="field-label">Animasi minion</div>
       <div class="demo-row">
         <button class="demo-btn" id="pkDemoMinion" type="button">▶ Putar animasi minion</button>
+        <button class="demo-btn" id="pkDemoFilm" type="button">▶ Putar film minion</button>
         <button class="demo-btn" id="pkDemoPhone" type="button">▶ Putar telepon Papoy</button>
       </div>
-      <p class="call-edit-hint">Dua animasi ini diputar terpisah. Minion: dari awal sampai semua minion pergi. Telepon: minion mengantar hp, telepon masuk, sampai dialog selesai.</p>
+      <p class="call-edit-hint">Tiga ini diputar terpisah. Animasi: dari awal sampai semua minion pergi, tanpa film. Film: hanya film pendek minion. Telepon: minion mengantar hp, telepon masuk, sampai dialog selesai.</p>
     </div>
     <div class="set-sec">
     <div class="field-label">Urutan pesan</div>
@@ -2774,7 +2808,10 @@ body.mode-bubu .cd-fab,body.mode-bubu .cd-fab-pop,body.mode-bubu #cdHome{display
   <section class="edit-modal dialog-modal" role="dialog" aria-modal="true" aria-labelledby="callEditTitle" tabindex="-1">
     <div class="modal-head">
       <div class="modal-title" id="callEditTitle">Edit dialog telepon</div>
-      <button class="modal-close" id="callEditClose" type="button" aria-label="Tutup">×</button>
+      <div class="modal-head-btns">
+        <button class="modal-close modal-save" id="callHeadOk" type="button" aria-label="Simpan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button class="modal-close" id="callEditClose" type="button" aria-label="Tutup">×</button>
+      </div>
     </div>
     <form id="callEditForm" novalidate>
       <div id="callEditMain">
@@ -2788,7 +2825,7 @@ body.mode-bubu .cd-fab,body.mode-bubu .cd-fab-pop,body.mode-bubu #cdHome{display
         <p class="hv-msg" id="callEditMsg" role="status"></p>
         <div class="modal-actions">
           <button class="cancel-btn" id="callEditReset" type="button">Default</button>
-          <button class="save-btn" id="callEditSave" type="submit">Simpan</button>
+          <button class="save-btn" id="callEditSave" type="submit" hidden>Simpan</button>
         </div>
       </div>
       <div id="callLoveView" hidden>
@@ -2798,7 +2835,7 @@ body.mode-bubu .cd-fab,body.mode-bubu .cd-fab-pop,body.mode-bubu #cdHome{display
         <div class="ce-love-list" id="callLoveList"></div>
         <div class="modal-actions">
           <button class="cancel-btn" id="callLoveBack" type="button">Kembali</button>
-          <button class="save-btn" id="callLoveAdd" type="button">Tambahkan</button>
+          <button class="save-btn" id="callLoveAdd" type="button" hidden>Tambahkan</button>
         </div>
       </div>
     </form>
@@ -3033,6 +3070,8 @@ const pad = n => String(n).padStart(2,'0');
 
 let notes = [];
 let editingId = null;
+let selectMode = false, selectView = '';
+const selectedIds = new Set();
 let editPhotoDraft = '';
 let openMenuId = null;
 let selectedDate = null;
@@ -3049,7 +3088,7 @@ let showingHome = false;
 /* ===== Mode bubu / dudu (disimpan di perangkat) ===== */
 const PAIR_KEY = 'pair_mode';
 let pairMode = 'bubu';
-let pkDemo = false, pkDemoTok = 0;   /* true = demo dari Pengaturan: animasi minion & telepon tetap jalan penuh meski mode Dudu */
+let pkDemo = false, pkDemoTok = 0, pkDemoNoFilm = false, pkDemoKind = '';   /* true = demo dari Pengaturan: animasi minion & telepon tetap jalan penuh meski mode Dudu */
 try { localStorage.removeItem(PAIR_KEY); } catch {}   /* mode awal selalu Bubu; pindah ke Dudu hanya berlaku selama halaman terbuka */
 function applyPairMode() {
   const b = document.body.classList, locked = pairMode === 'bubu' && !showingHome && !showingProfile;
@@ -4169,6 +4208,7 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
   const entry = document.createElement('article');
   entry.className = 'entry'+(note.pinned ? ' pinned' : '')+(joinPrev ? ' join-prev' : '')+(joinNext ? ' join-next' : '')+(runNext ? ' run-next' : '');
   entry.dataset.id = String(note.id);
+  if (selectedIds.has(String(note.id))) entry.classList.add('selected');
 
   const stack = document.createElement('div');
   stack.className = 'message-stack';
@@ -4198,6 +4238,7 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
     photo.decoding = 'async';
     photo.addEventListener('click',event => {
       event.stopPropagation();
+      if (selectMode) { toggleSelect(note.id); return; }
       if (Date.now() < menuSuppressUntil) return;
       openZoom(note.photo,note.text);
     });
@@ -4225,6 +4266,7 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
   let pressTimer = 0, pressX = 0, pressY = 0;
   const cancelPress = () => { clearTimeout(pressTimer); pressTimer = 0; message.classList.remove('pressing'); };
   message.addEventListener('pointerdown',event => {
+    if (selectMode) return;
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     cancelPress();
     pressX = event.clientX;
@@ -4245,6 +4287,7 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
 
   let lastTap = 0;
   message.addEventListener('click',event => {
+    if (selectMode) { toggleSelect(note.id); return; }
     if (Date.now() < menuSuppressUntil) return;
     const now = Date.now();
     if (now-lastTap < 320) {
@@ -4272,11 +4315,13 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
 
     const actions = note.call
       ? [
+          {label:'Pilih',action:() => enterSelect(note.id)},
           {label:'Hapus',danger:true,action:() => deleteNote(note.id)}
         ]
       : [
           {label:note.pinned ? 'Lepas sematan' : 'Sematkan',action:() => togglePin(note.id)},
           {label:'Edit',action:() => openEdit(note.id)},
+          {label:'Pilih',action:() => enterSelect(note.id)},
           {label:'Hapus',danger:true,action:() => deleteNote(note.id)}
         ];
 
@@ -4309,6 +4354,14 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
   entry.appendChild(avatarCol);
 
   entry.appendChild(stack);
+  const selCheck = document.createElement('span');
+  selCheck.className = 'sel-check';
+  selCheck.setAttribute('aria-hidden','true');
+  selCheck.innerHTML = '<svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+  entry.appendChild(selCheck);
+  entry.addEventListener('click',event => {
+    if (selectMode && !message.contains(event.target)) toggleSelect(note.id);
+  });
   if (String(note.id) === String(newNoteId)) entry.classList.add('pop-in');
   return entry;
 }
@@ -4636,6 +4689,94 @@ function togglePin(id) {
 
   render();
 }
+
+/* ===== Pilih banyak chat ===== */
+function updateSelectBar() {
+  $('selCount').textContent = selectedIds.size+' dipilih';
+  $('selDelete').disabled = selectedIds.size === 0;
+  $('selDelete').textContent = selectedIds.size ? 'Hapus ('+selectedIds.size+')' : 'Hapus';
+}
+function enterSelect(id) {
+  openMenuId = null;
+  selectMode = true;
+  selectView = String(view)+'|'+(typeof showingGallery !== 'undefined' && showingGallery ? 'g' : '');
+  selectedIds.clear();
+  selectedIds.add(String(id));
+  document.body.classList.add('selecting');
+  $('selectBar').setAttribute('aria-hidden','false');
+  updateSelectBar();
+  render();
+}
+function exitSelect() {
+  if (!selectMode) return;
+  selectMode = false;
+  selectedIds.clear();
+  document.body.classList.remove('selecting');
+  $('selectBar').setAttribute('aria-hidden','true');
+  document.querySelectorAll('.entry.selected').forEach(el => el.classList.remove('selected'));
+}
+function toggleSelect(id) {
+  const key = String(id);
+  const on = !selectedIds.has(key);
+  if (on) selectedIds.add(key); else selectedIds.delete(key);
+  const el = [...historyBox.querySelectorAll('.entry')].find(e => e.dataset.id === key);
+  if (el) el.classList.toggle('selected',on);
+  haptic(10);
+  updateSelectBar();
+}
+$('selCancel').addEventListener('click',exitSelect);
+$('selAll').addEventListener('click',() => {
+  const all = renderedNotes.map(n => String(n.id));
+  const full = all.length > 0 && all.every(k => selectedIds.has(k));
+  selectedIds.clear();
+  if (!full) all.forEach(k => selectedIds.add(k));
+  historyBox.querySelectorAll('.entry').forEach(el => el.classList.toggle('selected',selectedIds.has(el.dataset.id)));
+  updateSelectBar();
+});
+$('selDelete').addEventListener('click',async () => {
+  const count = selectedIds.size;
+  if (!count) return;
+  const accepted = await showConfirm(count === 1 ? 'Hapus riwayat ini?' : 'Hapus '+count+' riwayat terpilih?',{okLabel:'Hapus',danger:true});
+  if (!accepted) return;
+
+  const previousStreak = getStreakStats().current;
+  const removed = [];
+  notes.forEach((n,i) => { if (selectedIds.has(String(n.id))) removed.push({note:n,index:i}); });
+  if (!removed.length) { exitSelect(); return; }
+  const snapshot = notes.slice();
+  for (let i = notes.length-1; i >= 0; i--) if (selectedIds.has(String(notes[i].id))) notes.splice(i,1);
+
+  if (!persist()) {
+    notes.splice(0,notes.length,...snapshot);
+    refreshAfterMutation();
+    return;
+  }
+
+  exitSelect();
+  checkStreakGrowth(previousStreak);
+  refreshAfterMutation();
+  showToast(removed.length+' riwayat dihapus · Urungkan',{
+    actionLabel:'Urungkan',
+    duration:5200,
+    onAction:() => {
+      const before = notes.slice();
+      removed.forEach(r => notes.splice(Math.min(r.index,notes.length),0,r.note));
+      if (!persist()) { notes.splice(0,notes.length,...before); return; }
+      updateStreakBadge();
+      if (view === 'calendar') renderCalendar();
+      render();
+      showToast(removed.length+' riwayat dikembalikan');
+    }
+  });
+});
+document.addEventListener('keydown',e => { if (e.key === 'Escape' && selectMode && !activeModal) exitSelect(); });
+/* keluar dari mode pilih kalau pindah halaman */
+setInterval(() => {
+  if (!selectMode) return;
+  let now = '';
+  try { now = String(view)+'|'+(typeof showingGallery !== 'undefined' && showingGallery ? 'g' : ''); if (showingHome) now = 'home'; } catch {}
+  if (now !== selectView) exitSelect();
+},300);
 
 /* Hapus dengan urungkan */
 async function deleteNote(id) {
@@ -7318,7 +7459,7 @@ async function pkPlayMoon(opts) {
   pkTemp.push(sign);
   await pkSleep(420); if (!alive()) return;
   /* film minion mulai BERBARENGAN dengan papan pesan (musik + sfx hanya di sini) */
-  const bandOn = $('pkMinions').children.length >= 3;
+  const bandOn = $('pkMinions').children.length >= 3 && !pkDemoNoFilm;   /* demo "animasi saja": film tidak ikut */
   if (bandOn && pkIdleRunning) pkIdleStop();   /* buang idle nyasar supaya film pasti jalan */
   pkBandDone = false;
   if (bandOn) { pkIdleSingles = 3; pkBandMusic = true; pkIdleIntro = true; pkIdleRun(); }
@@ -8620,6 +8761,53 @@ setTimeout(() => {
   document.addEventListener('visibilitychange',() => { if (!document.hidden) tick(); });
 })();
 
+/* Geser ikon melayang (tahan lalu seret). Halaman tidak ikut ter-scroll saat menggeser. */
+function makeFabDraggable(el,key,onStart) {
+  let drag = null, moved = false;
+  const clampPos = (x,y) => ({x:Math.max(6,Math.min(innerWidth-el.offsetWidth-6,x)),y:Math.max(6,Math.min(innerHeight-el.offsetHeight-6,y))});
+  function putPos(x,y) { const c = clampPos(x,y); el.style.right = 'auto'; el.style.bottom = 'auto'; el.style.marginTop = '0'; el.style.left = c.x+'px'; el.style.top = c.y+'px'; }
+  try { const sp = JSON.parse(sessionStorage.getItem(key) || 'null'); if (sp && isFinite(sp.x) && isFinite(sp.y)) putPos(sp.x,sp.y); } catch {}
+  el.style.touchAction = 'none';
+  el.addEventListener('pointerdown',e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const r = el.getBoundingClientRect();
+    drag = {id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:r.left,oy:r.top,on:false};
+    moved = false;
+    try { el.setPointerCapture(e.pointerId); } catch {}
+  });
+  el.addEventListener('pointermove',e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX-drag.sx, dy = e.clientY-drag.sy;
+    if (!drag.on) {
+      if (Math.hypot(dx,dy) < 6) return;
+      drag.on = true; moved = true; el.classList.add('drag');
+      if (onStart) onStart();
+    }
+    e.preventDefault();
+    putPos(drag.ox+dx,drag.oy+dy);
+  });
+  /* cegah scroll halaman selama jari menempel di ikon */
+  el.addEventListener('touchmove',e => { if (drag) e.preventDefault(); },{passive:false});
+  el.addEventListener('touchstart',e => { if (e.cancelable && e.touches.length === 1) { /* biarkan klik tetap jalan */ } },{passive:true});
+  const end = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (drag.on) {
+      el.classList.remove('drag');
+      const r = el.getBoundingClientRect();
+      try { sessionStorage.setItem(key,JSON.stringify({x:Math.round(r.left),y:Math.round(r.top)})); } catch {}
+    }
+    drag = null;
+    setTimeout(() => { moved = false; },0);
+  };
+  el.addEventListener('pointerup',end);
+  el.addEventListener('pointercancel',end);
+  el.addEventListener('lostpointercapture',e => { if (drag && e.pointerId === drag.id) end(e); });
+  el.addEventListener('click',e => { if (moved) { e.stopImmediatePropagation(); e.preventDefault(); } },true);
+  el.addEventListener('contextmenu',e => e.preventDefault());
+  addEventListener('resize',() => { if (el.style.left) { const r = el.getBoundingClientRect(); putPos(r.left,r.top); } });
+  return {moved:() => moved};
+}
+
 /* ===== Ikon countdown kanan atas: semua halaman, kecuali Beranda setelah animasi + film selesai (countdown sudah tampil di Beranda) ===== */
 (function countdownFab() {
   const fab = $('cdFab'), pop = $('cdFabPop');
@@ -8700,45 +8888,10 @@ setTimeout(() => {
     else { setOpen(false); fab.classList.remove('on'); hideT = setTimeout(() => { if (!vis) fab.hidden = true; },420); }
   }
 
-  /* geser ikon: tahan lalu seret; posisi diingat selama sesi */
-  const POS_KEY = 'cd_fab_pos';
-  let moved = false, drag = null;
-  const clampPos = (x,y) => ({x:Math.max(6,Math.min(innerWidth-fab.offsetWidth-6,x)),y:Math.max(6,Math.min(innerHeight-fab.offsetHeight-6,y))});
-  function putPos(x,y) { const c = clampPos(x,y); fab.style.right = 'auto'; fab.style.left = c.x+'px'; fab.style.top = c.y+'px'; return c; }
-  try { const sp = JSON.parse(sessionStorage.getItem(POS_KEY) || 'null'); if (sp && isFinite(sp.x) && isFinite(sp.y)) { fab.dataset.moved = '1'; putPos(sp.x,sp.y); } } catch {}
-  fab.addEventListener('pointerdown',e => {
-    if (e.button > 0) return;
-    const r = fab.getBoundingClientRect();
-    drag = {id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:r.left,oy:r.top,on:false};
-    moved = false;
-  });
-  fab.addEventListener('pointermove',e => {
-    if (!drag || e.pointerId !== drag.id) return;
-    const dx = e.clientX-drag.sx, dy = e.clientY-drag.sy;
-    if (!drag.on) {
-      if (Math.hypot(dx,dy) < 6) return;
-      drag.on = true; moved = true; fab.classList.add('drag');
-      try { fab.setPointerCapture(e.pointerId); } catch {}
-      if (open) setOpen(false);
-    }
-    e.preventDefault();
-    putPos(drag.ox+dx,drag.oy+dy);
-  });
-  const endDrag = e => {
-    if (!drag || e.pointerId !== drag.id) return;
-    if (drag.on) {
-      fab.classList.remove('drag');
-      const r = fab.getBoundingClientRect();
-      try { sessionStorage.setItem(POS_KEY,JSON.stringify({x:Math.round(r.left),y:Math.round(r.top)})); } catch {}
-    }
-    drag = null;
-    setTimeout(() => { moved = false; },0);
-  };
-  fab.addEventListener('pointerup',endDrag);
-  fab.addEventListener('pointercancel',endDrag);
-  addEventListener('resize',() => { if (fab.style.left) { const r = fab.getBoundingClientRect(); putPos(r.left,r.top); } if (open) placePop(); });
+  const dragger = makeFabDraggable(fab,'cd_fab_pos',() => { if (open) setOpen(false); });
+  addEventListener('resize',() => { if (open) placePop(); });
 
-  fab.addEventListener('click',e => { e.stopPropagation(); if (moved) return; setOpen(!open); });
+  fab.addEventListener('click',e => { e.stopPropagation(); if (dragger.moved()) return; setOpen(!open); });
   pop.addEventListener('click',() => setOpen(false));
   document.addEventListener('pointerdown',e => { if (open && !pop.contains(e.target) && !fab.contains(e.target)) setOpen(false); },true);
   document.addEventListener('keydown',e => { if (e.key === 'Escape') setOpen(false); });
@@ -8870,16 +9023,22 @@ function pkCallClose() {
 const PK_CALL_DEFAULT = ['hai aja dulu','apa kabar aja'];
 let PK_CALL_LINES = PK_CALL_DEFAULT.map(x => pkCallItem(x));
 let pkCallLine = -1, pkCallTyping = false;
-/* satu kolom = {text: dialog, chat: {text,time,reacted} | null}; string lama dianggap kolom berisi dialog saja */
+/* satu kolom = {text: dialog, chats: [{text,time,reacted}, …]}; string lama / field `chat` tunggal tetap terbaca */
+const CE_CHATS_MAX = 10;
+function pkCallChatObj(c) {
+  if (!c || typeof c !== 'object') return null;
+  const t = String(c.text == null ? '' : c.text).trim().slice(0,400);
+  return t ? {text:t,time:String(c.time || '').slice(0,40),reacted:Boolean(c.reacted)} : null;
+}
 function pkCallItem(x) {
   if (x && typeof x === 'object') {
-    const c = x.chat && typeof x.chat === 'object' ? {text:String(x.chat.text == null ? '' : x.chat.text).trim().slice(0,400),time:String(x.chat.time || '').slice(0,40),reacted:Boolean(x.chat.reacted)} : null;
-    return {text:String(x.text == null ? '' : x.text).trim().slice(0,160),chat:c && c.text ? c : null};
+    const src = Array.isArray(x.chats) ? x.chats : (x.chat ? [x.chat] : []);
+    return {text:String(x.text == null ? '' : x.text).trim().slice(0,160),chats:src.map(pkCallChatObj).filter(Boolean).slice(0,CE_CHATS_MAX)};
   }
-  return {text:String(x == null ? '' : x).trim().slice(0,160),chat:null};
+  return {text:String(x == null ? '' : x).trim().slice(0,160),chats:[]};
 }
 function pkCallClean(a) {
-  const out = (Array.isArray(a) ? a : []).map(pkCallItem).filter(o => o.text || o.chat).slice(0,20);
+  const out = (Array.isArray(a) ? a : []).map(pkCallItem).filter(o => o.text || o.chats.length).slice(0,20);
   return out.length ? out : PK_CALL_DEFAULT.map(x => pkCallItem(x));
 }
 try { const raw = JSON.parse(localStorage.getItem('call_lines') || 'null'); if (Array.isArray(raw)) PK_CALL_LINES = pkCallClean(raw); } catch {}
@@ -8918,17 +9077,19 @@ function ceNums() {
   $('callEditCount').textContent = rows.length+'/'+CE_MAX;
   $('callEditAdd').disabled = $('callEditLove').disabled = rows.length >= CE_MAX;
 }
-function ceSetChat(row,chat) {
-  row._chat = chat || null;
+function ceSetChats(row,chats) {
+  row._chats = (chats || []).slice(0,CE_CHATS_MAX);
   const slot = row.querySelector('.ce-chat'); slot.innerHTML = '';
-  if (!chat) {
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'ce-addchat'; b.textContent = '+ Tambah chat';
-    b.addEventListener('click',() => ceOpenLove(row)); slot.appendChild(b); return;
+  row._chats.forEach((chat,i) => {
+    const w = document.createElement('div'); w.className = 'ce-chatprev'; w.appendChild(pkCallChatEl(chat));
+    const x = document.createElement('button'); x.type = 'button'; x.className = 'ce-chat-x'; x.setAttribute('aria-label','Hapus chat'); x.textContent = '×';
+    x.addEventListener('click',() => { row._chats.splice(i,1); ceSetChats(row,row._chats); });
+    w.appendChild(x); slot.appendChild(w);
+  });
+  if (row._chats.length < CE_CHATS_MAX) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'ce-addchat'; b.textContent = row._chats.length ? '+ Tambah chat lagi' : '+ Tambah chat';
+    b.addEventListener('click',() => ceOpenLove(row)); slot.appendChild(b);
   }
-  const w = document.createElement('div'); w.className = 'ce-chatprev'; w.appendChild(pkCallChatEl(chat));
-  const x = document.createElement('button'); x.type = 'button'; x.className = 'ce-chat-x'; x.setAttribute('aria-label','Hapus chat'); x.textContent = '×';
-  x.addEventListener('click',() => ceSetChat(row,null));
-  w.appendChild(x); slot.appendChild(w);
 }
 function ceAddRow(item,focus) {
   const list = $('callEditList'); if (list.children.length >= CE_MAX) return null;
@@ -8938,20 +9099,26 @@ function ceAddRow(item,focus) {
   const ta = row.querySelector('textarea'); ta.value = item.text || '';
   ta.addEventListener('input',() => { ceFit(ta); $('callEditMsg').textContent = ''; });
   row.querySelector('.ce-del').addEventListener('click',() => { row.classList.add('out'); setTimeout(() => { row.remove(); ceNums(); },200); });
-  list.appendChild(row); ceSetChat(row,item.chat); ceNums(); ceFit(ta);
+  list.appendChild(row); ceSetChats(row,item.chats); ceNums(); ceFit(ta);
   if (focus) { try { ta.focus({preventScroll:true}); } catch {} row.scrollIntoView({block:'nearest',behavior:'smooth'}); }
   return row;
 }
 function ceFill(items) { $('callEditList').innerHTML = ''; items.forEach(it => ceAddRow(it,false)); ceNums(); }
-function ceShowLove(on) { $('callEditMain').hidden = on; $('callLoveView').hidden = !on; }
+function ceHeadSync() {
+  const love = !$('callLoveView').hidden;
+  const ok = $('callHeadOk');
+  ok.disabled = love ? $('callLoveAdd').disabled : false;
+  ok.setAttribute('aria-label',love ? 'Tambahkan chat terpilih' : 'Simpan');
+}
+function ceShowLove(on) { $('callEditMain').hidden = on; $('callLoveView').hidden = !on; ceHeadSync(); }
 function ceLoveCount() {
   const n = $('callLoveList').querySelectorAll('.ce-love.on').length;
-  $('callLoveCount').textContent = n ? n+' dipilih' : ''; $('callLoveAdd').disabled = !n;
+  $('callLoveCount').textContent = n ? n+' dipilih' : ''; $('callLoveAdd').disabled = !n; ceHeadSync();
 }
 function ceOpenLove(row) {
   cePickRow = row || null;
-  $('callLoveHint').textContent = cePickRow ? 'Pilih satu chat love untuk kolom ini, atau ketik chat baru.' : 'Pilih chat love; tiap chat jadi satu kolom baru. Atau ketik chat baru.';
-  const have = new Set([...$('callEditList').children].map(r => r._chat && r._chat.text).filter(Boolean));
+  $('callLoveHint').textContent = cePickRow ? 'Pilih satu atau lebih chat love, lalu ketuk centang di kanan atas; semuanya masuk ke kolom ini. Atau ketik chat baru.' : 'Pilih satu atau lebih chat love, lalu ketuk centang di kanan atas; semuanya masuk ke satu kolom baru. Atau ketik chat baru.';
+  const have = new Set([...$('callEditList').children].flatMap(r => (r._chats || []).map(c => c.text)));
   const list = $('callLoveList'); list.innerHTML = ''; $('callChatNew').value = '';
   const items = notes.filter(n => n.reacted && !n.call && String(n.text || '').trim()).sort((a,b) => b.createdAt-a.createdAt);
   if (!items.length) list.innerHTML = '<div class="ce-empty">Belum ada chat yang di-love.<br>Ketuk dua kali sebuah chat untuk memberi love ♡</div>';
@@ -8962,7 +9129,6 @@ function ceOpenLove(row) {
     b._chat = {text:full.slice(0,400),time:String(n.time || ''),reacted:true};
     if (have.has(b._chat.text)) { b.disabled = true; b.querySelector('.ck').textContent = '•'; }
     b.addEventListener('click',() => {
-      if (cePickRow) list.querySelectorAll('.ce-love.on').forEach(o => { if (o !== b) o.classList.remove('on'); });
       b.classList.toggle('on'); ceLoveCount();
     });
     list.appendChild(b);
@@ -8971,11 +9137,17 @@ function ceOpenLove(row) {
 }
 function ceApplyChats(chats) {
   ceShowLove(false);
-  let skipped = false;
-  if (cePickRow && document.contains(cePickRow) && chats.length) { ceSetChat(cePickRow,chats[0]); chats = chats.slice(1); }
+  let msg = '';
+  if (cePickRow && document.contains(cePickRow)) {   /* tambah ke kolom yang dipilih */
+    const merged = (cePickRow._chats || []).concat(chats);
+    if (merged.length > CE_CHATS_MAX) msg = 'Maksimal '+CE_CHATS_MAX+' chat per kolom, sisanya tidak ditambahkan.';
+    ceSetChats(cePickRow,merged);
+  } else if (chats.length) {   /* semua chat terpilih masuk ke SATU kolom baru */
+    if (!ceAddRow({text:'',chats:chats.slice(0,CE_CHATS_MAX)},false)) msg = 'Maksimal '+CE_MAX+' kolom.';
+    else if (chats.length > CE_CHATS_MAX) msg = 'Maksimal '+CE_CHATS_MAX+' chat per kolom, sisanya tidak ditambahkan.';
+  }
   cePickRow = null;
-  chats.forEach(c => { if (!ceAddRow({text:'',chat:c},false)) skipped = true; });
-  $('callEditMsg').textContent = skipped ? 'Maksimal '+CE_MAX+' kolom, sisanya tidak ditambahkan.' : '';
+  $('callEditMsg').textContent = msg;
   try { const l = $('callEditList'); l.scrollTo({top:l.scrollHeight,behavior:'smooth'}); } catch {}
 }
 function openCallEdit() {
@@ -8997,6 +9169,11 @@ function closeCallEdit() {
 (function pkCallEditWire() {
   $('hvPenCall').addEventListener('click',() => { try { hvPenMenu(false); } catch {} openCallEdit(); });
   $('callEditClose').addEventListener('click',closeCallEdit);
+  $('callHeadOk').addEventListener('click',() => {
+    if (!$('callLoveView').hidden) { if (!$('callLoveAdd').disabled) $('callLoveAdd').click(); return; }
+    if ($('callEditSave').disabled) return;
+    $('callEditForm').requestSubmit();
+  });
   $('callEditBackdrop').addEventListener('click',e => { if (e.target === $('callEditBackdrop')) closeCallEdit(); });
   $('callEditAdd').addEventListener('click',() => { ceAddRow(null,true); $('callEditMsg').textContent = ''; });
   $('callEditLove').addEventListener('click',() => ceOpenLove(null));
@@ -9009,7 +9186,7 @@ function closeCallEdit() {
   $('callEditReset').addEventListener('click',() => { ceFill(PK_CALL_DEFAULT.map(x => pkCallItem(x))); $('callEditMsg').textContent = ''; });
   $('callEditForm').addEventListener('submit',async e => {
     e.preventDefault();
-    const lines = [...$('callEditList').children].map(r => ({text:r.querySelector('textarea').value.trim(),chat:r._chat || null})).filter(o => o.text || o.chat);
+    const lines = [...$('callEditList').children].map(r => ({text:r.querySelector('textarea').value.trim(),chats:r._chats || []})).filter(o => o.text || o.chats.length);
     const msg = $('callEditMsg');
     if (!lines.length) { msg.textContent = 'Isi minimal satu kolom.'; return; }
     $('callEditSave').disabled = true;
@@ -9039,7 +9216,7 @@ function pkCallChatEl(c) {
   e.appendChild(av); e.appendChild(stack);
   return e;
 }
-function pkCallShowChat(it) { const b = $('waDChat'); b.innerHTML = ''; if (it.chat) b.appendChild(pkCallChatEl(it.chat)); }
+function pkCallShowChat(it) { const b = $('waDChat'); b.innerHTML = ''; (it.chats || []).forEach((c,i) => { const e = pkCallChatEl(c); if (i) e.style.animationDelay = (i*.28)+'s'; b.appendChild(e); }); }
 
 function pkCallType(i) {
   const it = PK_CALL_LINES[i], txt = it.text, box = $('waDText'), hint = $('waHint');
@@ -9141,9 +9318,19 @@ async function pkCallReplay() {
 const PK_FAB_KEY = 'pk_phone_fab';
 let pkFabPending = false, pkFabAnim = false, pkFabT = 0;
 function pkFabStore(on) { try { if (on) sessionStorage.setItem(PK_FAB_KEY,'1'); else sessionStorage.removeItem(PK_FAB_KEY); } catch {} }
+function pkFabBlocked() {
+  try {
+    if (activeModal || document.fullscreenElement || document.body.classList.contains('selecting')) return true;
+    if (document.querySelector('.modal-backdrop.open,.media-backdrop.open,.picker-backdrop.open,.call-screen.open,.contact-page.open,#historyPage.open,#cameraScreen.open,.hv-stage.pseudo-fs,.ld-bar.open')) return true;
+    if (document.body.classList.contains('camera-open') || document.body.classList.contains('contact-open') || document.body.classList.contains('history-open')) return true;
+    const lg = $('loginScreen'); if (lg && !lg.classList.contains('hidden')) return true;
+    const lk = $('lockView'); if (lk && !lk.hidden) return true;
+  } catch {}
+  return false;
+}
 function pkFabSync() {
   const f = $('pkFab'); if (!f) return;
-  const on = pkFabPending && showingHome && !pkCallBusy;
+  const on = pkFabPending && showingHome && !pkCallBusy && !pkFabBlocked();
   clearTimeout(pkFabT);
   if (on) { f.hidden = false; pkFabT = setTimeout(() => f.classList.add('show'),30); }
   else { f.classList.remove('show'); pkFabT = setTimeout(() => { if (!f.classList.contains('show')) f.hidden = true; },520); }
@@ -9151,6 +9338,7 @@ function pkFabSync() {
 function pkFabArm() { pkFabPending = true; pkFabAnim = pkDemo; pkFabStore(true); pkFabSync(); }
 (function pkFabWire() {
   const f = $('pkFab'); if (!f) return;
+  makeFabDraggable(f,'pk_fab_pos');
   /* bersihkan sisa penyimpanan versi lama (localStorage) supaya ikon lama tidak muncul saat baru masuk */
   try { Object.keys(localStorage).filter(k => k === PK_FAB_KEY || k.indexOf(PK_FAB_KEY+':') === 0).forEach(k => localStorage.removeItem(k)); } catch {}
   f.addEventListener('click',async () => {
@@ -9158,20 +9346,24 @@ function pkFabArm() { pkFabPending = true; pkFabAnim = pkDemo; pkFabStore(true);
     pkFabPending = false; pkFabStore(false); pkFabSync();
     try { await pkPhoneHandoff($('pkPeekStage'),null); } finally { pkFabAnim = false; }
   });
+  setInterval(pkFabSync,250);   /* ikut hilang/muncul saat popup dibuka/ditutup */
   /* ikon hanya tampil di Beranda: sembunyi saat pindah tab, muncul lagi saat kembali */
   new MutationObserver(pkFabSync).observe($('homePage'),{attributes:true,attributeFilter:['hidden']});
   try { if (sessionStorage.getItem(PK_FAB_KEY) === '1') { pkFabPending = true; pkFabSync(); } } catch {}   /* refresh: ikon tetap ada */
 })();
 
 /* ===== Pengaturan (mode Dudu): putar animasi minion dari awal sampai akhir + telepon masuk lengkap ===== */
-const PK_DEMO_LBL = {minion:'▶ Putar animasi minion',phone:'▶ Putar telepon Papoy'};
+const PK_DEMO_LBL = {minion:'▶ Putar animasi minion',film:'▶ Putar film minion',phone:'▶ Putar telepon Papoy'};
+const PK_DEMO_ID = {minion:'pkDemoMinion',film:'pkDemoFilm',phone:'pkDemoPhone'};
 function pkDemoBtns(busy) {
-  Object.keys(PK_DEMO_LBL).forEach(k => { const b = $(k === 'minion' ? 'pkDemoMinion' : 'pkDemoPhone'); if (b) { b.disabled = busy; b.textContent = PK_DEMO_LBL[k]; } });
+  Object.keys(PK_DEMO_LBL).forEach(k => { const b = $(PK_DEMO_ID[k]); if (b) { b.disabled = busy; b.textContent = PK_DEMO_LBL[k]; } });
 }
 function pkDemoEnd() {
   if (!pkDemo) return;
-  pkDemo = false; pkDemoTok++;
+  const wasFilm = pkDemoKind === 'film';
+  pkDemo = false; pkDemoTok++; pkDemoNoFilm = false; pkDemoKind = '';
   pkDemoBtns(false);
+  if (wasFilm) { try { pkSfx.stop(); } catch {} try { document.querySelectorAll('.pk-film').forEach(f => f.remove()); } catch {} }
   try { pkIdleStop(); } catch {}
   try { pkAbortGive(); } catch {}
   try { pkHelloStop(); } catch {}
@@ -9180,14 +9372,18 @@ function pkDemoEnd() {
 /* kind: 'minion' = hanya animasi minion Beranda (awal → akhir); 'phone' = hanya telepon Papoy lengkap (minion mengantar hp → telepon masuk → dialog) */
 async function pkDemoPlay(kind) {
   if (pkDemo || pkCallBusy) return;
-  pkDemo = true; const tok = ++pkDemoTok;
+  pkDemo = true; pkDemoKind = kind; pkDemoNoFilm = kind === 'minion'; const tok = ++pkDemoTok;
   const alive = () => pkDemo && tok === pkDemoTok;
   pkDemoBtns(true);
-  const lbl = $(kind === 'minion' ? 'pkDemoMinion' : 'pkDemoPhone'); if (lbl) lbl.textContent = 'Sedang diputar…';
+  const lbl = $(PK_DEMO_ID[kind]); if (lbl) lbl.textContent = 'Sedang diputar…';
   const stage = $('pkPeekStage');
   const keep = setInterval(() => { if (stage.hidden) stage.hidden = false; },300);   /* panggung minion tetap tampil walau belum ada video/countdown */
   try {
     closeSettings(); await pkSleep(500); if (!alive()) return;
+    if (kind === 'film') {   /* hanya film pendek (dengan musik), tanpa animasi minion */
+      await pkMemoryFilm({alive,music:true});
+      return;
+    }
     if (!showingHome) openHomePage();
     else if (!peekHidden) { pkAbortGive(); peekHidden = true; peekApply(false); }
     try { pkIdleStop(); pkHelloStop(); } catch {}
@@ -9206,6 +9402,7 @@ async function pkDemoPlay(kind) {
   } catch {} finally { clearInterval(keep); pkDemoEnd(); }
 }
 $('pkDemoMinion').addEventListener('click',() => pkDemoPlay('minion'));
+$('pkDemoFilm').addEventListener('click',() => pkDemoPlay('film'));
 $('pkDemoPhone').addEventListener('click',() => pkDemoPlay('phone'));
 
 /* Inisialisasi */
