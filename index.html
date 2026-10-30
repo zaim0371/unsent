@@ -3,10 +3,10 @@
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1b0713">
+<meta name="theme-color" content="#2e1429">
 <title>Unsent</title>
 
 <style>
@@ -17,8 +17,8 @@
   border: 1px solid var(--line);
   border-radius: 28px;
   background: var(--glass);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  
+  
   box-shadow: 0 8px 26px rgba(112,83,104,.07);
   text-align: center;
   animation: profileAppear .28s ease both;
@@ -142,7 +142,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   padding:24px 20px 20px; text-align:left;
   border:1px solid var(--edge); border-radius:30px;
   background:rgba(255,255,255,.5);
-  backdrop-filter:blur(28px) saturate(160%); -webkit-backdrop-filter:blur(28px) saturate(160%);
+   
   box-shadow:0 16px 48px rgba(170,105,140,.16);
 }
 .auth-pane { display:none; margin:0; }
@@ -211,8 +211,8 @@ body.dark-theme .auth-msg.ok { color:#8fd0aa; }
 .glass {
   border:1px solid var(--line);
   background:var(--glass);
-  backdrop-filter:blur(24px) saturate(150%);
-  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  
+  
   box-shadow:0 6px 20px rgba(112,83,104,.05);
 }
 .topbar { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:22px 3px 12px; }
@@ -293,8 +293,8 @@ select,.small-btn {
   border:1px solid #d79bbd;
   border-radius:20px 20px 6px 20px;
   background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(246,231,239,.48));
-  backdrop-filter:blur(14px) saturate(135%);
-  -webkit-backdrop-filter:blur(14px) saturate(135%);
+  
+  
   box-shadow:0 5px 22px rgba(124,88,112,.045);
   overflow-wrap:anywhere;
   cursor:default;
@@ -331,7 +331,7 @@ select,.small-btn {
   position:absolute; z-index:50; top:0; right:0; min-width:145px; width:max-content; max-width:240px; padding:5px;
   border:1px solid var(--edge); border-radius:17px; background:var(--modal);
   box-shadow:0 8px 26px rgba(104,76,96,.14);
-  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+   
 }
 .menu-wrap.up .menu { top:auto; bottom:0; }
 .menu button { display:block; width:100%; padding:12px 10px; border:0; border-radius:11px; background:transparent; text-align:left; font-size:12px; }
@@ -360,7 +360,7 @@ select,.small-btn {
   display:flex; align-items:flex-end; gap:8px; padding:8px 9px;
   border:1px solid var(--edge); border-radius:27px;
   background:rgba(255,255,255,.77);
-  backdrop-filter:blur(38px) saturate(185%); -webkit-backdrop-filter:blur(38px) saturate(185%);
+   
   box-shadow:0 8px 28px rgba(112,83,104,.1);
 }
 .composer:focus-within { border-color:#dfbfd3; }
@@ -388,7 +388,7 @@ select,.small-btn {
 .media-backdrop,.modal-backdrop {
   position:fixed; z-index:90; inset:0; display:flex; align-items:center; justify-content:center;
   padding:18px; background:rgba(77,57,73,.27);
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+   
   opacity:0; visibility:hidden; pointer-events:none; transition:opacity .2s,visibility .2s;
 }
 .media-backdrop { align-items:flex-end; padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
@@ -412,7 +412,7 @@ body.camera-open { overflow:hidden; }
 .cam-stage { touch-action:none; }
 .cam-zoom {
   position:absolute; z-index:2; left:50%; bottom:14px; transform:translateX(-50%); display:flex; align-items:center; gap:4px;
-  padding:4px; border-radius:24px; background:rgba(0,0,0,.38); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  padding:4px; border-radius:24px; background:rgba(0,0,0,.38);  
 }
 .cam-zoom:empty,#cameraScreen.review .cam-zoom { display:none; }
 .cam-zoom button {
@@ -435,7 +435,7 @@ body.camera-open { overflow:hidden; }
 }
 .cam-round {
   display:grid; place-items:center; width:44px; height:44px; padding:0; border:1px solid rgba(255,255,255,.3); border-radius:50%;
-  background:rgba(255,255,255,.16); color:#fff; -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  background:rgba(255,255,255,.16); color:#fff;  
 }
 .cam-round svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .cam-round:active { transform:scale(.92); }
@@ -555,8 +555,8 @@ body.camera-open { overflow:hidden; }
   border:1px solid var(--edge);
   border-radius:29px;
   background:rgba(255,249,253,.78);
-  backdrop-filter:blur(42px) saturate(190%);
-  -webkit-backdrop-filter:blur(42px) saturate(190%);
+  
+  
   box-shadow:0 9px 35px rgba(101,73,94,.12);
   isolation:isolate;
   overflow:hidden;
@@ -623,7 +623,7 @@ body.dark-theme #homePage,body.has-wallpaper #homePage {
 }
 #homePage .home-btn {
   border:1px solid var(--g-edge); background:var(--g-bg); color:var(--home-ink); box-shadow:var(--g-shadow);
-  backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+   
 }
 /* selotip washi di pojok kiri atas */
 /* doodle: percikan, hati, bunga */
@@ -730,7 +730,7 @@ button:active:not(:disabled) {transform:scale(.95)}
 .dd-chev,.dd-check {fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .dd-chev {width:14px;height:14px;transition:transform .35s var(--spring)}
 .dd.open .dd-chev {transform:rotate(180deg)}
-.dd-panel {position:absolute;z-index:60;top:calc(100% + 8px);right:0;min-width:150px;padding:5px;border:1px solid var(--line);border-radius:18px;background:var(--modal);box-shadow:0 12px 34px rgba(104,76,96,.18);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);transform-origin:top right;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.9);transition:opacity .2s,transform .35s var(--spring),visibility .2s}
+.dd-panel {position:absolute;z-index:60;top:calc(100% + 8px);right:0;min-width:150px;padding:5px;border:1px solid var(--line);border-radius:18px;background:var(--modal);box-shadow:0 12px 34px rgba(104,76,96,.18);transform-origin:top right;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.9);transition:opacity .2s,transform .35s var(--spring),visibility .2s}
 .dd.open .dd-panel {opacity:1;visibility:visible;pointer-events:auto;transform:none}
 .dd-opt {display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:11px 12px;border:0;border-radius:13px;background:transparent;text-align:left;font-size:12.5px}
 .dd-opt:active {background:var(--soft)}
@@ -744,7 +744,7 @@ button:active:not(:disabled) {transform:scale(.95)}
 .search-wrap,.composer {transition:border-color .3s,box-shadow .3s}
 .search-wrap:focus-within,.composer:focus-within {border-color:#d7a9c4;box-shadow:0 0 0 4px rgba(215,169,196,.22),0 8px 28px rgba(112,83,104,.1)}
 .dark-theme .search-wrap:focus-within,.dark-theme .composer:focus-within {border-color:#f06aae;box-shadow:0 0 0 4px rgba(240,106,174,.25)}
-.media-backdrop,.modal-backdrop {backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px) saturate(120%);transition:opacity .28s,visibility .28s}
+.media-backdrop,.modal-backdrop {transition:opacity .28s,visibility .28s}
 .media-sheet,.edit-modal {opacity:0;transform:translateY(30px) scale(.96);transition:transform .5s var(--spring),opacity .25s}
 .media-backdrop.open .media-sheet,.modal-backdrop.open .edit-modal {opacity:1;transform:none}
 .toast {transform:translate(-50%,16px) scale(.94);transition:opacity .25s,transform .45s var(--spring),visibility .25s}
@@ -799,7 +799,7 @@ button:active:not(:disabled) {transform:scale(.95)}
 .dt-trigger span {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dark-theme .dt-trigger {background-color:#3b1330;border-color:#74305f}
 .dark-theme .dt-trigger svg {stroke:#ff9fce}
-.picker-backdrop {position:fixed;z-index:130;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:18px 18px calc(18px + env(safe-area-inset-bottom));background:rgba(77,57,73,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s,visibility .28s}
+.picker-backdrop {position:fixed;z-index:130;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:18px 18px calc(18px + env(safe-area-inset-bottom));background:rgba(77,57,73,.3);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s,visibility .28s}
 .picker-backdrop.open {opacity:1;visibility:visible;pointer-events:auto}
 .picker-card {width:min(100%,400px);padding:18px;border:1px solid var(--edge);border-radius:28px;background:var(--modal);color:var(--ink);box-shadow:0 24px 70px rgba(83,57,77,.28);outline:none;opacity:0;transform:translateY(40px) scale(.96);transition:transform .5s var(--spring),opacity .25s}
 .picker-backdrop.open .picker-card {opacity:1;transform:none}
@@ -961,7 +961,7 @@ html {scroll-padding-top:calc(var(--head-h,120px) + 8px)}
   position:sticky;top:0;z-index:35;
   margin:0 -15px;padding:env(safe-area-inset-top,0px) 15px 0;
   background:linear-gradient(180deg,rgba(249,240,246,.94),rgba(249,240,246,.82));
-  backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
+  
   box-shadow:0 1px 0 rgba(255,255,255,.7),0 10px 24px -14px rgba(112,83,104,.35);
 }
 @media(max-width:380px) {
@@ -1165,13 +1165,13 @@ body.view-home {--wp-dim:.8;--wp-dim-color:0,0,0}
 .modal-head + .set-sec {border-top:0;padding-top:6px}
 /* ===== Performa: tanpa blur berat & tanpa animasi background ===== */
 .blob,.bg-heart {animation:none!important;will-change:auto!important}
-.message {-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(246,231,239,.66));box-shadow:0 3px 12px rgba(124,88,112,.06)}
+.message {background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(246,231,239,.66));box-shadow:0 3px 12px rgba(124,88,112,.06)}
 .dark-theme .message {box-shadow:0 3px 12px rgba(0,0,0,.16)}
-.composer {-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(255,255,255,.93)}
-.bottom-nav {-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(255,249,253,.95)}
-.sticky-head {-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(180deg,rgba(249,240,246,.97),rgba(249,240,246,.92))}
+.composer {background:rgba(255,255,255,.93)}
+.bottom-nav {background:rgba(255,249,253,.95)}
+.sticky-head {background:linear-gradient(180deg,rgba(249,240,246,.97),rgba(249,240,246,.92))}
 .dark-theme .sticky-head {background:linear-gradient(180deg,rgba(33,9,26,.97),rgba(33,9,26,.92))}
-.glass,.dd-panel,.profile-card {-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.glass,.dd-panel,.profile-card {}
 .bg-layer.paused .blob,.bg-layer.paused .bg-heart {animation-play-state:paused}
 .sticky-head {contain:layout style}
 /* Pembatas antar bagian Pengaturan */
@@ -1355,7 +1355,7 @@ body.head-compact .head-settings-compact {display:grid}
 .call-screen:not(.video) .vid-only {display:none}
 .call-screen.video #callSpeaker {display:none}
 .call-screen.video .call-controls {gap:16px}
-.call-screen.video .call-ctl .cc-ico {width:58px;height:58px;background:rgba(0,0,0,.38);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.call-screen.video .call-ctl .cc-ico {width:58px;height:58px;background:rgba(0,0,0,.38);}
 .call-screen.video .call-ctl[aria-pressed="true"] .cc-ico {background:#fff}
 .call-screen.video .call-ctl.end .cc-ico {background:#ff3b30}
 .call-ctl:disabled {opacity:.4}
@@ -1399,7 +1399,7 @@ body.head-compact .head-settings-compact {display:grid}
 .hv-chip { flex:none; max-width:170px; padding:7px 12px; border:1px solid var(--g-edge); border-radius:14px; background:var(--g-bg); color:var(--home-sub); font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .hv-chip.on { color:var(--home-ink); border-color:#c4709f; }
 body.dark-theme .hv-chip.on,body.has-wallpaper .hv-chip.on { border-color:#f06aae; }
-.hv-card { position:relative; backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%); }
+.hv-card { position:relative;   }
 .hv-ibtn { transition:transform .18s ease,color .2s ease,border-color .2s ease; }
 .hv-ibtn[aria-pressed="true"] { color:#d6479a; border-color:#c4709f; }
 body.dark-theme .hv-ibtn[aria-pressed="true"],body.has-wallpaper .hv-ibtn[aria-pressed="true"] { color:#ff8cc0; border-color:#f06aae; }
@@ -1417,7 +1417,7 @@ body.dark-theme .hv-ibtn[aria-pressed="true"],body.has-wallpaper .hv-ibtn[aria-p
 .hv-stage.custom video { object-fit:contain; }
 .hv-stage:focus-visible { box-shadow:0 0 0 2px #ff8cc0,0 10px 26px rgba(124,88,112,.28); }
 .hv-stage:fullscreen,.hv-stage:-webkit-full-screen { width:100%; height:100%; aspect-ratio:auto; border-radius:0; box-shadow:none; }
-.hv-big { position:absolute; left:50%; top:50%; z-index:3; display:grid; place-items:center; width:62px; height:62px; margin:-31px 0 0 -31px; padding:0; border:1px solid rgba(255,255,255,.55); border-radius:50%; color:#fff; background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(224,85,143,.22)); backdrop-filter:blur(14px) saturate(160%); -webkit-backdrop-filter:blur(14px) saturate(160%); box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.5); transition:opacity .25s ease,transform .32s cubic-bezier(.32,.72,0,1); }
+.hv-big { position:absolute; left:50%; top:50%; z-index:3; display:grid; place-items:center; width:62px; height:62px; margin:-31px 0 0 -31px; padding:0; border:1px solid rgba(255,255,255,.55); border-radius:50%; color:#fff; background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(224,85,143,.22));   box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.5); transition:opacity .25s ease,transform .32s cubic-bezier(.32,.72,0,1); }
 .hv-big svg { width:26px; height:26px; margin-left:3px; fill:currentColor; }
 .hv-big:active { transform:scale(.92); }
 .hv-stage.playing .hv-big,.hv-stage.loading .hv-big { opacity:0; transform:scale(.8); pointer-events:none; }
@@ -1541,14 +1541,14 @@ body.history-open { overflow:hidden; }
 .hv-big svg { width:22px; height:22px; }
 .hv-big::before { content:""; position:absolute; inset:-6px; border-radius:50%; }
 /* tombol putar ulang, di samping tombol play */
-.hv-replay { position:absolute; left:50%; top:50%; z-index:6; display:grid; place-items:center; width:40px; height:40px; margin:-26px 0 0 41px; padding:0; border:1px solid rgba(255,255,255,.55); border-radius:50%; color:#fff; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(224,85,143,.22)); backdrop-filter:blur(14px) saturate(160%); -webkit-backdrop-filter:blur(14px) saturate(160%); box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.5); transition:opacity .25s ease,transform .32s cubic-bezier(.32,.72,0,1); }
+.hv-replay { position:absolute; left:50%; top:50%; z-index:6; display:grid; place-items:center; width:40px; height:40px; margin:-26px 0 0 41px; padding:0; border:1px solid rgba(255,255,255,.55); border-radius:50%; color:#fff; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(224,85,143,.22));   box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.5); transition:opacity .25s ease,transform .32s cubic-bezier(.32,.72,0,1); }
 .hv-replay::before { content:""; position:absolute; inset:-6px; border-radius:50%; }
 .hv-replay svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
 .hv-replay:active { transform:scale(.9); }
 .hv-stage.idle .hv-replay { opacity:0; transform:scale(.8); pointer-events:none; }
 .hv-stage.loading .hv-replay { opacity:.5; }
 /* layar penuh: blur (backdrop-filter) di atas video bisa membuat video jadi hitam saat overlay muncul / hilang, jadi dimatikan */
-.hv-big,.hv-replay { backdrop-filter:none!important; -webkit-backdrop-filter:none!important; background:linear-gradient(145deg,rgba(70,24,52,.66),rgba(160,44,108,.6))!important; }
+.hv-big,.hv-replay {   background:linear-gradient(145deg,rgba(70,24,52,.66),rgba(160,44,108,.6))!important; }
 /* minion penahan tombol play: muncul kalau animasi minion di Beranda belum selesai tapi video mau diputar */
 .hv-mn { position:fixed; z-index:900; width:44px; height:70px; margin-left:-22px; pointer-events:none; --look:5s; --blink:3.4s; --dl:-1s; }
 .hv-mn-in { width:100%; height:100%; transform-origin:50% 100%; transform:scale(.8); }
@@ -1610,7 +1610,7 @@ body.hv-pfs { overflow:hidden; }
 .pk-say .w { display:inline-block; opacity:0; transform-origin:50% 90%; }
 .pk-say .w.hot { color:#e0245e; font-size:17px; }
 /* bisikan samar minion selama tombol belum di-tap */
-.pk-whisper { position:absolute; left:50%; bottom:calc(100% - 20px); z-index:7; translate:-50% 0; padding:4px 11px 5px; border-radius:14px; background:rgba(255,255,255,.3); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); color:rgba(194,37,92,.78); white-space:nowrap; pointer-events:none; opacity:0; font-family:"Fredoka","Baloo 2","Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif; font-size:11.5px; font-weight:600; line-height:1.2; letter-spacing:.5px; text-shadow:0 0 6px rgba(255,255,255,.7); }
+.pk-whisper { position:absolute; left:50%; bottom:calc(100% - 20px); z-index:7; translate:-50% 0; padding:4px 11px 5px; border-radius:14px; background:rgba(255,255,255,.3);   color:rgba(194,37,92,.78); white-space:nowrap; pointer-events:none; opacity:0; font-family:"Fredoka","Baloo 2","Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif; font-size:11.5px; font-weight:600; line-height:1.2; letter-spacing:.5px; text-shadow:0 0 6px rgba(255,255,255,.7); }
 .pk-whisper::after { content:""; position:absolute; left:50%; bottom:-3px; width:7px; height:7px; margin-left:-3.5px; background:rgba(255,255,255,.3); transform:rotate(45deg); border-radius:1px; }
 .mn.whispering .mn-talkmouth { animation-duration:.55s; }
 /* minion: --x posisi, --pr/--or sudut (ngintip / keluar), --oy tinggi saat keluar */
@@ -1754,7 +1754,7 @@ body.hv-pfs { overflow:hidden; }
 .hv-card.tucked { height:0; margin-top:0!important; margin-bottom:0!important; padding-top:0!important; padding-bottom:0!important; border-width:0; overflow:hidden; opacity:0; transform:translateY(-14px) scale(.96); visibility:hidden; transition:height .5s cubic-bezier(.32,.72,0,1),opacity .32s ease,transform .5s cubic-bezier(.32,.72,0,1),padding .5s cubic-bezier(.32,.72,0,1),margin .5s cubic-bezier(.32,.72,0,1),visibility 0s linear .5s; }
 .cd-home.tucked { height:0; padding-top:0!important; padding-bottom:0!important; overflow:hidden; opacity:0; transform:translateY(-14px) scale(.96); visibility:hidden; transition:height .5s cubic-bezier(.32,.72,0,1),opacity .32s ease,transform .5s cubic-bezier(.32,.72,0,1),padding .5s cubic-bezier(.32,.72,0,1),visibility 0s linear .5s; }
 /* ===== Tombol kembali ke Beranda: saat video diputar / layar penuh ===== */
-.hv-back { position:absolute; top:10px; left:10px; z-index:5; display:flex; align-items:center; gap:4px; height:36px; padding:0 14px 0 9px; border:1px solid rgba(255,255,255,.28); border-radius:18px; background:rgba(36,8,26,.72); color:#fff; font:inherit; font-size:13px; font-weight:650; -webkit-tap-highlight-color:transparent; backdrop-filter:none!important; -webkit-backdrop-filter:none!important; transition:opacity .3s ease,transform .15s ease; }
+.hv-back { position:absolute; top:10px; left:10px; z-index:5; display:flex; align-items:center; gap:4px; height:36px; padding:0 14px 0 9px; border:1px solid rgba(255,255,255,.28); border-radius:18px; background:rgba(36,8,26,.72); color:#fff; font:inherit; font-size:13px; font-weight:650; -webkit-tap-highlight-color:transparent;   transition:opacity .3s ease,transform .15s ease; }
 .hv-back svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .hv-back:active { transform:scale(.94); }
 .hv-stage:not(.playing):not(.fs) .hv-back { display:none; }
@@ -1763,7 +1763,7 @@ body.hv-pfs { overflow:hidden; }
 /* ===== Progres pemuatan data ===== */
 .ld-bar { position:fixed; left:50%; top:calc(env(safe-area-inset-top,0px) + 10px); z-index:2500; width:min(92vw,340px); opacity:0; visibility:hidden; pointer-events:none; transform:translate(-50%,-14px); transition:opacity .3s ease,transform .4s cubic-bezier(.32,.72,0,1),visibility 0s linear .4s; }
 .ld-bar.on { opacity:1; visibility:visible; transform:translate(-50%,0); transition:opacity .3s ease,transform .4s cubic-bezier(.32,.72,0,1),visibility 0s; }
-.ld-card { padding:11px 14px 12px; border-radius:18px; background:rgba(255,255,255,.9); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border:1px solid rgba(0,0,0,.06); box-shadow:0 8px 28px rgba(0,0,0,.18); color:#222; font-size:13px; font-weight:650; }
+.ld-card { padding:11px 14px 12px; border-radius:18px; background:rgba(255,255,255,.9);   border:1px solid rgba(0,0,0,.06); box-shadow:0 8px 28px rgba(0,0,0,.18); color:#222; font-size:13px; font-weight:650; }
 body.dark-theme .ld-card { background:rgba(32,32,38,.9); border-color:rgba(255,255,255,.1); color:#fff; }
 .ld-row { display:flex; align-items:center; gap:10px; min-height:20px; }
 .ld-txt { flex:1; min-width:0; line-height:1.3; overflow-wrap:anywhere; }
@@ -1788,8 +1788,8 @@ body.dark-theme .ld-card { background:rgba(32,32,38,.9); border-color:rgba(255,2
 .pk-peek:active { box-shadow:0 2px 4px rgba(0,0,0,.3); }
 .wk .mn-svg,.wk-bike svg,.pk-gm,.pk-fly,.pk-sign-m,.pk-rider .mn-svg { filter:none!important; }
 .pk-sign-m .mn-svg { filter:none!important; }
-#homePage,#homePage * { -webkit-backdrop-filter:none!important; backdrop-filter:none!important; }
-.pk-whisper { -webkit-backdrop-filter:none!important; backdrop-filter:none!important; background:rgba(255,255,255,.42); }
+
+.pk-whisper {   background:rgba(255,255,255,.42); }
 /* minion: hanya animasi ringan yang jalan terus (hop, goyang, kedip); napas / ayun lengan / lirik / dengung dibuang */
 .pk-stage.out .mn-all,.mn-pupil,.pk-stage.out .mn-hum,.pk-stage.out .mn-al:not(.wave),.pk-stage.out .mn-ar:not(.wave) { animation:none!important; }
 /* ===== Perbaikan: layar penuh tidak hitam + animasi lebih mulus ===== */
@@ -1830,7 +1830,7 @@ body.hv-fsing .pk-stage,body.hv-fsing .pk-stage * { animation-play-state:paused!
 .wa-avatar svg { position:absolute; left:50%; top:-24px; width:232px; height:auto; transform:translateX(-50%); }
 .wa-call.ringing .wa-avatar { animation:waPulse 1.8s ease-out infinite; }
 @keyframes waPulse { 0% { box-shadow:0 0 0 4px rgba(255,255,255,.14),0 0 0 0 rgba(37,211,102,.5); } 100% { box-shadow:0 0 0 4px rgba(255,255,255,.14),0 0 0 34px rgba(37,211,102,0); } }
-.wa-dialog { width:100%; max-width:380px; margin-top:26px; padding:14px 18px 12px; border-radius:20px; background:rgba(8,20,22,.66); border:1px solid rgba(255,255,255,.14); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 10px 30px rgba(0,0,0,.3); }
+.wa-dialog { width:100%; max-width:380px; margin-top:26px; padding:14px 18px 12px; border-radius:20px; background:rgba(8,20,22,.66); border:1px solid rgba(255,255,255,.14);   box-shadow:0 10px 30px rgba(0,0,0,.3); }
 .wa-dialog[hidden] { display:none; }
 .wa-dname { color:#25d366; font-size:13px; font-weight:700; letter-spacing:.3px; }
 .wa-dtext { min-height:28px; margin-top:4px; font-size:20px; font-weight:500; line-height:1.4; }
@@ -1852,7 +1852,7 @@ body.hv-fsing .pk-stage,body.hv-fsing .pk-stage * { animation-play-state:paused!
 .wa-ico.red { background:#ff3b30; }
 .wa-ico.red svg { transform:none; }
 .wa-ico.green { background:#25d366; }
-.wa-ico.gray { background:rgba(255,255,255,.16); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+.wa-ico.gray { background:rgba(255,255,255,.16);   }
 .wa-b[aria-pressed="true"] .wa-ico.gray { background:#fff; }
 .wa-b[aria-pressed="true"] .wa-ico.gray svg { stroke:#0f2f2a; }
 .wa-btns.four .wa-ico { width:64px; height:64px; }
@@ -1953,7 +1953,7 @@ body.mode-bubu .dudu-only{display:none!important}
 .demo-btn:disabled{opacity:.6}
 .demo-row{display:flex;flex-direction:column;gap:9px}
 
-.wa-confirm{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.52);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.wa-confirm{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:24px;background:rgba(0,0,0,.52);}
 .wa-confirm[hidden]{display:none}
 .wa-cbox{width:100%;max-width:300px;padding:22px 18px 16px;border-radius:22px;text-align:center;background:rgba(22,40,38,.92);border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 50px rgba(0,0,0,.5);animation:waCPop .38s cubic-bezier(.34,1.4,.5,1)}
 .wa-ctitle{font-size:18px;font-weight:700}
@@ -2054,6 +2054,443 @@ body.selecting .select-bar{transform:none;visibility:visible}
 .sel-btn{padding:10px 14px;border:1px solid var(--edge,#eee);border-radius:14px;background:var(--soft,#f7eef3);color:var(--ink,#4a2a3d);font-size:12px;font-weight:600}
 .sel-btn.danger{background:#e0558f;border-color:#e0558f;color:#fff}
 .sel-btn.danger:disabled{opacity:.45}
+
+/* ===== Bubble chat ala WhatsApp + Instagram (warna tetap pink, bentuk & susunan diganti) ===== */
+.message{--bub:#fdf0f7;--bub-pin:#f6dcea;--bub-sh:0 1px 1.5px rgba(124,88,112,.18)}
+.dark-theme .message{--bub:#511c42;--bub-pin:#5d2349;--bub-sh:0 1px 1.5px rgba(0,0,0,.3)}
+.entry{margin-bottom:10px}
+.entry.join-next{margin-bottom:2px}
+.entry.join-prev{margin-top:0}
+.entry.run-next{margin-bottom:4px}
+.entry .message{display:flow-root;max-width:80%;padding:7px 12px 6px;border:0;border-radius:20px;background:var(--bub)!important;box-shadow:var(--bub-sh)}
+.entry.pinned .message{--bub:var(--bub-pin)}
+.entry.pinned .message,.dark-theme .entry.pinned .message,.entry.join-next .message{box-shadow:var(--bub-sh)}
+/* Sudut: Instagram (bulat besar, rangkaian menyatu) */
+.entry:not(.join-prev) .message{border-top-right-radius:0}
+.entry.join-prev .message{border-top-right-radius:5px}
+.entry.join-next .message{border-bottom-right-radius:5px}
+/* Ekor WhatsApp di bubble pertama tiap rangkaian */
+.entry:not(.join-prev) .message::before{content:"";position:absolute;top:0;right:-8px;width:9px;height:12px;background:var(--bub);clip-path:path('M0 0H9Q3 4 0 12Z')}
+/* Teks + jam di dalam bubble (kanan bawah) */
+.entry .message>p{display:inline;font-size:14.5px;line-height:1.4}
+.entry .message .time{float:right;margin:7px 0 -3px 12px;font-size:10.5px;line-height:14px;text-align:right;color:var(--muted)}
+.entry .message.no-time{padding-bottom:7px}
+.entry .message>.pin-row{margin:0 0 3px}
+/* Foto: bingkai tipis, jam melayang di atas foto bila tanpa teks */
+.entry .message:has(>.message-photo){padding:3px}
+.entry .message>.message-photo{max-height:280px;margin:0;border-radius:17px}
+.entry .message:has(>.message-photo)>p{display:block;padding:6px 9px 0}
+.entry .message:has(>.message-photo)>.time{float:none;margin:1px 9px 2px 0}
+.entry .message:has(>.message-photo)>.pin-row{padding:5px 9px 0}
+.entry .message>.message-photo+.time{position:absolute;right:9px;bottom:9px;margin:0;padding:2px 7px;border-radius:10px;background:rgba(0,0,0,.4);color:#fff}
+/* Riwayat panggilan */
+.entry .message.call-msg{min-width:min(240px,100%);padding:9px 12px 7px}
+/* Reaksi: pil kecil menempel di tepi bawah bubble */
+.message-reaction{min-width:26px;min-height:0;height:24px;margin:-10px 12px 0 0;padding:0 7px;border:0;border-radius:12px;box-shadow:0 1px 3px rgba(124,88,112,.3)}
+.dark-theme .message-reaction{border:0;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.message-reaction svg{width:14px;height:14px}
+/* Avatar kecil di bubble terakhir */
+.entry-avatar{width:28px;height:28px;margin-left:9px;border:0}
+.entry.has-reaction .entry-avatar,.wa-dchat .entry.has-reaction .entry-avatar{margin-bottom:14px}
+/* Penanda tanggal seperti chip WhatsApp */
+.day-divider{display:block;width:fit-content;max-width:90%;margin:18px auto 12px;padding:5px 12px;border-radius:10px;background:rgba(255,255,255,.75);box-shadow:0 1px 1.5px rgba(124,88,112,.15);font-size:11.5px;text-align:center}
+.day-divider::before,.day-divider::after{display:none}
+.dark-theme .day-divider{background:rgba(92,32,72,.85);box-shadow:0 1px 1.5px rgba(0,0,0,.3)}
+.entry.selected .message{box-shadow:0 0 0 2px #e0558f}
+
+/* ===== Cookie menggantung pada rantai minion ===== */
+.ck-hang{position:absolute;inset:0;z-index:2;pointer-events:none;will-change:transform}
+.ck-hang .pk-peek{pointer-events:auto}
+.ck-chain{position:absolute;left:0;top:0;width:100%;height:0;z-index:1;pointer-events:none}
+.ck-mn{position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none;will-change:transform}
+.ck-mn .mn-svg{width:100%;height:100%;filter:drop-shadow(0 2px 2px rgba(0,0,0,.22))}
+.ck-chain .mn-svg,.ck-chain .mn-all{animation:none!important}
+.ck-chain .mn-al{animation:none!important;transform:rotate(172deg)!important}
+.ck-chain .mn-ar{animation:none!important;transform:rotate(-172deg)!important}
+
+/* ===== Glassmorphism (kaca buram bertingkat, tepi terang tipis, bayangan lembut) ===== */
+:root{--gl:rgba(255,255,255,.38);--gl2:rgba(255,255,255,.56);--gl-b:rgba(255,255,255,.65);--gl-sh:inset 0 1px 0 rgba(255,255,255,.75),0 12px 34px rgba(120,70,130,.16);--gl-blur:blur(20px) saturate(170%)}
+body.dark-theme{--gl:rgba(255,255,255,.08);--gl2:rgba(255,255,255,.13);--gl-b:rgba(255,255,255,.18);--gl-sh:inset 0 1px 0 rgba(255,255,255,.16),0 14px 38px rgba(0,0,0,.38)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 40% at 12% 6%,rgba(255,120,190,.34),transparent 70%),radial-gradient(50% 40% at 92% 30%,rgba(150,120,255,.28),transparent 70%),radial-gradient(60% 45% at 30% 96%,rgba(255,170,110,.26),transparent 70%)}
+.auth-card,.search-wrap,.composer,.photo-preview,.bottom-nav,.sticky-head,.menu,.edit-modal,.media-sheet,.toast,.stat-card,.profile-info,.profile-action,.profile-streak,.hv-card,.pinned-bar{background:var(--gl)!important;border-color:var(--gl-b)!important;box-shadow:var(--gl-sh)!important;}
+.auth-card,.menu,.edit-modal,.media-sheet,.stat-card,.profile-info,.profile-action,.profile-streak,.hv-card,.search-wrap,.photo-preview,.toast,.pinned-bar{border:1px solid var(--gl-b)!important}
+.auth-card,.edit-modal,.media-sheet,.hv-card,.profile-info,.profile-action,.profile-streak{border-radius:26px}
+.stat-card,.menu{border-radius:20px}
+.auth-input,.edit-text,.hv-input,.date-field,select,.ce-newchat textarea,.small-btn,.theme-btn,.icon-btn,.media-option,.cancel-btn,.media-cancel,.modal-close:not(.modal-save),.sel-btn:not(.danger){background:var(--gl2)!important;border-color:var(--gl-b)!important;}
+.modal-backdrop:not(.zoom-backdrop),.media-backdrop,.picker-backdrop{}
+.auth-btn,.save-btn,.dialog-actions .primary,.demo-btn{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 22px rgba(176,45,120,.35)}
+.home-title,.auth-brand,.auth-title,.modal-title,.contact-name{letter-spacing:-.03em;font-weight:700}
+.day-divider{background:var(--gl2);box-shadow:var(--gl-sh)}
+.dark-theme .day-divider{background:var(--gl2);box-shadow:var(--gl-sh)}
+/* Bubble chat dari kaca berwarna pink */
+.message{--bub:rgba(255,232,244,.58);--bub-pin:rgba(255,205,230,.7);--bub-sh:inset 0 1px 0 rgba(255,255,255,.65),0 6px 18px rgba(124,88,112,.15)}
+.dark-theme .message{--bub:rgba(255,160,215,.17);--bub-pin:rgba(255,130,200,.28);--bub-sh:inset 0 1px 0 rgba(255,255,255,.16),0 6px 18px rgba(0,0,0,.3)}
+.entry .message,.entry:not(.join-prev) .message::before{}
+
+/* ===== Kalender gelap dengan bola oranye + jalur rentang tanggal ===== */
+#calendarPanel{padding:18px 12px 14px;border:1px solid rgba(255,255,255,.1)!important;border-radius:30px;background:linear-gradient(160deg,rgba(58,65,73,.92),rgba(36,41,47,.94))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 18px 42px rgba(0,0,0,.4)!important;color:#e9edf1}
+#calendarPanel .cal-title{color:#f3f5f7;font-size:15px;font-weight:500;letter-spacing:.2px}
+#calendarPanel .month-btn{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.12)!important;color:#e9edf1}
+#calendarPanel .weekdays{color:rgba(255,255,255,.42);margin-bottom:6px}
+#calendarPanel .cal-foot{color:rgba(255,255,255,.6);border-top-color:rgba(255,255,255,.1)}
+#calendarPanel .cal-count{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:#e9edf1}
+#days{column-gap:0;row-gap:4px}
+#days .day{position:relative;isolation:isolate;border:0;border-radius:50%;background:transparent;color:#e6eaee;font-size:15px;font-weight:300;box-shadow:none}
+#days .day.today{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+#days .day.has-notes:not(.selected):not(.range-start):not(.range-end)::after{background:rgba(255,255,255,.55)}
+#days .day.selected,.dark-theme #days .day.selected{background:transparent;border:0;color:#fff;font-weight:600}
+#days .day.selected::after,#days .day.range-start::after,#days .day.range-end::after{content:"";position:absolute;inset:6%;width:auto;height:auto;transform:none;z-index:-1;border-radius:50%;background:radial-gradient(circle at 38% 28%,#ff9d5c 0,#ff5b1f 40%,#d63a08 72%,#a02400 100%);box-shadow:inset 0 2px 3px rgba(255,255,255,.5),inset 0 -3px 5px rgba(110,20,0,.5),0 6px 16px rgba(255,90,30,.5)}
+#days .day.in-range,#days .day.range-start,#days .day.range-end{color:#fff}
+#days .day.in-range::before,#days .day.range-start::before,#days .day.range-end::before{content:"";position:absolute;left:0;right:0;top:15%;bottom:15%;z-index:-2;background:rgba(0,0,0,.3);box-shadow:inset 0 2px 6px rgba(0,0,0,.55),inset 0 -1px 0 rgba(255,255,255,.07)}
+#days .day.range-start::before{left:50%}
+#days .day.range-end::before{right:50%}
+#days .day.in-range:nth-child(7n+1)::before,#days .day.in-range.cap-l::before{border-radius:999px 0 0 999px}
+#days .day.in-range:nth-child(7n)::before,#days .day.in-range.cap-r::before{border-radius:0 999px 999px 0}
+#days .day.range-start:nth-child(7n)::before,#days .day.range-end:nth-child(7n+1)::before{display:none}
+@keyframes ckTrack{from{transform:scaleX(0);opacity:0}}
+@keyframes ckOrb{from{transform:scale(0);opacity:0}}
+#days .day.fresh::before{transform-origin:left center;animation:ckTrack .3s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(min(var(--i,0),31)*28ms)}
+#days .day.range-end.fresh::after{animation:ckOrb .42s cubic-bezier(.34,1.4,.5,1) both;animation-delay:calc(min(var(--i,0),31)*28ms)}
+@media (prefers-reduced-motion:reduce){#days .day.fresh::before,#days .day.range-end.fresh::after{animation:none}}
+/* Cookie Jet: api jet di bawah cookie */
+.ck-jet{position:absolute;left:50%;top:108px;width:44px;height:84px;margin-left:-22px;z-index:1;pointer-events:none;transform-origin:50% 0;filter:drop-shadow(0 0 9px rgba(255,140,30,.85))}
+.ck-jet[hidden]{display:none}
+.ck-jet svg{display:block;width:100%;height:100%;overflow:visible}
+.ck-jet path{transform-box:fill-box;transform-origin:50% 0}
+.ck-f1{animation:ckFl .13s ease-in-out infinite alternate}
+.ck-f2{animation:ckFl .09s ease-in-out infinite alternate-reverse}
+.ck-f3{animation:ckFl .07s ease-in-out infinite alternate}
+@keyframes ckFl{from{transform:scale(.88,.9)}to{transform:scale(1.1,1.12)}}
+.ck-sp{position:absolute;left:50%;top:50px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#ffd36a;opacity:0;animation:ckSp .75s linear infinite;animation-delay:var(--dl,0s)}
+@keyframes ckSp{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx,0),48px) scale(.4)}}
+@media (prefers-reduced-motion:reduce){.ck-f1,.ck-f2,.ck-f3,.ck-sp{animation:none}}
+
+/* ===== FIX v7: anti-lag, teks terbaca, bubble ala WhatsApp + Instagram ===== */
+/* 1. Tanpa blur / backdrop-filter di mana pun (penyebab utama lag) */
+
+/* 2. Latar ringan: tanpa overlay/blob besar & tanpa background fixed */
+body::before{display:none!important}
+.bg-mesh{display:none!important}
+html:root body:not(#_){background-attachment:scroll!important}
+.blob,.bg-heart{will-change:auto!important;animation:none!important}
+.ps-flame{animation:none!important;filter:none!important}
+/* animasi minion/cookie hanya jalan saat di Beranda */
+
+/* 3. Warna solid agar teks terbaca */
+html:root{--glass:#fff5fa;--surface:#fff;--gl:#fdf1f8;--gl2:#f5e3ee;--gl-b:#e0bfd2;--modal:#fffafd;--muted:#7a6376;--field:#fff}
+html:root body.dark-theme{--glass:#3a122e;--surface:#431634;--gl:#38112d;--gl2:#4a1a3e;--gl-b:#74305f;--modal:#2e0e25;--muted:#e8bcd6;--field:#42163a;--line:rgba(255,150,210,.28)}
+html:root body:not(#_) .sticky-head,html:root body:not(#_) .composer,html:root body:not(#_) .bottom-nav,html:root body:not(#_) .photo-preview,html:root body:not(#_) .search-wrap{background:var(--modal)!important}
+html:root body:not(#_) .bottom-nav.scroll-orb{background:transparent!important}
+html:root body:not(#_) .hv-card,html:root body:not(#_) .pinned-bar{background:var(--gl)!important}
+html:root body:not(#_) .day-divider{background:var(--gl2)!important;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.18)!important}
+/* 4. Bubble chat: solid pink + teks putih, ekor WhatsApp, sudut bulat & rangkaian menyatu ala Instagram */
+html:root body:not(#_) .message{--bub:#c93c8c;--bub-pin:#a02a73;--bub-sh:0 1px 1.5px rgba(0,0,0,.28)}
+html:root body.dark-theme .message{--bub:#a8307f;--bub-pin:#86216a;--bub-sh:0 1px 1.5px rgba(0,0,0,.4)}
+html:root body:not(#_) .entry.pinned .message{--bub:var(--bub-pin)}
+html:root body:not(#_) .entry .message{color:#fff;border:0!important;border-radius:20px;box-shadow:var(--bub-sh)!important;max-width:80%}
+html:root body:not(#_) .entry:not(.join-prev) .message{border-top-right-radius:4px}
+html:root body:not(#_) .entry.join-prev .message{border-top-right-radius:6px}
+html:root body:not(#_) .entry.join-next .message{border-bottom-right-radius:6px}
+html:root body:not(#_) .entry .message>p{color:#fff;font-size:15px;line-height:1.4}
+html:root body:not(#_) .entry .message .time{color:rgba(255,255,255,.8)}
+html:root body:not(#_) .entry .message .pin-row{color:#ffe3f1}
+html:root body:not(#_) .entry .message .call-title{color:#fff}
+html:root body:not(#_) .entry .message .call-sub{color:rgba(255,255,255,.85)}
+html:root body:not(#_) .entry .message .call-sub svg{stroke:#fff}
+html:root body:not(#_) .entry .message .call-ico{background:rgba(255,255,255,.22);color:#fff}
+html:root body:not(#_) .message-reaction{background:#fff;color:#e0245e;border:0!important;box-shadow:0 1px 3px rgba(0,0,0,.35)!important}
+html:root body.dark-theme .message-reaction{background:#4a1a3e}
+html:root body:not(#_) .entry-avatar{border:0!important}
+
+
+/* =====================================================================
+   CLAYMORPHISM  (lembut, tebal, timbul seperti tanah liat; lavender + putih)
+   Lapisan terakhir: menimpa tema sebelumnya tanpa menyentuh fungsi.
+   ===================================================================== */
+html:root body:not(#_):not(#_){
+  --clay-bg1:#fdf1f7; --clay-bg2:#f4e2ec;
+  --clay-hi:rgba(255,255,255,.96); --clay-sh:rgba(196,108,150,.30); --clay-sh2:rgba(222,150,188,.28);
+  --clay-primary:#e0558f; --clay-primary2:#f581b4; --clay-tint:#f9d4e6;
+  --ink:#654b5c; --muted:#9d8596; --danger:#d4506f;
+  --glass:#fdf3f8; --surface:#fff6fa; --gl:#fdf3f8; --gl2:#f8e6ef; --gl-b:rgba(255,255,255,.85);
+  --modal:#fdf4f9; --field:#f6e4ed; --soft:#f6dfea; --accent:#f9d4e6;
+  --edge:rgba(255,255,255,.85); --line:rgba(255,255,255,.9);
+  --clay-raise:0 12px 24px var(--clay-sh),0 3px 6px rgba(196,108,150,.16),inset 0 3px 5px var(--clay-hi),inset 0 -5px 9px var(--clay-sh2);
+  --clay-small:0 7px 14px var(--clay-sh),0 2px 3px rgba(196,108,150,.14),inset 0 2px 3px var(--clay-hi),inset 0 -3px 6px var(--clay-sh2);
+  --clay-press:inset 0 4px 9px rgba(196,108,150,.34),inset 0 -2px 4px var(--clay-hi);
+  --gl-sh:var(--clay-raise);
+  --g-bg:linear-gradient(150deg,#fffafd,#f8e6ef); --g-edge:rgba(255,255,255,.9); --g-shadow:var(--clay-small);
+  --heart-1:#f6b4d2; --heart-2:#e283b6; --heart-o:.35;
+  --b1:#f6bfdc; --b2:#f3d3ea; --b3:#ffd3e6; --b4:#f0c4ec;
+}
+html:root body.dark-theme:not(#_):not(#_){
+  --clay-bg1:#2e1429; --clay-bg2:#1f0c1b;
+  --clay-hi:rgba(255,255,255,.13); --clay-sh:rgba(6,4,22,.62); --clay-sh2:rgba(0,0,0,.34);
+  --clay-primary:#ee6aa3; --clay-primary2:#ff8fbd; --clay-tint:#5a2a4c;
+  --ink:#fff0f7; --muted:#d9b0c8; --danger:#ff7d9f;
+  --glass:#3a1a34; --surface:#40203a; --gl:#3a1a34; --gl2:#45233f; --gl-b:rgba(255,255,255,.1);
+  --modal:#3a1a34; --field:#4a2543; --soft:#4f2a47; --accent:#5a2a4c;
+  --edge:rgba(255,255,255,.1); --line:rgba(255,255,255,.12);
+  --clay-raise:0 12px 24px var(--clay-sh),0 3px 6px rgba(0,0,0,.3),inset 0 2px 4px var(--clay-hi),inset 0 -5px 9px var(--clay-sh2);
+  --clay-small:0 7px 14px var(--clay-sh),0 2px 3px rgba(0,0,0,.28),inset 0 2px 3px var(--clay-hi),inset 0 -3px 6px var(--clay-sh2);
+  --clay-press:inset 0 4px 9px rgba(0,0,0,.5),inset 0 -2px 4px rgba(255,255,255,.07);
+  --gl-sh:var(--clay-raise);
+  --g-bg:linear-gradient(150deg,#4a2543,#381832); --g-edge:rgba(255,255,255,.12); --g-shadow:var(--clay-small);
+  --heart-1:#a2338a; --heart-2:#5a1a55; --heart-o:.35;
+  --b1:#a8307f; --b2:#5e1f8a; --b3:#c03a8d; --b4:#3d1466;
+  --wp-dim-color:24,5,17;
+}
+html:root body:not(#_):not(#_){
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif!important;
+  background:linear-gradient(160deg,var(--clay-bg1),var(--clay-bg2))!important;
+  color:var(--ink);
+}
+html:root body.dark-theme:not(#_){color:var(--ink)}
+html:root,html:root body:not(#_){ -webkit-font-smoothing:antialiased }
+html:root body:not(#_):not(#_) #homePage{--home-ink:var(--ink);--home-sub:var(--muted)}
+html:root body.dark-theme:not(#_):not(#_) #homePage{--home-ink:#fff0f7;--home-sub:#e3bcd2}
+html:root body:not(#_):not(#_) .home-head{--home-strip:rgba(253,241,247,.96)}
+html:root body.dark-theme:not(#_):not(#_) .home-head{--home-strip:rgba(46,20,41,.96)}
+html:root body:not(#_):not(#_) h1,html:root body:not(#_):not(#_) h2,html:root body:not(#_):not(#_) .home-title,
+html:root body:not(#_):not(#_) .auth-brand,html:root body:not(#_):not(#_) .auth-title{color:var(--ink);letter-spacing:-.02em}
+
+/* ---------- Kartu & panel: timbul tebal, sudut sangat bulat ---------- */
+html:root body:not(#_):not(#_) .auth-card,
+html:root body:not(#_):not(#_) .profile-card,
+html:root body:not(#_):not(#_) .hv-card,
+html:root body:not(#_):not(#_) .edit-modal,
+html:root body:not(#_):not(#_) .media-sheet,
+html:root body:not(#_):not(#_) .stat-card,
+html:root body:not(#_):not(#_) .profile-info,
+html:root body:not(#_):not(#_) .profile-action,
+html:root body:not(#_):not(#_) .profile-streak{background:linear-gradient(155deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-raise)!important;border-radius:30px}
+html:root body:not(#_):not(#_) .menu,
+html:root body:not(#_):not(#_) .dd-panel,
+html:root body:not(#_):not(#_) .toast,
+html:root body:not(#_):not(#_) .pinned-bar,
+html:root body:not(#_):not(#_) .search-wrap,
+html:root body:not(#_):not(#_) .photo-preview{background:linear-gradient(155deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-small)!important;border-radius:22px}
+html:root body:not(#_):not(#_) .sticky-head{background:var(--clay-bg1)!important;box-shadow:0 8px 16px -10px var(--clay-sh)!important;border-color:transparent!important}
+html:root body.dark-theme:not(#_):not(#_) .sticky-head{background:var(--clay-bg1)!important}
+html:root body:not(#_):not(#_) .composer{background:linear-gradient(155deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-raise)!important}
+html:root body:not(#_):not(#_) .bottom-nav{background:linear-gradient(155deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-raise)!important}
+html:root body:not(#_):not(#_) .bottom-nav.scroll-orb{background:transparent!important}
+html:root body:not(#_):not(#_) #homePage .home-btn{background:var(--g-bg);border:1px solid var(--g-edge);box-shadow:var(--clay-small);color:var(--home-ink)}
+html:root body:not(#_):not(#_) .day-divider{background:var(--gl2)!important;color:var(--muted);border-radius:999px;padding:6px 15px;font-weight:600;box-shadow:var(--clay-press)!important}
+
+/* ---------- Tombol kecil & input ---------- */
+html:root body:not(#_):not(#_) .icon-btn,
+html:root body:not(#_):not(#_) .small-btn,
+html:root body:not(#_):not(#_) .theme-btn,
+html:root body:not(#_):not(#_) .media-option,
+html:root body:not(#_):not(#_) .cancel-btn,
+html:root body:not(#_):not(#_) .media-cancel,
+html:root body:not(#_):not(#_) .modal-close:not(.modal-save),
+html:root body:not(#_):not(#_) .sel-btn:not(.danger){background:linear-gradient(150deg,#fffafd,var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-small)!important;color:var(--ink)}
+html:root body.dark-theme:not(#_):not(#_) .icon-btn,
+html:root body.dark-theme:not(#_):not(#_) .small-btn,
+html:root body.dark-theme:not(#_):not(#_) .theme-btn,
+html:root body.dark-theme:not(#_):not(#_) .media-option,
+html:root body.dark-theme:not(#_):not(#_) .cancel-btn,
+html:root body.dark-theme:not(#_):not(#_) .media-cancel,
+html:root body.dark-theme:not(#_):not(#_) .modal-close:not(.modal-save),
+html:root body.dark-theme:not(#_):not(#_) .sel-btn:not(.danger){background:linear-gradient(150deg,#52294a,var(--gl2))!important}
+html:root body:not(#_):not(#_) .auth-input,
+html:root body:not(#_):not(#_) .edit-text,
+html:root body:not(#_):not(#_) .hv-input,
+html:root body:not(#_):not(#_) .date-field,
+html:root body:not(#_):not(#_) select,
+html:root body:not(#_):not(#_) .ce-newchat textarea{background:var(--field)!important;border:1px solid transparent!important;border-radius:18px;box-shadow:var(--clay-press)!important;color:var(--ink)}
+html:root body:not(#_):not(#_) #input{box-shadow:none!important}
+html:root body:not(#_):not(#_) #input::placeholder,html:root body:not(#_):not(#_) .auth-input::placeholder{color:var(--muted);opacity:.8}
+
+/* Tombol utama: tanah liat ungu */
+html:root body:not(#_):not(#_) .send,
+html:root body:not(#_):not(#_) .auth-btn,
+html:root body:not(#_):not(#_) .save-btn,
+html:root body:not(#_):not(#_) .modal-save,
+html:root body:not(#_):not(#_) .dialog-actions .primary,
+html:root body:not(#_):not(#_) .demo-btn{background:linear-gradient(150deg,var(--clay-primary2),var(--clay-primary))!important;color:#fff!important;border:0!important;
+  box-shadow:0 9px 18px rgba(224,85,143,.4),0 2px 4px rgba(170,50,110,.3),inset 0 3px 5px rgba(255,255,255,.45),inset 0 -5px 8px rgba(150,30,90,.38)!important}
+html:root body:not(#_):not(#_) .send svg{fill:#fff}
+html:root body:not(#_):not(#_) .send:active,html:root body:not(#_):not(#_) .auth-btn:active,html:root body:not(#_):not(#_) .save-btn:active,
+html:root body:not(#_):not(#_) .icon-btn:active,html:root body:not(#_):not(#_) .small-btn:active,html:root body:not(#_):not(#_) .nav-btn:active{transform:scale(.95)}
+html:root body:not(#_):not(#_) .auth-logo{background:linear-gradient(150deg,#fffafd,var(--clay-tint));border:0;color:var(--clay-primary);box-shadow:var(--clay-raise)}
+html:root body:not(#_):not(#_) .login-screen{background:linear-gradient(160deg,var(--clay-bg1),var(--clay-bg2))}
+html:root body:not(#_):not(#_) .auth-blob{display:none}
+html:root body:not(#_):not(#_) #signOutButton{background:linear-gradient(150deg,#fffafd,var(--gl2));color:var(--clay-primary);border:1px solid var(--gl-b);box-shadow:var(--clay-small)}
+html:root body.dark-theme:not(#_):not(#_) #signOutButton{background:linear-gradient(150deg,#52294a,var(--gl2));color:#ffd9ec}
+html:root body:not(#_):not(#_) .profile-avatar,html:root body:not(#_):not(#_) .entry-avatar{background:linear-gradient(150deg,#fffafd,var(--clay-tint));color:var(--clay-primary);border:0!important;box-shadow:var(--clay-small)}
+html:root body.dark-theme:not(#_):not(#_) .profile-avatar,html:root body.dark-theme:not(#_):not(#_) .entry-avatar{background:linear-gradient(150deg,#6a3560,#4a2443);color:#ffe0f0}
+
+/* ---------- Navigasi bawah ---------- */
+html:root body:not(#_):not(#_) .nav-btn{color:var(--muted);border-radius:24px}
+
+/* ---------- Beranda: tombol countdown jadi bola tanah liat ---------- */
+html:root body:not(#_):not(#_) .cd-btn{background:linear-gradient(150deg,#fffafd,var(--clay-tint))!important;border:0;box-shadow:0 16px 30px var(--clay-sh),inset 0 5px 8px var(--clay-hi),inset 0 -9px 14px var(--clay-sh2)}
+html:root body:not(#_):not(#_) .cd-btn:active{box-shadow:var(--clay-press)}
+html:root body:not(#_):not(#_) .cd-u b{color:var(--ink)}
+html:root body:not(#_):not(#_) .cd-prog{background:rgba(196,108,150,.2)}
+html:root body:not(#_):not(#_) .cd-prog i{background:linear-gradient(90deg,var(--clay-primary2),var(--clay-primary))}
+
+/* ---------- Bubble chat ---------- */
+/* Mode terang: lavender-pink pastel (lebih muda), teks gelap supaya tetap terbaca */
+html:root body:not(#_):not(#_):not(.dark-theme) .message{--bub:#fbd5e6;--bub-pin:#f5bfd8;
+  --bub-sh:0 6px 12px rgba(196,108,150,.24),inset 0 2px 3px rgba(255,255,255,.9),inset 0 -3px 6px rgba(222,140,184,.3)}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message,
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message>p{color:#6b4260}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message .time{color:rgba(107,66,96,.7)}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message .pin-row{color:#c23a78}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message .call-title{color:#6b4260}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message .call-sub{color:rgba(107,66,96,.75)}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message .call-sub svg{stroke:#c23a78}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message .call-ico{background:rgba(224,85,143,.16);color:#c23a78}
+/* Mode gelap: ungu tanah liat pekat, teks putih */
+html:root body.dark-theme:not(#_):not(#_) .message{--bub:#c0407f;--bub-pin:#a02f69;
+  --bub-sh:0 6px 12px rgba(6,4,22,.5),inset 0 2px 3px rgba(255,255,255,.22),inset 0 -4px 7px rgba(110,20,70,.45)}
+html:root body:not(#_):not(#_) .entry .message{border-radius:22px;max-width:80%}
+html:root body:not(#_):not(#_) .entry .message{background:var(--bub)!important}
+html:root body:not(#_):not(#_) .message-reaction{background:var(--gl2);color:#e0456f;box-shadow:var(--clay-small)!important}
+
+/* ---------- Kalender ---------- */
+html:root body:not(#_):not(#_) #calendarPanel{background:linear-gradient(155deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-raise)!important;color:var(--ink);border-radius:32px}
+html:root body:not(#_):not(#_):not(.dark-theme) #calendarPanel .cal-title{color:var(--ink)}
+html:root body:not(#_):not(#_):not(.dark-theme) #calendarPanel .month-btn{background:linear-gradient(150deg,#fffafd,var(--gl2))!important;border-color:var(--gl-b)!important;color:var(--ink);box-shadow:var(--clay-small)}
+html:root body:not(#_):not(#_):not(.dark-theme) #calendarPanel .weekdays{color:var(--muted)}
+html:root body:not(#_):not(#_):not(.dark-theme) #calendarPanel .cal-foot{color:var(--muted);border-top-color:rgba(196,108,150,.2)}
+html:root body:not(#_):not(#_):not(.dark-theme) #calendarPanel .cal-count{background:var(--field);border-color:transparent;color:var(--ink)}
+html:root body:not(#_):not(#_):not(.dark-theme) #days .day{color:var(--ink)}
+html:root body:not(#_):not(#_):not(.dark-theme) #days .day.today{box-shadow:inset 0 0 0 1.5px rgba(224,85,143,.55)}
+html:root body:not(#_):not(#_):not(.dark-theme) #days .day.has-notes:not(.selected):not(.range-start):not(.range-end)::after{background:var(--clay-primary)}
+html:root body:not(#_):not(#_):not(.dark-theme) #days .day.in-range::before,
+html:root body:not(#_):not(#_):not(.dark-theme) #days .day.range-start::before,
+html:root body:not(#_):not(#_):not(.dark-theme) #days .day.range-end::before{background:rgba(224,85,143,.14);box-shadow:inset 0 2px 5px rgba(224,85,143,.2)}
+html:root body:not(#_):not(#_) #days .day.selected::after,
+html:root body:not(#_):not(#_) #days .day.range-start::after,
+html:root body:not(#_):not(#_) #days .day.range-end::after{background:linear-gradient(150deg,var(--clay-primary2),var(--clay-primary));box-shadow:0 6px 12px rgba(224,85,143,.42),inset 0 2px 3px rgba(255,255,255,.5),inset 0 -3px 5px rgba(150,30,90,.4)}
+html:root body:not(#_):not(#_) #days .day.selected,
+html:root body:not(#_):not(#_) #days .day.in-range,
+html:root body:not(#_):not(#_) #days .day.range-start,
+html:root body:not(#_):not(#_) #days .day.range-end{color:#fff}
+html:root body:not(#_):not(#_):not(.dark-theme) #days .day.in-range:not(.range-start):not(.range-end){color:var(--ink)}
+
+/* =====================================================================
+   PERFORMA — hilangkan penyebab lag utama
+   ===================================================================== */
+/* bayangan clay dibuat statis & kecil di bubble; tidak ada transisi bayangan saat scroll */
+.message{transition:none!important}
+/* semua filter/blur berat dimatikan */
+.call-remote img{filter:brightness(.55)!important}
+.pk-peek,.pk-peek:active{filter:none!important}
+.ck-mn .mn-svg,.ck-jet,.pk-fly{filter:none!important}
+/* minion: tiap minion jadi layer sendiri → animasi bagian dalam SVG tidak memaksa repaint seluruh halaman */
+.wk .mn-svg,.ck-mn .mn-svg,.pk-gm .mn-svg,.pk-rider .mn-svg{will-change:transform}
+/* jalan: kaki & lengan pakai langkah diskret (≈ 2× lebih sedikit repaint, tetap terlihat berjalan) */
+.wk.walking .mn-leg.l,.wk.walking .mn-leg.r,.wk.walking .mn-al,.wk.walking .mn-ar{animation-timing-function:steps(6,end)!important}
+@media (prefers-reduced-motion:reduce){.mn-svg,.mn-svg *{animation:none!important}}
+
+/* ---------- Teks selalu di tengah box / kolom ---------- */
+html:root body:not(#_):not(#_) .auth-btn,html:root body:not(#_):not(#_) .save-btn,html:root body:not(#_):not(#_) .small-btn,
+html:root body:not(#_):not(#_) .theme-btn,html:root body:not(#_):not(#_) .cancel-btn,html:root body:not(#_):not(#_) .modal-close,
+html:root body:not(#_):not(#_) .sel-btn,html:root body:not(#_):not(#_) .demo-btn,html:root body:not(#_):not(#_) .media-option,
+html:root body:not(#_):not(#_) .media-cancel,html:root body:not(#_):not(#_) .dialog-actions button,html:root body:not(#_):not(#_) .month-btn,
+html:root body:not(#_):not(#_) .hv-chip,html:root body:not(#_):not(#_) .home-btn,html:root body:not(#_):not(#_) .menu button,
+html:root body:not(#_):not(#_) .dd-panel button,html:root body:not(#_):not(#_) .nav-btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.25}
+html:root body:not(#_):not(#_) .demo-btn{display:flex;width:100%}
+html:root body:not(#_):not(#_) .nav-btn{flex-direction:column}
+html:root body:not(#_):not(#_) .menu button,html:root body:not(#_):not(#_) .dd-panel button{display:flex;width:100%;justify-content:flex-start;text-align:left;gap:8px}
+html:root body:not(#_):not(#_) .auth-btn,html:root body:not(#_):not(#_) .save-btn{display:flex;width:100%}
+html:root body:not(#_):not(#_) #days .day,html:root body:not(#_):not(#_) .weekdays>*{display:grid;place-items:center;text-align:center;line-height:1}
+html:root body:not(#_):not(#_) .weekdays{text-align:center}
+html:root body:not(#_):not(#_) .auth-input,html:root body:not(#_):not(#_) .date-field,html:root body:not(#_):not(#_) select{line-height:1.3;min-height:46px;padding-top:0;padding-bottom:0}
+html:root body:not(#_):not(#_) .auth-title,html:root body:not(#_):not(#_) .auth-sub,html:root body:not(#_):not(#_) .auth-brand,html:root body:not(#_):not(#_) .auth-tag{text-align:center}
+html:root body:not(#_):not(#_) .day-divider,html:root body:not(#_):not(#_) .empty,html:root body:not(#_):not(#_) .load-more{text-align:center;justify-content:center}
+html:root body:not(#_):not(#_) .cal-title{text-align:center}
+html:root body:not(#_):not(#_) .stat-card{text-align:center}
+
+/* ---------- Ekor bubble menyatu dengan bubble (tidak terpisah) ---------- */
+html:root body:not(#_):not(#_) .entry:not(.join-prev) .message{border-top-right-radius:0!important}
+html:root body:not(#_):not(#_) .entry:not(.join-prev) .message::before{background:var(--bub)!important}
+html:root body:not(#_):not(#_):not(.dark-theme) .entry .message .time{color:rgba(107,66,96,.8)}
+
+/* ---------- Kontras teks di atas wallpaper foto ---------- */
+html:root body.has-wallpaper:not(#_):not(#_) #homePage{--home-ink:#fff;--home-sub:rgba(255,255,255,.85)}
+html:root body.has-wallpaper:not(#_):not(#_) .home-head{--home-strip:rgba(30,12,26,.86)}
+html:root body.has-wallpaper:not(#_):not(#_) .home-title,
+html:root body.has-wallpaper:not(#_):not(#_) .empty,
+html:root body.has-wallpaper:not(#_):not(#_) .load-more{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+
+/* ---------- Mode Dudu: tanpa rantai minion ---------- */
+body.mode-dudu .ck-chain,body.mode-dudu .ck-mn{display:none!important}
+
+/* ---------- Layar tidak boleh melebar / zoom karena animasi minion ---------- */
+html,body{overflow-x:clip;max-width:100%}
+/* pemotongan hanya di tepi layar (html/body); stage & jalur minion tidak boleh memotong */
+.pk-stage,.pk-minions,.ck-hang,.ck-chain{overflow:visible!important}
+.wk-lane{overflow-x:visible!important;overflow-y:visible!important}
+
+/* ---------- Navigasi & perpindahan halaman: ringan ---------- */
+html:root body:not(#_):not(#_) .bottom-nav{will-change:auto;transition:width .28s cubic-bezier(.32,.72,0,1),height .28s cubic-bezier(.32,.72,0,1),padding .28s cubic-bezier(.32,.72,0,1),border-radius .28s cubic-bezier(.32,.72,0,1),bottom .28s cubic-bezier(.32,.72,0,1);
+  box-shadow:0 8px 16px var(--clay-sh),inset 0 2px 3px var(--clay-hi)!important;contain:layout style}
+html:root body:not(#_):not(#_) .nav-btn{transition:color .15s ease,transform .15s ease,opacity .2s ease!important}
+html:root body:not(#_):not(#_) .nav-btn.active .nav-icon{animation:none}
+html:root body:not(#_):not(#_) .entry.enter{animation-duration:.26s!important;animation-delay:calc(min(var(--i,0),5)*22ms)!important;animation-timing-function:ease-out!important}
+html:root body:not(#_):not(#_) .pop-a #calendarPanel:not(.hidden),
+html:root body:not(#_):not(#_) .pop-b #calendarPanel:not(.hidden){animation-duration:.28s!important;animation-timing-function:ease-out!important}
+html:root body:not(#_):not(#_) .profile-card{animation-duration:.2s}
+
+/* ---------- Kartu video: teks selalu kontras dengan kartunya ---------- */
+/* Kartu video: kaca bening (liquid glass), teks abu-abu transparan */
+html:root body:not(#_):not(#_):not(#_) .hv-card{
+  --home-ink:rgba(122,112,130,.88);--home-sub:rgba(140,130,148,.8);color:rgba(122,112,130,.88);
+  background:linear-gradient(150deg,rgba(255,255,255,.34),rgba(255,255,255,.08) 55%,rgba(255,255,255,.2))!important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  box-shadow:0 14px 30px rgba(120,60,100,.16),inset 0 1.5px 2px rgba(255,255,255,.85),inset 0 -2px 6px rgba(255,255,255,.25),inset 0 0 22px rgba(255,255,255,.12)!important}
+html:root body.dark-theme:not(#_):not(#_):not(#_) .hv-card,html:root body.has-wallpaper:not(#_):not(#_):not(#_) .hv-card{
+  --home-ink:rgba(232,226,238,.88);--home-sub:rgba(222,214,230,.75);color:rgba(232,226,238,.88);
+  background:linear-gradient(150deg,rgba(255,255,255,.2),rgba(255,255,255,.04) 55%,rgba(255,255,255,.12))!important;
+  border-color:rgba(255,255,255,.28)!important;
+  box-shadow:0 14px 30px rgba(0,0,0,.3),inset 0 1.5px 2px rgba(255,255,255,.4),inset 0 -2px 6px rgba(255,255,255,.08)!important}
+html:root body:not(#_):not(#_) .hv-card .hv-title,html:root body:not(#_):not(#_) .hv-card .hv-note,html:root body:not(#_):not(#_) .hv-card .hv-chip{color:var(--home-ink)}
+html:root body:not(#_):not(#_) .hv-card .hv-chip,html:root body:not(#_):not(#_) .hv-card .hv-ibtn{background:rgba(255,255,255,.18)!important;border:1px solid rgba(255,255,255,.4)!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.6)!important;color:var(--home-ink)}
+
+/* ---------- Navbar: indikator geser instan + animasi tombol ---------- */
+html:root body:not(#_):not(#_) .nav-indicator{background:linear-gradient(150deg,var(--clay-primary2),var(--clay-primary));border:0;
+  box-shadow:0 5px 10px rgba(224,85,143,.38),inset 0 2px 3px rgba(255,255,255,.5),inset 0 -3px 5px rgba(150,30,90,.35);
+  transition:transform .26s cubic-bezier(.25,.9,.3,1),opacity .15s ease!important;will-change:transform}
+html:root body:not(#_):not(#_) .nav-btn.active{color:#fff;background:transparent;box-shadow:none}
+html:root body:not(#_):not(#_) .bottom-nav.scroll-orb .nav-btn.active{color:var(--clay-primary)}
+html:root body:not(#_):not(#_) .nav-btn .nav-icon{transition:transform .22s cubic-bezier(.3,1.6,.5,1)}
+html:root body:not(#_):not(#_) .nav-btn.active .nav-icon{transform:translateY(-2px) scale(1.14)}
+html:root body:not(#_):not(#_) .nav-btn:active .nav-icon{transform:scale(.82)}
+html:root body:not(#_):not(#_) .nav-btn:active{transform:scale(.94)}
+
+/* ---------- Countdown: bola tanah liat pink ---------- */
+html:root body:not(#_):not(#_):not(#_) .cd-btn{background:radial-gradient(circle at 32% 26%,#ffe6f2 0,#fabdd8 46%,#ee8db8 100%)!important;border:0;
+  box-shadow:0 20px 34px rgba(190,70,125,.38),0 4px 8px rgba(190,70,125,.22),inset 10px 12px 20px rgba(255,255,255,.78),inset -12px -16px 26px rgba(200,80,135,.5)}
+html:root body:not(#_):not(#_):not(#_) .cd-btn:active{box-shadow:0 8px 14px rgba(190,70,125,.3),inset 6px 8px 16px rgba(255,255,255,.6),inset -8px -10px 20px rgba(200,80,135,.5)}
+html:root body:not(#_):not(#_):not(#_) .cd-u b{color:#7a3f5f;text-shadow:0 1px 0 rgba(255,255,255,.7),0 3px 6px rgba(190,70,125,.25)}
+html:root body:not(#_):not(#_):not(#_) .cd-u small,html:root body:not(#_):not(#_):not(#_) .cd-pct{color:#a25f84;text-shadow:0 1px 0 rgba(255,255,255,.55)}
+html:root body:not(#_):not(#_):not(#_) .cd-prog{height:9px;background:rgba(200,80,135,.22);box-shadow:inset 0 2px 4px rgba(170,50,105,.35),0 1px 0 rgba(255,255,255,.6)}
+html:root body:not(#_):not(#_):not(#_) .cd-prog i{background:linear-gradient(90deg,#fff,#ffe0ee);box-shadow:0 1px 3px rgba(150,40,100,.45),inset 0 1px 1px #fff}
+html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-btn{background:radial-gradient(circle at 32% 26%,#ff9fca 0,#df5a95 48%,#a83a73 100%)!important;
+  box-shadow:0 20px 34px rgba(0,0,0,.5),0 4px 8px rgba(0,0,0,.3),inset 10px 12px 20px rgba(255,255,255,.4),inset -12px -16px 26px rgba(90,10,60,.55)}
+html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-u b{color:#fff;text-shadow:0 2px 4px rgba(90,10,60,.5)}
+html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-u small,html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-pct{color:#ffe0ee;text-shadow:0 1px 2px rgba(90,10,60,.4)}
+
+/* ---------- Cookie Jet: api lebih hidup ---------- */
+.ck-jet::before{content:"";position:absolute;left:50%;top:-4px;width:76px;height:76px;margin-left:-38px;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(255,176,64,.7),rgba(255,110,24,.28) 45%,rgba(255,90,0,0) 70%)}
+.ck-f1{animation:ckFa .19s ease-in-out infinite alternate}
+.ck-f2{animation:ckFb .12s ease-in-out infinite alternate-reverse}
+.ck-f3{animation:ckFc .08s ease-in-out infinite alternate}
+@keyframes ckFa{0%{transform:scale(.9,.88) skewX(-3deg)}50%{transform:scale(1.06,1.04) skewX(2deg)}100%{transform:scale(.97,1.12) skewX(4deg)}}
+@keyframes ckFb{0%{transform:scale(.86,.9) skewX(3deg)}55%{transform:scale(1.08,1.06) skewX(-2deg)}100%{transform:scale(.95,1.14) skewX(-4deg)}}
+@keyframes ckFc{0%{transform:scale(.82,.9)}100%{transform:scale(1.1,1.16)}}
+.ck-sm{position:absolute;left:50%;top:44px;width:16px;height:16px;margin-left:-8px;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(circle,rgba(150,140,152,.5),rgba(150,140,152,0) 70%);animation:ckSm 1.7s ease-out infinite;animation-delay:var(--dl,0s)}
+@keyframes ckSm{0%{opacity:0;transform:translate(0,0) scale(.5)}20%{opacity:.55}100%{opacity:0;transform:translate(var(--dx,0),78px) scale(2.8)}}
+@media (prefers-reduced-motion:reduce){.ck-sm{animation:none}}
 </style>
 
 
@@ -2084,7 +2521,6 @@ body.selecting .select-bar{transform:none;visibility:visible}
       <!-- Halaman masuk -->
       <form class="auth-pane active" id="loginForm" novalidate>
         <h2 class="auth-title">Selamat datang kembali</h2>
-        <p class="auth-sub">Masuk untuk membuka catatanmu.</p>
 
         <label class="auth-field">
           <span class="auth-label">Email</span>
@@ -2671,7 +3107,6 @@ body.selecting .select-bar{transform:none;visibility:visible}
         <button class="demo-btn" id="pkDemoFilm" type="button">▶ Putar film minion</button>
         <button class="demo-btn" id="pkDemoPhone" type="button">▶ Putar telepon Papoy</button>
       </div>
-      <p class="call-edit-hint">Tiga ini diputar terpisah. Animasi: dari awal sampai semua minion pergi, tanpa film. Film: hanya film pendek minion. Telepon: minion mengantar hp, telepon masuk, sampai dialog selesai.</p>
     </div>
     <div class="set-sec">
     <div class="field-label">Urutan pesan</div>
@@ -2816,7 +3251,6 @@ body.selecting .select-bar{transform:none;visibility:visible}
     <form id="callEditForm" novalidate>
       <div id="callEditMain">
         <div class="ce-top"><span class="field-label" style="margin:0">Dialog Papoy setelah telepon diangkat</span><span class="ce-count" id="callEditCount"></span></div>
-        <p class="call-edit-hint">Satu kolom = satu ketukan. Isi dialog, chat, atau keduanya. Chat tampil persis seperti di chat asli.</p>
         <div class="ce-list" id="callEditList"></div>
         <div class="ce-add">
           <button class="ce-btn" id="callEditAdd" type="button">+ Tambah kolom</button>
@@ -2854,7 +3288,6 @@ body.selecting .select-bar{transform:none;visibility:visible}
       <span>Hapus semua</span>
     </button>
   </div>
-  <p class="hist-sub">Setiap kali kamu berhenti menonton, bagian yang ditonton (dari detik berapa sampai berapa) tersimpan di sini.</p>
   <div class="hist-list" id="histList"></div>
 </section>
 
@@ -3075,6 +3508,8 @@ const selectedIds = new Set();
 let editPhotoDraft = '';
 let openMenuId = null;
 let selectedDate = null;
+let rangeEnd = null, rangeArmed = false, rangeFresh = false;   /* rentang tanggal di kalender: tanggal aktif → rangeEnd */
+function inCalRange(k) { const a = selectedDate || getTodayKey(); return rangeEnd ? (k >= a && k <= rangeEnd) : k === a; }
 let calendarMonth = new Date();
 let view = 'all';
 let pendingPhoto = '';
@@ -3909,7 +4344,7 @@ function getFilteredNotes() {
   const query = searchQuery.toLocaleLowerCase('id-ID');
 
   return notes.filter(note => {
-    const matchesDate = view !== 'calendar' || note.dayKey === activeDate();
+    const matchesDate = view !== 'calendar' || inCalRange(note.dayKey);
     if (!matchesDate) return false;
     if (!query) return true;
     return `${note.text} ${note.time} ${note.dayKey}`.toLocaleLowerCase('id-ID').includes(query);
@@ -3978,7 +4413,8 @@ function jumpToNextPinned() {
 
   /* Sematan bisa di tanggal lain / tersaring pencarian → sesuaikan tampilan dulu */
   let changed = false;
-  if (view === 'calendar' && activeDate() !== note.dayKey) {
+  if (view === 'calendar' && !inCalRange(note.dayKey)) {
+    rangeEnd = null;
     selectedDate = note.dayKey === getTodayKey() ? null : note.dayKey;
     const [ny,nm] = note.dayKey.split('-').map(Number);
     calendarMonth = new Date(ny,nm-1,1);
@@ -4064,6 +4500,7 @@ function renderCalendar() {
   const totalDays = new Date(year,month+1,0).getDate();
   const todayKey = getTodayKey();
   const notesByDate = new Set(notes.map(note => note.dayKey));
+  const fresh = rangeFresh; rangeFresh = false;
 
   for (let i=0;i<firstDay;i++) {
     const blank = document.createElement('div');
@@ -4082,9 +4519,28 @@ function renderCalendar() {
     if (key === todayKey) button.classList.add('today');
     if (key === activeDate()) button.classList.add('selected');
     if (notesByDate.has(key)) button.classList.add('has-notes');
+    if (rangeEnd) {
+      const lo = activeDate();
+      if (key === lo) button.classList.add('range-start');
+      else if (key === rangeEnd) button.classList.add('range-end','selected');
+      else if (key > lo && key < rangeEnd) button.classList.add('in-range');
+      if (key >= lo && key <= rangeEnd) {
+        if (fresh) { button.classList.add('fresh'); button.style.setProperty('--i',Math.round((new Date(year,month,day)-new Date(lo.replace(/-/g,'/')))/864e5)); }
+        if (day === 1) button.classList.add('cap-l');
+        if (day === totalDays) button.classList.add('cap-r');
+      }
+    }
 
     button.addEventListener('click',() => {
-      selectedDate = key === getTodayKey() ? null : key;
+      if (rangeArmed && key !== activeDate()) {
+        /* ketukan kedua = rentang tanggal (bola awal & akhir + jalur di antaranya) */
+        const a = activeDate(), lo = a < key ? a : key, hi = a < key ? key : a;
+        selectedDate = lo === getTodayKey() ? null : lo;
+        rangeEnd = hi; rangeArmed = false; rangeFresh = true;
+      } else {
+        selectedDate = key === getTodayKey() ? null : key;
+        rangeEnd = null; rangeArmed = true;
+      }
       resetVisible();
       renderCalendar();
       render(TO_DEFAULT);
@@ -4093,7 +4549,7 @@ function renderCalendar() {
     daysBox.appendChild(button);
   }
 
-  $('calendarInfo').textContent = (selectedDate ? '' : 'Hari ini · ') + formatDate(activeDate());
+  $('calendarInfo').textContent = rangeEnd ? formatDate(activeDate())+' – '+formatDate(rangeEnd) : (selectedDate ? '' : 'Hari ini · ') + formatDate(activeDate());
 }
 
 function spawnHearts(x,y) {
@@ -4655,7 +5111,7 @@ form.addEventListener('submit',event => {
   clearTimeout(searchTimer);
   const resetNeeded = !!(searchQuery || selectedDate);
   if (resetNeeded) resetVisible();
-  selectedDate = null;
+  selectedDate = null; rangeEnd = null; rangeArmed = false;
   searchQuery = '';
   $('searchInput').value = '';
   ensureVisible(note.id);
@@ -6954,6 +7410,7 @@ function pkCleanup() {
 }
 
 function pkAbortGive() {
+  try { if (window.ckSeqEnd) ckSeqEnd(); } catch {}
   pkGiveToken++;
   pkOpening = false;
   pkIdleIntro = false;
@@ -7424,6 +7881,7 @@ async function pkPlayMoon(opts) {
   go(streak,[{opacity:.95},{opacity:0}],{duration:160});
   go(shadow,[{opacity:1},{opacity:0}],{duration:700,delay:200});
   burst(IMP.x,IMP.y);
+  try { if (window.ckCrash) ckCrash(); } catch {}   /* cookie pecah, minion + rantai jatuh ke bawah layar */
   go(stage,[{translate:'0 0'},{translate:'-3px 2px',offset:.2},{translate:'3px -2px',offset:.45},{translate:'-2px 1px',offset:.7},{translate:'0 0'}],{duration:320});
   const btn = $('pkPeek');
   go(btn,[{transform:'scale(1) rotate(0deg)'},{transform:'scale(.8,.76) translate(3px,3px) rotate(-3deg)',offset:.16},{transform:'scale(1.1,1.06) rotate(3deg)',offset:.4},{transform:'scale(.96,.98) rotate(-2deg)',offset:.62},{transform:'scale(1.02) rotate(1deg)',offset:.82},{transform:'scale(1) rotate(0deg)'}],{duration:760,easing:'ease-out'}).then(() => { try { btn.getAnimations().forEach(a => a.cancel()); } catch {} });
@@ -8035,7 +8493,7 @@ async function pkIdleRun() {
       await armsDown(a);
     },
     async angry(a) {   /* badan merah menyala, tangan mengepal bergetar, hentak kaki, 💢 */
-      a.gl.push(a.wkIn.animate([{filter:'none'},{filter:'drop-shadow(0 0 7px rgba(255,50,50,.95)) saturate(1.7) hue-rotate(-14deg)'}],{duration:260,fill:'forwards'}));
+      a.gl.push(a.wkIn.animate([{filter:'none'},{filter:'saturate(1.7) hue-rotate(-14deg)'}],{duration:260,fill:'forwards'}));
       an(a,a.armL,[{transform:'rotate(0deg)'},{transform:'rotate(40deg)'},{transform:'rotate(20deg)'},{transform:'rotate(40deg)'},{transform:'rotate(20deg)'},{transform:'rotate(40deg)'},{transform:'rotate(20deg)'}],{duration:1300,easing:'ease-in-out'});
       an(a,a.armR,[{transform:'rotate(0deg)'},{transform:'rotate(-40deg)'},{transform:'rotate(-20deg)'},{transform:'rotate(-40deg)'},{transform:'rotate(-20deg)'},{transform:'rotate(-40deg)'},{transform:'rotate(-20deg)'}],{duration:1300,easing:'ease-in-out'});
       an(a,a.wkIn,[{transform:'translate(0,0)'},{transform:'translate(-2px,-5px)'},{transform:'translate(2px,0)'},{transform:'translate(-2px,-5px)'},{transform:'translate(2px,0)'},{transform:'translate(0,0)'}],{duration:260,iterations:5,easing:'linear'});
@@ -8277,6 +8735,7 @@ async function pkIdleRun() {
       if (!alive()) return;
       pkIdleIntro = false;   /* film sudah tampil sekali: tidak diulang lagi */
       pkBandDone = true;
+      setTimeout(() => { try { if (window.ckJet) ckJet(); } catch {} },450);   /* film selesai → "Cookie Jet" naik dari bawah */
       try { pkPlayPopup(); } catch {}   /* film selesai → popup "play!" di tombol play video */
     } else {
       const actors = (await Promise.all(plans.map(stageOne))).filter(Boolean);
@@ -12562,7 +13021,7 @@ function saveCallNote(kind,seconds,startedAt,attempt = 0) {
   clearTimeout(searchTimer);
   const resetNeeded = !!(searchQuery || selectedDate);
   if (resetNeeded) resetVisible();
-  selectedDate = null;
+  selectedDate = null; rangeEnd = null; rangeArmed = false;
   searchQuery = '';
   $('searchInput').value = '';
   ensureVisible(note.id);
@@ -12674,6 +13133,240 @@ window.addEventListener('popstate',() => {
     history.back();
   });
 });
+</script>
+<script>
+/* ===== Skenario cookie ===========================================================
+   1) "Minion Gantung": cookie digantung rantai minion yang saling berpegangan, berayun masuk dari kanan atas (fisika Verlet).
+   2) Bulan menabrak cookie → cookie pecah, 3 minion di cookie + seluruh rantai jatuh ke bawah layar (ckCrash). Lalu film tampil.
+   3) "Cookie Jet": film selesai → cookie + minionnya naik dari bawah layar dengan api jet, lalu melayang terombang-ambing
+      (tanpa rantai lagi) selamanya (ckJet). ================================================================================= */
+(function () {
+  const stage = $('pkPeekStage'), btn = $('pkPeek'), mins = $('pkMinions');
+  if (!stage || !btn || !mins || typeof pkMinionSvg !== 'function') return;
+  const hang = document.createElement('div'); hang.className = 'ck-hang';
+  const chain = document.createElement('div'); chain.className = 'ck-chain'; chain.setAttribute('aria-hidden','true');
+  const jet = document.createElement('div'); jet.className = 'ck-jet'; jet.hidden = true; jet.setAttribute('aria-hidden','true');
+  jet.innerHTML = '<svg viewBox="0 0 44 84"><defs>'+
+    '<linearGradient id="ckFo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb52e"/><stop offset=".55" stop-color="#ff5a14"/><stop offset="1" stop-color="#ff2a00" stop-opacity="0"/></linearGradient>'+
+    '<linearGradient id="ckFm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset=".6" stop-color="#ffc83a"/><stop offset="1" stop-color="#ff8a00" stop-opacity="0"/></linearGradient></defs>'+
+    '<path class="ck-f1" d="M4 0H40C40 24 32 52 22 82C12 52 4 24 4 0Z" fill="url(#ckFo)"/>'+
+    '<path class="ck-f2" d="M12 0H32C32 20 27 42 22 64C17 42 12 20 12 0Z" fill="url(#ckFm)"/>'+
+    '<path class="ck-f3" d="M17 0H27C27 14 25 28 22 42C19 28 17 14 17 0Z" fill="#fffbe6"/></svg>'+
+    [[-9,0],[8,.18],[-3,.32],[12,.46],[-13,.6]].map(([dx,dl]) => `<i class="ck-sp" style="--dx:${dx}px;--dl:${dl}s"></i>`).join('')+[[-8,0],[9,.55],[0,1.1]].map(([dx,dl]) => `<i class="ck-sm" style="--dx:${dx}px;--dl:${dl}s"></i>`).join('');
+  stage.insertBefore(hang,stage.firstChild); hang.append(jet,mins,btn); stage.insertBefore(chain,hang);
+
+  const AX = 110, AY = 34, G = 1500, DAMP = 1.0, UNIT = 47, LINK = 27, SUB = 1/80, RISE = 1.7;
+  const V = [{eyes:2,mouth:'smile',hair:3},{eyes:1,mouth:'grin',hair:5},{eyes:2,mouth:'hum',hair:1},{eyes:2,mouth:'grin',hair:2}];
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let mode = 'hang', crashAt = 0, jt = 0, riseFrom = 400;   /* mode: hang | crashed | jet */
+  let P = [], Q = [], M = [], els = [], n = 0, L = 0, lk = 0, s = .5, raf = 0, last = 0, T = 0, serial = 0;
+
+  let gmAt = 0, gmVal = 0;
+  function geom() {
+    const now = performance.now();
+    if (gmVal && now-gmAt < 350) return gmVal;
+    const r = stage.getBoundingClientRect();
+    gmAt = now; gmVal = r.width ? Math.max(100,r.top+(window.scrollY||0)+AY+34) : 0;
+    return gmVal;
+  }
+  window.addEventListener('resize',() => { gmAt = 0; },{passive:true});
+  function mk(i) {
+    const d = document.createElement('div'); d.className = 'ck-mn';
+    d.innerHTML = pkMinionSvg(40+(serial++),V[i%V.length]);
+    const all = d.querySelector('.mn-all');
+    if (all) ['.mn-al','.mn-ar'].forEach(q => { const a = d.querySelector(q); if (a) all.appendChild(a); });
+    return d;
+  }
+  function build(Ln,throwIn) {
+    const nn = Math.max(3,Math.round(Ln/LINK)), oldP = P, oldQ = Q, on = n;
+    L = Ln; lk = L/nn; s = lk/UNIT;
+    const px = AX, py = AY-L, a0 = 84*Math.PI/180;
+    P = []; Q = []; M = [];
+    for (let i = 0; i <= nn; i++) {
+      let x, y, qx, qy;
+      if (!throwIn && on) {
+        const f = i*on/nn, j = Math.min(on-1,Math.floor(f)), t = f-j;
+        x = oldP[j].x+(oldP[j+1].x-oldP[j].x)*t; y = oldP[j].y+(oldP[j+1].y-oldP[j].y)*t;
+        qx = oldQ[j].x+(oldQ[j+1].x-oldQ[j].x)*t; qy = oldQ[j].y+(oldQ[j+1].y-oldQ[j].y)*t;
+      } else if (reduce) { x = px; y = py+i*lk; qx = x; qy = y; }
+      else { x = px+Math.sin(a0)*lk*i; y = py+Math.cos(a0)*lk*i; qx = x; qy = y; }
+      P.push({x,y}); Q.push({x:qx,y:qy}); M.push(i === nn ? 4 : 1);
+    }
+    n = nn;
+    chain.replaceChildren(); els = [];
+    for (let i = 0; i < n; i++) {
+      const d = mk(i); d.style.width = 44*s+'px'; d.style.height = 70*s+'px';
+      chain.appendChild(d); els.push(d);
+    }
+  }
+  function step(dt) {
+    const k = 1-DAMP*dt, wind = 14*Math.sin(T*1.7)+9*Math.sin(T*.63+1);
+    for (let i = 1; i <= n; i++) {
+      const p = P[i], q = Q[i], x = p.x, y = p.y;
+      p.x += (x-q.x)*k+wind*dt*dt*(i/n); p.y += (y-q.y)*k+G*dt*dt;
+      q.x = x; q.y = y;
+    }
+    P[0].x = AX; P[0].y = AY-L;
+    for (let it = 0; it < 8; it++) {
+      for (let i = 0; i < n; i++) {
+        const a = P[i], b = P[i+1], dx = b.x-a.x, dy = b.y-a.y, d = Math.hypot(dx,dy) || 1e-6, df = (d-lk)/d;
+        const wa = i ? 1/M[i] : 0, wb = 1/M[i+1], w = wa+wb;
+        a.x += dx*df*wa/w; a.y += dy*df*wa/w; b.x -= dx*df*wb/w; b.y -= dy*df*wb/w;
+      }
+    }
+  }
+  function render() {
+    for (let i = 0; i < n; i++) {
+      const a = P[i], b = P[i+1], th = Math.atan2(-(b.x-a.x),b.y-a.y)*180/Math.PI;
+      els[i].style.transform = `translate(${a.x.toFixed(1)}px,${a.y.toFixed(1)}px) rotate(${th.toFixed(1)}deg) translate(${(-22*s).toFixed(1)}px,${(-20.4*s).toFixed(1)}px)`;
+    }
+    const e = P[n], f = P[n-1], th = Math.atan2(-(e.x-f.x),e.y-f.y)*180/Math.PI;
+    hang.style.transformOrigin = AX+'px '+AY+'px';
+    hang.style.transform = `translate(${(e.x-AX).toFixed(1)}px,${(e.y-AY).toFixed(1)}px) rotate(${th.toFixed(2)}deg)`;
+  }
+  /* "Cookie Jet": naik dari bawah layar dengan api jet, lalu melayang terombang-ambing */
+  function jetFrame(ts) {
+    const dt = last ? Math.min(.05,(ts-last)/1000) : 0; last = ts; jt += dt;
+    const nz = (t,a,b,c) => Math.sin(t*a)*.5+Math.sin(t*b+1.3)*.3+Math.sin(t*c+2.1)*.2;   /* gelombang tak selaras = gerak organik */
+    let y = 0, x = 0, rot = 0, thr = .5, pw = 1;
+    if (reduce) { thr = .5; pw = .8; }
+    else if (jt < RISE) {   /* menyala (ignisi) lalu melesat naik dengan api besar bergetar */
+      const u = jt/RISE, c1 = 1.3, c3 = c1+1, e = 1+c3*Math.pow(u-1,3)+c1*Math.pow(u-1,2), ign = Math.min(1,jt/.18);
+      y = (1-e)*riseFrom;
+      thr = (1.75-1.25*u)*ign+(Math.random()-.5)*.1*(1-u*.6);
+      pw = (.7+.3*ign)+(Math.random()-.5)*.06;
+      x = Math.sin(u*Math.PI*2.4)*11*(1-u)+(Math.random()-.5)*1.2*(1-u);
+      rot = Math.sin(u*Math.PI*2.4)*6*(1-u);
+    } else {   /* melayang: dorongan redup-terang, tersendat sesekali, badan terombang-ambing seperti ditiup angin */
+      const h = jt-RISE, k = Math.min(1,h/1.2), gust = nz(h,.52,.87,1.31);
+      const slow = Math.sin(h*1.1)*.5+.5, sputter = Math.pow(Math.max(0,Math.sin(h*.83+.7)),14);
+      thr = .34+.22*slow+(Math.random()-.5)*.07-.22*sputter;
+      pw = .5+.4*slow-.3*sputter+(Math.random()-.5)*.12;
+      x = nz(h,.71,.43,1.13)*9*k;
+      y = (Math.sin(h*1.6)*3.5+nz(h,.6,.9,1.7)*4-(thr-.5)*14)*k;
+      const vx = Math.cos(h*.71)*.71*4.5+Math.cos(h*.43+1.3)*.43*2.7+Math.cos(h*1.13+2.1)*1.13*1.8;   /* kemiringan mengikuti gerak samping */
+      rot = (vx*.9+Math.sin(h*1.15)*1.2+gust*1.2)*k;
+    }
+    hang.style.transformOrigin = AX+'px 90px';
+    hang.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${rot.toFixed(2)}deg)`;
+    const th = Math.max(.12,thr);
+    jet.style.transform = `scale(${(.78+th*.4).toFixed(3)},${th.toFixed(3)})`;
+    jet.style.opacity = Math.max(.22,Math.min(1,pw)).toFixed(2);
+  }
+  function frame(ts) {
+    raf = 0;
+    if (stage.hidden || document.hidden) { last = 0; return; }
+    if (mode === 'crashed') return;
+    if (document.body.classList.contains('mode-dudu')) { last = 0; if (n) { chain.replaceChildren(); els = []; n = 0; P = []; Q = []; } hang.style.transform = ''; if (!window.__ckIdle) window.__ckIdle = setTimeout(() => { window.__ckIdle = 0; go(); },700); return; }
+    if (typeof showingHome !== 'undefined' && !showingHome) { last = 0; if (!window.__ckIdle) window.__ckIdle = setTimeout(() => { window.__ckIdle = 0; go(); },500); return; }
+    if (mode === 'jet') { jetFrame(ts); if (!reduce) raf = requestAnimationFrame(frame); return; }
+    const Ln = geom();
+    if (Ln) {
+      if (!n) build(Ln,true);
+      else if (Math.round(Ln/LINK) !== n && Math.abs(Ln-L) > LINK*.6) build(Ln,false);
+      else { L = Ln; lk = L/n; }
+    }
+    if (n) {
+      let dt = last ? Math.min(.034,(ts-last)/1000) : 0; last = ts;
+      for (let t = 0; t < dt; t += SUB) { T += SUB; step(SUB); }
+      render();
+    }
+    if (!reduce) raf = requestAnimationFrame(frame);
+  }
+  function go() { if (!raf && mode !== 'crashed') { last = 0; raf = requestAnimationFrame(frame); } }
+  function restart() {
+    if (mode === 'crashed') { if (Date.now()-crashAt > 25000) jetReturn(); return; }
+    if (mode === 'jet') { jt = RISE+.01; jet.hidden = false; chain.replaceChildren(); els = []; n = 0; go(); return; }
+    n = 0; P = []; Q = []; go();
+  }
+
+  /* Bulan menabrak: cookie pecah, minion di cookie + rantai jatuh ke bawah layar */
+  function crash() {
+    if (mode === 'crashed') return;
+    mode = 'crashed'; crashAt = Date.now();
+    if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    const r = stage.getBoundingClientRect(), H = window.innerHeight, fall = Math.max(260,H-r.top+160);
+    const kf = (dx,rot,up) => [{translate:'0px 0px',rotate:'0deg',easing:'ease-out'},{translate:`${(dx*.12).toFixed(0)}px ${-up}px`,rotate:`${(rot*.1).toFixed(0)}deg`,offset:.14,easing:'cubic-bezier(.5,0,.9,.55)'},{translate:`${dx}px ${fall}px`,rotate:`${rot}deg`}];
+    const clone = hang.cloneNode(true);
+    clone.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
+    ['.pk-peek','.ck-jet'].forEach(q => { const e = clone.querySelector(q); if (e) e.remove(); });
+    clone.style.pointerEvents = 'none';
+    stage.appendChild(clone);
+    const done = (a,el) => a.finished.then(() => el.remove()).catch(() => el.remove());
+    if (!reduce) {
+      done(clone.animate(kf(10,-24,34),{duration:1500,fill:'forwards'}),clone);
+      els.forEach((el,i) => {
+        const a = P[i], d = H-(r.top+a.y)+130;
+        el.animate([{translate:'0px 0px',rotate:'0deg'},{translate:`${((Math.random()-.5)*90).toFixed(0)}px ${d.toFixed(0)}px`,rotate:`${((Math.random()-.5)*540).toFixed(0)}deg`}],
+          {duration:950+Math.random()*450,delay:(n-1-i)*55+40,easing:'cubic-bezier(.5,0,.9,.55)',fill:'forwards'});
+      });
+      const cols = ['#d79a52','#b57432','#8f5524','#f1c27c','#3b1f12'];
+      for (let i = 0; i < 24; i++) {   /* cookie pecah berkeping-keping lalu ikut jatuh */
+        const e = document.createElement('i'); e.className = 'pk-crumb';
+        const sz = 5+Math.random()*(i < 6 ? 13 : 6);
+        e.style.cssText = `left:110px;top:90px;width:${sz.toFixed(1)}px;height:${(sz*(.6+Math.random()*.5)).toFixed(1)}px;background:${cols[i%5]};border-radius:${i < 6 ? '50%' : '35% 60% 40% 55%'}`;
+        stage.appendChild(e);
+        const ang = -Math.PI*(.05+.9*Math.random()), sp = 50+Math.random()*100, dx = Math.cos(ang)*sp, up = Math.sin(ang)*sp, rot = (Math.random()-.5)*900;
+        done(e.animate([
+          {transform:'translate(-50%,-50%) rotate(0deg)',easing:'ease-out'},
+          {transform:`translate(calc(-50% + ${(dx*.7).toFixed(0)}px),calc(-50% + ${(-up).toFixed(0)}px)) rotate(${(rot*.4).toFixed(0)}deg)`,offset:.3,easing:'cubic-bezier(.5,0,.9,.55)'},
+          {transform:`translate(calc(-50% + ${dx.toFixed(0)}px),calc(-50% + ${(fall-90).toFixed(0)}px)) rotate(${rot.toFixed(0)}deg)`}
+        ],{duration:1300+Math.random()*500,fill:'forwards'}),e);
+      }
+    } else clone.remove();
+    setTimeout(() => { chain.replaceChildren(); els = []; n = 0; P = []; Q = []; },2300);
+    jet.hidden = true;
+    hang.style.visibility = 'hidden'; hang.style.transform = 'none';   /* cookie asli tak terlihat & tak bisa diketuk sampai kembali */
+  }
+  function jetReturn() {
+    if (mode !== 'crashed') return;
+    mode = 'jet'; jt = 0;
+    const r = stage.getBoundingClientRect();
+    riseFrom = Math.max(260,window.innerHeight-r.top+150);
+    chain.replaceChildren(); els = []; n = 0;
+    jet.hidden = false;
+    hang.style.transformOrigin = AX+'px 90px';
+    hang.style.transform = `translate(0px,${riseFrom}px)`;
+    hang.style.visibility = 'visible';
+    go();
+  }
+  window.ckCrash = crash; window.ckJet = jetReturn;
+  window.ckSeqEnd = () => { if (mode === 'crashed') setTimeout(jetReturn,300); };   /* urutan dihentikan: cookie tetap kembali */
+
+  btn.addEventListener('pointerdown',() => {
+    if (reduce) return;
+    if (mode === 'hang' && n) {   /* sentakan searah gerak cookie */
+      const sg = P[n].x >= Q[n].x ? 1 : -1;
+      Q[n].x -= sg*110*SUB; Q[n-1].x -= sg*50*SUB;
+    } else if (mode === 'jet') jt = Math.max(jt,RISE)-.0;   /* melayang: tetap tenang */
+  },{passive:true});
+  new MutationObserver(() => { if (!stage.hidden) restart(); }).observe(stage,{attributes:true,attributeFilter:['hidden']});
+  document.addEventListener('visibilitychange',go);
+  window.addEventListener('resize',go);
+  if (!stage.hidden) restart();
+})();
+</script>
+<script>
+/* Navbar: pindah halaman langsung saat jari menyentuh tombol (tanpa menunggu animasi navbar / lepas jari) */
+(function(){
+  var nav=document.getElementById('bottomNav'); if(!nav) return;
+  var btns=Array.prototype.slice.call(nav.querySelectorAll('.nav-btn'));
+  btns.forEach(function(b,i){
+    b.addEventListener('pointerdown',function(e){
+      if(e.button>0) return;
+      nav.classList.remove('nav-pos-0','nav-pos-1','nav-pos-2','nav-pos-3');
+      nav.classList.add('nav-pos-'+i);
+      btns.forEach(function(x,j){ x.classList.toggle('active',i===j); });
+      b._sup=Date.now();
+      requestAnimationFrame(function(){ b.click(); });   /* frame berikutnya: indikator sudah mulai bergeser (compositor), halaman langsung ganti */
+    },{passive:true});
+  });
+  nav.addEventListener('click',function(e){
+    if(!e.isTrusted) return;
+    var b=e.target.closest&&e.target.closest('.nav-btn');
+    if(b&&b._sup&&Date.now()-b._sup<2500){ b._sup=0; e.stopImmediatePropagation(); e.preventDefault(); }
+  },true);
+})();
 </script>
 </body>
 </html>
