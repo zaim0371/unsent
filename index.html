@@ -6,7 +6,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#2e1429">
+<meta name="theme-color" content="#0a0b1f">
+<script>(function(){try{var n=navigator,d=document.documentElement,s=null;try{s=localStorage.getItem('ui_lite')}catch(e){}
+var low=(n.hardwareConcurrency||8)<=4||(n.deviceMemory||8)<=3||matchMedia('(prefers-reduced-transparency: reduce)').matches;
+if(s==='1'||(s===null&&low))d.classList.add('lite');}catch(e){}})();</script>
+
 <title>Unsent</title>
 
 <style>
@@ -304,6 +308,7 @@ select,.small-btn {
 .entry.pinned .message { border-color:#c4709f; background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(239,216,230,.65)); }
 .message p { margin:0; white-space:pre-wrap; font-size:13px; line-height:1.5; }
 .message-photo {
+  -webkit-touch-callout:none; -webkit-user-drag:none; user-select:none; -webkit-user-select:none;
   display:block; width:auto; max-width:100%; max-height:190px; margin:0 0 7px;
   object-fit:contain; object-position:left center; border-radius:13px;
   background:rgba(230,215,227,.3); cursor:zoom-in;
@@ -1389,6 +1394,34 @@ body.head-compact .head-settings-compact {display:grid}
 .hv-ibtn svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .hv-ibtn:active { transform:scale(.92); }
 .hv-ibtn[hidden],.hv-chips[hidden] { display:none; }
+.bx-stage { position:relative; overflow:hidden; display:grid; place-items:center; text-align:center; cursor:pointer; color:var(--home-sub); font-size:13px; font-weight:600; -webkit-tap-highlight-color:transparent; }
+.bx-stage img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.bx-stage.has { border-style:solid; border-color:transparent; }
+.bx-stage.busy { opacity:.6; pointer-events:none; }
+.bx-stage { width:100%; aspect-ratio:3/1; border-radius:20px; border:1.5px dashed var(--g-edge); box-sizing:border-box; background:rgba(255,255,255,.12); }
+/* Carousel gambar beranda */
+.bx-stage.has { cursor:default; display:block; }
+.bx-track { position:absolute; inset:0; display:flex; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scrollbar-width:none; -ms-overflow-style:none; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; }
+.bx-track::-webkit-scrollbar { display:none; }
+.bx-slide { flex:0 0 100%; width:100%; height:100%; scroll-snap-align:center; scroll-snap-stop:always; overflow:hidden; }
+.bx-track .bx-slide img { position:static; display:block; width:100%; height:100%; object-fit:cover; -webkit-user-drag:none; user-select:none; -webkit-user-select:none; }
+.bx-dots { position:absolute; left:0; right:0; bottom:9px; z-index:2; display:flex; justify-content:center; gap:6px; pointer-events:none; }
+.bx-dots i { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.6); box-shadow:0 0 0 1px rgba(0,0,0,.14); transition:width .25s ease,background .25s ease; }
+.bx-dots i.on { width:17px; border-radius:6px; background:#fff; }
+.bx-nav { display:none; position:absolute; top:50%; z-index:2; width:32px; height:32px; margin-top:-16px; padding:0; place-items:center; border:1px solid rgba(255,255,255,.55); border-radius:50%; background:rgba(40,12,30,.38); color:#fff; font-size:20px; line-height:1; }
+.bx-nav.prev { left:8px; } .bx-nav.next { right:8px; }
+@media (hover:hover) { .bx-stage.multi .bx-nav { display:grid; } }
+/* Dialog edit gambar */
+.bxe-list { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+.bxe-item { display:flex; align-items:center; gap:10px; padding:8px; border:1px solid var(--edge); border-radius:16px; background:var(--field); }
+.bxe-thumb { flex:none; width:72px; height:54px; border-radius:11px; object-fit:cover; background:var(--soft); }
+.bxe-name { flex:1; min-width:0; color:var(--ink); font-size:12.5px; font-weight:600; }
+.bxe-btn { flex:none; padding:8px 11px; border:1px solid var(--edge); border-radius:12px; background:var(--soft); color:var(--ink); font-size:12px; font-weight:650; }
+.bxe-btn.danger { color:var(--danger); }
+.bxe-btn:active { transform:scale(.95); }
+.bxe-empty { padding:22px 8px; color:var(--muted); font-size:12.5px; line-height:1.7; text-align:center; }
+.bxe-add { display:block; width:100%; margin-top:10px; padding:13px; border:1px dashed var(--edge); border-radius:15px; background:transparent; color:var(--ink); font-size:13px; font-weight:650; }
+.bxe-add:disabled { opacity:.45; }
 .hv-stage { position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; }
 .hv-stage video,.hv-stage iframe,.hv-stage .hv-yt { position:absolute; inset:0; width:100%; height:100%; border:0; background:#000; }
 .hv-empty { display:grid; place-items:center; aspect-ratio:16/9; padding:18px; border:1.5px dashed var(--g-edge); border-radius:18px; color:var(--home-sub); font-size:12.5px; line-height:1.7; text-align:center; }
@@ -2497,11 +2530,389 @@ html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-u smal
 .pk-stage.out .mn-glint,.wk .mn-glint{animation:mnGlint 4.2s ease-in-out infinite;animation-delay:var(--dl,0s)}
 .mn-svg{filter:drop-shadow(0 2px 2px rgba(60,40,0,.18))}
 @media (prefers-reduced-motion:reduce){.mn-glint{animation:none!important}}
+
+/* =====================================================================
+   REDESIGN TOTAL — GLASSMORPHISM 2.0 + PROGRESSIVE BLUR
+   Lapisan paling akhir. Tidak menyentuh: kartu video (.hv-*), bubble chat
+   (.message), minion (.mn-* .wk .pk-* .ck-*), layar telepon/kamera.
+   ===================================================================== */
+
+/* ---------- Token warna: TERANG (es biru + indigo + aksen koral) ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_){
+  --clay-bg1:#e8f0ff; --clay-bg2:#f2ecff;
+  --clay-hi:rgba(255,255,255,.9); --clay-sh:rgba(62,58,190,.24); --clay-sh2:rgba(140,130,255,.10);
+  --clay-primary:#5b50f0; --clay-primary2:#8e82ff; --clay-tint:rgba(110,100,255,.16);
+  --ink:#12163a; --muted:#656b94; --danger:#e5484d;
+  --glass:rgba(255,255,255,.5); --surface:rgba(255,255,255,.58);
+  --gl:rgba(255,255,255,.62); --gl2:rgba(255,255,255,.32); --gl-b:rgba(255,255,255,.78);
+  --modal:rgba(246,249,255,.82); --field:rgba(255,255,255,.55);
+  --soft:rgba(110,100,255,.10); --accent:rgba(110,100,255,.16);
+  --edge:rgba(255,255,255,.72); --line:rgba(110,110,200,.16);
+  --clay-raise:0 20px 44px -16px rgba(62,58,190,.34),0 2px 6px rgba(62,58,190,.07),inset 1px 1.5px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.4),inset 0 0 28px rgba(255,255,255,.28);
+  --clay-small:0 10px 22px -10px rgba(62,58,190,.30),inset 1px 1.5px 0 rgba(255,255,255,.92),inset 0 0 14px rgba(255,255,255,.26);
+  --clay-press:inset 0 2px 6px rgba(62,58,190,.13),inset 0 0 0 1px rgba(255,255,255,.55);
+  --gl-sh:var(--clay-raise);
+  --g-bg:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.26)); --g-edge:rgba(255,255,255,.82); --g-shadow:var(--clay-small);
+  --b1:#aebfff; --b2:#d6c4ff; --b3:#ffd0bd; --b4:#b9eeee; --blob-o:.55;
+  --fade:rgba(232,240,255,.82); --prim:linear-gradient(145deg,#9488ff,#5a4fee); --coral:#ff6a3d;
+  --prim-sh:0 12px 24px -8px rgba(91,80,240,.6),inset 1px 1.5px 0 rgba(255,255,255,.6),inset 0 -9px 14px rgba(40,30,170,.28);
+  --wp-dim-color:240,244,255;
+  color-scheme:light;
+}
+/* ---------- Token warna: GELAP (ink navy + violet) ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme{
+  --clay-bg1:#0a0b1f; --clay-bg2:#140f31;
+  --clay-hi:rgba(255,255,255,.16); --clay-sh:rgba(0,0,10,.6); --clay-sh2:rgba(120,110,255,.08);
+  --clay-primary:#7c6cff; --clay-primary2:#a79bff; --clay-tint:rgba(140,130,255,.20);
+  --ink:#f1f2ff; --muted:#a4a9d6; --danger:#ff7a85;
+  --glass:rgba(255,255,255,.07); --surface:rgba(255,255,255,.09);
+  --gl:rgba(255,255,255,.10); --gl2:rgba(255,255,255,.045); --gl-b:rgba(255,255,255,.17);
+  --modal:rgba(18,16,46,.84); --field:rgba(255,255,255,.07);
+  --soft:rgba(150,140,255,.16); --accent:rgba(150,140,255,.22);
+  --edge:rgba(255,255,255,.15); --line:rgba(255,255,255,.12);
+  --clay-raise:0 22px 46px -16px rgba(0,0,12,.7),0 2px 6px rgba(0,0,0,.25),inset 1px 1.5px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.05),inset 0 0 30px rgba(140,130,255,.08);
+  --clay-small:0 10px 22px -10px rgba(0,0,12,.65),inset 1px 1.5px 0 rgba(255,255,255,.2),inset 0 0 14px rgba(140,130,255,.07);
+  --clay-press:inset 0 2px 7px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.07);
+  --gl-sh:var(--clay-raise);
+  --g-bg:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.04)); --g-edge:rgba(255,255,255,.2); --g-shadow:var(--clay-small);
+  --b1:#4b43d6; --b2:#8a45e0; --b3:#e8613b; --b4:#2a7f9a; --blob-o:.42;
+  --fade:rgba(10,11,31,.74);
+  --wp-dim-color:8,9,26;
+  color-scheme:dark;
+}
+
+/* ---------- Dasar halaman: statis (tanpa background-attachment:fixed → hemat repaint) ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_){
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif!important;
+  background:var(--clay-bg1)!important; background-attachment:scroll!important;
+  -webkit-font-smoothing:antialiased; letter-spacing:-.005em;
+}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bg-mesh{
+  background:
+    radial-gradient(72% 46% at 6% 0%,rgba(120,140,255,.42),transparent 70%),
+    radial-gradient(60% 42% at 100% 26%,rgba(190,150,255,.32),transparent 70%),
+    radial-gradient(70% 46% at 14% 100%,rgba(255,140,100,.24),transparent 70%),
+    linear-gradient(172deg,var(--clay-bg1),var(--clay-bg2));
+}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .bg-mesh{
+  background:
+    radial-gradient(72% 46% at 6% 0%,rgba(92,80,255,.46),transparent 70%),
+    radial-gradient(60% 42% at 100% 28%,rgba(160,80,255,.30),transparent 70%),
+    radial-gradient(70% 46% at 14% 100%,rgba(255,106,61,.22),transparent 70%),
+    linear-gradient(172deg,var(--clay-bg1),var(--clay-bg2));
+}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bg-hearts,html:root body:not(#_):not(#_):not(#_):not(#_) .blob.b3,html:root body:not(#_):not(#_):not(#_):not(#_) .blob.b4{display:none!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .blob{width:70vmax;height:70vmax}
+html:root body:not(#_):not(#_):not(#_):not(#_) .blob.b1{animation-duration:48s}
+html:root body:not(#_):not(#_):not(#_):not(#_) .blob.b2{animation-duration:56s}
+html:root body:not(#_):not(#_):not(#_):not(#_) ::selection{background:rgba(110,100,255,.28)}
+html:root body:not(#_):not(#_):not(#_):not(#_) input[type=range],html:root body:not(#_):not(#_):not(#_):not(#_) input[type=checkbox],html:root body:not(#_):not(#_):not(#_):not(#_) input[type=radio]{accent-color:var(--clay-primary)}
+
+/* ---------- Tipografi ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) h1,html:root body:not(#_):not(#_):not(#_):not(#_) h2,html:root body:not(#_):not(#_):not(#_):not(#_) .home-title,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-brand,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-title,html:root body:not(#_):not(#_):not(#_):not(#_) .head-nick,html:root body:not(#_):not(#_):not(#_):not(#_) .cal-title,html:root body:not(#_):not(#_):not(#_):not(#_) .modal-title,html:root body:not(#_):not(#_):not(#_):not(#_) .hist-title{color:var(--ink);font-weight:800;letter-spacing:-.035em}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-brand{font-size:38px}
+html:root body:not(#_):not(#_):not(#_):not(#_) .home-title{font-size:26px}
+html:root body:not(#_):not(#_):not(#_):not(#_) .muted,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-sub,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-tag,html:root body:not(#_):not(#_):not(#_):not(#_) .modal-subtitle,html:root body:not(#_):not(#_):not(#_):not(#_) .field-label,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-label,html:root body:not(#_):not(#_):not(#_):not(#_) .head-sub{color:var(--muted)}
+
+/* ---------- PROGRESSIVE BLUR: header atas ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head{background:transparent!important;box-shadow:none!important;border:0!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head .chat-head{border-bottom:0!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before,html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::after{content:"";position:absolute;left:0;right:0;top:0;pointer-events:none;z-index:-1}
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before{bottom:-30px;
+  background:linear-gradient(180deg,var(--fade) 0,var(--fade) 38%,transparent 100%);
+  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+  -webkit-mask-image:linear-gradient(180deg,#000 52%,transparent 100%);mask-image:linear-gradient(180deg,#000 52%,transparent 100%)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::after{bottom:-4px;
+  -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
+  -webkit-mask-image:linear-gradient(180deg,#000 38%,transparent 100%);mask-image:linear-gradient(180deg,#000 38%,transparent 100%)}
+/* beranda: kepala sticky kedua memakai efek yang sama */
+html:root body:not(#_):not(#_):not(#_):not(#_) .home-head::before{top:-8px;bottom:-24px;
+  background:linear-gradient(180deg,var(--fade) 0,var(--fade) 40%,transparent 100%);
+  -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
+
+/* ---------- PROGRESSIVE BLUR: dasar layar (di belakang composer + navbar) ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_)::before,html:root body:not(#_):not(#_):not(#_):not(#_)::after{content:""!important;display:block!important;position:fixed;left:0;right:0;bottom:0;pointer-events:none;z-index:20;inset-inline:0}
+html:root body:not(#_):not(#_):not(#_):not(#_)::before{inset:auto 0 0 0!important;height:calc(190px + env(safe-area-inset-bottom));background:none!important;
+  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+  -webkit-mask-image:linear-gradient(0deg,#000 40%,transparent 100%);mask-image:linear-gradient(0deg,#000 40%,transparent 100%)}
+html:root body:not(#_):not(#_):not(#_):not(#_)::after{height:calc(124px + env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,var(--fade) 0,var(--fade) 36%,transparent 100%);
+  -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
+  -webkit-mask-image:linear-gradient(0deg,#000 46%,transparent 100%);mask-image:linear-gradient(0deg,#000 46%,transparent 100%)}
+html:root body:not(#_):not(#_):not(#_):not(#_).login-active::before,html:root body:not(#_):not(#_):not(#_):not(#_).login-active::after{display:none!important}
+html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper{--fade:rgba(10,10,30,.5)}
+
+/* ---------- Kartu & panel: kaca berlapis ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-card,html:root body:not(#_):not(#_):not(#_):not(#_) .profile-card,html:root body:not(#_):not(#_):not(#_):not(#_) .edit-modal,html:root body:not(#_):not(#_):not(#_):not(#_) .media-sheet,html:root body:not(#_):not(#_):not(#_):not(#_) .stat-card,html:root body:not(#_):not(#_):not(#_):not(#_) .profile-info,
+html:root body:not(#_):not(#_):not(#_):not(#_) .profile-action,html:root body:not(#_):not(#_):not(#_):not(#_) .profile-streak,html:root body:not(#_):not(#_):not(#_):not(#_) .dialog-modal,html:root body:not(#_):not(#_):not(#_):not(#_) .settings-sheet,html:root body:not(#_):not(#_):not(#_):not(#_) .stats-modal,html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel{
+  background:linear-gradient(150deg,var(--gl),var(--gl2))!important;
+  border:1px solid var(--gl-b)!important;box-shadow:var(--clay-raise)!important;border-radius:30px}
+html:root body:not(#_):not(#_):not(#_):not(#_) .menu,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-panel,html:root body:not(#_):not(#_):not(#_):not(#_) .toast,html:root body:not(#_):not(#_):not(#_):not(#_) .pinned-bar,html:root body:not(#_):not(#_):not(#_):not(#_) .search-wrap,html:root body:not(#_):not(#_):not(#_):not(#_) .photo-preview,html:root body:not(#_):not(#_):not(#_):not(#_) .head-menu,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu,html:root body:not(#_):not(#_):not(#_):not(#_) .select-bar{
+  background:linear-gradient(150deg,var(--gl),var(--gl2))!important;
+  border:1px solid var(--gl-b)!important;box-shadow:var(--clay-small)!important;border-radius:22px}
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-menu,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu,html:root body:not(#_):not(#_):not(#_):not(#_) .menu,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-panel{-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);background:var(--modal)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .edit-modal,html:root body:not(#_):not(#_):not(#_):not(#_) .media-sheet,html:root body:not(#_):not(#_):not(#_):not(#_) .dialog-modal,html:root body:not(#_):not(#_):not(#_):not(#_) .settings-sheet,html:root body:not(#_):not(#_):not(#_):not(#_) .stats-modal{
+  background:var(--modal)!important;-webkit-backdrop-filter:blur(26px) saturate(1.7);backdrop-filter:blur(26px) saturate(1.7)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .modal-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_) .media-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_) .zoom-backdrop{background:rgba(14,16,50,.26)!important;-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .modal-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .media-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .zoom-backdrop{background:rgba(2,3,16,.5)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .profile-card{border-radius:34px}
+html:root body:not(#_):not(#_):not(#_):not(#_) .day-divider{background:var(--gl)!important;color:var(--muted);border:1px solid var(--gl-b);border-radius:999px;padding:6px 15px;font-weight:700;font-size:11px;box-shadow:var(--clay-small)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .set-sec{border-top-color:var(--line)}
+
+/* ---------- Composer & navbar: pil kaca melayang ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .composer{background:linear-gradient(150deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-raise)!important;border-radius:30px}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .composer{background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.05))!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav{background:linear-gradient(150deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;
+  box-shadow:var(--clay-raise)!important;border-radius:32px}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav.scroll-orb{background:transparent!important;border-color:rgba(255,255,255,.55)!important;border-radius:50%!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav::before{background:
+  radial-gradient(ellipse at 30% 18%,rgba(255,255,255,.95),transparent 40%),
+  radial-gradient(ellipse at 72% 82%,rgba(255,106,61,.55),transparent 55%),
+  linear-gradient(145deg,#9d92ff,#5a4fee)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav::after{border-color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_) .nav-indicator{background:var(--prim)!important;border:0;box-shadow:var(--prim-sh)!important;transition:transform .26s cubic-bezier(.25,.9,.3,1),opacity .15s ease!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .nav-btn{color:var(--muted);font-weight:700}
+html:root body:not(#_):not(#_):not(#_):not(#_) .nav-btn.active{color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav.scroll-orb .nav-btn.active{color:var(--clay-primary)}
+
+/* ---------- Header chat: tombol kaca bulat ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-icon,html:root body:not(#_):not(#_):not(#_):not(#_) .home-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .settings-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .theme-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .icon-btn{
+  background:linear-gradient(150deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-small)!important;color:var(--ink);border-radius:50%}
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-icon{width:38px;height:38px;margin-left:2px}
+html:root body:not(#_):not(#_):not(#_):not(#_) #homePage .home-btn{background:linear-gradient(150deg,var(--gl),var(--gl2));border:1px solid var(--gl-b);box-shadow:var(--clay-small);color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-avatar{background:linear-gradient(145deg,#9d92ff,#5a4fee 60%,#ff6a3d);color:#fff;box-shadow:0 6px 14px -4px rgba(91,80,240,.55),inset 1px 1.5px 0 rgba(255,255,255,.6)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-menu-item,html:root body:not(#_):not(#_):not(#_):not(#_) .menu button,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-panel button{color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-menu-item:active,html:root body:not(#_):not(#_):not(#_):not(#_) .menu button:active,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-panel button:active{background:var(--soft)}
+
+/* ---------- Tombol sekunder & input ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .small-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .media-option,html:root body:not(#_):not(#_):not(#_):not(#_) .cancel-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .media-cancel,html:root body:not(#_):not(#_):not(#_):not(#_) .modal-close:not(.modal-save),html:root body:not(#_):not(#_):not(#_):not(#_) .sel-btn:not(.danger),
+html:root body:not(#_):not(#_):not(#_):not(#_) .wp-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .month-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .pw-toggle{
+  background:linear-gradient(150deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-small)!important;color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .small-btn,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .media-option,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .cancel-btn,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .media-cancel,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .modal-close:not(.modal-save),
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .sel-btn:not(.danger),html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .wp-btn,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .month-btn,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .icon-btn,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .theme-btn,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .settings-btn{
+  background:linear-gradient(150deg,rgba(255,255,255,.14),rgba(255,255,255,.05))!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .wp-btn.danger,html:root body:not(#_):not(#_):not(#_):not(#_) .sel-btn.danger{color:var(--danger)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-input,html:root body:not(#_):not(#_):not(#_):not(#_) .edit-text,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-input,html:root body:not(#_):not(#_):not(#_):not(#_) .date-field,html:root body:not(#_):not(#_):not(#_):not(#_) select,html:root body:not(#_):not(#_):not(#_):not(#_) .ce-newchat textarea{
+  background:var(--field)!important;border:1px solid var(--gl-b)!important;border-radius:18px;box-shadow:var(--clay-press)!important;color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-input:focus,html:root body:not(#_):not(#_):not(#_):not(#_) .edit-text:focus,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-input:focus,html:root body:not(#_):not(#_):not(#_):not(#_) select:focus{border-color:var(--clay-primary)!important;box-shadow:0 0 0 4px rgba(110,100,255,.2),var(--clay-press)!important;outline:0}
+html:root body:not(#_):not(#_):not(#_):not(#_) #input{box-shadow:none!important;border:0!important;background:transparent!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) #input::placeholder,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-input::placeholder{color:var(--muted);opacity:.75}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-link{color:var(--clay-primary);font-weight:700}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .auth-link{color:#b7aeff}
+
+/* Tombol utama: kaca indigo dengan kilau */
+html:root body:not(#_):not(#_):not(#_):not(#_) .send,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .save-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .modal-save,html:root body:not(#_):not(#_):not(#_):not(#_) .dialog-actions .primary,html:root body:not(#_):not(#_):not(#_):not(#_) .demo-btn{
+  background:var(--prim)!important;color:#fff!important;border:0!important;box-shadow:var(--prim-sh)!important;font-weight:750}
+html:root body:not(#_):not(#_):not(#_):not(#_) .send svg{fill:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_) .send:active,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-btn:active,html:root body:not(#_):not(#_):not(#_):not(#_) .save-btn:active,html:root body:not(#_):not(#_):not(#_):not(#_) .modal-save:active,html:root body:not(#_):not(#_):not(#_):not(#_) .demo-btn:active{transform:scale(.95)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #signOutButton{background:linear-gradient(150deg,var(--gl),var(--gl2));color:var(--danger);border:1px solid var(--gl-b);box-shadow:var(--clay-small);font-weight:700}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme #signOutButton{background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.04));color:#ff9aa5}
+html:root body:not(#_):not(#_):not(#_):not(#_) .pair-opt.on,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-seg .on,html:root body:not(#_):not(#_):not(#_):not(#_) .sort-opt.active,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-opt.on{background:var(--prim)!important;color:#fff!important;box-shadow:var(--prim-sh)!important;border-color:transparent!important}
+
+/* ---------- Login / daftar ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .login-screen{background:linear-gradient(172deg,var(--clay-bg1),var(--clay-bg2))}
+html:root body:not(#_):not(#_):not(#_):not(#_) .login-screen::before{content:"";position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(70% 42% at 8% 0%,rgba(120,140,255,.5),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(190,150,255,.36),transparent 70%),radial-gradient(70% 44% at 20% 100%,rgba(255,140,100,.30),transparent 70%)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .login-screen::before{background:radial-gradient(70% 42% at 8% 0%,rgba(92,80,255,.55),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(160,80,255,.34),transparent 70%),radial-gradient(70% 44% at 20% 100%,rgba(255,106,61,.26),transparent 70%)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-blob{display:none}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-wrap{z-index:1}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-logo{width:72px;height:72px;border-radius:26px;border:1px solid var(--gl-b);color:#fff;font-size:32px;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.7),transparent 42%),linear-gradient(145deg,#9d92ff,#5a4fee 62%,#ff6a3d);
+  box-shadow:0 18px 34px -10px rgba(91,80,240,.6),inset 1px 1.5px 0 rgba(255,255,255,.7)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-card{padding:26px 22px}
+
+/* ---------- Avatar ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .profile-avatar,html:root body:not(#_):not(#_):not(#_):not(#_) .entry-avatar{background:linear-gradient(145deg,#9d92ff,#5a4fee 62%,#ff6a3d);color:#fff;border:0!important;box-shadow:0 8px 18px -6px rgba(91,80,240,.55),inset 1px 1.5px 0 rgba(255,255,255,.6)}
+
+/* ---------- Beranda: bola hitung mundur → bola kaca indigo ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-btn{background:
+    radial-gradient(circle at 28% 20%,rgba(255,255,255,.95) 0,rgba(255,255,255,.34) 14%,transparent 34%),
+    radial-gradient(circle at 78% 90%,rgba(255,106,61,.85) 0,transparent 52%),
+    linear-gradient(150deg,#9a8fff,#5247e8 70%)!important;
+  border:1px solid rgba(255,255,255,.45)!important;
+  box-shadow:0 30px 52px -16px rgba(79,70,229,.6),inset 2px 3px 0 rgba(255,255,255,.7),inset 0 -20px 34px rgba(30,20,150,.38),inset 0 0 44px rgba(255,255,255,.14)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-btn:active{box-shadow:0 12px 24px -10px rgba(79,70,229,.55),inset 2px 3px 0 rgba(255,255,255,.5),inset 0 -14px 26px rgba(30,20,150,.4)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-u b{color:#fff;text-shadow:0 2px 8px rgba(30,20,150,.45)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-u small,html:root body:not(#_):not(#_):not(#_):not(#_) .cd-pct{color:rgba(255,255,255,.82);text-shadow:none}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-prog{background:rgba(255,255,255,.26);box-shadow:inset 0 1px 3px rgba(30,20,150,.35)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-prog i{background:#fff;box-shadow:0 0 10px rgba(255,255,255,.7)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-btn{background:
+    radial-gradient(circle at 28% 20%,rgba(255,255,255,.9) 0,rgba(255,255,255,.28) 14%,transparent 34%),
+    radial-gradient(circle at 78% 90%,rgba(255,106,61,.8) 0,transparent 52%),
+    linear-gradient(150deg,#8a7dff,#4338d8 70%)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-u b{color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-u small,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-pct{color:rgba(255,255,255,.82)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-say{color:var(--home-ink)}
+
+/* ---------- Kalender ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel .cal-title{color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel .weekdays{color:var(--muted)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel .cal-foot{color:var(--muted);border-top-color:var(--line)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel .cal-count{background:var(--field);border-color:var(--gl-b);color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day{color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.today{box-shadow:inset 0 0 0 1.5px rgba(110,100,255,.7)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.has-notes:not(.selected):not(.range-start):not(.range-end)::after{background:var(--coral)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.in-range::before,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start::before,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end::before{background:rgba(110,100,255,.16);box-shadow:inset 0 1px 4px rgba(110,100,255,.22)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.selected::after,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start::after,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end::after{background:var(--prim);box-shadow:var(--prim-sh)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.selected,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end{color:#fff}
+
+/* ---------- Pin, streak, aksen kecil ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .pb-step{background:var(--clay-primary)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .pinned-bar{color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .ptr{color:var(--clay-primary)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .wp-preview{background-image:linear-gradient(145deg,#aebfff,#d6c4ff);color:var(--ink);border-color:var(--gl-b)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .wp-preview{background-image:linear-gradient(145deg,#3b34b8,#5b2a9e);color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_) .toast{color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .toast-action{color:var(--clay-primary);font-weight:750}
+
+/* ---------- Scrollbar tipis ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) *{scrollbar-width:thin;scrollbar-color:rgba(110,100,255,.35) transparent}
+
+/* ---------- Gerak: lembut & ringan ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .composer-dock{will-change:transform,opacity}
+html:root body:not(#_):not(#_):not(#_):not(#_) .entry.enter{animation-duration:.3s!important}
+
+/* ---------- MODE RINGAN (HP lemah / FPS turun): blur → gradient pudar, tampilan tetap sama ---------- */
+html.lite .sticky-head::before,html.lite .sticky-head::after,html.lite .home-head::before,
+html.lite body::before,html.lite body::after,
+html.lite .head-menu,html.lite .hv-pen-menu,html.lite .menu,html.lite .dd-panel,
+html.lite .edit-modal,html.lite .media-sheet,html.lite .dialog-modal,html.lite .settings-sheet,html.lite .stats-modal,
+html.lite .modal-backdrop,html.lite .media-backdrop,html.lite .zoom-backdrop{
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.lite .sticky-head::after,html.lite body::before{display:none!important}
+html.lite .blob{animation:none!important}
+html.lite body::after{background:linear-gradient(0deg,var(--fade) 0,var(--fade) 40%,transparent 100%)!important}
+html.lite .sticky-head::before{background:linear-gradient(180deg,var(--fade) 0,var(--fade) 60%,transparent 100%)!important;-webkit-mask-image:none;mask-image:none}
+html.lite .edit-modal,html.lite .media-sheet,html.lite .dialog-modal,html.lite .settings-sheet,html.lite .stats-modal,
+html.lite .head-menu,html.lite .hv-pen-menu,html.lite .menu,html.lite .dd-panel{background:var(--modal)!important}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html:root body::before{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){html:root body .blob{animation:none!important}}
+
+/* ---------- Penyempurnaan kecil ---------- */
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-switch,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-msg,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-sub{color:var(--muted)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-icon svg{width:20px;height:20px}
+html:root body:not(#_):not(#_):not(#_):not(#_) .lock-card{background:linear-gradient(150deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-raise)!important;border-radius:30px;color:var(--ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .lock-eye{color:var(--clay-primary)}
+
+/* =====================  V2: blur tipis, judul video, pindah halaman ringan  ===================== */
+html:root body:not(#_):not(#_):not(#_):not(#_){--fade:rgba(232,240,255,.5)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme{--fade:rgba(10,11,31,.46)}
+html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper{--fade:rgba(10,10,30,.34)}
+/* header: hanya 1 lapis, tipis */
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::after{display:none!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before{bottom:-12px;
+  background:linear-gradient(180deg,var(--fade) 0,var(--fade) 30%,transparent 100%);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  -webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000 62%,transparent 100%)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .home-head::before{top:-6px;bottom:-12px;
+  background:linear-gradient(180deg,var(--fade) 0,var(--fade) 30%,transparent 100%);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  -webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000 62%,transparent 100%)}
+/* dasar layar: hanya 1 lapis, lebih pendek */
+html:root body:not(#_):not(#_):not(#_):not(#_)::before{display:none!important}
+html:root body:not(#_):not(#_):not(#_):not(#_)::after{height:calc(100px + env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,var(--fade) 0,var(--fade) 28%,transparent 100%);
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  -webkit-mask-image:linear-gradient(0deg,#000 30%,transparent 100%);mask-image:linear-gradient(0deg,#000 30%,transparent 100%)}
+/* judul video: abu-abu gelap (tidak pekat) */
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-title{color:#4d5270;text-shadow:none}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .hv-card .hv-title,html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper .hv-card .hv-title{color:#c4c8e2}
+/* pindah halaman: animasi pop (spring, banyak elemen sekaligus) → fade opacity saja */
+@keyframes pgFadeA{from{opacity:0}to{opacity:1}}
+@keyframes pgFadeB{from{opacity:0}to{opacity:1}}
+html:root body:not(#_):not(#_):not(#_):not(#_).pop-a #calendarPanel:not(.hidden),html:root body:not(#_):not(#_):not(#_):not(#_).pop-a #history:has(> .photo-gallery),html:root body:not(#_):not(#_):not(#_):not(#_).pop-a .profile-card>*{animation:pgFadeA .18s ease-out both!important}
+html:root body:not(#_):not(#_):not(#_):not(#_).pop-b #calendarPanel:not(.hidden),html:root body:not(#_):not(#_):not(#_):not(#_).pop-b #history:has(> .photo-gallery),html:root body:not(#_):not(#_):not(#_):not(#_).pop-b .profile-card>*{animation:pgFadeB .18s ease-out both!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav{will-change:auto}
+
+/* logo love di login dihapus */
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-logo{display:none!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-brand{margin-top:0}
+
+
+/* ===== Skeleton boot + pemanasan halaman ===== */
+#bootSkel{position:fixed;inset:0;z-index:99990;display:none;flex-direction:column;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);
+  background:radial-gradient(70% 40% at 8% 0%,rgba(120,140,255,.38),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(190,150,255,.28),transparent 70%),linear-gradient(172deg,#e8f0ff,#f2ecff);
+  opacity:1;transition:opacity .35s ease;contain:strict}
+body.dark-theme #bootSkel{background:radial-gradient(70% 40% at 8% 0%,rgba(92,80,255,.42),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(160,80,255,.28),transparent 70%),linear-gradient(172deg,#0a0b1f,#140f31)}
+#bootSkel.on{display:flex}
+#bootSkel.out{opacity:0;pointer-events:none}
+#bootSkel .sk{position:relative;overflow:hidden;border-radius:18px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.7)}
+body.dark-theme #bootSkel .sk{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12)}
+#bootSkel .sk::after{content:"";position:absolute;inset:0;transform:translate3d(-100%,0,0);will-change:transform;
+  background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.65) 50%,transparent 80%);animation:skSweep 1.3s ease-in-out infinite}
+body.dark-theme #bootSkel .sk::after{background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.14) 50%,transparent 80%)}
+@keyframes skSweep{to{transform:translate3d(100%,0,0)}}
+#bootSkel .r{display:flex;align-items:center;gap:12px}
+#bootSkel .c{width:40px;height:40px;border-radius:50%;flex:none}
+#bootSkel .l{height:12px;border-radius:8px}
+#bootSkel .grow{flex:1;display:flex;flex-direction:column;gap:12px;justify-content:flex-end;padding-bottom:6px}
+#bootSkel .b{height:46px;border-radius:22px;border-top-right-radius:6px}
+#bootSkel .b.me{align-self:flex-end}
+#bootSkel .b.th{align-self:flex-start;border-radius:22px;border-top-left-radius:6px}
+#bootSkel .nav{height:58px;border-radius:32px;margin:0 auto;width:min(390px,100%)}
+#bootSkel .tx{text-align:center;font:600 12px/1 "Plus Jakarta Sans",sans-serif;color:#656b94;letter-spacing:.02em}
+body.dark-theme #bootSkel .tx{color:#a4a9d6}
+/* pemanasan: halaman tersembunyi dirender sungguhan (di bawah skeleton) sekali saja */
+.pw2{display:block!important;visibility:visible!important;position:fixed!important;left:0!important;top:0!important;width:100%!important;height:100vh!important;overflow:hidden!important;z-index:1!important;pointer-events:none!important;animation:none!important}
+/* lapisan blur dipromosikan ke GPU sejak awal (tidak dibuat saat pertama kali pindah halaman) */
+html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before,html:root body:not(#_):not(#_):not(#_):not(#_) .home-head::before,html:root body:not(#_):not(#_):not(#_):not(#_)::after{will-change:transform;transform:translateZ(0)}
+@media (prefers-reduced-motion:reduce){#bootSkel .sk::after{animation:none}}
 </style>
 
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+
+/* ===== Perbaikan kontras teks (semua tema) ===== */
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#4a3f5a;--home-sub:#665b75;color:#4a3f5a}
+html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#f6eefa;--home-sub:#e3d5ec;color:#f6eefa}
+html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#fff;--home-sub:#fff;color:#fff;
+  background:linear-gradient(150deg,rgba(26,14,42,.74),rgba(26,14,42,.64))!important;
+  -webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-empty b{color:var(--home-ink)}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card .hv-title{color:var(--home-ink)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-empty small,
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-note{color:var(--home-sub)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu button:disabled{opacity:1;color:#525a82}
+html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu button:disabled{color:#a9acd8}
+html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_) .empty{display:block;width:fit-content;max-width:92%;margin-left:auto;margin-right:auto;padding:12px 18px;border-radius:16px;background:rgba(24,12,38,.55);color:#fff;text-shadow:none}
+html:root body:not(.has-wallpaper):not(.dark-theme):not(#_):not(#_):not(#_) .empty{color:#4a5078}
+html:root body.has-wallpaper:not(.dark-theme):not(#_):not(#_):not(#_) .nav-btn:not(.active),
+html:root body.has-wallpaper:not(.dark-theme):not(#_):not(#_):not(#_) .nav-btn:not(.active) span{color:#262b58!important}
+html:root body:not(.dark-theme):not(#_):not(#_):not(#_):not(#_) #signOutButton{color:#c0263a}
+html:root body:not(#_):not(#_):not(#_):not(#_) .save-btn,
+html:root body:not(#_):not(#_):not(#_):not(#_) .day.today{text-shadow:0 1px 2px rgba(30,20,110,.5);font-weight:700}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-face b,
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-face small,
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-pct{text-shadow:0 1px 3px rgba(40,10,110,.6)}
+
+/* ===== Box video & widget: glass frosted (bening tapi tidak transparan penuh) ===== */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{
+  background:linear-gradient(150deg,rgba(255,255,255,.46),rgba(255,255,255,.2) 55%,rgba(255,255,255,.34))!important;
+  -webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);
+  border:1px solid rgba(255,255,255,.62)!important;
+  box-shadow:0 10px 26px rgba(120,60,100,.13),inset 0 1px 1.5px rgba(255,255,255,.85),inset 0 -1px 4px rgba(255,255,255,.22)!important}
+html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{
+  background:linear-gradient(150deg,rgba(255,255,255,.17),rgba(255,255,255,.07) 55%,rgba(255,255,255,.13))!important;
+  border-color:rgba(255,255,255,.26)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.28),inset 0 1px 1.5px rgba(255,255,255,.34),inset 0 -1px 4px rgba(255,255,255,.06)!important}
+html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{
+  background:linear-gradient(150deg,rgba(26,14,42,.46),rgba(26,14,42,.3) 55%,rgba(26,14,42,.4))!important;
+  border-color:rgba(255,255,255,.3)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.3),inset 0 1px 1.5px rgba(255,255,255,.3)!important}
+/* mode hemat (lite): tanpa blur, latar sedikit lebih pekat agar tetap terbaca */
+html.lite:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  background:linear-gradient(150deg,rgba(255,255,255,.62),rgba(255,255,255,.44))!important}
+html.lite:root body.dark-theme:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card,html.lite:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{
+  background:linear-gradient(150deg,rgba(60,28,64,.7),rgba(40,18,44,.62))!important}
+/* box widget: bingkai (bezel) lebih tipis */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) #bxCard{padding:4px;border-radius:24px}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) #bxCard .bx-stage{border-radius:20px}
+</style>
 </head>
 
 <body class="login-active dark-theme">
@@ -2703,6 +3114,7 @@ html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-u smal
           <div class="menu hv-pen-menu hidden" id="hvPenMenu" role="menu">
             <button type="button" id="hvPenAdd" role="menuitem">Tambah video</button>
             <button type="button" id="hvPenVideo" role="menuitem">Edit video</button>
+            <button type="button" id="hvPenImg" role="menuitem">Edit widget</button>
             <button type="button" id="hvPenCall" role="menuitem">Edit dialog telepon</button>
           </div>
         </div>
@@ -2736,6 +3148,12 @@ html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-u smal
       </div>
       <p class="hv-note" id="hvNote" role="status"></p>
       <div class="hv-chips" id="hvChips" role="tablist" aria-label="Daftar video" hidden></div>
+    </section>
+    <section class="hv-card tucked" id="bxCard" aria-label="Kolom baru">
+      <div class="bx-stage" id="bxStage" role="button" tabindex="0" aria-label="Upload gambar"><span id="bxHint">＋ Ketuk untuk upload gambar</span></div>
+      <input type="file" id="bxFile" accept="image/*" hidden>
+      <input type="file" id="bxFileMulti" accept="image/*" multiple hidden>
+      <input type="file" id="bxReplaceFile" accept="image/*" hidden>
     </section>
     <div class="pk-stage" id="pkPeekStage" hidden>
       <div class="pk-minions" id="pkMinions" aria-hidden="true"></div>
@@ -3243,6 +3661,21 @@ html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-u smal
         <button class="save-btn" id="hvRenameSave" type="submit">Simpan</button>
       </div>
     </form>
+  </section>
+</div>
+<div class="modal-backdrop" id="bxEditBackdrop" aria-hidden="true">
+  <section class="edit-modal dialog-modal" role="dialog" aria-modal="true" aria-labelledby="bxEditTitle" tabindex="-1">
+    <div class="modal-head">
+      <div class="modal-title" id="bxEditTitle">Edit widget</div>
+      <button class="modal-close" id="bxEditClose" type="button" aria-label="Tutup">×</button>
+    </div>
+    <div class="bxe-list" id="bxEditList"></div>
+    <p class="hv-msg" id="bxEditMsg" role="status"></p>
+    <button class="bxe-add" id="bxEditAdd" type="button">＋ Tambah gambar</button>
+    <button class="bxe-add" id="bxEditAddMulti" type="button">＋ Tambah beberapa sekaligus</button>
+    <div class="modal-actions">
+      <button class="save-btn" id="bxEditDone" type="button">Selesai</button>
+    </div>
   </section>
 </div>
 <div class="modal-backdrop" id="callEditBackdrop" aria-hidden="true">
@@ -3921,6 +4354,7 @@ function closeActiveModal() {
   else if (current === $('settingsBackdrop')) closeSettings();
   else if (current === $('nickBackdrop')) closeNickModal();
   else if (current === $('hvAddBackdrop')) closeHvAdd();
+  else if (current === $('bxEditBackdrop')) closeBxEdit();
 }
 
 function finishDialog(result) {
@@ -4696,6 +5130,7 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
     photo.className = 'message-photo';
     photo.src = note.photo;
     photo.alt = 'Foto riwayat';
+    photo.draggable = false;
     photo.loading = 'lazy';
     photo.decoding = 'async';
     photo.addEventListener('click',event => {
@@ -4745,7 +5180,19 @@ function makeEntry(note,{showAvatar=true,joinPrev=false,joinNext=false,runNext=f
     if (pressTimer && Math.hypot(event.clientX-pressX,event.clientY-pressY) > 10) cancelPress();
   });
   ['pointerup','pointercancel','pointerleave'].forEach(type => message.addEventListener(type,cancelPress));
-  message.addEventListener('contextmenu',event => event.preventDefault());
+  /* Tahan lama pada foto: browser (Android) memicu contextmenu / pointercancel sendiri,
+     jadi menu catatan dibuka dari event itu juga supaya tidak hilang */
+  message.addEventListener('contextmenu',event => {
+    event.preventDefault();
+    if (selectMode) return;
+    if (Date.now() < menuSuppressUntil || String(openMenuId) === String(note.id)) return;
+    clearTimeout(pressTimer); pressTimer = 0;
+    message.classList.remove('pressing');
+    menuSuppressUntil = Date.now()+700;
+    haptic(30);
+    openNoteMenu(note.id);
+  });
+  message.addEventListener('dragstart',event => event.preventDefault());
 
   let lastTap = 0;
   message.addEventListener('click',event => {
@@ -5695,7 +6142,7 @@ $('allNav').addEventListener('click',() => {
   } else {
     resetVisible();
     updateNavigation();
-    render(TO_DEFAULT);
+    requestAnimationFrame(() => setTimeout(() => render(TO_DEFAULT),0));
   }
   playPagePop();
 });
@@ -5722,7 +6169,7 @@ $('calendarNav').addEventListener('click',() => {
     resetVisible();
     updateNavigation();
     renderCalendar();
-    render(TO_DEFAULT);
+    requestAnimationFrame(() => setTimeout(() => render(TO_DEFAULT),0));
   }
   playPagePop();
 });
@@ -6062,6 +6509,7 @@ document.addEventListener('keydown',event => {
     else if (activeModal === $('settingsBackdrop')) closeSettings();
     else if (activeModal === $('nickBackdrop')) closeNickModal();
     else if (activeModal === $('hvRenameBackdrop')) closeHvRename();
+    else if (activeModal === $('bxEditBackdrop')) closeBxEdit();
     else if (!activeModal && showingContact) closeContact();
     return;
   }
@@ -6672,6 +7120,7 @@ function peekApply(animate) {
   if (peekHidden) { try { if (typeof hvLeave === 'function') hvLeave(); } catch {} }
   peekTuck($('cdHome'),animate);
   peekTuck($('hvCard'),animate);
+  peekTuck($('bxCard'),animate);
 }
 
 function peekBurst(btn) {
@@ -10366,6 +10815,7 @@ async function startSync(session) {
   syncStarting = true;
   currentUserId = uid;
   syncReady = false;
+  setTimeout(() => { if (typeof bxLoad === 'function') bxLoad(); },0);
   remoteSnap = new Map();
   notes = [];
   pendingBottom = true;
@@ -10408,6 +10858,7 @@ async function startSync(session) {
 }
 
 function stopSync() {
+  if (typeof bxReset === 'function') bxReset();
   ld.reset();
   clearTimeout(syncTimer);
   syncTimer = null;
@@ -13421,6 +13872,389 @@ window.addEventListener('popstate',() => {
     if(b&&b._sup&&Date.now()-b._sup<2500){ b._sup=0; e.stopImmediatePropagation(); e.preventDefault(); }
   },true);
 })();
+</script>
+<script>
+/* Penjaga performa: ukur FPS saat user scroll; kalau berat, matikan blur otomatis (gradient pudar tetap tampil) */
+(function(){
+  var d=document.documentElement; if(d.classList.contains('lite'))return;
+  var t=0,n=0,sum=0,last=0,raf=0,done=false,quiet;
+  function stop(){window.removeEventListener('scroll',onS,true);}
+  function frame(ts){
+    if(last){var dt=ts-last; if(dt<200){sum+=dt;n++;}}
+    last=ts;
+    if(n>=45){
+      done=true;stop();
+      if(sum/n>26){d.classList.add('lite');try{localStorage.setItem('ui_lite','1')}catch(e){}}
+      else{try{localStorage.setItem('ui_lite','0')}catch(e){}}
+      return;
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  function onS(){
+    if(done)return;
+    clearTimeout(quiet);quiet=setTimeout(function(){cancelAnimationFrame(raf);raf=0;last=0;},160);
+    if(!raf){last=0;raf=requestAnimationFrame(function(ts){raf=0;frame(ts);});}
+  }
+  try{if(localStorage.getItem('ui_lite')==='0')return;}catch(e){}
+  window.addEventListener('scroll',onS,{passive:true,capture:true});
+})();
+</script>
+<div id="bootSkel" aria-hidden="true">
+  <div class="r"><i class="sk c"></i><div style="flex:1;display:flex;flex-direction:column;gap:8px"><i class="sk l" style="width:38%"></i><i class="sk l" style="width:56%;height:9px"></i></div><i class="sk c"></i><i class="sk c"></i></div>
+  <div class="grow">
+    <i class="sk b th" style="width:62%"></i><i class="sk b me" style="width:48%"></i><i class="sk b th" style="width:70%;height:64px"></i>
+    <i class="sk b me" style="width:55%"></i><i class="sk b th" style="width:40%"></i><i class="sk b me" style="width:66%;height:60px"></i>
+  </div>
+  <i class="sk" style="height:52px;border-radius:30px"></i>
+  <i class="sk nav"></i>
+  <div class="tx">Menyiapkan semuanya…</div>
+</div>
+<script>
+/* Boot mulus: begitu login, tampilkan skeleton lalu muat SEMUA lebih dulu (font, gambar, 3 halaman tersembunyi, lapisan blur).
+   Skeleton baru hilang setelah siap, jadi pindah navbar pertama sudah semulus berikutnya. */
+(function(){
+  var sk=document.getElementById('bootSkel'),done=false,running=false;
+  function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+  function frames(n){return new Promise(function(r){(function f(){if(n--<=0)return r();requestAnimationFrame(f)})()})}
+  function finish(){
+    if(done)return;done=true;
+    sk.classList.add('out');
+    setTimeout(function(){sk.classList.remove('on','out');},400);
+  }
+  async function boot(){
+    if(running||done)return;running=true;
+    sk.classList.add('on');
+    var t0=Date.now(), guard=setTimeout(finish,4500);
+    try{
+      var sy=window.scrollY;
+      var fontP=Promise.race([Promise.all(['400','500','600','700','800'].map(function(w){return document.fonts.load(w+' 16px "Plus Jakarta Sans"','Aa Selamat 123')})).then(function(){return document.fonts.ready}),wait(1800)]);
+      var imgs=[].slice.call(document.images).filter(function(i){return i.src&&i.decode});
+      var imgP=Promise.race([Promise.all(imgs.slice(0,40).map(function(i){return i.decode().catch(function(){})})),wait(1500)]);
+      await Promise.all([fontP,imgP]);
+      var els=['homePage','profilePage','calendarPanel'].map(function(i){return document.getElementById(i)}).filter(function(e){return e&&(e.hidden||e.classList.contains('hidden'))});
+      els.forEach(function(e){e.classList.add('pw2')});
+      els.forEach(function(e){void e.offsetHeight});
+      await frames(4); await wait(160); await frames(2);
+      els.forEach(function(e){e.classList.remove('pw2')});
+      if(window.scrollY!==sy)window.scrollTo(0,sy);
+      await frames(2);
+      var rest=750-(Date.now()-t0); if(rest>0)await wait(rest);
+    }catch(e){}
+    clearTimeout(guard);finish();
+  }
+  function watch(){
+    if(!document.body.classList.contains('login-active')){boot();return;}
+    var mo=new MutationObserver(function(){
+      if(!document.body.classList.contains('login-active')){mo.disconnect();boot();}
+    });
+    mo.observe(document.body,{attributes:true,attributeFilter:['class']});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
+})();
+</script>
+<script>
+/* ===== Beranda: widget gambar (carousel) di bawah video =====
+   Banyak gambar: geser manual kiri/kanan + otomatis tiap 3 detik (kembali ke gambar pertama di ujung).
+   Disimpan di localStorage perangkat (cepat) dan dicadangkan ke Supabase Storage supaya ikut di perangkat lain. */
+const BX_KEY = uid => 'unsent_box_img_'+uid;          /* format lama: satu gambar */
+const BX_LIST_KEY = uid => 'unsent_box_imgs_'+uid;    /* format baru: daftar gambar */
+const BX_FILE = (uid,id) => uid+'/box-'+id+'.jpg';    /* id 'image' = file lama box-image.jpg */
+const BX_MAX = 12;
+const BX_AUTO_MS = 3000;
+let bxItems = [], bxIdx = 0, bxTimer = 0, bxHold = false, bxOwner = null, bxReplaceId = null, bxRaf = 0, bxLoadSeq = 0;
+
+function bxUid() { return typeof currentUserId !== 'undefined' && currentUserId ? currentUserId : 'guest'; }
+function bxNewId() { return Date.now().toString(36)+Math.random().toString(36).slice(2,5); }
+function bxTrack() { return document.querySelector('#bxStage .bx-track'); }
+
+/* ---------- tampilan ---------- */
+function bxVisible() {
+  const st = $('bxStage'), hp = $('homePage');
+  if (!st || !hp || hp.hidden || hp.classList.contains('peek-hidden')) return false;
+  const r = st.getBoundingClientRect();
+  return r.width > 0 && r.height > 0;
+}
+function bxSyncDots(i) {
+  const st = $('bxStage'); if (!st) return;
+  st.querySelectorAll('.bx-dots i').forEach((d,k) => d.classList.toggle('on',k === i));
+}
+function bxOnScroll() {
+  if (bxRaf) return;
+  bxRaf = requestAnimationFrame(() => {
+    bxRaf = 0;
+    const tr = bxTrack(); if (!tr || !tr.clientWidth) return;
+    bxIdx = Math.max(0,Math.min(bxItems.length-1,Math.round(tr.scrollLeft/tr.clientWidth)));
+    bxSyncDots(bxIdx);
+  });
+}
+function bxGo(dir) {
+  const tr = bxTrack(), n = bxItems.length;
+  if (!tr || n < 2 || !tr.clientWidth) return;
+  const cur = Math.round(tr.scrollLeft/tr.clientWidth);
+  tr.scrollTo({left:((cur+dir+n)%n)*tr.clientWidth,behavior:'smooth'});
+  bxRestart();
+}
+function bxRender() {
+  const st = $('bxStage'); if (!st) return;
+  st.querySelectorAll('.bx-track,.bx-dots,.bx-nav').forEach(e => e.remove());
+  const n = bxItems.length;
+  if (n) {
+    const tr = document.createElement('div');
+    tr.className = 'bx-track';
+    bxItems.forEach(it => {
+      const sl = document.createElement('div'); sl.className = 'bx-slide';
+      const im = new Image(); im.src = it.url; im.alt = ''; im.draggable = false;
+      sl.appendChild(im); tr.appendChild(sl);
+    });
+    st.prepend(tr);
+    tr.addEventListener('scroll',bxOnScroll,{passive:true});
+    const hold = () => { bxHold = true; clearInterval(bxTimer); bxTimer = 0; };
+    const free = () => { bxHold = false; bxRestart(); };
+    tr.addEventListener('touchstart',hold,{passive:true});
+    tr.addEventListener('touchend',free,{passive:true});
+    tr.addEventListener('touchcancel',free,{passive:true});
+    tr.addEventListener('pointerdown',e => { if (e.pointerType === 'mouse') hold(); },{passive:true});
+    tr.addEventListener('pointerup',e => { if (e.pointerType === 'mouse') free(); },{passive:true});
+    tr.addEventListener('wheel',() => bxRestart(),{passive:true});
+    if (n > 1) {
+      const dots = document.createElement('div'); dots.className = 'bx-dots'; dots.setAttribute('aria-hidden','true');
+      for (let i = 0; i < n; i++) dots.appendChild(document.createElement('i'));
+      st.appendChild(dots);
+      [['prev','‹','Gambar sebelumnya',-1],['next','›','Gambar berikutnya',1]].forEach(([c,t,l,d]) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'bx-nav '+c; b.textContent = t; b.setAttribute('aria-label',l);
+        b.addEventListener('click',e => { e.stopPropagation(); bxGo(d); });
+        st.appendChild(b);
+      });
+    }
+    bxIdx = Math.max(0,Math.min(bxIdx,n-1));
+    if (tr.clientWidth) tr.scrollLeft = bxIdx*tr.clientWidth;
+    bxSyncDots(bxIdx);
+  } else bxIdx = 0;
+  st.classList.toggle('has',n > 0);
+  st.classList.toggle('multi',n > 1);
+  if (n) { st.setAttribute('role','group'); st.setAttribute('aria-roledescription','carousel'); st.setAttribute('aria-label','Galeri gambar'); }
+  else { st.setAttribute('role','button'); st.removeAttribute('aria-roledescription'); st.setAttribute('aria-label','Upload gambar'); }
+  $('bxHint').style.display = n ? 'none' : '';
+  bxRestart();
+}
+function bxReset() { bxItems = []; bxIdx = 0; bxOwner = null; bxRender(); }
+
+/* ---------- geser otomatis ---------- */
+function bxTick() {
+  const tr = bxTrack(), n = bxItems.length;
+  if (!tr || n < 2 || bxHold || document.hidden || !bxVisible() || !tr.clientWidth) return;
+  const w = tr.clientWidth, cur = Math.round(tr.scrollLeft/w);
+  /* mentok di ujung: geser balik (beranimasi) ke gambar pertama, lalu ulangi */
+  tr.scrollTo({left:cur >= n-1 ? 0 : (cur+1)*w,behavior:'smooth'});
+}
+function bxRestart() {
+  clearInterval(bxTimer); bxTimer = 0;
+  if (bxItems.length > 1 && !bxHold) bxTimer = setInterval(bxTick,BX_AUTO_MS);
+}
+window.addEventListener('resize',() => { const tr = bxTrack(); if (tr && tr.clientWidth) tr.scrollLeft = bxIdx*tr.clientWidth; });
+
+/* ---------- penyimpanan ---------- */
+function bxSave() {
+  const uid = bxUid();
+  try {
+    localStorage.setItem(BX_LIST_KEY(uid),JSON.stringify(bxItems.filter(i => String(i.url).startsWith('data:'))));
+    localStorage.removeItem(BX_KEY(uid));
+    return true;
+  } catch (_) { return false; }
+}
+function bxSortItems() { bxItems.sort((a,b) => a.id === 'image' ? -1 : b.id === 'image' ? 1 : a.id.localeCompare(b.id)); }
+function bxBucket() { return supabaseClient.storage.from(PHOTO_BUCKET); }
+async function bxCloudPut(it) {
+  const uid = bxUid(); if (uid === 'guest') return false;
+  try {
+    const blob = await (await fetch(it.url)).blob();
+    const { error } = await bxBucket().upload(BX_FILE(uid,it.id),blob,{contentType:'image/jpeg',upsert:true});
+    return !error;
+  } catch (_) { return false; }
+}
+async function bxCloudDel(id) {
+  const uid = bxUid(); if (uid === 'guest') return;
+  try { await bxBucket().remove([BX_FILE(uid,id)]); } catch (_) {}
+}
+function bxToDataUrl(url) {
+  return fetch(url).then(r => r.blob()).then(bl => new Promise((ok,no) => {
+    const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.onerror = no; fr.readAsDataURL(bl);
+  }));
+}
+/* samakan dengan Supabase: gambar yang hanya ada di cloud diunduh, yang hanya ada di perangkat diunggah */
+async function bxCloudSync(uid,seq) {
+  if (uid === 'guest') return;
+  try {
+    const { data: files, error } = await bxBucket().list(uid,{limit:100});
+    if (error || !Array.isArray(files)) return;
+    if (seq !== bxLoadSeq || bxUid() !== uid) return;
+    const cloudIds = files.map(f => (/^box-(.+)\.jpg$/.exec(f.name) || [])[1]).filter(Boolean);
+    bxItems.filter(it => !cloudIds.includes(it.id)).forEach(it => { bxCloudPut(it); });
+    const missing = cloudIds.filter(id => !bxItems.some(x => x.id === id)).slice(0,Math.max(0,BX_MAX-bxItems.length));
+    if (!missing.length) return;
+    const got = await Promise.all(missing.map(async id => {
+      try {
+        const { data } = await bxBucket().createSignedUrl(BX_FILE(uid,id),PHOTO_URL_TTL);
+        return data && data.signedUrl ? {id,url:await bxToDataUrl(data.signedUrl)} : null;
+      } catch (_) { return null; }
+    }));
+    if (seq !== bxLoadSeq || bxUid() !== uid) return;
+    const add = got.filter(Boolean);
+    if (!add.length) return;
+    bxItems = bxItems.concat(add); bxSortItems(); bxRender(); bxSave(); bxEditRender();
+  } catch (_) {}
+}
+function bxLoad() {
+  const uid = bxUid(), seq = ++bxLoadSeq;
+  if (bxOwner !== uid) { bxItems = []; bxIdx = 0; bxRender(); }
+  bxOwner = uid;
+  let raw = null;
+  try { raw = localStorage.getItem(BX_LIST_KEY(uid)); } catch (_) {}
+  let done = false;
+  if (raw !== null) {
+    try {
+      const a = JSON.parse(raw);
+      if (Array.isArray(a)) { bxItems = a.filter(x => x && x.id && x.url); bxSortItems(); bxRender(); done = true; }
+    } catch (_) {}
+  }
+  if (!done) {
+    let old = '';
+    try { old = localStorage.getItem(BX_KEY(uid)) || ''; } catch (_) {}
+    if (old) { bxItems = [{id:'image',url:old}]; bxRender(); bxSave(); }
+  }
+  bxCloudSync(uid,seq);
+}
+
+/* ---------- tambah / ganti / hapus ---------- */
+function bxBusy(on) { const st = $('bxStage'); if (st) st.classList.toggle('busy',on); }
+function bxNormFile(f) {   /* beberapa HP mengirim file gambar tanpa tipe: tebak dari ekstensi */
+  if (f && !f.type) {
+    const m = /\.(jpe?g|png|gif|webp|bmp|avif|heic|heif)$/i.exec(f.name || '');
+    if (m) { const e = m[1].toLowerCase(); try { return new File([f],f.name,{type:'image/'+(e === 'jpg' ? 'jpeg' : e)}); } catch (_) {} }
+  }
+  return f;
+}
+function bxHintHidden() { return typeof peekHidden !== 'undefined' && peekHidden ? ' Tekan tombol cookie untuk melihatnya.' : ''; }
+async function bxAddFiles(files) {
+  files = [...files].map(bxNormFile).filter(f => f && f.type && f.type.startsWith('image/'));
+  if (!files.length) { showToast('Pilih file gambar (JPG, PNG, WebP).'); return; }
+  const room = BX_MAX-bxItems.length;
+  if (room <= 0) { showToast('Maksimal '+BX_MAX+' gambar.'); return; }
+  const extra = files.length > room;
+  files = files.slice(0,room);
+  const added = [];
+  bxBusy(true);
+  try {
+    for (const f of files) {
+      try { added.push({id:bxNewId(),url:await compressImage(f)}); }
+      catch (e) { showToast('Gagal memproses '+(f.name || 'gambar')+': '+((e && e.message) || e)); }
+    }
+  } finally { bxBusy(false); }
+  if (!added.length) return;
+  const first = bxItems.length;
+  bxItems = bxItems.concat(added);
+  bxIdx = first; bxRender(); bxEditRender();
+  const saved = bxSave();
+  const msg = added.length+' gambar ditambahkan ♡'+(extra ? ' (maks. '+BX_MAX+')' : '')+bxHintHidden();
+  const cloud = Promise.all(added.map(bxCloudPut));   /* cadangan ke Supabase di latar belakang */
+  if (saved) showToast(msg,{duration:3600});
+  else cloud.then(r => showToast(r.some(Boolean) ? msg : 'Gambar tampil, tapi belum bisa disimpan permanen. Hapus beberapa gambar lalu coba lagi.',{duration:3600}));
+}
+async function bxReplaceFileApply(file) {
+  const it = bxItems.find(x => x.id === bxReplaceId);
+  bxReplaceId = null;
+  file = bxNormFile(file);
+  if (!it || !file) return;
+  bxBusy(true);
+  try {
+    it.url = await compressImage(file);
+  } catch (e) { showToast('Gagal memproses gambar: '+((e && e.message) || e)); return; }
+  finally { bxBusy(false); }
+  bxIdx = bxItems.indexOf(it); bxRender(); bxEditRender();
+  const saved = bxSave(), cloud = bxCloudPut(it);
+  if (saved) showToast('Gambar diganti ♡'+bxHintHidden(),{duration:3600});
+  else cloud.then(ok => showToast(ok ? 'Gambar diganti ♡' : 'Gambar tampil, tapi belum bisa disimpan permanen. Hapus beberapa gambar lalu coba lagi.',{duration:3600}));
+}
+function bxRemove(id) {
+  const i = bxItems.findIndex(x => x.id === id);
+  if (i < 0) return;
+  const [it] = bxItems.splice(i,1);
+  bxIdx = Math.min(bxIdx,Math.max(0,bxItems.length-1)); bxRender(); bxSave(); bxEditRender();
+  bxCloudDel(it.id);
+  showToast('Gambar dihapus',{actionLabel:'Urungkan',duration:5000,onAction:() => {
+    if (bxItems.some(x => x.id === it.id)) return;
+    bxItems.splice(Math.min(i,bxItems.length),0,it);
+    bxIdx = bxItems.indexOf(it); bxRender(); bxSave(); bxEditRender(); bxCloudPut(it);
+    showToast('Gambar dikembalikan ♡');
+  }});
+}
+
+/* ---------- dialog edit gambar ---------- */
+function bxEditRender() {
+  const list = $('bxEditList'); if (!list) return;
+  list.replaceChildren();
+  if (!bxItems.length) {
+    const e = document.createElement('div'); e.className = 'bxe-empty';
+    e.textContent = 'Belum ada gambar. Ketuk “Tambah gambar” untuk mulai.'; list.appendChild(e);
+  }
+  bxItems.forEach((it,i) => {
+    const row = document.createElement('div'); row.className = 'bxe-item'; row.dataset.id = it.id;
+    const th = new Image(); th.className = 'bxe-thumb'; th.alt = ''; th.src = it.url;
+    const nm = document.createElement('div'); nm.className = 'bxe-name'; nm.textContent = 'Gambar '+(i+1);
+    const rp = document.createElement('button'); rp.type = 'button'; rp.className = 'bxe-btn'; rp.dataset.act = 'replace'; rp.textContent = 'Ganti';
+    const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'bxe-btn danger'; rm.dataset.act = 'remove'; rm.textContent = 'Hapus';
+    row.append(th,nm,rp,rm); list.appendChild(row);
+  });
+  const full = bxItems.length >= BX_MAX;
+  $('bxEditAdd').disabled = full; $('bxEditAddMulti').disabled = full;
+  $('bxEditAdd').textContent = full ? 'Maksimal '+BX_MAX+' gambar' : '＋ Tambah gambar';
+}
+function openBxEdit() {
+  const backdrop = $('bxEditBackdrop');
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  focusReturnElement = $('hvEdit'); activeModal = backdrop;
+  $('bxEditMsg').textContent = '';
+  bxEditRender();
+  backdrop.classList.add('open'); backdrop.setAttribute('aria-hidden','false');
+}
+function closeBxEdit() {
+  const backdrop = $('bxEditBackdrop');
+  backdrop.classList.remove('open'); backdrop.setAttribute('aria-hidden','true');
+  if (activeModal === backdrop) activeModal = null;
+  if (focusReturnElement && document.contains(focusReturnElement)) focusReturnElement.focus({preventScroll:true});
+  focusReturnElement = null;
+}
+
+/* ---------- pasang event ---------- */
+function bxOn(id,ev,fn) { const el = $(id); if (el) el.addEventListener(ev,fn); }
+function bxFail(err) { console.error(err); showToast('Gagal menambah gambar: '+((err && err.message) || err)); }
+function bxFilesFrom(input) { const f = Array.from(input.files || []); try { input.value = ''; } catch (_) {} return f; }
+function bxHasPen() { const b = $('hvEdit'); return !!(b && b.offsetWidth); }
+bxOn('bxStage','click',() => {
+  if (!bxItems.length) $('bxFile').click();
+  else if (!bxHasPen()) openBxEdit();   /* mode tanpa pensil (Bubu): ketuk widget membuka edit widget */
+});
+bxOn('bxStage','keydown',e => {
+  if (!bxItems.length) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('bxFile').click(); } return; }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); bxGo(-1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); bxGo(1); }
+});
+bxOn('bxFile','change',e => { const f = bxFilesFrom(e.target); if (f.length) bxAddFiles(f).catch(bxFail); });
+bxOn('bxFileMulti','change',e => { const f = bxFilesFrom(e.target); if (f.length) bxAddFiles(f).catch(bxFail); });
+bxOn('bxReplaceFile','change',e => { const f = bxFilesFrom(e.target)[0]; if (f) bxReplaceFileApply(f).catch(bxFail); else bxReplaceId = null; });
+bxOn('hvPenImg','click',() => { try { hvPenMenu(false); } catch (_) {} openBxEdit(); });
+bxOn('bxEditClose','click',closeBxEdit);
+bxOn('bxEditDone','click',closeBxEdit);
+bxOn('bxEditBackdrop','click',e => { if (e.target === $('bxEditBackdrop')) closeBxEdit(); });
+bxOn('bxEditAdd','click',() => $('bxFile').click());
+bxOn('bxEditAddMulti','click',() => $('bxFileMulti').click());
+bxOn('bxEditList','click',e => {
+  const b = e.target.closest('.bxe-btn'); if (!b) return;
+  const id = b.closest('.bxe-item').dataset.id;
+  if (b.dataset.act === 'replace') { bxReplaceId = id; $('bxReplaceFile').click(); }
+  else if (b.dataset.act === 'remove') bxRemove(id);
+});
+bxLoad();
 </script>
 </body>
 </html>
