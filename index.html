@@ -14064,13 +14064,26 @@ function bxSave() {
 }
 function bxSortItems() { bxItems.sort((a,b) => a.id === 'image' ? -1 : b.id === 'image' ? 1 : a.id.localeCompare(b.id)); }
 function bxBucket() { return supabaseClient.storage.from(PHOTO_BUCKET); }
+let bxLastErr = '';
 async function bxCloudPut(it) {
-  const uid = bxUid(); if (uid === 'guest') return false;
+  const uid = bxUid();
+  if (uid === 'guest') { bxLastErr = 'belum login'; return false; }
   try {
     const blob = await (await fetch(it.url)).blob();
-    const { error } = await bxBucket().upload(BX_FILE(uid,it.id),blob,{contentType:'image/jpeg',upsert:true});
-    return !error;
-  } catch (_) { return false; }
+    const path = BX_FILE(uid,it.id);
+    const opts = {contentType:'image/jpeg',upsert:false};
+    /* upsert:true butuh policy UPDATE di storage.objects (biasanya tidak ada → ditolak RLS).
+       Pakai upload biasa (INSERT); kalau file sudah ada (ganti gambar), hapus dulu lalu unggah ulang. */
+    let { error } = await bxBucket().upload(path,blob,opts);
+    if (error && (String(error.statusCode) === '409' || /exist|duplicate/i.test(error.message || ''))) {
+      const rm = await bxBucket().remove([path]);
+      if (rm.error) { error = rm.error; }
+      else ({ error } = await bxBucket().upload(path,blob,opts));
+    }
+    if (error) { bxLastErr = error.message || String(error); console.error('[widget beranda] upload gagal:',error); return false; }
+    bxLastErr = '';
+    return true;
+  } catch (e) { bxLastErr = (e && e.message) || String(e); console.error('[widget beranda] upload gagal:',e); return false; }
 }
 async function bxCloudDel(id) {
   const uid = bxUid(); if (uid === 'guest') return;
@@ -14159,6 +14172,7 @@ async function bxAddFiles(files) {
   const cloud = Promise.all(added.map(bxCloudPut));   /* cadangan ke Supabase di latar belakang */
   if (saved) showToast(msg,{duration:3600});
   else cloud.then(r => showToast(r.some(Boolean) ? msg : 'Gambar tampil, tapi belum bisa disimpan permanen. Hapus beberapa gambar lalu coba lagi.',{duration:3600}));
+  cloud.then(r => { if (!r.every(Boolean)) showToast('Gagal menyimpan ke Supabase: '+(bxLastErr || 'tidak diketahui'),{duration:6000}); });
 }
 async function bxReplaceFileApply(file) {
   const it = bxItems.find(x => x.id === bxReplaceId);
@@ -14174,6 +14188,7 @@ async function bxReplaceFileApply(file) {
   const saved = bxSave(), cloud = bxCloudPut(it);
   if (saved) showToast('Gambar diganti ♡'+bxHintHidden(),{duration:3600});
   else cloud.then(ok => showToast(ok ? 'Gambar diganti ♡' : 'Gambar tampil, tapi belum bisa disimpan permanen. Hapus beberapa gambar lalu coba lagi.',{duration:3600}));
+  cloud.then(ok => { if (!ok) showToast('Gagal menyimpan ke Supabase: '+(bxLastErr || 'tidak diketahui'),{duration:6000}); });
 }
 function bxRemove(id) {
   const i = bxItems.findIndex(x => x.id === id);
