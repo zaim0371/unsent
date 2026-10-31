@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a0b1f">
+<meta name="theme-color" content="#1f0a14">
 <script>(function(){try{var n=navigator,d=document.documentElement,s=null;try{s=localStorage.getItem('ui_lite')}catch(e){}
 var low=(n.hardwareConcurrency||8)<=4||(n.deviceMemory||8)<=3||matchMedia('(prefers-reduced-transparency: reduce)').matches;
 if(s==='1'||(s===null&&low))d.classList.add('lite');}catch(e){}})();</script>
@@ -2001,7 +2001,19 @@ body.mode-bubu .dudu-only{display:none!important}
 .pair-seg { display:flex; gap:4px; padding:4px; border:1px solid var(--edge); border-radius:999px; background:var(--surface); }
 .pair-opt { flex:1; min-width:0; padding:9px 10px; border:0; border-radius:999px; background:transparent; color:var(--muted); font:inherit; font-size:13px; font-weight:700; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:background .25s,color .25s,box-shadow .25s; }
 .pair-opt.on { background:linear-gradient(145deg,#f3b8d3,#d98bb3); color:#fff; box-shadow:0 2px 8px rgba(112,83,104,.28); }
-body.pair-locked #history, body.pair-locked #calendarPanel, body.pair-locked #pinnedWrap, body.pair-locked #loadMore { filter:blur(11px); pointer-events:none; user-select:none; -webkit-user-select:none; }
+body.pair-locked #history, body.pair-locked #calendarPanel, body.pair-locked #pinnedWrap, body.pair-locked #loadMore { visibility:hidden; pointer-events:none; user-select:none; -webkit-user-select:none; }
+/* Tampilan "buram" kini gambar statis (gradient) — bukan filter:blur(11px) pada daftar pesan setinggi ribuan piksel yang di-raster ulang tiap pindah halaman */
+.lock-view { --lk-a:rgba(224,85,143,.20); --lk-b:rgba(255,255,255,.55); }
+body.dark-theme .lock-view { --lk-a:rgba(255,150,205,.16); --lk-b:rgba(255,255,255,.09); }
+.lock-view::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(58% 5.5% at 32% 8%,var(--lk-a),transparent 75%),
+    radial-gradient(46% 5% at 70% 19%,var(--lk-b),transparent 75%),
+    radial-gradient(62% 6% at 34% 31%,var(--lk-a),transparent 75%),
+    radial-gradient(44% 5% at 68% 43%,var(--lk-b),transparent 75%),
+    radial-gradient(56% 6% at 30% 57%,var(--lk-a),transparent 75%),
+    radial-gradient(50% 5% at 70% 70%,var(--lk-b),transparent 75%),
+    radial-gradient(60% 6% at 33% 84%,var(--lk-a),transparent 75%); }
 body.pair-locked #composerDock { display:none; }
 .lock-view { position:fixed; z-index:31; left:0; right:0; top:var(--head-h,120px); bottom:100px; display:flex; align-items:center; justify-content:center; padding:0 26px; pointer-events:none; }
 .lock-view[hidden] { display:none; }
@@ -2539,44 +2551,44 @@ html:root body.dark-theme:not(.has-wallpaper):not(#_):not(#_):not(#_) .cd-u smal
 
 /* ---------- Token warna: TERANG (es biru + indigo + aksen koral) ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_){
-  --clay-bg1:#e8f0ff; --clay-bg2:#f2ecff;
-  --clay-hi:rgba(255,255,255,.9); --clay-sh:rgba(62,58,190,.24); --clay-sh2:rgba(140,130,255,.10);
-  --clay-primary:#5b50f0; --clay-primary2:#8e82ff; --clay-tint:rgba(110,100,255,.16);
-  --ink:#12163a; --muted:#656b94; --danger:#e5484d;
+  --clay-bg1:#ffe8f4; --clay-bg2:#ffecf3;
+  --clay-hi:rgba(255,255,255,.9); --clay-sh:rgba(190,58,117,.24); --clay-sh2:rgba(255,130,185,.10);
+  --clay-primary:#f05096; --clay-primary2:#ff82b8; --clay-tint:rgba(255,100,168,.16);
+  --ink:#3a1225; --muted:#94657b; --danger:#e5484d;
   --glass:rgba(255,255,255,.5); --surface:rgba(255,255,255,.58);
   --gl:rgba(255,255,255,.62); --gl2:rgba(255,255,255,.32); --gl-b:rgba(255,255,255,.78);
-  --modal:rgba(246,249,255,.82); --field:rgba(255,255,255,.55);
-  --soft:rgba(110,100,255,.10); --accent:rgba(110,100,255,.16);
-  --edge:rgba(255,255,255,.72); --line:rgba(110,110,200,.16);
-  --clay-raise:0 20px 44px -16px rgba(62,58,190,.34),0 2px 6px rgba(62,58,190,.07),inset 1px 1.5px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.4),inset 0 0 28px rgba(255,255,255,.28);
-  --clay-small:0 10px 22px -10px rgba(62,58,190,.30),inset 1px 1.5px 0 rgba(255,255,255,.92),inset 0 0 14px rgba(255,255,255,.26);
-  --clay-press:inset 0 2px 6px rgba(62,58,190,.13),inset 0 0 0 1px rgba(255,255,255,.55);
+  --modal:rgba(255,246,251,.82); --field:rgba(255,255,255,.55);
+  --soft:rgba(255,100,168,.10); --accent:rgba(255,100,168,.16);
+  --edge:rgba(255,255,255,.72); --line:rgba(200,110,151,.16);
+  --clay-raise:0 20px 44px -16px rgba(190,58,117,.34),0 2px 6px rgba(190,58,117,.07),inset 1px 1.5px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.4),inset 0 0 28px rgba(255,255,255,.28);
+  --clay-small:0 10px 22px -10px rgba(190,58,117,.30),inset 1px 1.5px 0 rgba(255,255,255,.92),inset 0 0 14px rgba(255,255,255,.26);
+  --clay-press:inset 0 2px 6px rgba(190,58,117,.13),inset 0 0 0 1px rgba(255,255,255,.55);
   --gl-sh:var(--clay-raise);
   --g-bg:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.26)); --g-edge:rgba(255,255,255,.82); --g-shadow:var(--clay-small);
-  --b1:#aebfff; --b2:#d6c4ff; --b3:#ffd0bd; --b4:#b9eeee; --blob-o:.55;
-  --fade:rgba(232,240,255,.82); --prim:linear-gradient(145deg,#9488ff,#5a4fee); --coral:#ff6a3d;
-  --prim-sh:0 12px 24px -8px rgba(91,80,240,.6),inset 1px 1.5px 0 rgba(255,255,255,.6),inset 0 -9px 14px rgba(40,30,170,.28);
+  --b1:#ffaed6; --b2:#ffc4db; --b3:#ffd0bd; --b4:#eeb9db; --blob-o:.55;
+  --fade:rgba(255,232,244,.82); --prim:linear-gradient(145deg,#ff88bb,#ee4f95); --coral:#ff6a3d;
+  --prim-sh:0 12px 24px -8px rgba(240,80,150,.6),inset 1px 1.5px 0 rgba(255,255,255,.6),inset 0 -9px 14px rgba(170,30,91,.28);
   --wp-dim-color:240,244,255;
   color-scheme:light;
 }
 /* ---------- Token warna: GELAP (ink navy + violet) ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme{
-  --clay-bg1:#0a0b1f; --clay-bg2:#140f31;
-  --clay-hi:rgba(255,255,255,.16); --clay-sh:rgba(0,0,10,.6); --clay-sh2:rgba(120,110,255,.08);
-  --clay-primary:#7c6cff; --clay-primary2:#a79bff; --clay-tint:rgba(140,130,255,.20);
-  --ink:#f1f2ff; --muted:#a4a9d6; --danger:#ff7a85;
+  --clay-bg1:#1f0a14; --clay-bg2:#310f1d;
+  --clay-hi:rgba(255,255,255,.16); --clay-sh:rgba(10,0,5,.6); --clay-sh2:rgba(255,110,174,.08);
+  --clay-primary:#ff6cab; --clay-primary2:#ff9bc6; --clay-tint:rgba(255,130,185,.20);
+  --ink:#fff1f8; --muted:#d6a4bb; --danger:#ff7a85;
   --glass:rgba(255,255,255,.07); --surface:rgba(255,255,255,.09);
   --gl:rgba(255,255,255,.10); --gl2:rgba(255,255,255,.045); --gl-b:rgba(255,255,255,.17);
-  --modal:rgba(18,16,46,.84); --field:rgba(255,255,255,.07);
-  --soft:rgba(150,140,255,.16); --accent:rgba(150,140,255,.22);
+  --modal:rgba(46,16,29,.84); --field:rgba(255,255,255,.07);
+  --soft:rgba(255,140,190,.16); --accent:rgba(255,140,190,.22);
   --edge:rgba(255,255,255,.15); --line:rgba(255,255,255,.12);
-  --clay-raise:0 22px 46px -16px rgba(0,0,12,.7),0 2px 6px rgba(0,0,0,.25),inset 1px 1.5px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.05),inset 0 0 30px rgba(140,130,255,.08);
-  --clay-small:0 10px 22px -10px rgba(0,0,12,.65),inset 1px 1.5px 0 rgba(255,255,255,.2),inset 0 0 14px rgba(140,130,255,.07);
+  --clay-raise:0 22px 46px -16px rgba(12,0,5,.7),0 2px 6px rgba(0,0,0,.25),inset 1px 1.5px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.05),inset 0 0 30px rgba(255,130,185,.08);
+  --clay-small:0 10px 22px -10px rgba(12,0,5,.65),inset 1px 1.5px 0 rgba(255,255,255,.2),inset 0 0 14px rgba(255,130,185,.07);
   --clay-press:inset 0 2px 7px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.07);
   --gl-sh:var(--clay-raise);
   --g-bg:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.04)); --g-edge:rgba(255,255,255,.2); --g-shadow:var(--clay-small);
-  --b1:#4b43d6; --b2:#8a45e0; --b3:#e8613b; --b4:#2a7f9a; --blob-o:.42;
-  --fade:rgba(10,11,31,.74);
+  --b1:#d64384; --b2:#e0457e; --b3:#e8613b; --b4:#9a2a6c; --blob-o:.42;
+  --fade:rgba(31,10,20,.74);
   --wp-dim-color:8,9,26;
   color-scheme:dark;
 }
@@ -2589,15 +2601,15 @@ html:root body:not(#_):not(#_):not(#_):not(#_){
 }
 html:root body:not(#_):not(#_):not(#_):not(#_) .bg-mesh{
   background:
-    radial-gradient(72% 46% at 6% 0%,rgba(120,140,255,.42),transparent 70%),
-    radial-gradient(60% 42% at 100% 26%,rgba(190,150,255,.32),transparent 70%),
+    radial-gradient(72% 46% at 6% 0%,rgba(255,120,185,.42),transparent 70%),
+    radial-gradient(60% 42% at 100% 26%,rgba(255,150,190,.32),transparent 70%),
     radial-gradient(70% 46% at 14% 100%,rgba(255,140,100,.24),transparent 70%),
     linear-gradient(172deg,var(--clay-bg1),var(--clay-bg2));
 }
 html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .bg-mesh{
   background:
-    radial-gradient(72% 46% at 6% 0%,rgba(92,80,255,.46),transparent 70%),
-    radial-gradient(60% 42% at 100% 28%,rgba(160,80,255,.30),transparent 70%),
+    radial-gradient(72% 46% at 6% 0%,rgba(255,80,157,.46),transparent 70%),
+    radial-gradient(60% 42% at 100% 28%,rgba(255,80,144,.30),transparent 70%),
     radial-gradient(70% 46% at 14% 100%,rgba(255,106,61,.22),transparent 70%),
     linear-gradient(172deg,var(--clay-bg1),var(--clay-bg2));
 }
@@ -2605,7 +2617,7 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .bg-hearts,html:root body:not(#_)
 html:root body:not(#_):not(#_):not(#_):not(#_) .blob{width:70vmax;height:70vmax}
 html:root body:not(#_):not(#_):not(#_):not(#_) .blob.b1{animation-duration:48s}
 html:root body:not(#_):not(#_):not(#_):not(#_) .blob.b2{animation-duration:56s}
-html:root body:not(#_):not(#_):not(#_):not(#_) ::selection{background:rgba(110,100,255,.28)}
+html:root body:not(#_):not(#_):not(#_):not(#_) ::selection{background:rgba(255,100,168,.28)}
 html:root body:not(#_):not(#_):not(#_):not(#_) input[type=range],html:root body:not(#_):not(#_):not(#_):not(#_) input[type=checkbox],html:root body:not(#_):not(#_):not(#_):not(#_) input[type=radio]{accent-color:var(--clay-primary)}
 
 /* ---------- Tipografi ---------- */
@@ -2621,27 +2633,27 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before,html:root bo
 html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before{bottom:-30px;
   background:linear-gradient(180deg,var(--fade) 0,var(--fade) 38%,transparent 100%);
   -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
-  -webkit-mask-image:linear-gradient(180deg,#000 52%,transparent 100%);mask-image:linear-gradient(180deg,#000 52%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(180deg,#000000 52%,transparent 100%);mask-image:linear-gradient(180deg,#000000 52%,transparent 100%)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::after{bottom:-4px;
   -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
-  -webkit-mask-image:linear-gradient(180deg,#000 38%,transparent 100%);mask-image:linear-gradient(180deg,#000 38%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(180deg,#000000 38%,transparent 100%);mask-image:linear-gradient(180deg,#000000 38%,transparent 100%)}
 /* beranda: kepala sticky kedua memakai efek yang sama */
 html:root body:not(#_):not(#_):not(#_):not(#_) .home-head::before{top:-8px;bottom:-24px;
   background:linear-gradient(180deg,var(--fade) 0,var(--fade) 40%,transparent 100%);
   -webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);
-  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(180deg,#000000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000000 55%,transparent 100%)}
 
 /* ---------- PROGRESSIVE BLUR: dasar layar (di belakang composer + navbar) ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_)::before,html:root body:not(#_):not(#_):not(#_):not(#_)::after{content:""!important;display:block!important;position:fixed;left:0;right:0;bottom:0;pointer-events:none;z-index:20;inset-inline:0}
 html:root body:not(#_):not(#_):not(#_):not(#_)::before{inset:auto 0 0 0!important;height:calc(190px + env(safe-area-inset-bottom));background:none!important;
   -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
-  -webkit-mask-image:linear-gradient(0deg,#000 40%,transparent 100%);mask-image:linear-gradient(0deg,#000 40%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(0deg,#000000 40%,transparent 100%);mask-image:linear-gradient(0deg,#000000 40%,transparent 100%)}
 html:root body:not(#_):not(#_):not(#_):not(#_)::after{height:calc(124px + env(safe-area-inset-bottom));
   background:linear-gradient(0deg,var(--fade) 0,var(--fade) 36%,transparent 100%);
   -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
-  -webkit-mask-image:linear-gradient(0deg,#000 46%,transparent 100%);mask-image:linear-gradient(0deg,#000 46%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(0deg,#000000 46%,transparent 100%);mask-image:linear-gradient(0deg,#000000 46%,transparent 100%)}
 html:root body:not(#_):not(#_):not(#_):not(#_).login-active::before,html:root body:not(#_):not(#_):not(#_):not(#_).login-active::after{display:none!important}
-html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper{--fade:rgba(10,10,30,.5)}
+html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper{--fade:rgba(30,10,19,.5)}
 
 /* ---------- Kartu & panel: kaca berlapis ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_) .auth-card,html:root body:not(#_):not(#_):not(#_):not(#_) .profile-card,html:root body:not(#_):not(#_):not(#_):not(#_) .edit-modal,html:root body:not(#_):not(#_):not(#_):not(#_) .media-sheet,html:root body:not(#_):not(#_):not(#_):not(#_) .stat-card,html:root body:not(#_):not(#_):not(#_):not(#_) .profile-info,
@@ -2654,8 +2666,8 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .menu,html:root body:not(#_):not(
 html:root body:not(#_):not(#_):not(#_):not(#_) .head-menu,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu,html:root body:not(#_):not(#_):not(#_):not(#_) .menu,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-panel{-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);background:var(--modal)!important}
 html:root body:not(#_):not(#_):not(#_):not(#_) .edit-modal,html:root body:not(#_):not(#_):not(#_):not(#_) .media-sheet,html:root body:not(#_):not(#_):not(#_):not(#_) .dialog-modal,html:root body:not(#_):not(#_):not(#_):not(#_) .settings-sheet,html:root body:not(#_):not(#_):not(#_):not(#_) .stats-modal{
   background:var(--modal)!important;-webkit-backdrop-filter:blur(26px) saturate(1.7);backdrop-filter:blur(26px) saturate(1.7)}
-html:root body:not(#_):not(#_):not(#_):not(#_) .modal-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_) .media-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_) .zoom-backdrop{background:rgba(14,16,50,.26)!important;-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
-html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .modal-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .media-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .zoom-backdrop{background:rgba(2,3,16,.5)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .modal-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_) .media-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_) .zoom-backdrop{background:rgba(50,14,31,.26)!important;-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .modal-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .media-backdrop,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .zoom-backdrop{background:rgba(16,2,9,.5)!important}
 html:root body:not(#_):not(#_):not(#_):not(#_) .profile-card{border-radius:34px}
 html:root body:not(#_):not(#_):not(#_):not(#_) .day-divider{background:var(--gl)!important;color:var(--muted);border:1px solid var(--gl-b);border-radius:999px;padding:6px 15px;font-weight:700;font-size:11px;box-shadow:var(--clay-small)!important}
 html:root body:not(#_):not(#_):not(#_):not(#_) .set-sec{border-top-color:var(--line)}
@@ -2669,11 +2681,11 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav.scroll-orb{background
 html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav::before{background:
   radial-gradient(ellipse at 30% 18%,rgba(255,255,255,.95),transparent 40%),
   radial-gradient(ellipse at 72% 82%,rgba(255,106,61,.55),transparent 55%),
-  linear-gradient(145deg,#9d92ff,#5a4fee)}
-html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav::after{border-color:#fff}
+  linear-gradient(145deg,#ff92c1,#ee4f95)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav::after{border-color:#ffffff}
 html:root body:not(#_):not(#_):not(#_):not(#_) .nav-indicator{background:var(--prim)!important;border:0;box-shadow:var(--prim-sh)!important;transition:transform .26s cubic-bezier(.25,.9,.3,1),opacity .15s ease!important}
 html:root body:not(#_):not(#_):not(#_):not(#_) .nav-btn{color:var(--muted);font-weight:700}
-html:root body:not(#_):not(#_):not(#_):not(#_) .nav-btn.active{color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_) .nav-btn.active{color:#ffffff}
 html:root body:not(#_):not(#_):not(#_):not(#_) .bottom-nav.scroll-orb .nav-btn.active{color:var(--clay-primary)}
 
 /* ---------- Header chat: tombol kaca bulat ---------- */
@@ -2681,7 +2693,7 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .head-icon,html:root body:not(#_)
   background:linear-gradient(150deg,var(--gl),var(--gl2))!important;border:1px solid var(--gl-b)!important;box-shadow:var(--clay-small)!important;color:var(--ink);border-radius:50%}
 html:root body:not(#_):not(#_):not(#_):not(#_) .head-icon{width:38px;height:38px;margin-left:2px}
 html:root body:not(#_):not(#_):not(#_):not(#_) #homePage .home-btn{background:linear-gradient(150deg,var(--gl),var(--gl2));border:1px solid var(--gl-b);box-shadow:var(--clay-small);color:var(--ink)}
-html:root body:not(#_):not(#_):not(#_):not(#_) .head-avatar{background:linear-gradient(145deg,#9d92ff,#5a4fee 60%,#ff6a3d);color:#fff;box-shadow:0 6px 14px -4px rgba(91,80,240,.55),inset 1px 1.5px 0 rgba(255,255,255,.6)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .head-avatar{background:linear-gradient(145deg,#ff92c1,#ee4f95 60%,#ff6a3d);color:#ffffff;box-shadow:0 6px 14px -4px rgba(240,80,150,.55),inset 1px 1.5px 0 rgba(255,255,255,.6)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .head-menu-item,html:root body:not(#_):not(#_):not(#_):not(#_) .menu button,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-panel button{color:var(--ink)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .head-menu-item:active,html:root body:not(#_):not(#_):not(#_):not(#_) .menu button:active,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-panel button:active{background:var(--soft)}
 
@@ -2695,53 +2707,53 @@ html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .sel-btn:not(.danger),
 html:root body:not(#_):not(#_):not(#_):not(#_) .wp-btn.danger,html:root body:not(#_):not(#_):not(#_):not(#_) .sel-btn.danger{color:var(--danger)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .auth-input,html:root body:not(#_):not(#_):not(#_):not(#_) .edit-text,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-input,html:root body:not(#_):not(#_):not(#_):not(#_) .date-field,html:root body:not(#_):not(#_):not(#_):not(#_) select,html:root body:not(#_):not(#_):not(#_):not(#_) .ce-newchat textarea{
   background:var(--field)!important;border:1px solid var(--gl-b)!important;border-radius:18px;box-shadow:var(--clay-press)!important;color:var(--ink)}
-html:root body:not(#_):not(#_):not(#_):not(#_) .auth-input:focus,html:root body:not(#_):not(#_):not(#_):not(#_) .edit-text:focus,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-input:focus,html:root body:not(#_):not(#_):not(#_):not(#_) select:focus{border-color:var(--clay-primary)!important;box-shadow:0 0 0 4px rgba(110,100,255,.2),var(--clay-press)!important;outline:0}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-input:focus,html:root body:not(#_):not(#_):not(#_):not(#_) .edit-text:focus,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-input:focus,html:root body:not(#_):not(#_):not(#_):not(#_) select:focus{border-color:var(--clay-primary)!important;box-shadow:0 0 0 4px rgba(255,100,168,.2),var(--clay-press)!important;outline:0}
 html:root body:not(#_):not(#_):not(#_):not(#_) #input{box-shadow:none!important;border:0!important;background:transparent!important}
 html:root body:not(#_):not(#_):not(#_):not(#_) #input::placeholder,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-input::placeholder{color:var(--muted);opacity:.75}
 html:root body:not(#_):not(#_):not(#_):not(#_) .auth-link{color:var(--clay-primary);font-weight:700}
-html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .auth-link{color:#b7aeff}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .auth-link{color:#ffaed1}
 
 /* Tombol utama: kaca indigo dengan kilau */
 html:root body:not(#_):not(#_):not(#_):not(#_) .send,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .save-btn,html:root body:not(#_):not(#_):not(#_):not(#_) .modal-save,html:root body:not(#_):not(#_):not(#_):not(#_) .dialog-actions .primary,html:root body:not(#_):not(#_):not(#_):not(#_) .demo-btn{
-  background:var(--prim)!important;color:#fff!important;border:0!important;box-shadow:var(--prim-sh)!important;font-weight:750}
-html:root body:not(#_):not(#_):not(#_):not(#_) .send svg{fill:#fff}
+  background:var(--prim)!important;color:#ffffff!important;border:0!important;box-shadow:var(--prim-sh)!important;font-weight:750}
+html:root body:not(#_):not(#_):not(#_):not(#_) .send svg{fill:#ffffff}
 html:root body:not(#_):not(#_):not(#_):not(#_) .send:active,html:root body:not(#_):not(#_):not(#_):not(#_) .auth-btn:active,html:root body:not(#_):not(#_):not(#_):not(#_) .save-btn:active,html:root body:not(#_):not(#_):not(#_):not(#_) .modal-save:active,html:root body:not(#_):not(#_):not(#_):not(#_) .demo-btn:active{transform:scale(.95)}
 html:root body:not(#_):not(#_):not(#_):not(#_) #signOutButton{background:linear-gradient(150deg,var(--gl),var(--gl2));color:var(--danger);border:1px solid var(--gl-b);box-shadow:var(--clay-small);font-weight:700}
 html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme #signOutButton{background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.04));color:#ff9aa5}
-html:root body:not(#_):not(#_):not(#_):not(#_) .pair-opt.on,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-seg .on,html:root body:not(#_):not(#_):not(#_):not(#_) .sort-opt.active,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-opt.on{background:var(--prim)!important;color:#fff!important;box-shadow:var(--prim-sh)!important;border-color:transparent!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .pair-opt.on,html:root body:not(#_):not(#_):not(#_):not(#_) .hv-seg .on,html:root body:not(#_):not(#_):not(#_):not(#_) .sort-opt.active,html:root body:not(#_):not(#_):not(#_):not(#_) .dd-opt.on{background:var(--prim)!important;color:#ffffff!important;box-shadow:var(--prim-sh)!important;border-color:transparent!important}
 
 /* ---------- Login / daftar ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_) .login-screen{background:linear-gradient(172deg,var(--clay-bg1),var(--clay-bg2))}
 html:root body:not(#_):not(#_):not(#_):not(#_) .login-screen::before{content:"";position:fixed;inset:0;pointer-events:none;
-  background:radial-gradient(70% 42% at 8% 0%,rgba(120,140,255,.5),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(190,150,255,.36),transparent 70%),radial-gradient(70% 44% at 20% 100%,rgba(255,140,100,.30),transparent 70%)}
-html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .login-screen::before{background:radial-gradient(70% 42% at 8% 0%,rgba(92,80,255,.55),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(160,80,255,.34),transparent 70%),radial-gradient(70% 44% at 20% 100%,rgba(255,106,61,.26),transparent 70%)}
+  background:radial-gradient(70% 42% at 8% 0%,rgba(255,120,185,.5),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(255,150,190,.36),transparent 70%),radial-gradient(70% 44% at 20% 100%,rgba(255,140,100,.30),transparent 70%)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .login-screen::before{background:radial-gradient(70% 42% at 8% 0%,rgba(255,80,157,.55),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(255,80,144,.34),transparent 70%),radial-gradient(70% 44% at 20% 100%,rgba(255,106,61,.26),transparent 70%)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .auth-blob{display:none}
 html:root body:not(#_):not(#_):not(#_):not(#_) .auth-wrap{z-index:1}
-html:root body:not(#_):not(#_):not(#_):not(#_) .auth-logo{width:72px;height:72px;border-radius:26px;border:1px solid var(--gl-b);color:#fff;font-size:32px;
-  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.7),transparent 42%),linear-gradient(145deg,#9d92ff,#5a4fee 62%,#ff6a3d);
-  box-shadow:0 18px 34px -10px rgba(91,80,240,.6),inset 1px 1.5px 0 rgba(255,255,255,.7)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .auth-logo{width:72px;height:72px;border-radius:26px;border:1px solid var(--gl-b);color:#ffffff;font-size:32px;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.7),transparent 42%),linear-gradient(145deg,#ff92c1,#ee4f95 62%,#ff6a3d);
+  box-shadow:0 18px 34px -10px rgba(240,80,150,.6),inset 1px 1.5px 0 rgba(255,255,255,.7)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .auth-card{padding:26px 22px}
 
 /* ---------- Avatar ---------- */
-html:root body:not(#_):not(#_):not(#_):not(#_) .profile-avatar,html:root body:not(#_):not(#_):not(#_):not(#_) .entry-avatar{background:linear-gradient(145deg,#9d92ff,#5a4fee 62%,#ff6a3d);color:#fff;border:0!important;box-shadow:0 8px 18px -6px rgba(91,80,240,.55),inset 1px 1.5px 0 rgba(255,255,255,.6)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .profile-avatar,html:root body:not(#_):not(#_):not(#_):not(#_) .entry-avatar{background:linear-gradient(145deg,#ff92c1,#ee4f95 62%,#ff6a3d);color:#ffffff;border:0!important;box-shadow:0 8px 18px -6px rgba(240,80,150,.55),inset 1px 1.5px 0 rgba(255,255,255,.6)}
 
 /* ---------- Beranda: bola hitung mundur → bola kaca indigo ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_) .cd-btn{background:
     radial-gradient(circle at 28% 20%,rgba(255,255,255,.95) 0,rgba(255,255,255,.34) 14%,transparent 34%),
     radial-gradient(circle at 78% 90%,rgba(255,106,61,.85) 0,transparent 52%),
-    linear-gradient(150deg,#9a8fff,#5247e8 70%)!important;
+    linear-gradient(150deg,#ff8fc0,#e8478e 70%)!important;
   border:1px solid rgba(255,255,255,.45)!important;
-  box-shadow:0 30px 52px -16px rgba(79,70,229,.6),inset 2px 3px 0 rgba(255,255,255,.7),inset 0 -20px 34px rgba(30,20,150,.38),inset 0 0 44px rgba(255,255,255,.14)!important}
-html:root body:not(#_):not(#_):not(#_):not(#_) .cd-btn:active{box-shadow:0 12px 24px -10px rgba(79,70,229,.55),inset 2px 3px 0 rgba(255,255,255,.5),inset 0 -14px 26px rgba(30,20,150,.4)!important}
-html:root body:not(#_):not(#_):not(#_):not(#_) .cd-u b{color:#fff;text-shadow:0 2px 8px rgba(30,20,150,.45)}
+  box-shadow:0 30px 52px -16px rgba(229,70,140,.6),inset 2px 3px 0 rgba(255,255,255,.7),inset 0 -20px 34px rgba(150,20,77,.38),inset 0 0 44px rgba(255,255,255,.14)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-btn:active{box-shadow:0 12px 24px -10px rgba(229,70,140,.55),inset 2px 3px 0 rgba(255,255,255,.5),inset 0 -14px 26px rgba(150,20,77,.4)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-u b{color:#ffffff;text-shadow:0 2px 8px rgba(150,20,77,.45)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .cd-u small,html:root body:not(#_):not(#_):not(#_):not(#_) .cd-pct{color:rgba(255,255,255,.82);text-shadow:none}
-html:root body:not(#_):not(#_):not(#_):not(#_) .cd-prog{background:rgba(255,255,255,.26);box-shadow:inset 0 1px 3px rgba(30,20,150,.35)}
-html:root body:not(#_):not(#_):not(#_):not(#_) .cd-prog i{background:#fff;box-shadow:0 0 10px rgba(255,255,255,.7)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-prog{background:rgba(255,255,255,.26);box-shadow:inset 0 1px 3px rgba(150,20,77,.35)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-prog i{background:#ffffff;box-shadow:0 0 10px rgba(255,255,255,.7)}
 html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-btn{background:
     radial-gradient(circle at 28% 20%,rgba(255,255,255,.9) 0,rgba(255,255,255,.28) 14%,transparent 34%),
     radial-gradient(circle at 78% 90%,rgba(255,106,61,.8) 0,transparent 52%),
-    linear-gradient(150deg,#8a7dff,#4338d8 70%)!important}
-html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-u b{color:#fff}
+    linear-gradient(150deg,#ff7db5,#d8387e 70%)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-u b{color:#ffffff}
 html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-u small,html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme:not(.has-wallpaper) .cd-pct{color:rgba(255,255,255,.82)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .cd-say{color:var(--home-ink)}
 
@@ -2751,23 +2763,23 @@ html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel .weekdays{color:va
 html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel .cal-foot{color:var(--muted);border-top-color:var(--line)}
 html:root body:not(#_):not(#_):not(#_):not(#_) #calendarPanel .cal-count{background:var(--field);border-color:var(--gl-b);color:var(--ink)}
 html:root body:not(#_):not(#_):not(#_):not(#_) #days .day{color:var(--ink)}
-html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.today{box-shadow:inset 0 0 0 1.5px rgba(110,100,255,.7)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.today{box-shadow:inset 0 0 0 1.5px rgba(255,100,168,.7)}
 html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.has-notes:not(.selected):not(.range-start):not(.range-end)::after{background:var(--coral)}
-html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.in-range::before,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start::before,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end::before{background:rgba(110,100,255,.16);box-shadow:inset 0 1px 4px rgba(110,100,255,.22)}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.in-range::before,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start::before,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end::before{background:rgba(255,100,168,.16);box-shadow:inset 0 1px 4px rgba(255,100,168,.22)}
 html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.selected::after,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start::after,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end::after{background:var(--prim);box-shadow:var(--prim-sh)}
-html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.selected,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end{color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.selected,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-start,html:root body:not(#_):not(#_):not(#_):not(#_) #days .day.range-end{color:#ffffff}
 
 /* ---------- Pin, streak, aksen kecil ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_) .pb-step{background:var(--clay-primary)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .pinned-bar{color:var(--ink)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .ptr{color:var(--clay-primary)}
-html:root body:not(#_):not(#_):not(#_):not(#_) .wp-preview{background-image:linear-gradient(145deg,#aebfff,#d6c4ff);color:var(--ink);border-color:var(--gl-b)}
-html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .wp-preview{background-image:linear-gradient(145deg,#3b34b8,#5b2a9e);color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_) .wp-preview{background-image:linear-gradient(145deg,#ffaed6,#ffc4db);color:var(--ink);border-color:var(--gl-b)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .wp-preview{background-image:linear-gradient(145deg,#b8346e,#9e2a55);color:#ffffff}
 html:root body:not(#_):not(#_):not(#_):not(#_) .toast{color:var(--ink)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .toast-action{color:var(--clay-primary);font-weight:750}
 
 /* ---------- Scrollbar tipis ---------- */
-html:root body:not(#_):not(#_):not(#_):not(#_) *{scrollbar-width:thin;scrollbar-color:rgba(110,100,255,.35) transparent}
+html:root body:not(#_):not(#_):not(#_):not(#_) *{scrollbar-width:thin;scrollbar-color:rgba(255,100,168,.35) transparent}
 
 /* ---------- Gerak: lembut & ringan ---------- */
 html:root body:not(#_):not(#_):not(#_):not(#_) .composer-dock{will-change:transform,opacity}
@@ -2798,28 +2810,28 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .lock-card{background:linear-grad
 html:root body:not(#_):not(#_):not(#_):not(#_) .lock-eye{color:var(--clay-primary)}
 
 /* =====================  V2: blur tipis, judul video, pindah halaman ringan  ===================== */
-html:root body:not(#_):not(#_):not(#_):not(#_){--fade:rgba(232,240,255,.5)}
-html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme{--fade:rgba(10,11,31,.46)}
-html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper{--fade:rgba(10,10,30,.34)}
+html:root body:not(#_):not(#_):not(#_):not(#_){--fade:rgba(255,232,244,.5)}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme{--fade:rgba(31,10,20,.46)}
+html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper{--fade:rgba(30,10,19,.34)}
 /* header: hanya 1 lapis, tipis */
 html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::after{display:none!important}
 html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before{bottom:-12px;
   background:linear-gradient(180deg,var(--fade) 0,var(--fade) 30%,transparent 100%);
   -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
-  -webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000 62%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(180deg,#000000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000000 62%,transparent 100%)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .home-head::before{top:-6px;bottom:-12px;
   background:linear-gradient(180deg,var(--fade) 0,var(--fade) 30%,transparent 100%);
   -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
-  -webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000 62%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(180deg,#000000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000000 62%,transparent 100%)}
 /* dasar layar: hanya 1 lapis, lebih pendek */
 html:root body:not(#_):not(#_):not(#_):not(#_)::before{display:none!important}
 html:root body:not(#_):not(#_):not(#_):not(#_)::after{height:calc(100px + env(safe-area-inset-bottom));
   background:linear-gradient(0deg,var(--fade) 0,var(--fade) 28%,transparent 100%);
   -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
-  -webkit-mask-image:linear-gradient(0deg,#000 30%,transparent 100%);mask-image:linear-gradient(0deg,#000 30%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(0deg,#000000 30%,transparent 100%);mask-image:linear-gradient(0deg,#000000 30%,transparent 100%)}
 /* judul video: abu-abu gelap (tidak pekat) */
-html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-title{color:#4d5270;text-shadow:none}
-html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .hv-card .hv-title,html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper .hv-card .hv-title{color:#c4c8e2}
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-title{color:#704d5e;text-shadow:none}
+html:root body:not(#_):not(#_):not(#_):not(#_).dark-theme .hv-card .hv-title,html:root body:not(#_):not(#_):not(#_):not(#_).has-wallpaper .hv-card .hv-title{color:#e2c4d2}
 /* pindah halaman: animasi pop (spring, banyak elemen sekaligus) → fade opacity saja */
 @keyframes pgFadeA{from{opacity:0}to{opacity:1}}
 @keyframes pgFadeB{from{opacity:0}to{opacity:1}}
@@ -2834,9 +2846,9 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .auth-brand{margin-top:0}
 
 /* ===== Skeleton boot + pemanasan halaman ===== */
 #bootSkel{position:fixed;inset:0;z-index:99990;display:none;flex-direction:column;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);
-  background:radial-gradient(70% 40% at 8% 0%,rgba(120,140,255,.38),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(190,150,255,.28),transparent 70%),linear-gradient(172deg,#e8f0ff,#f2ecff);
+  background:radial-gradient(70% 40% at 8% 0%,rgba(255,120,185,.38),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(255,150,190,.28),transparent 70%),linear-gradient(172deg,#ffe8f4,#ffecf3);
   opacity:1;transition:opacity .35s ease;contain:strict}
-body.dark-theme #bootSkel{background:radial-gradient(70% 40% at 8% 0%,rgba(92,80,255,.42),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(160,80,255,.28),transparent 70%),linear-gradient(172deg,#0a0b1f,#140f31)}
+body.dark-theme #bootSkel{background:radial-gradient(70% 40% at 8% 0%,rgba(255,80,157,.42),transparent 70%),radial-gradient(60% 40% at 100% 30%,rgba(255,80,144,.28),transparent 70%),linear-gradient(172deg,#1f0a14,#310f1d)}
 #bootSkel.on{display:flex}
 #bootSkel.out{opacity:0;pointer-events:none}
 #bootSkel .sk{position:relative;overflow:hidden;border-radius:18px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.7)}
@@ -2853,8 +2865,8 @@ body.dark-theme #bootSkel .sk::after{background:linear-gradient(100deg,transpare
 #bootSkel .b.me{align-self:flex-end}
 #bootSkel .b.th{align-self:flex-start;border-radius:22px;border-top-left-radius:6px}
 #bootSkel .nav{height:58px;border-radius:32px;margin:0 auto;width:min(390px,100%)}
-#bootSkel .tx{text-align:center;font:600 12px/1 "Plus Jakarta Sans",sans-serif;color:#656b94;letter-spacing:.02em}
-body.dark-theme #bootSkel .tx{color:#a4a9d6}
+#bootSkel .tx{text-align:center;font:600 12px/1 "Plus Jakarta Sans",sans-serif;color:#94657b;letter-spacing:.02em}
+body.dark-theme #bootSkel .tx{color:#d6a4bb}
 /* pemanasan: halaman tersembunyi dirender sungguhan (di bawah skeleton) sekali saja */
 .pw2{display:block!important;visibility:visible!important;position:fixed!important;left:0!important;top:0!important;width:100%!important;height:100vh!important;overflow:hidden!important;z-index:1!important;pointer-events:none!important;animation:none!important}
 /* lapisan blur dipromosikan ke GPU sejak awal (tidak dibuat saat pertama kali pindah halaman) */
@@ -2868,27 +2880,27 @@ html:root body:not(#_):not(#_):not(#_):not(#_) .sticky-head::before,html:root bo
 <style>
 
 /* ===== Perbaikan kontras teks (semua tema) ===== */
-html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#4a3f5a;--home-sub:#665b75;color:#4a3f5a}
-html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#f6eefa;--home-sub:#e3d5ec;color:#f6eefa}
-html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#fff;--home-sub:#fff;color:#fff;
-  background:linear-gradient(150deg,rgba(26,14,42,.74),rgba(26,14,42,.64))!important;
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#5a3f49;--home-sub:#755b65;color:#5a3f49}
+html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#faeef2;--home-sub:#ecd5dd;color:#faeef2}
+html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_) .hv-card{--home-ink:#ffffff;--home-sub:#ffffff;color:#ffffff;
+  background:linear-gradient(150deg,rgba(42,14,24,.74),rgba(42,14,24,.64))!important;
   -webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%)}
 html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-empty b{color:var(--home-ink)}
 html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card .hv-title{color:var(--home-ink)!important}
 html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-empty small,
 html:root body:not(#_):not(#_):not(#_):not(#_) .hv-card .hv-note{color:var(--home-sub)}
-html:root body:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu button:disabled{opacity:1;color:#525a82}
-html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu button:disabled{color:#a9acd8}
-html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_) .empty{display:block;width:fit-content;max-width:92%;margin-left:auto;margin-right:auto;padding:12px 18px;border-radius:16px;background:rgba(24,12,38,.55);color:#fff;text-shadow:none}
-html:root body:not(.has-wallpaper):not(.dark-theme):not(#_):not(#_):not(#_) .empty{color:#4a5078}
+html:root body:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu button:disabled{opacity:1;color:#825269}
+html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_) .hv-pen-menu button:disabled{color:#d8a9bf}
+html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_) .empty{display:block;width:fit-content;max-width:92%;margin-left:auto;margin-right:auto;padding:12px 18px;border-radius:16px;background:rgba(38,12,22,.55);color:#ffffff;text-shadow:none}
+html:root body:not(.has-wallpaper):not(.dark-theme):not(#_):not(#_):not(#_) .empty{color:#784a60}
 html:root body.has-wallpaper:not(.dark-theme):not(#_):not(#_):not(#_) .nav-btn:not(.active),
-html:root body.has-wallpaper:not(.dark-theme):not(#_):not(#_):not(#_) .nav-btn:not(.active) span{color:#262b58!important}
+html:root body.has-wallpaper:not(.dark-theme):not(#_):not(#_):not(#_) .nav-btn:not(.active) span{color:#58263d!important}
 html:root body:not(.dark-theme):not(#_):not(#_):not(#_):not(#_) #signOutButton{color:#c0263a}
 html:root body:not(#_):not(#_):not(#_):not(#_) .save-btn,
-html:root body:not(#_):not(#_):not(#_):not(#_) .day.today{text-shadow:0 1px 2px rgba(30,20,110,.5);font-weight:700}
+html:root body:not(#_):not(#_):not(#_):not(#_) .day.today{text-shadow:0 1px 2px rgba(110,20,59,.5);font-weight:700}
 html:root body:not(#_):not(#_):not(#_):not(#_) .cd-face b,
 html:root body:not(#_):not(#_):not(#_):not(#_) .cd-face small,
-html:root body:not(#_):not(#_):not(#_):not(#_) .cd-pct{text-shadow:0 1px 3px rgba(40,10,110,.6)}
+html:root body:not(#_):not(#_):not(#_):not(#_) .cd-pct{text-shadow:0 1px 3px rgba(110,10,50,.6)}
 
 /* ===== Box video & widget: glass frosted (bening tapi tidak transparan penuh) ===== */
 html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{
@@ -2901,14 +2913,14 @@ html:root body.dark-theme:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-ca
   border-color:rgba(255,255,255,.26)!important;
   box-shadow:0 12px 28px rgba(0,0,0,.28),inset 0 1px 1.5px rgba(255,255,255,.34),inset 0 -1px 4px rgba(255,255,255,.06)!important}
 html:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{
-  background:linear-gradient(150deg,rgba(26,14,42,.46),rgba(26,14,42,.3) 55%,rgba(26,14,42,.4))!important;
+  background:linear-gradient(150deg,rgba(42,14,24,.46),rgba(42,14,24,.3) 55%,rgba(42,14,24,.4))!important;
   border-color:rgba(255,255,255,.3)!important;
   box-shadow:0 12px 28px rgba(0,0,0,.3),inset 0 1px 1.5px rgba(255,255,255,.3)!important}
 /* mode hemat (lite): tanpa blur, latar sedikit lebih pekat agar tetap terbaca */
 html.lite:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
   background:linear-gradient(150deg,rgba(255,255,255,.62),rgba(255,255,255,.44))!important}
 html.lite:root body.dark-theme:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card,html.lite:root body.has-wallpaper:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .hv-card{
-  background:linear-gradient(150deg,rgba(60,28,64,.7),rgba(40,18,44,.62))!important}
+  background:linear-gradient(150deg,rgba(64,28,38,.7),rgba(44,18,26,.62))!important}
 /* box widget: bingkai (bezel) lebih tipis */
 html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) #bxCard{padding:4px;border-radius:24px}
 html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) #bxCard .bx-stage{border-radius:20px}
@@ -6475,7 +6487,7 @@ function applyTheme(theme,save = true) {
   $('themeToggle').setAttribute('aria-label',isDark ? 'Mode gelap aktif, ketuk untuk mode terang' : 'Mode terang aktif, ketuk untuk mode gelap');
 
   document.querySelector('meta[name="theme-color"]').content =
-    theme === 'dark' ? '#1b0713' : '#f5edf2';
+    theme === 'dark' ? '#1f0a14' : '#ffe8f4';
 
   if (save && typeof saveThemeRemote === 'function') saveThemeRemote(theme);
 }
@@ -10427,8 +10439,9 @@ function flashSyncColor() {
   syncFlashPending = false;
   clearTimeout(syncFlashTimer);
   box.classList.remove('sync-ok','sync-bad');
-  void box.offsetWidth;
-  box.classList.add(syncState === 'ok' ? 'sync-ok' : 'sync-bad');
+  /* tanpa `void box.offsetWidth` (memaksa style+layout sinkron di tengah klik); tambahkan kelas di frame berikutnya */
+  const cls = syncState === 'ok' ? 'sync-ok' : 'sync-bad';
+  requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add(cls)));
   syncFlashTimer = setTimeout(() => box.classList.remove('sync-ok','sync-bad'),2000);
 }
 
@@ -14003,7 +14016,7 @@ function bxRender() {
     tr.className = 'bx-track';
     bxItems.forEach(it => {
       const sl = document.createElement('div'); sl.className = 'bx-slide';
-      const im = new Image(); im.src = it.url; im.alt = ''; im.draggable = false;
+      const im = new Image(); im.decoding = 'async'; if (!tr.children.length) im.fetchPriority = 'high'; im.src = it.url; im.alt = ''; im.draggable = false;
       sl.appendChild(im); tr.appendChild(sl);
     });
     st.prepend(tr);
@@ -14037,7 +14050,7 @@ function bxRender() {
   $('bxHint').style.display = n ? 'none' : '';
   bxRestart();
 }
-function bxReset() { bxItems = []; bxIdx = 0; bxOwner = null; bxRender(); }
+function bxReset() { bxUnsubscribe(); try { localStorage.removeItem(BX_LAST_UID); } catch (_) {} bxItems = []; bxIdx = 0; bxOwner = null; bxRender(); }
 
 /* ---------- geser otomatis ---------- */
 function bxTick() {
@@ -14053,27 +14066,75 @@ function bxRestart() {
 }
 window.addEventListener('resize',() => { const tr = bxTrack(); if (tr && tr.clientWidth) tr.scrollLeft = bxIdx*tr.clientWidth; });
 
-/* ---------- penyimpanan ---------- */
+/* ---------- penyimpanan + sinkron ---------- */
+const BX_LAST_UID = 'unsent_box_last_uid';             /* uid terakhir: supaya cache tampil instan sebelum login selesai dicek */
+const BX_SYNCED_KEY = uid => 'unsent_box_synced_'+uid;  /* id gambar yang sudah pernah ada di cloud */
+const BX_DEL_KEY = uid => 'unsent_box_pendel_'+uid;     /* id gambar yang dihapus lokal tapi belum terhapus di cloud */
+function bxLsGet(k,d) { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (_) { return d; } }
+function bxLsSet(k,v) { try { localStorage.setItem(k,JSON.stringify(v)); } catch (_) {} }
 function bxSave() {
-  const uid = bxUid();
+  const uid = bxOwner || bxUid();
   try {
-    localStorage.setItem(BX_LIST_KEY(uid),JSON.stringify(bxItems.filter(i => String(i.url).startsWith('data:'))));
+    const keep = bxItems.filter(i => String(i.url).startsWith('data:')).map(i => ({id:i.id,url:i.url,ver:i.ver,dirty:i.dirty ? true : undefined}));
+    localStorage.setItem(BX_LIST_KEY(uid),JSON.stringify(keep));
     localStorage.removeItem(BX_KEY(uid));
     return true;
   } catch (_) { return false; }
 }
 function bxSortItems() { bxItems.sort((a,b) => a.id === 'image' ? -1 : b.id === 'image' ? 1 : a.id.localeCompare(b.id)); }
 function bxBucket() { return supabaseClient.storage.from(PHOTO_BUCKET); }
+function bxSig() { return bxItems.map(i => i.id+':'+(i.rev || 0)).join('|'); }
+function bxFileVer(f) { return (f.updated_at || f.created_at || '')+'|'+((f.metadata && f.metadata.size) || ''); }
+function bxPend(uid,id,on) {
+  const a = bxLsGet(BX_DEL_KEY(uid),[]).filter(x => x !== id);
+  if (on) a.push(id);
+  bxLsSet(BX_DEL_KEY(uid),a);
+}
+function bxSyncedAdd(uid,id,on) {
+  const a = bxLsGet(BX_SYNCED_KEY(uid),[]).filter(x => x !== id);
+  if (on) a.push(id);
+  bxLsSet(BX_SYNCED_KEY(uid),a);
+}
+
+/* ---- Realtime: broadcast ke perangkat lain setiap ada tambah / ganti / hapus ---- */
+let bxChan = null, bxChanUid = '', bxNotifyTimer = 0;
+function bxSubscribe(uid) {
+  if (uid === 'guest' || bxChanUid === uid) return;
+  bxUnsubscribe();
+  bxChanUid = uid;
+  bxChan = supabaseClient.channel('box-'+uid)
+    .on('broadcast',{event:'box'},() => bxPull())
+    .subscribe(st => { if (st === 'SUBSCRIBED') bxPull(); });   /* tersambung / tersambung ulang: ambil yang terlewat */
+}
+function bxUnsubscribe() {
+  if (bxChan) { try { supabaseClient.removeChannel(bxChan); } catch (_) {} }
+  bxChan = null; bxChanUid = '';
+}
+function bxNotify() {
+  clearTimeout(bxNotifyTimer);
+  bxNotifyTimer = setTimeout(() => {
+    try { if (bxChan) Promise.resolve(bxChan.send({type:'broadcast',event:'box',payload:{t:Date.now()}})).catch(() => {}); } catch (_) {}
+  },120);
+}
+
+/* ---- Upload / hapus ke Supabase Storage ---- */
 let bxLastErr = '';
-async function bxCloudPut(it) {
+const bxPutting = new Map();
+function bxCloudPut(it) {
+  if (bxPutting.has(it.id)) return bxPutting.get(it.id);
+  const p = bxCloudPutRun(it).finally(() => bxPutting.delete(it.id));
+  bxPutting.set(it.id,p);
+  return p;
+}
+async function bxCloudPutRun(it) {
   const uid = bxUid();
   if (uid === 'guest') { bxLastErr = 'belum login'; return false; }
+  const sent = it.url;
   try {
-    const blob = await (await fetch(it.url)).blob();
+    const blob = await (await fetch(sent)).blob();
     const path = BX_FILE(uid,it.id);
     const opts = {contentType:'image/jpeg',upsert:false};
-    /* upsert:true butuh policy UPDATE di storage.objects (biasanya tidak ada → ditolak RLS).
-       Pakai upload biasa (INSERT); kalau file sudah ada (ganti gambar), hapus dulu lalu unggah ulang. */
+    /* upsert:true butuh policy UPDATE di storage.objects; pakai INSERT biasa, kalau sudah ada hapus dulu lalu unggah ulang */
     let { error } = await bxBucket().upload(path,blob,opts);
     if (error && (String(error.statusCode) === '409' || /exist|duplicate/i.test(error.message || ''))) {
       const rm = await bxBucket().remove([path]);
@@ -14082,61 +14143,137 @@ async function bxCloudPut(it) {
     }
     if (error) { bxLastErr = error.message || String(error); console.error('[widget beranda] upload gagal:',error); return false; }
     bxLastErr = '';
+    if (it.url !== sent) return bxCloudPutRun(it);      /* diganti lagi saat upload berjalan: kirim versi terbaru */
+    it.dirty = false;
+    try {   /* catat versi file di cloud supaya perangkat ini tidak mengunduh ulang gambarnya sendiri */
+      const { data } = await bxBucket().list(uid,{limit:5,search:'box-'+it.id});
+      const f = (data || []).find(x => x.name === 'box-'+it.id+'.jpg');
+      if (f) it.ver = bxFileVer(f);
+    } catch (_) {}
+    bxSyncedAdd(uid,it.id,true);
+    bxSave();
+    bxNotify();
     return true;
   } catch (e) { bxLastErr = (e && e.message) || String(e); console.error('[widget beranda] upload gagal:',e); return false; }
 }
 async function bxCloudDel(id) {
   const uid = bxUid(); if (uid === 'guest') return;
-  try { await bxBucket().remove([BX_FILE(uid,id)]); } catch (_) {}
+  bxPend(uid,id,true);          /* dicatat dulu: kalau gagal / offline, dicoba lagi otomatis */
+  bxSyncedAdd(uid,id,false);
+  try {
+    const { error } = await bxBucket().remove([BX_FILE(uid,id)]);
+    if (!error) { bxPend(uid,id,false); bxNotify(); }
+  } catch (_) {}
 }
 function bxToDataUrl(url) {
   return fetch(url).then(r => r.blob()).then(bl => new Promise((ok,no) => {
     const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.onerror = no; fr.readAsDataURL(bl);
   }));
 }
-/* samakan dengan Supabase: gambar yang hanya ada di cloud diunduh, yang hanya ada di perangkat diunggah */
-async function bxCloudSync(uid,seq) {
-  if (uid === 'guest') return;
+/* tampil dulu lewat signed URL (cepat), lalu diam-diam jadi data URL untuk cache lokal */
+async function bxCacheLater(id,signedUrl,ver) {
   try {
-    const { data: files, error } = await bxBucket().list(uid,{limit:100});
-    if (error || !Array.isArray(files)) return;
-    if (seq !== bxLoadSeq || bxUid() !== uid) return;
-    const cloudIds = files.map(f => (/^box-(.+)\.jpg$/.exec(f.name) || [])[1]).filter(Boolean);
-    bxItems.filter(it => !cloudIds.includes(it.id)).forEach(it => { bxCloudPut(it); });
-    const missing = cloudIds.filter(id => !bxItems.some(x => x.id === id)).slice(0,Math.max(0,BX_MAX-bxItems.length));
-    if (!missing.length) return;
-    const got = await Promise.all(missing.map(async id => {
-      try {
-        const { data } = await bxBucket().createSignedUrl(BX_FILE(uid,id),PHOTO_URL_TTL);
-        return data && data.signedUrl ? {id,url:await bxToDataUrl(data.signedUrl)} : null;
-      } catch (_) { return null; }
-    }));
-    if (seq !== bxLoadSeq || bxUid() !== uid) return;
-    const add = got.filter(Boolean);
-    if (!add.length) return;
-    bxItems = bxItems.concat(add); bxSortItems(); bxRender(); bxSave(); bxEditRender();
+    const d = await bxToDataUrl(signedUrl);
+    const it = bxItems.find(x => x.id === id);
+    if (!it || it.dirty || it.ver !== ver) return;
+    it.url = d; bxSave();
   } catch (_) {}
 }
-function bxLoad() {
-  const uid = bxUid(), seq = ++bxLoadSeq;
-  if (bxOwner !== uid) { bxItems = []; bxIdx = 0; bxRender(); }
-  bxOwner = uid;
-  let raw = null;
-  try { raw = localStorage.getItem(BX_LIST_KEY(uid)); } catch (_) {}
-  let done = false;
-  if (raw !== null) {
-    try {
-      const a = JSON.parse(raw);
-      if (Array.isArray(a)) { bxItems = a.filter(x => x && x.id && x.url); bxSortItems(); bxRender(); done = true; }
-    } catch (_) {}
+
+/* ---- Samakan perangkat ini dengan cloud: tambah, ganti, DAN hapus ---- */
+let bxPulling = false, bxPullAgain = false, bxLastPull = 0;
+async function bxPull() {
+  const uid = bxUid(); if (uid === 'guest') return;
+  if (bxPulling) { bxPullAgain = true; return; }
+  bxPulling = true;
+  try { await bxPullOnce(uid); } catch (e) { console.error('[widget beranda] sinkron gagal:',e); }
+  finally {
+    bxPulling = false; bxLastPull = Date.now();
+    if (bxPullAgain) { bxPullAgain = false; bxPull(); }
   }
-  if (!done) {
-    let old = '';
-    try { old = localStorage.getItem(BX_KEY(uid)) || ''; } catch (_) {}
-    if (old) { bxItems = [{id:'image',url:old}]; bxRender(); bxSave(); }
-  }
-  bxCloudSync(uid,seq);
 }
+async function bxPullOnce(uid) {
+  let pend = bxLsGet(BX_DEL_KEY(uid),[]);
+  if (pend.length) {      /* ulangi hapus yang tertunda */
+    const { error } = await bxBucket().remove(pend.map(id => BX_FILE(uid,id)));
+    if (!error) { pend = []; bxLsSet(BX_DEL_KEY(uid),pend); }
+  }
+  const { data: files, error } = await bxBucket().list(uid,{limit:100});
+  if (error || !Array.isArray(files) || bxUid() !== uid) return;
+  const cloud = new Map();
+  files.forEach(f => {
+    const m = /^box-(.+)\.jpg$/.exec(f.name);
+    if (m && !pend.includes(m[1])) cloud.set(m[1],bxFileVer(f));
+  });
+  const synced = new Set(bxLsGet(BX_SYNCED_KEY(uid),[]));
+  const before = bxSig();
+  const redo = [];
+
+  /* 1) item di perangkat ini vs cloud */
+  for (const it of bxItems.slice()) {
+    const cv = cloud.get(it.id);
+    if (cv === undefined) {
+      if (synced.has(it.id) && !it.dirty && !bxPutting.has(it.id)) bxItems = bxItems.filter(x => x !== it);   /* dihapus di perangkat lain */
+      else bxCloudPut(it);                                                                                      /* baru di perangkat ini: unggah */
+    } else if (it.dirty) { bxCloudPut(it); }                                                                    /* diganti di sini: unggah */
+    else if (it.ver === undefined) it.ver = cv;                                                                 /* catat versi saja */
+    else if (it.ver !== cv) redo.push(it.id);                                                                   /* diganti di perangkat lain */
+  }
+  /* 2) ada di cloud saja → unduh (paralel, 1 request signed URL untuk semuanya) */
+  const room = Math.max(0,BX_MAX-bxItems.length);
+  const fresh = [...cloud.keys()].filter(id => !bxItems.some(x => x.id === id)).slice(0,room);
+  const toGet = fresh.concat(redo);
+  if (toGet.length) {
+    const { data: urls } = await bxBucket().createSignedUrls(toGet.map(id => BX_FILE(uid,id)),PHOTO_URL_TTL);
+    if (bxUid() !== uid) return;
+    (urls || []).forEach((u,i) => {
+      if (!u || !u.signedUrl) return;
+      const id = toGet[i], ver = cloud.get(id);
+      const it = bxItems.find(x => x.id === id);
+      if (it) { if (it.dirty) return; it.url = u.signedUrl; it.ver = ver; it.rev = (it.rev || 0)+1; }
+      else bxItems.push({id,url:u.signedUrl,ver});
+      bxCacheLater(id,u.signedUrl,ver);
+    });
+  }
+  bxSortItems();
+  if (bxSig() !== before) { bxRender(); bxEditRender(); }
+  bxSave();
+  bxLsSet(BX_SYNCED_KEY(uid),[...cloud.keys()]);
+}
+
+function bxLoad() {
+  const uid = bxUid();
+  let cuid = uid;
+  try {
+    if (uid === 'guest') cuid = localStorage.getItem(BX_LAST_UID) || 'guest';   /* sebelum login dicek: pakai cache akun terakhir → langsung tampil */
+    else localStorage.setItem(BX_LAST_UID,uid);
+  } catch (_) {}
+  const changed = bxOwner !== cuid;
+  if (changed) { bxItems = []; bxIdx = 0; bxRender(); }
+  bxOwner = cuid;
+  if (changed || !bxItems.length) {
+    let raw = null;
+    try { raw = localStorage.getItem(BX_LIST_KEY(cuid)); } catch (_) {}
+    let done = false;
+    if (raw !== null) {
+      try {
+        const a = JSON.parse(raw);
+        if (Array.isArray(a)) { bxItems = a.filter(x => x && x.id && x.url); bxSortItems(); bxRender(); done = true; }
+      } catch (_) {}
+    }
+    if (!done) {
+      let old = '';
+      try { old = localStorage.getItem(BX_KEY(cuid)) || ''; } catch (_) {}
+      if (old) { bxItems = [{id:'image',url:old}]; bxRender(); bxSave(); }
+    }
+  }
+  if (uid !== 'guest') { bxSubscribe(uid); bxPull(); }
+}
+/* cadangan bila broadcast terlewat */
+document.addEventListener('visibilitychange',() => { if (!document.hidden) bxPull(); });
+window.addEventListener('online',() => bxPull());
+window.addEventListener('focus',() => { if (Date.now()-bxLastPull > 5000) bxPull(); });
+setInterval(() => { if (!document.hidden && Date.now()-bxLastPull > 30000) bxPull(); },30000);
 
 /* ---------- tambah / ganti / hapus ---------- */
 function bxBusy(on) { const st = $('bxStage'); if (st) st.classList.toggle('busy',on); }
@@ -14159,7 +14296,7 @@ async function bxAddFiles(files) {
   bxBusy(true);
   try {
     for (const f of files) {
-      try { added.push({id:bxNewId(),url:await compressImage(f)}); }
+      try { added.push({id:bxNewId(),url:await compressImage(f),dirty:true}); }
       catch (e) { showToast('Gagal memproses '+(f.name || 'gambar')+': '+((e && e.message) || e)); }
     }
   } finally { bxBusy(false); }
@@ -14181,7 +14318,7 @@ async function bxReplaceFileApply(file) {
   if (!it || !file) return;
   bxBusy(true);
   try {
-    it.url = await compressImage(file);
+    it.url = await compressImage(file); it.dirty = true;
   } catch (e) { showToast('Gagal memproses gambar: '+((e && e.message) || e)); return; }
   finally { bxBusy(false); }
   bxIdx = bxItems.indexOf(it); bxRender(); bxEditRender();
@@ -14199,6 +14336,7 @@ function bxRemove(id) {
   showToast('Gambar dihapus',{actionLabel:'Urungkan',duration:5000,onAction:() => {
     if (bxItems.some(x => x.id === it.id)) return;
     bxItems.splice(Math.min(i,bxItems.length),0,it);
+    it.dirty = true; bxPend(bxUid(),it.id,false);
     bxIdx = bxItems.indexOf(it); bxRender(); bxSave(); bxEditRender(); bxCloudPut(it);
     showToast('Gambar dikembalikan ♡');
   }});
@@ -14270,6 +14408,178 @@ bxOn('bxEditList','click',e => {
   else if (b.dataset.act === 'remove') bxRemove(id);
 });
 bxLoad();
+</script>
+<!-- ===== Transisi halaman gaya VHS rewind / fast-forward (navbar) =====
+     Ringan: tidak mengubah apa pun pada halaman (tanpa variabel CSS di root, tanpa geser/transform halaman, tanpa kelas di body)
+     sehingga browser tidak menghitung ulang gaya/layout seluruh dokumen di tiap frame. Noise = tile yang dibuat sekali lalu digambar ulang (drawImage). -->
+<style>
+#rwFx{position:fixed;inset:0;z-index:99995;pointer-events:none;visibility:hidden;contain:strict;overflow:hidden;transform:translateZ(0)}
+#rwFx.on{visibility:visible}
+#rwFx canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
+#rwFx .rw-dim{position:absolute;inset:0;opacity:0;background:rgba(44,6,30,.9);box-shadow:inset 0 0 130px 20px rgba(24,0,16,.9)}
+#rwFx .rw-scan{position:absolute;inset:0;opacity:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 1px,transparent 1px 3px)}
+#rwFx .rw-osd{position:absolute;left:calc(env(safe-area-inset-left,0px) + 22px);top:calc(env(safe-area-inset-top,0px) + 26px);display:flex;flex-direction:column;gap:6px;opacity:0;will-change:opacity,transform;
+  font:700 22px/1 ui-monospace,"SFMono-Regular",Menlo,Consolas,"Courier New",monospace;letter-spacing:.14em;color:#fff;
+  text-shadow:2px 0 rgba(255,40,110,.8),-2px 0 rgba(40,225,255,.7),0 0 9px rgba(255,255,255,.55)}
+#rwFx .rw-mode{display:flex;align-items:center;gap:10px;white-space:nowrap}
+#rwFx .rw-tc{font-size:15px;font-weight:600;letter-spacing:.2em;opacity:.92}
+@media (prefers-reduced-motion:reduce){#rwFx{display:none}}
+</style>
+<div id="rwFx" aria-hidden="true">
+  <div class="rw-dim" id="rwDim"></div>
+  <canvas id="rwCv"></canvas>
+  <div class="rw-scan" id="rwScan"></div>
+  <div class="rw-osd" id="rwOsd"><div class="rw-mode" id="rwMode">◀◀ REW</div><div class="rw-tc" id="rwTc">SP 0:00:00</div></div>
+</div>
+<script>
+(function(){
+  const IDS = ['homeNav','allNav','calendarNav','profileNav'];
+  const fx = document.getElementById('rwFx'), cv = document.getElementById('rwCv');
+  const osd = document.getElementById('rwOsd'), modeEl = document.getElementById('rwMode'), tcEl = document.getElementById('rwTc');
+  const dimEl = document.getElementById('rwDim'), scanEl = document.getElementById('rwScan');
+  const nav = document.getElementById('bottomNav');
+  if (!fx || !cv || !nav) return;
+  const ctx = cv.getContext('2d');
+  const mq = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+
+  let busy = false, bypass = false, switched = false, pending = null, rew = true, t0 = 0, raf = 0, frameNo = 0;
+  let T = 780, SWITCH = 240, PLAYAT = 580, W = 0, H = 0, lite = false, tcBase = 0, lastMode = '';
+  let tileBase = null, tileBand = null, tileKey = '';
+  const timers = [];
+
+  function curTab() {
+    try { return showingHome ? 0 : (showingProfile ? 3 : (view === 'calendar' ? 2 : 1)); } catch (_) { return -1; }
+  }
+  function fmt(s) {
+    s = Math.max(0,Math.floor(s));
+    return 'SP '+Math.floor(s/3600)+':'+String(Math.floor(s%3600/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+  }
+  /* tile noise: dibuat SEKALI per ukuran layar (bukan per frame) */
+  function makeTile(w,h,lo,aMin,aMax) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d'), im = g.createImageData(w,h), d = im.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const v = lo+Math.random()*(255-lo);
+      d[i] = v; d[i+1] = v*0.86; d[i+2] = v*0.96;
+      d[i+3] = (aMin+Math.random()*(aMax-aMin))*255;
+    }
+    g.putImageData(im,0,0);
+    return c;
+  }
+  function setup() {
+    lite = document.documentElement.classList.contains('lite');
+    T = lite ? 560 : 780; SWITCH = lite ? 190 : 240; PLAYAT = lite ? 410 : 580;
+    const px = lite ? 8 : 5, py = lite ? 4 : 2.5;
+    const nw = Math.max(40,Math.ceil(innerWidth/px)), nh = Math.max(60,Math.ceil(innerHeight/py));
+    if (nw !== W || nh !== H) { W = nw; H = nh; cv.width = W; cv.height = H; }
+    const key = W+'x'+H;
+    if (tileKey !== key) {
+      tileBase = makeTile(W*2,H*2,0,0.25,1);        /* salju umum (acak, sebagian transparan) */
+      tileBand = makeTile(W*2,H*2,110,0.75,1);      /* noise pita tracking (terang & padat) */
+      tileKey = key;
+    }
+  }
+  function inten(t) {
+    if (t < SWITCH) { const k = t/SWITCH; return k*k*(3-2*k); }
+    if (t < PLAYAT) return 1-0.14*((t-SWITCH)/(PLAYAT-SWITCH));
+    const k = Math.min(1,(t-PLAYAT)/(T-PLAYAT)); return 0.86*(1-k)*(1-k);
+  }
+  function strip(tile,y,h,alpha) {                  /* gambar potongan tile acak setinggi h di posisi y */
+    if (h <= 0 || alpha <= 0.01) return;
+    if (y < 0) { h += y; y = 0; } if (y+h > H) h = H-y; if (h <= 0) return;
+    ctx.globalAlpha = Math.min(1,alpha);
+    ctx.drawImage(tile,Math.floor(Math.random()*W),Math.floor(Math.random()*(H-1)),W,h,0,y,W,h);
+  }
+  function paint(e,t) {
+    ctx.clearRect(0,0,W,H);
+    strip(tileBase,0,H,(0.05+0.2*e)*(0.8+Math.random()*0.4));
+    const nb = lite ? 2 : 3;
+    for (let k = 0; k < nb; k++) {
+      const bh = Math.round(H*(0.075+0.04*((k*7)%3)/2+0.04*e));
+      const sp = (1.1+k*0.55)*(rew ? 1 : -1);
+      const ph = (((k*0.41-(t/1000)*sp)%1)+1)%1;
+      const y = Math.round(ph*(H+bh)-bh), a = 0.88*e;
+      /* sisi depan terang & tajam, badan padat, ekor memudar */
+      strip(tileBand,y,Math.round(bh*0.15),a*0.55);
+      strip(tileBand,y+Math.round(bh*0.15),Math.round(bh*0.35),a);
+      strip(tileBand,y+Math.round(bh*0.5),Math.round(bh*0.28),a*0.6);
+      strip(tileBand,y+Math.round(bh*0.78),Math.round(bh*0.22),a*0.28);
+      ctx.globalAlpha = 0.5*e; ctx.fillStyle = '#fff'; ctx.fillRect(0,y,W,1);
+    }
+    const hs = Math.round(H*0.055);                  /* noise "head switching" di dasar layar */
+    strip(tileBand,H-hs,hs,Math.min(0.95,e*1.2));
+    const n = 2+Math.floor(5*e);                     /* garis sobek + pecahan warna merah/cyan */
+    for (let k = 0; k < n; k++) {
+      const y = Math.floor(Math.random()*(H-2))+1, w = W*(0.2+Math.random()*0.7), x = Math.random()*(W-w), s = Math.random() < 0.5 ? 2 : -2;
+      ctx.globalAlpha = 0.45*e; ctx.fillStyle = '#ff285a'; ctx.fillRect(x+s,y-1,w,1);
+      ctx.globalAlpha = 0.55*e; ctx.fillStyle = '#fff';    ctx.fillRect(x,y,w,1);
+      ctx.globalAlpha = 0.4*e;  ctx.fillStyle = '#28dcff'; ctx.fillRect(x-s,y+1,w,1);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function doSwitch() {
+    if (switched) return;
+    switched = true;
+    const btn = pending; pending = null;
+    if (!btn) return;
+    bypass = true; try { btn.click(); } finally { bypass = false; }
+  }
+  function frame(now) {
+    const t = now-t0;
+    if (t >= T) { end(); return; }
+    frameNo++;
+    if (t >= SWITCH && !switched) doSwitch();
+    const e = inten(t);
+    paint(e,t);
+    dimEl.style.opacity = (e*0.3).toFixed(3);
+    scanEl.style.opacity = Math.min(1,e*1.4).toFixed(3);
+    const playing = t >= PLAYAT, mode = playing ? '▶ PLAY' : (rew ? '◀◀ REW' : '▶▶ FF');
+    if (mode !== lastMode) { modeEl.textContent = mode; lastMode = mode; }
+    if (!playing && frameNo % 3 === 0) tcEl.textContent = fmt(tcBase+(rew ? -1 : 1)*t*0.33);
+    const fadeIn = Math.min(1,t/90), fadeOut = playing ? Math.max(0,1-(t-PLAYAT)/(T-PLAYAT)*1.15) : 1;
+    osd.style.opacity = (fadeIn*fadeOut*(0.88+Math.random()*0.12)).toFixed(2);
+    osd.style.transform = 'translate('+((Math.random()-0.5)*3*e).toFixed(1)+'px,'+((Math.random()-0.5)*2*e).toFixed(1)+'px)';
+    raf = requestAnimationFrame(frame);
+  }
+  function end() {
+    cancelAnimationFrame(raf); raf = 0;
+    timers.splice(0).forEach(clearTimeout);
+    doSwitch();
+    fx.classList.remove('on'); osd.style.opacity = '0'; dimEl.style.opacity = '0'; scanEl.style.opacity = '0';
+    ctx.clearRect(0,0,W,H);
+    busy = false;
+  }
+  function play(btn,dirRew) {
+    busy = true; switched = false; pending = btn; rew = dirRew; frameNo = 0; lastMode = '';
+    setup();
+    tcBase = 1800+Math.random()*4000;
+    fx.classList.add('on');
+    t0 = performance.now();
+    raf = requestAnimationFrame(frame);
+    /* cadangan jika tab sempat disembunyikan (rAF berhenti) */
+    timers.push(setTimeout(doSwitch,SWITCH+260), setTimeout(() => { if (busy) end(); },T+400));
+  }
+  /* siapkan tile saat browser menganggur, supaya ketukan pertama tidak tersendat */
+  (window.requestIdleCallback || (f => setTimeout(f,1200)))(() => { try { setup(); } catch (_) {} });
+
+  nav.addEventListener('click',e => {
+    if (bypass || !e.isTrusted) return;                 /* klik program (mis. dari deep-link) tetap instan */
+    const btn = e.target.closest ? e.target.closest('.nav-btn') : null;
+    if (!btn) return;
+    const to = IDS.indexOf(btn.id), from = curTab();
+    if (to < 0 || to === from) return;
+    if (mq && mq.matches) return;
+    if (document.body.classList.contains('login-active')) return;
+    e.preventDefault(); e.stopPropagation();
+    if (busy) {                                         /* ketukan beruntun: pindah langsung, animasi lanjut */
+      if (!switched) pending = btn;
+      else { bypass = true; try { btn.click(); } finally { bypass = false; } }
+      return;
+    }
+    play(btn,to < from);
+  },true);
+})();
 </script>
 </body>
 </html>
