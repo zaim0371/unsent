@@ -2925,6 +2925,32 @@ html.lite:root body.dark-theme:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) .
 html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) #bxCard{padding:4px;border-radius:24px}
 html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) #bxCard .bx-stage{border-radius:20px}
 </style>
+<style id="callWaStyle">
+/* ===== Layar call: latar mengikuti tema web (tanpa foto lawan bicara), tombol bawah ala WhatsApp ===== */
+html body .call-screen{--cs-fg:#fff;--cs-fg2:rgba(255,255,255,.74);--cs-bar:rgba(255,255,255,.11);--cs-btn:rgba(255,255,255,.14);--cs-on-bg:#fff;--cs-on-fg:#2a1030;--cs-ring:rgba(255,255,255,.5);
+  background:radial-gradient(ellipse at 50% 0%,#6a2b5d,transparent 62%),radial-gradient(ellipse at 50% 100%,#3a1640,transparent 60%),linear-gradient(170deg,#2a1030,#14081a 72%);color:var(--cs-fg)}
+html body:not(.dark-theme) .call-screen{--cs-fg:#3d1c35;--cs-fg2:rgba(61,28,53,.78);--cs-bar:rgba(255,255,255,.5);--cs-btn:rgba(255,255,255,.42);--cs-on-bg:#6e2c58;--cs-on-fg:#fff;--cs-ring:#fff;
+  background:radial-gradient(ellipse at 15% 0%,#f3c9de,transparent 55%),radial-gradient(ellipse at 100% 100%,#b9a3d6,transparent 58%),linear-gradient(160deg,#dfa3c3,#cf88b0 52%,#b79ad3)}
+html body .call-remote{background:transparent!important}
+html body .call-remote img,html body .call-shade{display:none!important}
+html body .call-screen .call-name{color:var(--cs-fg);text-shadow:none}
+html body .call-screen .call-status,html body .call-screen.connected .call-status{color:var(--cs-fg2);text-shadow:none}
+html body .call-screen.connected .call-status{color:var(--cs-fg)}
+html body .call-screen.video .call-avatar{border:3px solid var(--cs-ring);box-shadow:0 12px 34px rgba(0,0,0,.28)}
+/* bar tombol bawah: pil membulat, ikon bulat tanpa label (label tetap ada untuk pembaca layar) */
+html body .call-controls{width:100%;max-width:340px;gap:0;justify-content:space-around;align-items:center;padding:12px 10px;border-radius:44px;background:var(--cs-bar);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.22)}
+html body .call-screen.video .call-controls{gap:0}
+html body .call-ctl{position:relative;gap:0;color:var(--cs-fg)}
+html body .call-ctl>span:not(.cc-ico){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+html body .call-ctl .cc-ico,html body .call-screen.video .call-ctl .cc-ico{width:52px;height:52px;background:var(--cs-btn);color:var(--cs-fg)}
+html body .call-ctl svg{width:24px;height:24px}
+html body .call-ctl[aria-pressed="true"] .cc-ico,html body .call-screen.video .call-ctl[aria-pressed="true"] .cc-ico{background:var(--cs-on-bg);color:var(--cs-on-fg)}
+html body .call-ctl.end .cc-ico,html body .call-screen.video .call-ctl.end .cc-ico{width:76px;height:52px;border-radius:26px;background:linear-gradient(180deg,#ff6161,#e62a41);color:#fff;box-shadow:0 6px 16px rgba(230,42,65,.42),inset 0 1px 0 rgba(255,255,255,.35)}
+html body .call-ctl.end svg.ico-end{width:30px;height:30px;fill:#fff;stroke:none}
+html body .call-ctl.end:active .cc-ico{background:linear-gradient(180deg,#ee5252,#cc2237);transform:scale(.94)}
+html body .call-ctl:focus-visible .cc-ico{outline:2px solid var(--cs-on-bg);outline-offset:3px}
+html body .call-self{bottom:calc(env(safe-area-inset-bottom,0px) + 136px)}
+</style>
 </head>
 
 <body class="login-active dark-theme">
@@ -3390,7 +3416,7 @@ html:root body:not(#_):not(#_):not(#_):not(#_):not(#_):not(#_) #bxCard .bx-stage
       <span id="callMuteLabel">Mute</span>
     </button>
     <button class="call-ctl end" id="callEnd" type="button" aria-label="Tutup telepon">
-      <span class="cc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(135 12 12)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g></svg></span>
+      <span class="cc-ico"><svg class="ico-end" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.956.956 0 0 1-.29-.7c0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/></svg></span>
       <span>Tutup</span>
     </button>
   </div>
