@@ -1048,8 +1048,14 @@ body.ptr-settle .ptr {transition:transform .45s var(--ease-nav),opacity .3s ease
 .pin-row {display:flex;align-items:center;justify-content:flex-end;gap:4px;margin:-1px 0 5px;color:#b0507f;font-size:9.5px;font-weight:700;letter-spacing:.2px}
 .pin-row svg {width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transform:rotate(35deg)}
 .dark-theme .pin-row {color:#ff9fce}
-.message.flash {animation:pinFlash 1.5s ease}
-@keyframes pinFlash {0%,100%{box-shadow:0 0 0 0 rgba(224,74,155,0)}25%,65%{box-shadow:0 0 0 4px rgba(224,74,155,.45)}}
+/* Sorotan pesan sematan setelah lompat (2 detik). Memakai outline + filter karena box-shadow bubble dikunci !important */
+.message.pin-hl {--pin-hl-ring:#ff2f86;--pin-hl-glow:rgba(255,47,134,.55);animation:pinHl 2s ease-in-out both}
+.dark-theme .message.pin-hl {--pin-hl-ring:#ffe3f1;--pin-hl-glow:rgba(255,160,205,.65)}
+@keyframes pinHl {
+  0%{outline:3px solid transparent;outline-offset:0;filter:none}
+  12%,78%{outline:3px solid var(--pin-hl-ring);outline-offset:4px;filter:brightness(1.12) drop-shadow(0 0 14px var(--pin-hl-glow))}
+  100%{outline:3px solid transparent;outline-offset:4px;filter:none}
+}
 /* ===== Efek tahan chat + animasi menu ===== */
 .message.pressing {transform:scale(.95);transition:transform .5s cubic-bezier(.3,0,.2,1)}
 .menu {transform-origin:top right;animation:menuIn .24s var(--spring) both}
@@ -2950,6 +2956,56 @@ html body .call-ctl.end svg.ico-end{width:30px;height:30px;fill:#fff;stroke:none
 html body .call-ctl.end:active .cc-ico{background:linear-gradient(180deg,#ee5252,#cc2237);transform:scale(.94)}
 html body .call-ctl:focus-visible .cc-ico{outline:2px solid var(--cs-on-bg);outline-offset:3px}
 html body .call-self{bottom:calc(env(safe-area-inset-bottom,0px) + 136px)}
+</style>
+
+<style id="pinned-bar-fix">
+/* Kolom sematan di header:
+   - drop-shadow bawah (--clay-small) terpotong oleh .pinned-inner{overflow:hidden} → tampak seperti "kotak" bayangan di bawah kolom. Dibuang, sisakan kilau dalam (inset).
+   - latar dibuat lebih pekat + blur supaya teks pesan di belakang tidak tembus ke teks kolom. */
+body{--pin-bar-bg:linear-gradient(150deg,rgba(255,244,250,.92),rgba(255,228,241,.88));--pin-bar-hi:rgba(255,255,255,.92);--pin-bar-glow:rgba(255,255,255,.28)}
+body.dark-theme{--pin-bar-bg:linear-gradient(150deg,rgba(70,24,51,.9),rgba(48,16,36,.88));--pin-bar-hi:rgba(255,255,255,.2);--pin-bar-glow:rgba(255,130,185,.08)}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .sticky-head .pinned-bar{
+  background:var(--pin-bar-bg)!important;
+  box-shadow:inset 1px 1.5px 0 var(--pin-bar-hi),inset 0 0 14px var(--pin-bar-glow)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
+  color:var(--ink)!important}
+html.lite body:not(#_):not(#_):not(#_):not(#_):not(#_) .sticky-head .pinned-bar{-webkit-backdrop-filter:none;backdrop-filter:none}
+</style>
+
+<style id="contrast-fix">
+/* Perbaikan kontras teks (terang + gelap). Target: >= 4.5:1 untuk teks kecil */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_){--prim:linear-gradient(145deg,#e24a8c,#bf2a70);--muted:#7a4a62;--clay-primary:#c42a76}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme{--prim:linear-gradient(145deg,#e24a8c,#bf2a70);--muted:#e6bdd0;--clay-primary:#ff6cab}
+/* Avatar ♡ putih di atas gradien pink → gradien digelapkan */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .profile-avatar,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .entry-avatar{background:linear-gradient(145deg,#e0508f,#c0306f 62%,#d4492f)!important;color:#fff}
+/* Tombol utama berlatar pink + teks putih */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .pb-step{background:#c42b73;color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .ce-n{background:linear-gradient(145deg,#d9558f,#b83374);color:#fff}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .pair-opt.on,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #loginSubmit,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #signupSubmit,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #forgotSubmit,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #resetSubmit,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #nickSave,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #bxEditDone,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .save-btn,
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #pkDemoFilm,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #pkDemoMinion,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #pkDemoPhone,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #days .day.selected,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #days .day.range-start,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #days .day.range-end{background:var(--prim)!important;color:#fff!important}
+/* Jam di dalam bubble */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .entry .message .time{color:rgba(107,66,96,.95)}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme .entry .message .time{color:rgba(255,255,255,.96)}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .pin-row{color:#8f1d57}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme .pin-row{color:#fff}
+/* Placeholder */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) input::placeholder,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) textarea::placeholder{color:#7a4d63;opacity:1}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme input::placeholder,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme textarea::placeholder{color:#e3b6cc;opacity:1}
+/* Tombol / tautan teks pink */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #showSignup,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #toLogin2,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #showForgot,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .ce-addchat,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #callEditLove{color:#a81f65}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme #showSignup,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme #toLogin2,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme #showForgot,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme .ce-addchat,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme #callEditLove{color:#ff9fce}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #backToLogin,html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #backFromForgot{color:var(--muted)}
+/* Nilai grafik statistik di atas batang berwarna */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .chart-value{color:var(--ink)}
+/* Hapus (mode pilih) */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .sel-btn.danger{background:#b81c52!important;border-color:#b81c52!important;color:#fff!important}
+/* Toast */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) .toast-action{color:#a81f65}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme #toast{background:rgba(52,16,38,.96)!important}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme .toast-action{color:#ff9fce}
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_).dark-theme #toastMessage{color:#fff}
+/* Keterangan foto saat zoom: latar gelap agar terbaca di atas backdrop terang */
+html:root body:not(#_):not(#_):not(#_):not(#_):not(#_) #zoomCaption{display:inline-block;padding:6px 14px;border-radius:12px;background:rgba(30,10,22,.66);color:#fff}
 </style>
 </head>
 
@@ -4881,13 +4937,56 @@ function updatePinnedBar() {
   step.textContent = `${pinCursor+1}/${list.length}`;
 }
 
+/* Sorotan pesan sematan: mulai SETELAH gulir berhenti, bertahan 2 detik */
+const PIN_HL_MS = 2000;
+let pinHlTimer = 0, pinHlEl = null, pinJumpTok = 0;
+
+function clearPinHighlight() {
+  clearTimeout(pinHlTimer);
+  if (pinHlEl) { pinHlEl.classList.remove('pin-hl'); pinHlEl = null; }
+}
+
+function pinHighlight(msg) {
+  clearPinHighlight();
+  pinHlEl = msg;
+  void msg.offsetWidth;   /* ulangi animasi dari awal */
+  msg.classList.add('pin-hl');
+  pinHlTimer = setTimeout(clearPinHighlight,PIN_HL_MS);
+}
+
+/* Apakah pesan masih perlu digulir agar berada di tengah layar? (batas atas/bawah dokumen diperhitungkan) */
+function pinNeedsScroll(el) {
+  const r = el.getBoundingClientRect();
+  const want = window.scrollY + r.top + r.height/2 - window.innerHeight/2;
+  const max = Math.max(0,document.documentElement.scrollHeight - window.innerHeight);
+  return Math.abs(Math.max(0,Math.min(max,want)) - window.scrollY) > 6;
+}
+
+/* Tunggu sampai gulir halus benar-benar berhenti, lalu jalankan done */
+function whenScrollIdle(token,done) {
+  const t0 = performance.now();
+  let last = window.scrollY, calm = 0;
+  const tick = () => {
+    if (token !== pinJumpTok) return;
+    const y = window.scrollY;
+    calm = Math.abs(y-last) < .5 ? calm+1 : 0;
+    last = y;
+    if (calm >= 8 || performance.now()-t0 > 3500) { done(); return; }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
 function jumpToNextPinned() {
   const list = getPinnedList();
   if (!list.length) return;
 
   pinCursor = (pinCursor+1) % list.length;
   const note = list[pinCursor];
+  const token = ++pinJumpTok;
   const find = () => [...historyBox.querySelectorAll('.entry')].find(e => e.dataset.id === String(note.id));
+  const smooth = () => reduceMotion() ? 'auto' : 'smooth';
+  clearPinHighlight();
 
   /* Sematan bisa di tanggal lain / tersaring pencarian → sesuaikan tampilan dulu */
   let changed = false;
@@ -4917,19 +5016,24 @@ function jumpToNextPinned() {
     ensureVisible(note.id);
     render({focusId:note.id});
     target = find();
-  } else {
-    target.scrollIntoView({behavior:reduceMotion() ? 'auto' : 'smooth',block:'center'});
-    stuckToBottom = false;
   }
+  if (target && pinNeedsScroll(target)) target.scrollIntoView({behavior:smooth(),block:'center'});
+  stuckToBottom = false;
 
   if (target) {
-    const msg = target.querySelector('.message');
-    if (msg) {
-      msg.classList.remove('flash');
-      void msg.offsetWidth;
-      msg.classList.add('flash');
-      setTimeout(() => msg.classList.remove('flash'),1600);
-    }
+    /* Sorot setelah gulir berhenti. Bila tata letak bergeser (mis. foto baru selesai dimuat), koreksi sekali. */
+    const settle = retry => whenScrollIdle(token,() => {
+      const el = find();
+      if (!el) return;
+      if (retry && pinNeedsScroll(el)) {
+        el.scrollIntoView({behavior:smooth(),block:'center'});
+        settle(false);
+        return;
+      }
+      const msg = el.querySelector('.message');
+      if (msg) pinHighlight(msg);
+    });
+    settle(true);
   }
 
   updatePinnedBar();
